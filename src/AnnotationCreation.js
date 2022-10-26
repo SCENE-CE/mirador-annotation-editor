@@ -31,6 +31,27 @@ import TextEditor from './TextEditor';
 import WebAnnotation from './WebAnnotation';
 import CursorIcon from './icons/Cursor';
 
+/** Extract time information from annotation target */
+function timeFromAnnoTarget(annotarget) {
+  // TODO w3c media fragments: t=,10 t=5,
+  const r = /t=([0-9]+),([0-9]+)/.exec(annotarget);
+  if (!r || r.length !== 3) {
+    return ['', ''];
+  }
+  return [r[1], r[2]];
+}
+
+/** Extract xywh from annotation target */
+function geomFromAnnoTarget(annotarget) {
+  console.warn('TODO proper extraction');
+  const r = /xywh=((-?[0-9]+,?)+)/.exec(annotarget);
+  console.info('extracted from ', annotarget, r);
+  if (!r || r.length !== 3) {
+    return ['', ''];
+  }
+  return [r[1], r[2]];
+}
+
 /** */
 class AnnotationCreation extends Component {
   /** */
@@ -38,6 +59,8 @@ class AnnotationCreation extends Component {
     super(props);
     const annoState = {};
     if (props.annotation) {
+      //
+      // annotation body
       if (Array.isArray(props.annotation.body)) {
         annoState.tags = [];
         props.annotation.body.forEach((body) => {
@@ -50,19 +73,27 @@ class AnnotationCreation extends Component {
       } else {
         annoState.annoBody = props.annotation.body.value;
       }
+      //
+      // drawing position
       if (props.annotation.target.selector) {
         if (Array.isArray(props.annotation.target.selector)) {
           props.annotation.target.selector.forEach((selector) => {
             if (selector.type === 'SvgSelector') {
               annoState.svg = selector.value;
             } else if (selector.type === 'FragmentSelector') {
-              annoState.xywh = selector.value.replace('xywh=', '');
+              // TODO proper fragment selector extraction
+              annoState.xywh = geomFromAnnoTarget(selector.value);
+              [annoState.tstart, annoState.tend] = timeFromAnnoTarget(selector.value);
             }
           });
         } else {
           annoState.svg = props.annotation.target.selector.value;
+          // eslint-disable-next-line max-len
+          [annoState.tstart, annoState.tend] = timeFromAnnoTarget(props.annotation.target.selector.value);
         }
       }
+      //
+      // start/end time
     }
     this.state = {
       activeTool: 'cursor',
@@ -77,12 +108,16 @@ class AnnotationCreation extends Component {
       strokeColor: '#00BFFF',
       strokeWidth: 1,
       svg: null,
+      tend: '',
+      tstart: '',
       xywh: null,
       ...annoState,
     };
 
     this.submitForm = this.submitForm.bind(this);
     this.updateBody = this.updateBody.bind(this);
+    this.updateTstart = this.updateTstart.bind(this);
+    this.updateTend = this.updateTend.bind(this);
     this.updateGeometry = this.updateGeometry.bind(this);
     this.changeTool = this.changeTool.bind(this);
     this.changeClosedMode = this.changeClosedMode.bind(this);
@@ -152,8 +187,12 @@ class AnnotationCreation extends Component {
       annotation, canvases, closeCompanionWindow, receiveAnnotation, config,
     } = this.props;
     const {
-      annoBody, tags, xywh, svg,
+      annoBody, tags, xywh, svg, tstart, tend,
     } = this.state;
+    let fsel = xywh;
+    if (tstart && tend) {
+      fsel = `${xywh || ''}&t=${tstart},${tend}`;
+    }
     canvases.forEach((canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
       const anno = new WebAnnotation({
@@ -163,7 +202,7 @@ class AnnotationCreation extends Component {
         manifestId: canvas.options.resource.id,
         svg,
         tags,
-        xywh,
+        xywh: fsel,
       }).toJson();
       if (annotation) {
         storageAdapter.update(anno).then((annoPage) => {
@@ -200,6 +239,12 @@ class AnnotationCreation extends Component {
     this.setState({ annoBody });
   }
 
+  /** update annotation start time */
+  updateTstart(ev) { this.setState({ tstart: ev.target.value }); }
+
+  /** update annotation end time */
+  updateTend(ev) { this.setState({ tend: ev.target.value }); }
+
   /** */
   updateGeometry({ svg, xywh }) {
     this.setState({
@@ -216,7 +261,9 @@ class AnnotationCreation extends Component {
     const {
       activeTool, colorPopoverOpen, currentColorType, fillColor, popoverAnchorEl, strokeColor,
       popoverLineWeightAnchorEl, lineWeightPopoverOpen, strokeWidth, closedMode, annoBody, svg,
+      tstart, tend,
     } = this.state;
+
     return (
       <CompanionWindow
         title={annotation ? 'Edit annotation' : 'New annotation'}
@@ -344,6 +391,15 @@ class AnnotationCreation extends Component {
           <Grid container>
             <Grid item xs={12}>
               <Typography variant="overline">
+                Duration
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <input name="tstart" type="number" step="1" value={tstart} onChange={this.updateTstart} />
+              <input name="tend" type="number" step="1" value={tend} onChange={this.updateTend} />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="overline">
                 Content
               </Typography>
             </Grid>
@@ -419,6 +475,7 @@ const styles = (theme) => ({
 });
 
 AnnotationCreation.propTypes = {
+  // TODO proper web annotation type ?
   annotation: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   canvases: PropTypes.arrayOf(
     PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
