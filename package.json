@@ -11,8 +11,8 @@
     "umd"
   ],
   "scripts": {
-    "build": "nwb build-react-component",
-    "clean": "nwb clean-module && nwb clean-demo",
+    "build": "nwb build-react-component --no-demo",
+    "clean": "nwb clean-module",
     "lint": "eslint ./src ./__tests__",
     "prepublishOnly": "npm run build",
     "start": "nwb serve-react-demo",
@@ -26,7 +26,6 @@
     "draft-js": "^0.11.6",
     "draft-js-export-html": "^1.4.1",
     "draft-js-import-html": "^1.4.1",
-    "immutable": "^4.0.0-rc.12",
     "material-ui-color-components": "^0.3.0",
     "paper": "^0.12.11",
     "react-color": "^2.18.1"
@@ -61,7 +60,6 @@
     "eslint-plugin-jest": "^23.18.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.3",
-    "eslint-plugin-react-hooks": "^4.0.6",
     "jest": "^26.1.0",
     "jest-canvas-mock": "^2.2.0",
     "jest-localstorage-mock": "^2.4.2",
