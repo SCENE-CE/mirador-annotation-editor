@@ -39,6 +39,27 @@ import TextEditor from './TextEditor';
 import WebAnnotation from './WebAnnotation';
 import CursorIcon from './icons/Cursor';
 
+/** Extract time information from annotation target */
+function timeFromAnnoTarget(annotarget) {
+  // TODO w3c media fragments: t=,10 t=5,
+  const r = /t=([0-9]+),([0-9]+)/.exec(annotarget);
+  if (!r || r.length !== 3) {
+    return ['', ''];
+  }
+  return [r[1], r[2]];
+}
+
+/** Extract xywh from annotation target */
+function geomFromAnnoTarget(annotarget) {
+  console.warn('TODO proper extraction');
+  const r = /xywh=((-?[0-9]+,?)+)/.exec(annotarget);
+  console.info('extracted from ', annotarget, r);
+  if (!r || r.length !== 3) {
+    return ['', ''];
+  }
+  return [r[1], r[2]];
+}
+
 /** */
 class AnnotationCreation extends Component {
   /** */
@@ -67,6 +88,8 @@ class AnnotationCreation extends Component {
     annoState.image = false;
 
     if (props.annotation) {
+      //
+      // annotation body
       if (Array.isArray(props.annotation.body)) {
         annoState.tags = [];
         props.annotation.body.forEach((body) => {
@@ -85,28 +108,54 @@ class AnnotationCreation extends Component {
         annoState.textBody = props.annotation.body.value;
         annoState.image = props.annotation.body.image;
       }
-
+      //
+      // drawing position
       if (props.annotation.target.selector) {
         if (Array.isArray(props.annotation.target.selector)) {
           props.annotation.target.selector.forEach((selector) => {
             if (selector.type === 'SvgSelector') {
               annoState.svg = selector.value;
             } else if (selector.type === 'FragmentSelector') {
-              annoState.xywh = selector.value.replace('xywh=', '');
+              // TODO proper fragment selector extraction
+              annoState.xywh = geomFromAnnoTarget(selector.value);
+              [annoState.tstart, annoState.tend] = timeFromAnnoTarget(selector.value);
             }
           });
         } else {
           annoState.svg = props.annotation.target.selector.value;
+          // eslint-disable-next-line max-len
+          [annoState.tstart, annoState.tend] = timeFromAnnoTarget(props.annotation.target.selector.value);
         }
       }
+      //
+      // start/end time
     }
 
-    this.state = {
+    const toolState = {
       activeTool: 'cursor',
       closedMode: 'closed',
-      colorPopoverOpen: false,
       currentColorType: false,
       fillColor: null,
+      strokeColor: '#00BFFF',
+      strokeWidth: 3,
+      ...(props.config.annotation.defaults || {}),
+    };
+    this.state = {
+      ...toolState,
+      annoBody: '',
+      textBody: '',
+      activeTool: 'cursor',
+      closedMode: 'closed',
+      currentColorType: false,
+      fillColor: null,
+      lineWeightPopoverOpen: false,
+      openAddImgDialog: false,
+      popoverAnchorEl: null,
+      popoverLineWeightAnchorEl: null,
+      svg: null,
+      tend: '',
+      tstart: '',
+      textEditorStateBustingKey: 0,
       imgConstrain: false,
       imgHeight: {
         lastSubmittedValue: '',
@@ -125,23 +174,18 @@ class AnnotationCreation extends Component {
         validity: 0,
         value: '',
       },
-      lineWeightPopoverOpen: false,
-      openAddImgDialog: false,
-      popoverAnchorEl: null,
-      popoverLineWeightAnchorEl: null,
-      strokeColor: '#00BFFF',
-      strokeWidth: 1,
-      svg: null,
-      textBody: '',
       xywh: null,
       ...annoState,
     };
 
     this.submitForm = this.submitForm.bind(this);
+    // this.updateBody = this.updateBody.bind(this);
     this.updateTextBody = this.updateTextBody.bind(this);
     this.getImgDimensions = this.getImgDimensions.bind(this);
     this.setImgWidth = this.setImgWidth.bind(this);
     this.setImgHeight = this.setImgHeight.bind(this);
+    this.updateTstart = this.updateTstart.bind(this);
+    this.updateTend = this.updateTend.bind(this);
     this.updateGeometry = this.updateGeometry.bind(this);
     this.changeTool = this.changeTool.bind(this);
     this.changeClosedMode = this.changeClosedMode.bind(this);
@@ -380,13 +424,18 @@ class AnnotationCreation extends Component {
   submitForm(e) {
     e.preventDefault();
     const {
-      annotation, canvases, closeCompanionWindow, receiveAnnotation, config,
+      annotation, canvases, receiveAnnotation, config,
     } = this.props;
     const {
-      textBody, image, imgWidth, imgHeight, imgUrl, tags, xywh, svg, imgConstrain,
+      textBody, image, imgWidth, imgHeight, imgUrl, tags, xywh, svg,
+      imgConstrain,tstart, tend, textEditorStateBustingKey,
     } = this.state;
     const annoBody = { value: textBody };
     let imgBody;
+    let fsel = xywh;
+    if (tstart && tend) {
+      fsel = `${xywh || ''}&t=${tstart},${tend}`;
+    }
 
     if (imgWidth.validity === 1 && imgHeight.validity === 1 && imgUrl.validity === 1) {
       imgBody = {
@@ -410,7 +459,7 @@ class AnnotationCreation extends Component {
         manifestId: canvas.options.resource.id,
         svg,
         tags,
-        xywh,
+        xywh: fsel,
       }).toJson();
 
       if (annotation) {
@@ -423,10 +472,13 @@ class AnnotationCreation extends Component {
         });
       }
     });
+
     this.setState({
-      activeTool: null,
+      annoBody: '',
+      svg: null,
+      textEditorStateBustingKey: textEditorStateBustingKey + 1,
+      xywh: null,
     });
-    closeCompanionWindow();
   }
 
   /** */
@@ -448,6 +500,12 @@ class AnnotationCreation extends Component {
     this.setState({ textBody });
   }
 
+  /** update annotation start time */
+  updateTstart(ev) { this.setState({ tstart: ev.target.value }); }
+
+  /** update annotation end time */
+  updateTend(ev) { this.setState({ tend: ev.target.value }); }
+
   /** */
   updateGeometry({ svg, xywh }) {
     this.setState({
@@ -464,8 +522,9 @@ class AnnotationCreation extends Component {
     const {
       activeTool, colorPopoverOpen, currentColorType, fillColor, openAddImgDialog, popoverAnchorEl,
       strokeColor, popoverLineWeightAnchorEl, lineWeightPopoverOpen, strokeWidth, closedMode,
-      textBody, imgUrl, imgWidth, imgHeight, imgConstrain, svg,
+      textBody, imgUrl, imgWidth, imgHeight, imgConstrain, svg, tstart, tend, textEditorStateBustingKey,
     } = this.state;
+
     return (
       <CompanionWindow
         title={annotation ? 'Edit annotation' : 'New annotation'}
@@ -483,7 +542,7 @@ class AnnotationCreation extends Component {
           updateGeometry={this.updateGeometry}
           windowId={windowId}
         />
-        <form onSubmit={this.submitForm}>
+        <form onSubmit={this.submitForm} className={classes.section}>
           <Grid container>
             <Grid item xs={12}>
               <Typography variant="overline">
@@ -593,6 +652,15 @@ class AnnotationCreation extends Component {
           <Grid container>
             <Grid item xs={12}>
               <Typography variant="overline">
+                Duration
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <input name="tstart" type="number" step="1" value={tstart} onChange={this.updateTstart} />
+              <input name="tend" type="number" step="1" value={tend} onChange={this.updateTend} />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="overline">
                 Image Content
               </Typography>
             </Grid>
@@ -676,6 +744,11 @@ class AnnotationCreation extends Component {
             </Grid>
             <Grid item xs={12}>
               <TextEditor
+                  key={textEditorStateBustingKey}
+                  annoHtml={annoBody}
+                  updateAnnotationBody={this.updateBody}
+              />
+              <TextEditor
                 annoHtml={textBody}
                 updateAnnotationBody={this.updateTextBody}
               />
@@ -694,12 +767,15 @@ class AnnotationCreation extends Component {
         >
           <Paper>
             <ClickAwayListener onClickAway={this.handleCloseLineWeight}>
-              <MenuList>
+              <MenuList autoFocus role="listbox">
                 {[1, 3, 5, 10, 50].map((option, index) => (
                   <MenuItem
                     key={option}
                     onClick={this.handleLineWeightSelect}
                     value={option}
+                    selected={option == strokeWidth}
+                    role="option"
+                    aria-selected={option == strokeWidth}
                   >
                     {option}
                   </MenuItem>
@@ -743,9 +819,16 @@ const styles = (theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
   },
+  section: {
+    paddingBottom: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+    paddingTop: theme.spacing(2),
+  },
 });
 
 AnnotationCreation.propTypes = {
+  // TODO proper web annotation type ?
   annotation: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   canvases: PropTypes.arrayOf(
     PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
@@ -755,6 +838,11 @@ AnnotationCreation.propTypes = {
   config: PropTypes.shape({
     annotation: PropTypes.shape({
       adapter: PropTypes.func,
+      defaults: PropTypes.objectOf(
+        PropTypes.oneOfType(
+          [PropTypes.bool, PropTypes.func, PropTypes.number, PropTypes.string]
+        )
+      ),
     }),
   }).isRequired,
   id: PropTypes.string.isRequired,

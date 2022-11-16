@@ -4,12 +4,12 @@ module.exports = {
   type: 'react-component',
   npm: {
     esModules: true,
-    umd: {
-      global: 'MiradorAnnotation',
-      externals: {
-        react: 'React',
-      },
-    },
+    // umd: {
+    //   global: 'MiradorAnnotation',
+    //   externals: {
+    //     react: 'React',
+    //   },
+    // },
   },
   webpack: {
     aliases: {

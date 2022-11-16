@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
+import { VideoViewersReferences } from 'mirador/dist/es/src/plugins/VideoViewersReferences';
 import { renderWithPaperScope, PaperContainer } from '@psychobolt/react-paperjs';
 import
 {
@@ -10,11 +11,22 @@ import
   RectangleTool,
   FreeformPathTool,
 }
-  from '@psychobolt/react-paperjs-editor';
+from '@psychobolt/react-paperjs-editor';
 import { Point } from 'paper';
 import flatten from 'lodash/flatten';
 import EditTool from './EditTool';
 import { mapChildren } from './utils';
+
+/** Use a canvas "like a OSD viewport" (temporary) */
+function viewportFromAnnotationOverlayVideo(annotationOverlayVideo) {
+  const { canvas } = annotationOverlayVideo;
+  return {
+    getCenter: () => ({ x: canvas.getWidth() / 2, y: canvas.getHeight() / 2 }),
+    getFlip: () => false,
+    getRotation: () => false,
+    getZoom: () => 1,
+  };
+}
 
 /** */
 class AnnotationDrawing extends Component {
@@ -23,12 +35,6 @@ class AnnotationDrawing extends Component {
     super(props);
 
     this.addPath = this.addPath.bind(this);
-  }
-
-  /** */
-  componentDidMount() {
-    const { windowId } = this.props;
-    this.OSDReference = OSDReferences.get(windowId);
   }
 
   /** */
@@ -61,23 +67,32 @@ class AnnotationDrawing extends Component {
 
   /** */
   paperThing() {
+    const { windowId } = this.props;
+    let viewport = null;
+    let img = null;
+    if (OSDReferences.get(windowId)) {
+      console.debug('[annotation-plugin] OSD reference: ', OSDReferences.get(windowId));
+      viewport = OSDReferences.get(windowId).current.viewport;
+      img = OSDReferences.get(windowId).current.world.getItemAt(0);
+    } else if (VideoViewersReferences.get(windowId)) {
+      console.debug('[annotation-plugin] VideoViewers reference: ', VideoViewersReferences.get(windowId));
+      viewport = viewportFromAnnotationOverlayVideo(VideoViewersReferences.get(windowId).props);
+    }
     const {
       activeTool, fillColor, strokeColor, strokeWidth, svg,
     } = this.props;
     if (!activeTool || activeTool === 'cursor') return null;
-    // Setup Paper View to have the same center and zoom as the OSD Viewport
-    const viewportZoom = this.OSDReference.viewport.getZoom(true);
-    const image1 = this.OSDReference.world.getItemAt(0);
-    const center = image1.viewportToImageCoordinates(
-      this.OSDReference.viewport.getCenter(true),
-    );
-    const flipped = this.OSDReference.viewport.getFlip();
+    // Setup Paper View to have the same center and zoom as the OSD Viewport/video canvas
+    const center = img
+      ? img.viewportToImageCoordinates(viewport.getCenter(true))
+      : viewport.getCenter();
+    const flipped = viewport.getFlip();
 
     const viewProps = {
       center: new Point(center.x, center.y),
-      rotation: this.OSDReference.viewport.getRotation(),
+      rotation: viewport.getRotation(),
       scaling: new Point(flipped ? -1 : 1, 1),
-      zoom: image1.viewportToImageZoom(viewportZoom),
+      zoom: img ? img.viewportToImageZoom(viewport.getZoom()) : viewport.getZoom(),
     };
 
     let ActiveTool = RectangleTool;
@@ -141,9 +156,12 @@ class AnnotationDrawing extends Component {
   /** */
   render() {
     const { windowId } = this.props;
-    this.OSDReference = OSDReferences.get(windowId).current;
+    const container = OSDReferences.get(windowId)
+      ? OSDReferences.get(windowId).current.element
+      : VideoViewersReferences.get(windowId).apiRef.current;
+
     return (
-      ReactDOM.createPortal(this.paperThing(), this.OSDReference.element)
+      ReactDOM.createPortal(this.paperThing(), container)
     );
   }
 }
