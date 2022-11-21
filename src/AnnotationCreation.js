@@ -86,6 +86,7 @@ class AnnotationCreation extends Component {
     super(props);
     const annoState = {};
     annoState.image = false;
+    console.log('edition/creation annotation: ', props.annotation);
 
     if (props.annotation) {
       //
@@ -97,14 +98,14 @@ class AnnotationCreation extends Component {
             annoState.tags.push(body.value);
           } else if (body.type === 'TextualBody') {
             annoState.textBody = body.value;
-          } else if (body.type === 'imgBody') {
+          } else if (body.type === 'Image') {
             annoState.textBody = body.value;
             annoState.image = body.image;
           }
         });
       } else if (props.annotation.body.type === 'TextualBody') {
         annoState.textBody = props.annotation.body.value;
-      } else if (props.annotation.body.type === 'imgBody') {
+      } else if (props.annotation.body.type === 'Image') {
         annoState.textBody = props.annotation.body.value;
         annoState.image = props.annotation.body.image;
       }
@@ -142,7 +143,6 @@ class AnnotationCreation extends Component {
     };
     this.state = {
       ...toolState,
-      annoBody: '',
       textBody: '',
       activeTool: 'cursor',
       closedMode: 'closed',
@@ -474,7 +474,7 @@ class AnnotationCreation extends Component {
     });
 
     this.setState({
-      annoBody: '',
+      textBody: '',
       svg: null,
       textEditorStateBustingKey: textEditorStateBustingKey + 1,
       xywh: null,
@@ -744,11 +744,7 @@ class AnnotationCreation extends Component {
             </Grid>
             <Grid item xs={12}>
               <TextEditor
-                  key={textEditorStateBustingKey}
-                  annoHtml={annoBody}
-                  updateAnnotationBody={this.updateBody}
-              />
-              <TextEditor
+                key={textEditorStateBustingKey}
                 annoHtml={textBody}
                 updateAnnotationBody={this.updateTextBody}
               />

@@ -26,7 +26,7 @@ export default class WebAnnotation {
     return {
       body: this.createBody(),
       id: this.id,
-      motivation: 'commenting',
+      motivation: 'supplementing',
       target: this.target(),
       type: 'Annotation',
     };
@@ -36,17 +36,21 @@ export default class WebAnnotation {
   createBody() {
     let bodies = [];
 
-    if (this.body) {
-      const annoBody = {
+    if (this.body && this.body.value != '') {
+      const textBody = {
         type: 'TextualBody',
         value: this.body.value,
       };
+      bodies.push(textBody);
+    }
 
-      if (this.image) {
-        annoBody.type = 'ImageBody';
-        Object.assign(annoBody, this.image);
-      }
-      bodies.push(annoBody);
+    if (this.image) {
+      const imgBody = {
+        type: 'Image',
+        id: this.image.url,
+        format: 'image/jpg',
+      };
+      bodies.push(imgBody);
     }
 
     if (this.tags) {
