@@ -95,21 +95,28 @@ class AnnotationCreation extends Component {
       //
       // start/end time
     }
-    this.state = {
+
+    const toolState = {
       activeTool: 'cursor',
-      annoBody: '',
       closedMode: 'closed',
-      colorPopoverOpen: false,
       currentColorType: false,
       fillColor: null,
+      strokeColor: '#00BFFF',
+      strokeWidth: 3,
+      ...(props.config.annotation.defaults || {}),
+    };
+
+    this.state = {
+      ...toolState,
+      annoBody: '',
+      colorPopoverOpen: false,
       lineWeightPopoverOpen: false,
       popoverAnchorEl: null,
       popoverLineWeightAnchorEl: null,
-      strokeColor: '#00BFFF',
-      strokeWidth: 1,
       svg: null,
       tend: '',
       tstart: '',
+      textEditorStateBustingKey: 0,
       xywh: null,
       ...annoState,
     };
@@ -184,10 +191,10 @@ class AnnotationCreation extends Component {
   submitForm(e) {
     e.preventDefault();
     const {
-      annotation, canvases, closeCompanionWindow, receiveAnnotation, config,
+      annotation, canvases, receiveAnnotation, config,
     } = this.props;
     const {
-      annoBody, tags, xywh, svg, tstart, tend,
+      annoBody, tags, xywh, svg, tstart, tend, textEditorStateBustingKey,
     } = this.state;
     let fsel = xywh;
     if (tstart && tend) {
@@ -214,10 +221,13 @@ class AnnotationCreation extends Component {
         });
       }
     });
+
     this.setState({
-      activeTool: null,
+      annoBody: '',
+      svg: null,
+      textEditorStateBustingKey: textEditorStateBustingKey + 1,
+      xywh: null,
     });
-    closeCompanionWindow();
   }
 
   /** */
@@ -261,7 +271,7 @@ class AnnotationCreation extends Component {
     const {
       activeTool, colorPopoverOpen, currentColorType, fillColor, popoverAnchorEl, strokeColor,
       popoverLineWeightAnchorEl, lineWeightPopoverOpen, strokeWidth, closedMode, annoBody, svg,
-      tstart, tend,
+      tstart, tend, textEditorStateBustingKey,
     } = this.state;
 
     return (
@@ -280,7 +290,7 @@ class AnnotationCreation extends Component {
           updateGeometry={this.updateGeometry}
           windowId={windowId}
         />
-        <form onSubmit={this.submitForm}>
+        <form onSubmit={this.submitForm} className={classes.section}>
           <Grid container>
             <Grid item xs={12}>
               <Typography variant="overline">
@@ -405,6 +415,7 @@ class AnnotationCreation extends Component {
             </Grid>
             <Grid item xs={12}>
               <TextEditor
+                key={textEditorStateBustingKey}
                 annoHtml={annoBody}
                 updateAnnotationBody={this.updateBody}
               />
@@ -423,12 +434,15 @@ class AnnotationCreation extends Component {
         >
           <Paper>
             <ClickAwayListener onClickAway={this.handleCloseLineWeight}>
-              <MenuList>
+              <MenuList autoFocus role="listbox">
                 {[1, 3, 5, 10, 50].map((option, index) => (
                   <MenuItem
                     key={option}
                     onClick={this.handleLineWeightSelect}
                     value={option}
+                    selected={option == strokeWidth}
+                    role="option"
+                    aria-selected={option == strokeWidth}
                   >
                     {option}
                   </MenuItem>
@@ -472,6 +486,12 @@ const styles = (theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
   },
+  section: {
+    paddingBottom: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+    paddingTop: theme.spacing(2),
+  },
 });
 
 AnnotationCreation.propTypes = {
@@ -485,6 +505,11 @@ AnnotationCreation.propTypes = {
   config: PropTypes.shape({
     annotation: PropTypes.shape({
       adapter: PropTypes.func,
+      defaults: PropTypes.objectOf(
+        PropTypes.oneOfType(
+          [PropTypes.bool, PropTypes.func, PropTypes.number, PropTypes.string]
+        )
+      ),
     }),
   }).isRequired,
   id: PropTypes.string.isRequired,
