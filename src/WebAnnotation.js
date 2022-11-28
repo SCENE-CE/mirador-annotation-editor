@@ -36,7 +36,7 @@ export default class WebAnnotation {
   createBody() {
     let bodies = [];
 
-    if (this.body && this.body.value != '') {
+    if (this.body && this.body.value !== '') {
       const textBody = {
         type: 'TextualBody',
         value: this.body.value,
@@ -46,9 +46,9 @@ export default class WebAnnotation {
 
     if (this.image) {
       const imgBody = {
-        type: 'Image',
-        id: this.image.url,
         format: 'image/jpg',
+        id: this.image.url,
+        type: 'Image',
       };
       bodies.push(imgBody);
     }
