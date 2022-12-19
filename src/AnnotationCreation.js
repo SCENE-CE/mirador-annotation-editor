@@ -114,8 +114,8 @@ class AnnotationCreation extends Component {
       popoverAnchorEl: null,
       popoverLineWeightAnchorEl: null,
       svg: null,
-      tend: '',
-      tstart: '',
+      tend: Math.floor(props.currentTime) + 10,
+      tstart: Math.floor(props.currentTime),
       textEditorStateBustingKey: 0,
       xywh: null,
       ...annoState,
@@ -125,6 +125,10 @@ class AnnotationCreation extends Component {
     this.updateBody = this.updateBody.bind(this);
     this.updateTstart = this.updateTstart.bind(this);
     this.updateTend = this.updateTend.bind(this);
+    this.setTstartNow = this.setTstartNow.bind(this);
+    this.setTendNow = this.setTendNow.bind(this);
+    this.seekToTstart = this.seekToTstart.bind(this);
+    this.seekToTend = this.seekToTend.bind(this);
     this.updateGeometry = this.updateGeometry.bind(this);
     this.changeTool = this.changeTool.bind(this);
     this.changeClosedMode = this.changeClosedMode.bind(this);
@@ -227,6 +231,8 @@ class AnnotationCreation extends Component {
       svg: null,
       textEditorStateBustingKey: textEditorStateBustingKey + 1,
       xywh: null,
+      tsart: null,
+      tend: null
     });
   }
 
@@ -254,6 +260,19 @@ class AnnotationCreation extends Component {
 
   /** update annotation end time */
   updateTend(ev) { this.setState({ tend: ev.target.value }); }
+
+  /** set annotation start time to current time */
+  setTstartNow() { this.setState({ tstart: Math.floor(this.currentTime) }); }
+
+  /** set annotation end time to current time */
+  setTendNow() { this.setState({ tend: Math.floor(this.props.currentTime) }); }
+
+  /** seekTo annotation start time */
+  seekToTstart() { this.props.setSeekTo(this.state.tstart); }
+
+  /** seekTo annotation end time */
+  seekToTend() { this.props.setSeekTo(this.state.tend); }
+
 
   /** */
   updateGeometry({ svg, xywh }) {
@@ -406,7 +425,11 @@ class AnnotationCreation extends Component {
             </Grid>
             <Grid item xs={12}>
               <input name="tstart" type="number" step="1" value={tstart} onChange={this.updateTstart} />
+              <Button onClick={this.setTstartNow}>now</Button>
+              <Button onClick={this.seekToTstart}>seek</Button>
               <input name="tend" type="number" step="1" value={tend} onChange={this.updateTend} />
+              <Button onClick={this.setTendNow}>now</Button>
+              <Button onClick={this.seekToTend}>seek</Button>
             </Grid>
             <Grid item xs={12}>
               <Typography variant="overline">
@@ -495,6 +518,7 @@ const styles = (theme) => ({
 });
 
 AnnotationCreation.propTypes = {
+  currentTime: PropTypes.number,
   // TODO proper web annotation type ?
   annotation: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   canvases: PropTypes.arrayOf(
@@ -515,6 +539,7 @@ AnnotationCreation.propTypes = {
   id: PropTypes.string.isRequired,
   receiveAnnotation: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
+  setSeekTo: PropTypes.func.isRequired,
 };
 
 AnnotationCreation.defaultProps = {

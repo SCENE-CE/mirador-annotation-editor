@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import ResizeObserver from 'react-resize-observer';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
-import { VideoViewersReferences } from 'mirador/dist/es/src/plugins/VideoViewersReferences';
-import { renderWithPaperScope, PaperContainer } from '@psychobolt/react-paperjs';
+import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
+import { renderWithPaperScope, PaperContainer, Size } from '@psychobolt/react-paperjs';
 import
 {
   EllipseTool,
@@ -17,23 +18,16 @@ import flatten from 'lodash/flatten';
 import EditTool from './EditTool';
 import { mapChildren } from './utils';
 
-/** Use a canvas "like a OSD viewport" (temporary) */
-function viewportFromAnnotationOverlayVideo(annotationOverlayVideo) {
-  const { canvas } = annotationOverlayVideo;
-  return {
-    getCenter: () => ({ x: canvas.getWidth() / 2, y: canvas.getHeight() / 2 }),
-    getFlip: () => false,
-    getRotation: () => false,
-    getZoom: () => 1,
-  };
-}
-
 /** */
 class AnnotationDrawing extends Component {
   /** */
   constructor(props) {
     super(props);
 
+    this.paper = null;
+    this.getViewProps = this.getViewProps.bind(this);
+    this.onPaperResize = this.onPaperResize.bind(this);
+    this.paperDidMount = this.paperDidMount.bind(this);
     this.addPath = this.addPath.bind(this);
   }
 
@@ -65,36 +59,76 @@ class AnnotationDrawing extends Component {
     });
   }
 
-  /** */
-  paperThing() {
+  onPaperResize(ev) {
+    if (this.paper) {
+      console.debug('size: ', this.paper.view.viewSize);
+      console.debug('el: ', this.paper.view.element);
+      const { canvasOverlay } = VideosReferences.get(this.props.windowId);
+      const height = canvasOverlay.ref.current.height;
+      const width = canvasOverlay.ref.current.width;
+      this.paper.view.viewSize = new this.paper.Size(width, height);
+      this.paper.view.zoom = canvasOverlay.scale;
+      console.debug('new scale: ', canvasOverlay.scale);
+    }
+  }
+
+  getViewport() {
+    const { canvasOverlay } = VideosReferences.get(this.props.windowId);
+    const height = canvasOverlay.ref.current.height;
+    const width = canvasOverlay.ref.current.width;
+    return {
+      getCenter: () => ({ x: width / 2, y: height / 2 }),
+      getFlip: () => false,
+      getRotation: () => false,
+      getZoom: () => canvasOverlay.scale,
+    };
+  }
+
+  getViewProps() {
     const { windowId } = this.props;
     let viewport = null;
     let img = null;
     if (OSDReferences.get(windowId)) {
-      console.debug('[annotation-plugin] OSD reference: ', OSDReferences.get(windowId));
       viewport = OSDReferences.get(windowId).current.viewport;
       img = OSDReferences.get(windowId).current.world.getItemAt(0);
-    } else if (VideoViewersReferences.get(windowId)) {
-      console.debug('[annotation-plugin] VideoViewers reference: ', VideoViewersReferences.get(windowId));
-      viewport = viewportFromAnnotationOverlayVideo(VideoViewersReferences.get(windowId).props);
+    } else if (VideosReferences.get(windowId)) {
+      viewport = this.getViewport();
     }
-    const {
-      activeTool, fillColor, strokeColor, strokeWidth, svg,
-    } = this.props;
-    if (!activeTool || activeTool === 'cursor') return null;
     // Setup Paper View to have the same center and zoom as the OSD Viewport/video canvas
     const center = img
       ? img.viewportToImageCoordinates(viewport.getCenter(true))
       : viewport.getCenter();
     const flipped = viewport.getFlip();
 
-    const viewProps = {
+    return {
       center: new Point(center.x, center.y),
       rotation: viewport.getRotation(),
       scaling: new Point(flipped ? -1 : 1, 1),
       zoom: img ? img.viewportToImageZoom(viewport.getZoom()) : viewport.getZoom(),
     };
+  }
 
+  componentDidMount() {
+    console.debug('componentDidMount');
+    this.onPaperResize();
+  }
+
+  componentDidUpdate() {
+    console.debug('componentDidUpdate');
+    this.onPaperResize();
+  }
+
+  paperDidMount(paper) {
+    console.debug('paper mounted: ', paper);
+    this.paper = paper;
+  }
+
+  /** */
+  paperThing() {
+    const {
+      activeTool, fillColor, strokeColor, strokeWidth, svg,
+    } = this.props;
+    if (!activeTool || activeTool === 'cursor') return null;
     let ActiveTool = RectangleTool;
     switch (activeTool) {
       case 'rectangle':
@@ -116,39 +150,46 @@ class AnnotationDrawing extends Component {
         break;
     }
 
+    const { canvasOverlay } = VideosReferences.get(this.props.windowId);
+    const height = canvasOverlay.ref.current.height;
+    const width = canvasOverlay.ref.current.width;
+
+      // canvasProps={{ style: { left: 0, position: 'absolute', top: 0}, height: height, width: width, resize: 'true' }}
     return (
       <div
-        className="foo"
-        style={{
-          height: '100%', left: 0, position: 'absolute', top: 0, width: '100%',
-        }}
+      className="foo"
+      style={{
+        height: '100%', left: 0, position: 'absolute', top: 0, width: '100%',
+      }}
       >
-        <PaperContainer
-          canvasProps={{ style: { height: '100%', width: '100%' } }}
-          viewProps={viewProps}
-        >
-          {renderWithPaperScope((paper) => {
-            const paths = flatten(paper.project.layers.map((layer) => (
-              flatten(mapChildren(layer)).map((aPath) => aPath)
-            )));
-            if (svg && paths.length === 0) {
-              paper.project.importSVG(svg);
-            }
-            paper.settings.handleSize = 10; // eslint-disable-line no-param-reassign
-            paper.settings.hitTolerance = 10; // eslint-disable-line no-param-reassign
-            return (
-              <ActiveTool
-                onPathAdd={this.addPath}
-                pathProps={{
-                  fillColor,
-                  strokeColor,
-                  strokeWidth: strokeWidth / paper.view.zoom,
-                }}
-                paper={paper}
-              />
-            );
-          })}
-        </PaperContainer>
+      <PaperContainer
+      canvasProps={{ style: { position: 'absolute', left: 0, top: 0 }, height, width }}
+      viewProps={this.getViewProps}
+      onMount={this.paperDidMount}
+      >
+      {renderWithPaperScope((paper) => {
+        const paths = flatten(paper.project.layers.map((layer) => (
+          flatten(mapChildren(layer)).map((aPath) => aPath)
+        )));
+        if (svg && paths.length === 0) {
+          paper.project.importSVG(svg);
+        }
+        paper.settings.handleSize = 10; // eslint-disable-line no-param-reassign
+        paper.settings.hitTolerance = 10; // eslint-disable-line no-param-reassign
+        return (
+          <ActiveTool
+          onPathAdd={this.addPath}
+          pathProps={{
+            fillColor,
+              strokeColor,
+              strokeWidth: strokeWidth / paper.view.zoom,
+          }}
+          paper={paper}
+          />
+        );
+      })}
+      </PaperContainer>
+      <ResizeObserver onResize={this.onPaperResize} />
       </div>
     );
   }
@@ -156,10 +197,10 @@ class AnnotationDrawing extends Component {
   /** */
   render() {
     const { windowId } = this.props;
+    console.log('[render] videoref : ', VideosReferences.get(windowId));
     const container = OSDReferences.get(windowId)
       ? OSDReferences.get(windowId).current.element
-      : VideoViewersReferences.get(windowId).apiRef.current;
-
+      : VideosReferences.get(windowId).ref.current.parentElement;
     return (
       ReactDOM.createPortal(this.paperThing(), container)
     );
