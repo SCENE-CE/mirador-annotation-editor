@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
+import {
+  IconButton, Button, Paper, Grid, Popover, Divider,
+  MenuList, MenuItem, ClickAwayListener,
+} from '@material-ui/core';
+import { Alarm, LastPage } from '@material-ui/icons';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import RectangleIcon from '@material-ui/icons/CheckBoxOutlineBlank';
@@ -17,19 +19,18 @@ import StrokeColorIcon from '@material-ui/icons/BorderColor';
 import LineWeightIcon from '@material-ui/icons/LineWeight';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import FormatShapesIcon from '@material-ui/icons/FormatShapes';
-import Popover from '@material-ui/core/Popover';
-import Divider from '@material-ui/core/Divider';
-import MenuItem from '@material-ui/core/MenuItem';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import MenuList from '@material-ui/core/MenuList';
 import { SketchPicker } from 'react-color';
 import { v4 as uuid } from 'uuid';
 import { withStyles } from '@material-ui/core/styles';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
+import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
+import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import AnnotationDrawing from './AnnotationDrawing';
 import TextEditor from './TextEditor';
 import WebAnnotation from './WebAnnotation';
 import CursorIcon from './icons/Cursor';
+import HMSInput from './HMSInput';
+import { secondsToHMS } from './utils';
 
 /** Extract time information from annotation target */
 function timeFromAnnoTarget(annotarget) {
@@ -57,6 +58,7 @@ class AnnotationCreation extends Component {
   /** */
   constructor(props) {
     super(props);
+
     const annoState = {};
     if (props.annotation) {
       //
@@ -114,9 +116,9 @@ class AnnotationCreation extends Component {
       popoverAnchorEl: null,
       popoverLineWeightAnchorEl: null,
       svg: null,
-      tend: '',
-      tstart: '',
+      tend: Math.floor(props.currentTime) + 10,
       textEditorStateBustingKey: 0,
+      tstart: Math.floor(props.currentTime),
       xywh: null,
       ...annoState,
     };
@@ -125,6 +127,10 @@ class AnnotationCreation extends Component {
     this.updateBody = this.updateBody.bind(this);
     this.updateTstart = this.updateTstart.bind(this);
     this.updateTend = this.updateTend.bind(this);
+    this.setTstartNow = this.setTstartNow.bind(this);
+    this.setTendNow = this.setTendNow.bind(this);
+    this.seekToTstart = this.seekToTstart.bind(this);
+    this.seekToTend = this.seekToTend.bind(this);
     this.updateGeometry = this.updateGeometry.bind(this);
     this.changeTool = this.changeTool.bind(this);
     this.changeClosedMode = this.changeClosedMode.bind(this);
@@ -151,6 +157,40 @@ class AnnotationCreation extends Component {
       popoverLineWeightAnchorEl: null,
       strokeWidth: e.currentTarget.value,
     });
+  }
+
+  /** set annotation start time to current time */
+  setTstartNow() { this.setState({ tstart: Math.floor(this.props.currentTime) }); }
+
+  /** set annotation end time to current time */
+  setTendNow() { this.setState({ tend: Math.floor(this.props.currentTime) }); }
+
+  /** update annotation start time */
+  updateTstart(value) { this.setState({ tstart: value }); }
+
+  /** update annotation end time */
+  updateTend(value) { this.setState({ tend: value }); }
+
+  /** seekTo/goto annotation start time */
+  seekToTstart() {
+    const { paused, setCurrentTime, setSeekTo } = this.props;
+    const { tstart } = this.state;
+    if (!paused) {
+      this.setState(setSeekTo(tstart));
+    } else {
+      this.setState(setCurrentTime(tstart));
+    }
+  }
+
+  /** seekTo/goto annotation end time */
+  seekToTend() {
+    const { paused, setCurrentTime, setSeekTo } = this.props;
+    const { tend } = this.state;
+    if (!paused) {
+      this.setState(setSeekTo(tend));
+    } else {
+      this.setState(setCurrentTime(tend));
+    }
   }
 
   /** */
@@ -200,7 +240,7 @@ class AnnotationCreation extends Component {
     canvases.forEach((canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
       const anno = new WebAnnotation({
-        body: annoBody,
+        body: !annoBody.length ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : annoBody,
         canvasId: canvas.id,
         id: (annotation && annotation.id) || `${uuid()}`,
         manifestId: canvas.options.resource.id,
@@ -223,7 +263,9 @@ class AnnotationCreation extends Component {
     this.setState({
       annoBody: '',
       svg: null,
+      tend: '',
       textEditorStateBustingKey: textEditorStateBustingKey + 1,
+      tstart: '',
       xywh: null,
     });
   }
@@ -247,12 +289,6 @@ class AnnotationCreation extends Component {
     this.setState({ annoBody });
   }
 
-  /** update annotation start time */
-  updateTstart(ev) { this.setState({ tstart: ev.target.value }); }
-
-  /** update annotation end time */
-  updateTend(ev) { this.setState({ tend: ev.target.value }); }
-
   /** */
   updateGeometry({ svg, xywh }) {
     this.setState({
@@ -272,6 +308,8 @@ class AnnotationCreation extends Component {
       tstart, tend, textEditorStateBustingKey,
     } = this.state;
 
+    const mediaIsVideo = typeof VideosReferences.get(windowId) !== 'undefined';
+
     return (
       <CompanionWindow
         title={annotation ? 'Edit annotation' : 'New annotation'}
@@ -287,6 +325,7 @@ class AnnotationCreation extends Component {
           svg={svg}
           updateGeometry={this.updateGeometry}
           windowId={windowId}
+          player={mediaIsVideo ? VideosReferences.get(windowId) : OSDReferences.get(windowId)}
         />
         <form onSubmit={this.submitForm} className={classes.section}>
           <Grid container>
@@ -397,15 +436,33 @@ class AnnotationCreation extends Component {
             </Grid>
           </Grid>
           <Grid container>
-            <Grid item xs={12}>
-              <Typography variant="overline">
-                Duration
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <input name="tstart" type="number" step="1" value={tstart} onChange={this.updateTstart} />
-              <input name="tend" type="number" step="1" value={tend} onChange={this.updateTend} />
-            </Grid>
+            { mediaIsVideo && (
+            <>
+              <Grid item xs={12} onClick={this.seekToTstart}>
+                <IconButton size="small"><LastPage /></IconButton>
+                <Typography variant="overline">
+                  Start
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12} className={classes.paper}>
+                <IconButton onClick={this.setTstartNow}><Alarm /></IconButton>
+                <HMSInput seconds={tstart} onChange={this.updateTstart} />
+              </Grid>
+
+              <Grid item xs={12} onClick={this.seekToTend}>
+                <Typography variant="overline">
+                  <IconButton size="small"><LastPage /></IconButton>
+                  End
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12} className={classes.paper}>
+                <IconButton onClick={this.setTendNow}><Alarm /></IconButton>
+                <HMSInput seconds={tend} onChange={this.updateTend} />
+              </Grid>
+            </>
+            )}
             <Grid item xs={12}>
               <Typography variant="overline">
                 Content
@@ -505,13 +562,17 @@ AnnotationCreation.propTypes = {
       adapter: PropTypes.func,
       defaults: PropTypes.objectOf(
         PropTypes.oneOfType(
-          [PropTypes.bool, PropTypes.func, PropTypes.number, PropTypes.string]
-        )
+          [PropTypes.bool, PropTypes.func, PropTypes.number, PropTypes.string],
+        ),
       ),
     }),
   }).isRequired,
+  currentTime: PropTypes.number,
   id: PropTypes.string.isRequired,
+  paused: PropTypes.bool,
   receiveAnnotation: PropTypes.func.isRequired,
+  setCurrentTime: PropTypes.func,
+  setSeekTo: PropTypes.func,
   windowId: PropTypes.string.isRequired,
 };
 
@@ -519,6 +580,10 @@ AnnotationCreation.defaultProps = {
   annotation: null,
   canvases: [],
   closeCompanionWindow: () => {},
+  currentTime: 0,
+  paused: true,
+  setCurrentTime: () => {},
+  setSeekTo: () => {},
 };
 
 export default withStyles(styles)(AnnotationCreation);

@@ -1,5 +1,6 @@
 import * as actions from 'mirador/dist/es/src/state/actions';
 import { getCompanionWindow } from 'mirador/dist/es/src/state/selectors/companionWindows';
+import { getWindowCurrentTime, getWindowPausedStatus } from 'mirador/dist/es/src/state/selectors/window';
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
 import AnnotationCreation from '../AnnotationCreation';
 
@@ -11,11 +12,15 @@ const mapDispatchToProps = (dispatch, { id, windowId }) => ({
   receiveAnnotation: (targetId, annoId, annotation) => dispatch(
     actions.receiveAnnotation(targetId, annoId, annotation),
   ),
+  setCurrentTime: (...args) => dispatch(actions.setWindowCurrentTime(windowId, ...args)),
+  setSeekTo: (...args) => dispatch(actions.setWindowSeekTo(windowId, ...args)),
 });
 
 /** */
 function mapStateToProps(state, { id: companionWindowId, windowId }) {
-  const { annotationid } = getCompanionWindow(state, { companionWindowId, windowId });
+  const currentTime = getWindowCurrentTime(state, { windowId });
+  const cw = getCompanionWindow(state, { companionWindowId, windowId });
+  const { annotationid } = cw;
   const canvases = getVisibleCanvases(state, { windowId });
 
   let annotation = null;
@@ -33,6 +38,8 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
     annotation,
     canvases,
     config: state.config,
+    currentTime,
+    paused: getWindowPausedStatus(state, { windowId }),
   };
 }
 
