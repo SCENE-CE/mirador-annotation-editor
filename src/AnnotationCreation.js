@@ -33,8 +33,9 @@ import CursorIcon from './icons/Cursor';
 
 /** Extract time information from annotation target */
 function timeFromAnnoTarget(annotarget) {
+  console.info('TODO proper time extraction from: ', annotarget);
   // TODO w3c media fragments: t=,10 t=5,
-  const r = /t=([0-9]+),([0-9]+)/.exec(annotarget);
+  const r = /t=([0-9.]+),([0-9.]+)/.exec(annotarget);
   if (!r || r.length !== 3) {
     return ['', ''];
   }
@@ -43,13 +44,12 @@ function timeFromAnnoTarget(annotarget) {
 
 /** Extract xywh from annotation target */
 function geomFromAnnoTarget(annotarget) {
-  console.warn('TODO proper extraction');
+  console.info('TODO proper xywh extraction from: ', annotarget);
   const r = /xywh=((-?[0-9]+,?)+)/.exec(annotarget);
-  console.info('extracted from ', annotarget, r);
   if (!r || r.length !== 3) {
-    return ['', ''];
+    return '';
   }
-  return [r[1], r[2]];
+  return r[1];
 }
 
 /** */
@@ -88,12 +88,12 @@ class AnnotationCreation extends Component {
           });
         } else {
           annoState.svg = props.annotation.target.selector.value;
-          // eslint-disable-next-line max-len
-          [annoState.tstart, annoState.tend] = timeFromAnnoTarget(props.annotation.target.selector.value);
+          // TODO does this happen ? when ? where are fragments selectors ?
         }
+      } else if (typeof props.annotation.target === 'string') {
+        annoState.xywh = geomFromAnnoTarget(props.annotation.target);
+        [annoState.tstart, annoState.tend] = timeFromAnnoTarget(props.annotation.target);
       }
-      //
-      // start/end time
     }
 
     const toolState = {
@@ -196,10 +196,7 @@ class AnnotationCreation extends Component {
     const {
       annoBody, tags, xywh, svg, tstart, tend, textEditorStateBustingKey,
     } = this.state;
-    let fsel = xywh;
-    if (tstart && tend) {
-      fsel = `${xywh || ''}&t=${tstart},${tend}`;
-    }
+    const timing = (tstart && tend) ? [tstart, tend] : null;
     canvases.forEach((canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
       const anno = new WebAnnotation({
@@ -209,7 +206,8 @@ class AnnotationCreation extends Component {
         manifestId: canvas.options.resource.id,
         svg,
         tags,
-        xywh: fsel,
+        timing,
+        xywh,
       }).toJson();
       if (annotation) {
         storageAdapter.update(anno).then((annoPage) => {

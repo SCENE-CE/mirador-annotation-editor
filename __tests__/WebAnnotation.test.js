@@ -8,6 +8,7 @@ function createSubject(args = {}) {
     id: 'id',
     svg: 'svg',
     tags: ['tags'],
+    timing: [1, 3],
     xywh: 'xywh',
     ...args,
   });
@@ -20,26 +21,31 @@ describe('WebAnnotation', () => {
       ['body', 'canvasId', 'id', 'svg', 'xywh'].forEach((prop) => {
         expect(subject[prop]).toBe(prop);
       });
+      expect(subject.timing).toStrictEqual([1, 3]);
     });
   });
   describe('target', () => {
-    it('with svg and xywh', () => {
+    it('with svg, xywh and timing', () => {
       expect(subject.target()).toEqual({
         selector: [
+          {
+            type: 'SvgSelector',
+            value: 'svg',
+          },
           {
             type: 'FragmentSelector',
             value: 'xywh=xywh',
           },
           {
-            type: 'SvgSelector',
-            value: 'svg',
+            type: 'FragmentSelector',
+            value: 't=1,3',
           },
         ],
         source: 'canvasId',
       });
     });
     it('with svg only', () => {
-      subject = createSubject({ xywh: null });
+      subject = createSubject({ timing: null, xywh: null });
       expect(subject.target()).toEqual({
         selector: {
           type: 'SvgSelector',
@@ -49,7 +55,7 @@ describe('WebAnnotation', () => {
       });
     });
     it('with xywh only', () => {
-      subject = createSubject({ svg: null });
+      subject = createSubject({ svg: null, timing: null });
       expect(subject.target()).toEqual({
         selector: {
           type: 'FragmentSelector',
@@ -58,8 +64,18 @@ describe('WebAnnotation', () => {
         source: 'canvasId',
       });
     });
-    it('with no xywh or svg', () => {
+    it('with timing only', () => {
       subject = createSubject({ svg: null, xywh: null });
+      expect(subject.target()).toEqual({
+        selector: {
+          type: 'FragmentSelector',
+          value: 't=1,3',
+        },
+        source: 'canvasId',
+      });
+    });
+    it('with no xywh, svg or timing', () => {
+      subject = createSubject({ svg: null, timing: null, xywh: null });
       expect(subject.target()).toBe('canvasId');
     });
   });
