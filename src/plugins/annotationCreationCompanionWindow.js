@@ -18,12 +18,13 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
   const { annotationid } = getCompanionWindow(state, { companionWindowId, windowId });
   const canvases = getVisibleCanvases(state, { windowId });
 
-  let annotation;
+  let annotation = null;
   canvases.forEach((canvas) => {
     const annotationsOnCanvas = state.annotations[canvas.id];
     Object.values(annotationsOnCanvas || {}).forEach((value, i) => {
       if (value.json && value.json.items) {
-        annotation = value.json.items.find((anno) => anno.id === annotationid);
+        const maybeAnnot = value.json.items.find((anno) => anno.id === annotationid);
+        if (maybeAnnot !== undefined) annotation = maybeAnnot;
       }
     });
   });
