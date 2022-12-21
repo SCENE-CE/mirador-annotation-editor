@@ -38,9 +38,9 @@ function timeFromAnnoTarget(annotarget) {
   // TODO w3c media fragments: t=,10 t=5,
   const r = /t=([0-9.]+),([0-9.]+)/.exec(annotarget);
   if (!r || r.length !== 3) {
-    return ['', ''];
+    return [0, 0];
   }
-  return [r[1], r[2]];
+  return [Number(r[1]), Number(r[2])];
 }
 
 /** Extract xywh from annotation target */
@@ -160,10 +160,16 @@ class AnnotationCreation extends Component {
   }
 
   /** set annotation start time to current time */
-  setTstartNow() { this.setState({ tstart: Math.floor(this.props.currentTime) }); }
+  setTstartNow() {
+    // eslint-disable-next-line react/destructuring-assignment
+    this.setState({ tstart: Math.floor(this.props.currentTime) });
+  }
 
   /** set annotation end time to current time */
-  setTendNow() { this.setState({ tend: Math.floor(this.props.currentTime) }); }
+  setTendNow() {
+    // eslint-disable-next-line react/destructuring-assignment
+    this.setState({ tend: Math.floor(this.props.currentTime) });
+  }
 
   /** update annotation start time */
   updateTstart(value) { this.setState({ tstart: value }); }
@@ -263,9 +269,9 @@ class AnnotationCreation extends Component {
     this.setState({
       annoBody: '',
       svg: null,
-      tend: '',
+      tend: 0,
       textEditorStateBustingKey: textEditorStateBustingKey + 1,
-      tstart: '',
+      tstart: 0,
       xywh: null,
     });
   }

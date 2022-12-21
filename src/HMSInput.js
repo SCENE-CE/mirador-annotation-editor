@@ -103,6 +103,7 @@ const styles = (theme) => ({
 });
 
 HMSInput.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
   classes: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   seconds: PropTypes.number.isRequired,
