@@ -2,12 +2,11 @@
 export default class WebAnnotation {
   /** */
   constructor({
-    canvasId, id, xywh, timing, body, tags, svg, manifestId,
+    canvasId, id, fragsel, body, tags, svg, manifestId,
   }) {
     this.id = id;
     this.canvasId = canvasId;
-    this.xywh = xywh;
-    this.timing = timing;
+    this.fragsel = fragsel;
     this.body = body;
     this.tags = tags;
     this.svg = svg;
@@ -49,30 +48,24 @@ export default class WebAnnotation {
 
   /** */
   target() {
-    if (!this.svg && !this.xywh && !this.timing) {
+    if (!this.svg && !this.fragsel) {
       return this.canvasId;
     }
+    const target = { source: this.source() };
     const selectors = [];
-    const target = {
-      source: this.source(),
-    };
     if (this.svg) {
       selectors.push({
         type: 'SvgSelector',
         value: this.svg,
       });
     }
-    if (this.xywh) {
+    if (this.fragsel) {
       selectors.push({
         type: 'FragmentSelector',
-        value: `xywh=${this.xywh}`,
-      });
-    }
-    if (this.timing) {
-      const [start, end] = this.timing;
-      selectors.push({
-        type: 'FragmentSelector',
-        value: `t=${start},${end}`,
+        value: Object.entries(this.fragsel)
+          .filter((kv) => kv[1])
+          .map((kv) => `${kv[0]}=${kv[1]}`)
+          .join('&'),
       });
     }
     target.selector = selectors.length === 1 ? selectors[0] : selectors;

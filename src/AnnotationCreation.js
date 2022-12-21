@@ -242,18 +242,16 @@ class AnnotationCreation extends Component {
     const {
       annoBody, tags, xywh, svg, tstart, tend, textEditorStateBustingKey,
     } = this.state;
-    const timing = (tstart && tend) ? [tstart, tend] : null;
     canvases.forEach((canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
       const anno = new WebAnnotation({
         body: !annoBody.length ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : annoBody,
         canvasId: canvas.id,
+        fragsel: { t: `${tstart},${tend}`, xywh },
         id: (annotation && annotation.id) || `${uuid()}`,
         manifestId: canvas.options.resource.id,
         svg,
         tags,
-        timing,
-        xywh,
       }).toJson();
       if (annotation) {
         storageAdapter.update(anno).then((annoPage) => {

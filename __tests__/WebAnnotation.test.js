@@ -5,11 +5,10 @@ function createSubject(args = {}) {
   return new WebAnnotation({
     body: 'body',
     canvasId: 'canvasId',
+    fragsel: { t: '5,10', xywh: 'xywh' },
     id: 'id',
     svg: 'svg',
     tags: ['tags'],
-    timing: [1, 3],
-    xywh: 'xywh',
     ...args,
   });
 }
@@ -18,14 +17,14 @@ describe('WebAnnotation', () => {
   let subject = createSubject();
   describe('constructor', () => {
     it('sets instance accessors', () => {
-      ['body', 'canvasId', 'id', 'svg', 'xywh'].forEach((prop) => {
+      ['body', 'canvasId', 'id', 'svg'].forEach((prop) => {
         expect(subject[prop]).toBe(prop);
       });
-      expect(subject.timing).toStrictEqual([1, 3]);
+      expect(subject.fragsel).toStrictEqual({ t: '5,10', xywh: 'xywh' });
     });
   });
   describe('target', () => {
-    it('with svg, xywh and timing', () => {
+    it('with svg and xywh', () => {
       expect(subject.target()).toEqual({
         selector: [
           {
@@ -34,18 +33,14 @@ describe('WebAnnotation', () => {
           },
           {
             type: 'FragmentSelector',
-            value: 'xywh=xywh',
-          },
-          {
-            type: 'FragmentSelector',
-            value: 't=1,3',
+            value: 't=5,10&xywh=xywh',
           },
         ],
         source: 'canvasId',
       });
     });
     it('with svg only', () => {
-      subject = createSubject({ timing: null, xywh: null });
+      subject = createSubject({ fragsel: null });
       expect(subject.target()).toEqual({
         selector: {
           type: 'SvgSelector',
@@ -54,8 +49,28 @@ describe('WebAnnotation', () => {
         source: 'canvasId',
       });
     });
+    it('with time interval only', () => {
+      subject = createSubject({ fragsel: { t: '5,10' }, svg: null });
+      expect(subject.target()).toEqual({
+        selector: {
+          type: 'FragmentSelector',
+          value: 't=5,10',
+        },
+        source: 'canvasId',
+      });
+    });
+    it('with time interval only - xywh present but null', () => {
+      subject = createSubject({ fragsel: { t: '5,10', xywh: null }, svg: null });
+      expect(subject.target()).toEqual({
+        selector: {
+          type: 'FragmentSelector',
+          value: 't=5,10',
+        },
+        source: 'canvasId',
+      });
+    });
     it('with xywh only', () => {
-      subject = createSubject({ svg: null, timing: null });
+      subject = createSubject({ fragsel: { xywh: 'xywh' }, svg: null });
       expect(subject.target()).toEqual({
         selector: {
           type: 'FragmentSelector',
@@ -64,18 +79,18 @@ describe('WebAnnotation', () => {
         source: 'canvasId',
       });
     });
-    it('with timing only', () => {
-      subject = createSubject({ svg: null, xywh: null });
+    it('with xywh only - time interval present but null', () => {
+      subject = createSubject({ fragsel: { t: null, xywh: 'xywh' }, svg: null });
       expect(subject.target()).toEqual({
         selector: {
           type: 'FragmentSelector',
-          value: 't=1,3',
+          value: 'xywh=xywh',
         },
         source: 'canvasId',
       });
     });
-    it('with no xywh, svg or timing', () => {
-      subject = createSubject({ svg: null, timing: null, xywh: null });
+    it('with no xywh or svg', () => {
+      subject = createSubject({ fragsel: null, svg: null });
       expect(subject.target()).toBe('canvasId');
     });
   });
