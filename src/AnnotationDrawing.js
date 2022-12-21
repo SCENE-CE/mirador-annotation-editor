@@ -45,11 +45,12 @@ class AnnotationDrawing extends Component {
   onPaperResize(ev) {
     const { windowId } = this.props;
     if (VideosReferences.get(windowId) && this.paper) {
-      const { canvasOverlay } = VideosReferences.get(windowId);
-      const { height } = canvasOverlay.ref.current;
-      const { width } = canvasOverlay.ref.current;
-      this.paper.view.viewSize = new this.paper.Size(width, height);
+      const { canvasOverlay, video } = VideosReferences.get(windowId);
+      const { height, width } = canvasOverlay.ref.current;
+      const { videoHeight, videoWidth } = video;
+      this.paper.view.center = new Point(videoWidth / 2, videoHeight / 2);
       this.paper.view.zoom = canvasOverlay.scale;
+      this.paper.view.viewSize = new this.paper.Size(width, height);
     }
   }
 
@@ -81,7 +82,14 @@ class AnnotationDrawing extends Component {
     if (videoref) {
       const { height, width } = videoref.canvasOverlay.ref.current;
       return {
-        canvasProps: { height, style: { left: 0, position: 'absolute', top: 0 }, width },
+        canvasProps: {
+          height,
+          resize: 'true',
+          style: {
+            left: 0, position: 'absolute', top: 0,
+          },
+          width,
+        },
         viewProps: {
           center: new Point(width / 2, height / 2),
           height,

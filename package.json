@@ -29,7 +29,8 @@
     "draft-js-import-html": "^1.4.1",
     "material-ui-color-components": "^0.3.0",
     "paper": "^0.12.11",
-    "react-color": "^2.18.1"
+    "react-color": "^2.18.1",
+    "react-resize-observer": "^1.1.1"
   },
   "peerDependencies": {
     "@material-ui/core": "^4.9.13",
