@@ -442,27 +442,35 @@ class AnnotationCreation extends Component {
           <Grid container>
             { mediaIsVideo && (
             <>
-              <Grid item xs={12} onClick={this.seekToTstart}>
-                <IconButton size="small"><LastPage /></IconButton>
+              <Grid item xs={12}>
+                <ToggleButton title="Go to start time" size="small" onClick={this.seekToTstart} className={classes.timecontrolsbutton}>
+                  <LastPage />
+                </ToggleButton>
                 <Typography variant="overline">
                   Start
                 </Typography>
               </Grid>
 
               <Grid item xs={12} className={classes.paper}>
-                <IconButton onClick={this.setTstartNow}><Alarm /></IconButton>
+                <ToggleButton title="Set current time" size="small" onClick={this.setTstartNow} className={classes.timecontrolsbutton}>
+                  <Alarm />
+                </ToggleButton>
                 <HMSInput seconds={tstart} onChange={this.updateTstart} />
               </Grid>
 
-              <Grid item xs={12} onClick={this.seekToTend}>
+              <Grid item xs={12}>
                 <Typography variant="overline">
-                  <IconButton size="small"><LastPage /></IconButton>
+                  <ToggleButton title="Go to start time" size="small" onClick={this.seekToTend} className={classes.timecontrolsbutton}>
+                    <LastPage />
+                  </ToggleButton>
                   End
                 </Typography>
               </Grid>
 
               <Grid item xs={12} className={classes.paper}>
-                <IconButton onClick={this.setTendNow}><Alarm /></IconButton>
+                <ToggleButton title="Set current time" size="small" onClick={this.setTendNow} className={classes.timecontrolsbutton}>
+                  <Alarm />
+                </ToggleButton>
                 <HMSInput seconds={tend} onChange={this.updateTend} />
               </Grid>
             </>
@@ -550,6 +558,13 @@ const styles = (theme) => ({
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),
     paddingTop: theme.spacing(2),
+  },
+  timecontrolsbutton: {
+    height: '30px',
+    margin: 'auto',
+    marginLeft: '0',
+    marginRight: '5px',
+    width: '30px',
   },
 });
 

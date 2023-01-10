@@ -2,6 +2,7 @@ import * as actions from 'mirador/dist/es/src/state/actions';
 import { getCompanionWindow } from 'mirador/dist/es/src/state/selectors/companionWindows';
 import { getWindowCurrentTime, getWindowPausedStatus } from 'mirador/dist/es/src/state/selectors/window';
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
+import { getPresentAnnotationsOnSelectedCanvases } from 'mirador/dist/es/src/state/selectors/annotations';
 import AnnotationCreation from '../AnnotationCreation';
 
 /** */
@@ -23,16 +24,9 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
   const { annotationid } = cw;
   const canvases = getVisibleCanvases(state, { windowId });
 
-  let annotation = null;
-  canvases.forEach((canvas) => {
-    const annotationsOnCanvas = state.annotations[canvas.id];
-    Object.values(annotationsOnCanvas || {}).forEach((value, i) => {
-      if (value.json && value.json.items) {
-        const maybeAnnot = value.json.items.find((anno) => anno.id === annotationid);
-        if (maybeAnnot !== undefined) annotation = maybeAnnot;
-      }
-    });
-  });
+  const annotation = getPresentAnnotationsOnSelectedCanvases(state, { windowId })
+    .flatMap((annoPage) => annoPage.json.items)
+    .find((annot) => annot.id === annotationid);
 
   return {
     annotation,
