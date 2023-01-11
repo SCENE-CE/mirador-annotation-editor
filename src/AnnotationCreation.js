@@ -443,7 +443,7 @@ class AnnotationCreation extends Component {
             { mediaIsVideo && (
             <>
               <Grid item xs={12}>
-                <ToggleButton title="Go to start time" size="small" onClick={this.seekToTstart} className={classes.timecontrolsbutton}>
+                <ToggleButton value="true" title="Go to start time" size="small" onClick={this.seekToTstart} className={classes.timecontrolsbutton}>
                   <LastPage />
                 </ToggleButton>
                 <Typography variant="overline">
@@ -452,7 +452,7 @@ class AnnotationCreation extends Component {
               </Grid>
 
               <Grid item xs={12} className={classes.paper}>
-                <ToggleButton title="Set current time" size="small" onClick={this.setTstartNow} className={classes.timecontrolsbutton}>
+                <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTstartNow} className={classes.timecontrolsbutton}>
                   <Alarm />
                 </ToggleButton>
                 <HMSInput seconds={tstart} onChange={this.updateTstart} />
@@ -460,7 +460,7 @@ class AnnotationCreation extends Component {
 
               <Grid item xs={12}>
                 <Typography variant="overline">
-                  <ToggleButton title="Go to start time" size="small" onClick={this.seekToTend} className={classes.timecontrolsbutton}>
+                  <ToggleButton value="true" title="Go to start time" size="small" onClick={this.seekToTend} className={classes.timecontrolsbutton}>
                     <LastPage />
                   </ToggleButton>
                   End
@@ -468,7 +468,7 @@ class AnnotationCreation extends Component {
               </Grid>
 
               <Grid item xs={12} className={classes.paper}>
-                <ToggleButton title="Set current time" size="small" onClick={this.setTendNow} className={classes.timecontrolsbutton}>
+                <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTendNow} className={classes.timecontrolsbutton}>
                   <Alarm />
                 </ToggleButton>
                 <HMSInput seconds={tend} onChange={this.updateTend} />
