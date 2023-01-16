@@ -60,10 +60,6 @@ class AnnotationDrawing extends Component {
     const osdref = OSDReferences.get(windowId);
     const videoref = VideosReferences.get(windowId);
 
-    if (osdref && videoref) {
-      console.error('Unhandled case: both OpenSeadragon (picture viewer) and video player on the same canvas');
-    }
-
     if (osdref) {
       const { viewport } = osdref.current;
       const img = osdref.current.world.getItemAt(0);
@@ -99,7 +95,7 @@ class AnnotationDrawing extends Component {
       };
     }
 
-    throw new Error('Unknown or missing data player, not OpenSeadragon (picture viewer) nor the video player');
+    throw new Error('Unknown or missing data player, not OpenSeadragon (image viewer) nor the video player');
   }
 
   /** Draw SVG on canvas */
@@ -208,6 +204,9 @@ class AnnotationDrawing extends Component {
     const videoref = VideosReferences.get(windowId);
     if (!osdref && !videoref) {
       throw new Error("Unknown or missing data player, didn't found OpenSeadragon (image viewer) nor the video player");
+    }
+    if (osdref && videoref) {
+      throw new Error('Unhandled case: both OpenSeadragon (image viewer) and video player on the same canvas');
     }
     const container = osdref
       ? osdref.current.element
