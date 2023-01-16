@@ -46,9 +46,10 @@ export default class WebAnnotation {
     return bodies;
   }
 
-  /** */
+  /** Fill target object with selectors (if any), else returns target url */
   target() {
-    if (!this.svg && !this.fragsel) {
+    if (!this.svg
+      && (!this.fragsel || !Object.values(this.fragsel).find((e) => e !== null))) {
       return this.canvasId;
     }
     const target = { source: this.source() };

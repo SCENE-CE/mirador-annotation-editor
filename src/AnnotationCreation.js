@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  IconButton, Button, Paper, Grid, Popover, Divider,
+  Button, Paper, Grid, Popover, Divider,
   MenuList, MenuItem, ClickAwayListener,
 } from '@material-ui/core';
 import { Alarm, LastPage } from '@material-ui/icons';
@@ -108,17 +108,20 @@ class AnnotationCreation extends Component {
       ...(props.config.annotation.defaults || {}),
     };
 
+    const timeState = props.currentTime !== null
+      ? { tend: Math.floor(props.currentTime) + 10, tstart: Math.floor(props.currentTime) }
+      : { tend: null, tstart: null };
+
     this.state = {
       ...toolState,
+      ...timeState,
       annoBody: '',
       colorPopoverOpen: false,
       lineWeightPopoverOpen: false,
       popoverAnchorEl: null,
       popoverLineWeightAnchorEl: null,
       svg: null,
-      tend: Math.floor(props.currentTime) + 10,
       textEditorStateBustingKey: 0,
-      tstart: Math.floor(props.currentTime),
       xywh: null,
       ...annoState,
     };
@@ -242,12 +245,13 @@ class AnnotationCreation extends Component {
     const {
       annoBody, tags, xywh, svg, tstart, tend, textEditorStateBustingKey,
     } = this.state;
+    const t = (tstart && tend) ? `${tstart},${tend}` : null;
     canvases.forEach((canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
       const anno = new WebAnnotation({
-        body: !annoBody.length ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : annoBody,
+        body: (!annoBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : annoBody,
         canvasId: canvas.id,
-        fragsel: { t: `${tstart},${tend}`, xywh },
+        fragsel: { t, xywh },
         id: (annotation && annotation.id) || `${uuid()}`,
         manifestId: canvas.options.resource.id,
         svg,
@@ -267,9 +271,9 @@ class AnnotationCreation extends Component {
     this.setState({
       annoBody: '',
       svg: null,
-      tend: 0,
+      tend: null,
       textEditorStateBustingKey: textEditorStateBustingKey + 1,
-      tstart: 0,
+      tstart: null,
       xywh: null,
     });
   }
@@ -586,7 +590,7 @@ AnnotationCreation.propTypes = {
       ),
     }),
   }).isRequired,
-  currentTime: PropTypes.number,
+  currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]),
   id: PropTypes.string.isRequired,
   paused: PropTypes.bool,
   receiveAnnotation: PropTypes.func.isRequired,
@@ -599,7 +603,7 @@ AnnotationCreation.defaultProps = {
   annotation: null,
   canvases: [],
   closeCompanionWindow: () => {},
-  currentTime: 0,
+  currentTime: null,
   paused: true,
   setCurrentTime: () => {},
   setSeekTo: () => {},

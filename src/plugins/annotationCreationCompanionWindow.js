@@ -25,7 +25,7 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
   const canvases = getVisibleCanvases(state, { windowId });
 
   const annotation = getPresentAnnotationsOnSelectedCanvases(state, { windowId })
-    .flatMap((annoPage) => annoPage.json.items)
+    .flatMap((annoPage) => annoPage.json.items || [])
     .find((annot) => annot.id === annotationid);
 
   return {
