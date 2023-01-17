@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import ResizeObserver from 'react-resize-observer';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
-import { VideoViewersReferences } from 'mirador/dist/es/src/plugins/VideoViewersReferences';
+import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { renderWithPaperScope, PaperContainer } from '@psychobolt/react-paperjs';
 import
 {
@@ -11,33 +12,93 @@ import
   RectangleTool,
   FreeformPathTool,
 }
-from '@psychobolt/react-paperjs-editor';
+  from '@psychobolt/react-paperjs-editor';
 import { Point } from 'paper';
 import flatten from 'lodash/flatten';
 import EditTool from './EditTool';
 import { mapChildren } from './utils';
 
-/** Use a canvas "like a OSD viewport" (temporary) */
-function viewportFromAnnotationOverlayVideo(annotationOverlayVideo) {
-  const { canvas } = annotationOverlayVideo;
-  return {
-    getCenter: () => ({ x: canvas.getWidth() / 2, y: canvas.getHeight() / 2 }),
-    getFlip: () => false,
-    getRotation: () => false,
-    getZoom: () => 1,
-  };
-}
-
-/** */
+/** Create a portal with a drawing canvas and a form to fill annotations details */
 class AnnotationDrawing extends Component {
   /** */
   constructor(props) {
     super(props);
 
+    this.paper = null;
+    this.getDisplayProps = this.getDisplayProps.bind(this);
+    this.onPaperResize = this.onPaperResize.bind(this);
+    this.paperDidMount = this.paperDidMount.bind(this);
     this.addPath = this.addPath.bind(this);
   }
 
-  /** */
+  /** Sync drawing canvas on componentDidMount */
+  componentDidMount() {
+    this.onPaperResize();
+  }
+
+  /** Sync drawing canvas on componentDidUpdate */
+  componentDidUpdate() {
+    this.onPaperResize();
+  }
+
+  /** Sync drawing canvas size/zoom with annotations canvas */
+  onPaperResize(ev) {
+    const { windowId } = this.props;
+    if (VideosReferences.get(windowId) && this.paper) {
+      const { canvasOverlay, video } = VideosReferences.get(windowId);
+      const { height, width } = canvasOverlay.ref.current;
+      const { videoHeight, videoWidth } = video;
+      this.paper.view.center = new Point(videoWidth / 2, videoHeight / 2);
+      this.paper.view.zoom = canvasOverlay.scale;
+      this.paper.view.viewSize = new this.paper.Size(width, height);
+    }
+  }
+
+  /** Build parameters to paperjs View and canvas */
+  getDisplayProps() {
+    const { windowId } = this.props;
+    const osdref = OSDReferences.get(windowId);
+    const videoref = VideosReferences.get(windowId);
+
+    if (osdref) {
+      const { viewport } = osdref.current;
+      const img = osdref.current.world.getItemAt(0);
+      const center = img.viewportToImageCoordinates(viewport.getCenter(true));
+      return {
+        canvasProps: { style: { height: '100%', width: '100%' } },
+        viewProps: {
+          center: new Point(center.x, center.y),
+          rotation: viewport.getRotation(),
+          scaling: new Point(viewport.getFlip() ? -1 : 1, 1),
+          zoom: img.viewportToImageZoom(viewport.getZoom()),
+        },
+      };
+    }
+
+    if (videoref) {
+      const { height, width } = videoref.canvasOverlay.ref.current;
+      return {
+        canvasProps: {
+          height,
+          resize: 'true',
+          style: {
+            left: 0, position: 'absolute', top: 0,
+          },
+          width,
+        },
+        viewProps: {
+          center: new Point(width / 2, height / 2),
+          height,
+          width,
+          zoom: videoref.canvasOverlay.scale,
+        },
+      };
+    }
+
+    throw new Error('Unknown or missing data player, not OpenSeadragon (image viewer) nor the video player');
+  }
+
+  /** Draw SVG on canvas */
   addPath(path) {
     const { closed, strokeWidth, updateGeometry } = this.props;
     // TODO: Compute xywh of bounding container of layers
@@ -65,36 +126,18 @@ class AnnotationDrawing extends Component {
     });
   }
 
+  /** Save paperjs ref once created */
+  paperDidMount(paper) {
+    this.paper = paper;
+  }
+
   /** */
   paperThing() {
-    const { windowId } = this.props;
-    let viewport = null;
-    let img = null;
-    if (OSDReferences.get(windowId)) {
-      console.debug('[annotation-plugin] OSD reference: ', OSDReferences.get(windowId));
-      viewport = OSDReferences.get(windowId).current.viewport;
-      img = OSDReferences.get(windowId).current.world.getItemAt(0);
-    } else if (VideoViewersReferences.get(windowId)) {
-      console.debug('[annotation-plugin] VideoViewers reference: ', VideoViewersReferences.get(windowId));
-      viewport = viewportFromAnnotationOverlayVideo(VideoViewersReferences.get(windowId).props);
-    }
+    const { viewProps, canvasProps } = this.getDisplayProps();
     const {
       activeTool, fillColor, strokeColor, strokeWidth, svg,
     } = this.props;
     if (!activeTool || activeTool === 'cursor') return null;
-    // Setup Paper View to have the same center and zoom as the OSD Viewport/video canvas
-    const center = img
-      ? img.viewportToImageCoordinates(viewport.getCenter(true))
-      : viewport.getCenter();
-    const flipped = viewport.getFlip();
-
-    const viewProps = {
-      center: new Point(center.x, center.y),
-      rotation: viewport.getRotation(),
-      scaling: new Point(flipped ? -1 : 1, 1),
-      zoom: img ? img.viewportToImageZoom(viewport.getZoom()) : viewport.getZoom(),
-    };
-
     let ActiveTool = RectangleTool;
     switch (activeTool) {
       case 'rectangle':
@@ -118,14 +161,14 @@ class AnnotationDrawing extends Component {
 
     return (
       <div
-        className="foo"
         style={{
           height: '100%', left: 0, position: 'absolute', top: 0, width: '100%',
         }}
       >
         <PaperContainer
-          canvasProps={{ style: { height: '100%', width: '100%' } }}
+          canvasProps={canvasProps}
           viewProps={viewProps}
+          onMount={this.paperDidMount}
         >
           {renderWithPaperScope((paper) => {
             const paths = flatten(paper.project.layers.map((layer) => (
@@ -149,6 +192,7 @@ class AnnotationDrawing extends Component {
             );
           })}
         </PaperContainer>
+        <ResizeObserver onResize={this.onPaperResize} />
       </div>
     );
   }
@@ -156,10 +200,17 @@ class AnnotationDrawing extends Component {
   /** */
   render() {
     const { windowId } = this.props;
-    const container = OSDReferences.get(windowId)
-      ? OSDReferences.get(windowId).current.element
-      : VideoViewersReferences.get(windowId).apiRef.current;
-
+    const osdref = OSDReferences.get(windowId);
+    const videoref = VideosReferences.get(windowId);
+    if (!osdref && !videoref) {
+      throw new Error("Unknown or missing data player, didn't found OpenSeadragon (image viewer) nor the video player");
+    }
+    if (osdref && videoref) {
+      throw new Error('Unhandled case: both OpenSeadragon (image viewer) and video player on the same canvas');
+    }
+    const container = osdref
+      ? osdref.current.element
+      : videoref.ref.current.parentElement;
     return (
       ReactDOM.createPortal(this.paperThing(), container)
     );

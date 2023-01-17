@@ -2,11 +2,11 @@
 export default class WebAnnotation {
   /** */
   constructor({
-    canvasId, id, xywh, body, tags, svg, manifestId,
+    canvasId, id, fragsel, body, tags, svg, manifestId,
   }) {
     this.id = id;
     this.canvasId = canvasId;
-    this.xywh = xywh;
+    this.fragsel = fragsel;
     this.body = body;
     this.tags = tags;
     this.svg = svg;
@@ -46,35 +46,30 @@ export default class WebAnnotation {
     return bodies;
   }
 
-  /** */
+  /** Fill target object with selectors (if any), else returns target url */
   target() {
-    let target = this.canvasId;
-    if (this.svg || this.xywh) {
-      target = {
-        source: this.source(),
-      };
+    if (!this.svg
+      && (!this.fragsel || !Object.values(this.fragsel).find((e) => e !== null))) {
+      return this.canvasId;
     }
+    const target = { source: this.source() };
+    const selectors = [];
     if (this.svg) {
-      target.selector = {
+      selectors.push({
         type: 'SvgSelector',
         value: this.svg,
-      };
+      });
     }
-    if (this.xywh) {
-      const fragsel = {
+    if (this.fragsel) {
+      selectors.push({
         type: 'FragmentSelector',
-        value: `xywh=${this.xywh}`,
-      };
-      if (target.selector) {
-        // add fragment selector
-        target.selector = [
-          fragsel,
-          target.selector,
-        ];
-      } else {
-        target.selector = fragsel;
-      }
+        value: Object.entries(this.fragsel)
+          .filter((kv) => kv[1])
+          .map((kv) => `${kv[0]}=${kv[1]}`)
+          .join('&'),
+      });
     }
+    target.selector = selectors.length === 1 ? selectors[0] : selectors;
     return target;
   }
 

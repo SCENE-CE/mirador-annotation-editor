@@ -11,7 +11,7 @@
     "umd"
   ],
   "scripts": {
-    "build": "nwb build-react-component --no-demo",
+    "build": "nwb build-react-component",
     "clean": "nwb clean-module",
     "lint": "eslint ./src ./__tests__",
     "prepublishOnly": "npm run build",
@@ -29,7 +29,8 @@
     "draft-js-import-html": "^1.4.1",
     "material-ui-color-components": "^0.3.0",
     "paper": "^0.12.11",
-    "react-color": "^2.18.1"
+    "react-color": "^2.18.1",
+    "react-resize-observer": "^1.1.1"
   },
   "peerDependencies": {
     "@material-ui/core": "^4.9.13",
@@ -44,21 +45,22 @@
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
+    "@babel/eslint-parser": "^7.19.1",
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
-    "babel-eslint": "^10.1.0",
     "canvas": "^2.6.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
-    "eslint": "^7.2",
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-plugin-flowtype": "^5.6.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jest": "^23.18.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint": "^8.11.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-react-app": "^7.0.0",
+    "eslint-plugin-flowtype": "^8.0.3",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^26.1.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.20.3",
     "jest": "^26.1.0",
     "jest-canvas-mock": "^2.2.0",

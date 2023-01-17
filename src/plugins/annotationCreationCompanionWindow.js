@@ -1,6 +1,8 @@
 import * as actions from 'mirador/dist/es/src/state/actions';
 import { getCompanionWindow } from 'mirador/dist/es/src/state/selectors/companionWindows';
+import { getWindowCurrentTime, getWindowPausedStatus } from 'mirador/dist/es/src/state/selectors/window';
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
+import { getPresentAnnotationsOnSelectedCanvases } from 'mirador/dist/es/src/state/selectors/annotations';
 import AnnotationCreation from '../AnnotationCreation';
 
 /** */
@@ -11,27 +13,27 @@ const mapDispatchToProps = (dispatch, { id, windowId }) => ({
   receiveAnnotation: (targetId, annoId, annotation) => dispatch(
     actions.receiveAnnotation(targetId, annoId, annotation),
   ),
+  setCurrentTime: (...args) => dispatch(actions.setWindowCurrentTime(windowId, ...args)),
+  setSeekTo: (...args) => dispatch(actions.setWindowSeekTo(windowId, ...args)),
 });
 
 /** */
 function mapStateToProps(state, { id: companionWindowId, windowId }) {
-  const { annotationid } = getCompanionWindow(state, { companionWindowId, windowId });
+  const currentTime = getWindowCurrentTime(state, { windowId });
+  const cw = getCompanionWindow(state, { companionWindowId, windowId });
+  const { annotationid } = cw;
   const canvases = getVisibleCanvases(state, { windowId });
 
-  let annotation;
-  canvases.forEach((canvas) => {
-    const annotationsOnCanvas = state.annotations[canvas.id];
-    Object.values(annotationsOnCanvas || {}).forEach((value, i) => {
-      if (value.json && value.json.items) {
-        annotation = value.json.items.find((anno) => anno.id === annotationid);
-      }
-    });
-  });
+  const annotation = getPresentAnnotationsOnSelectedCanvases(state, { windowId })
+    .flatMap((annoPage) => annoPage.json.items || [])
+    .find((annot) => annot.id === annotationid);
 
   return {
     annotation,
     canvases,
     config: state.config,
+    currentTime,
+    paused: getWindowPausedStatus(state, { windowId }),
   };
 }
 
