@@ -130,6 +130,28 @@ describe('WebAnnotation', () => {
         value: 'tags',
       });
     });
+    it('with image and text', () => {
+      subject = createSubject({ body: { value: 'hello' }, image: { url: 'http://example.photo/pic.jpg' }, tags: null });
+      expect(subject.createBody()).toEqual([
+        {
+          type: 'TextualBody',
+          value: 'hello',
+        },
+        {
+          format: 'image/jpg',
+          id: 'http://example.photo/pic.jpg',
+          type: 'Image',
+        },
+      ]);
+    });
+    it('with image only', () => {
+      subject = createSubject({ body: null, image: { url: 'http://example.photo/pic.jpg' }, tags: null });
+      expect(subject.createBody()).toEqual({
+        format: 'image/jpg',
+        id: 'http://example.photo/pic.jpg',
+        type: 'Image',
+      });
+    });
   });
   describe('toJson', () => {
     it('generates a WebAnnotation', () => {

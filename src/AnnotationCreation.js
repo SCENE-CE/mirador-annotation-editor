@@ -19,6 +19,14 @@ import StrokeColorIcon from '@material-ui/icons/BorderColor';
 import LineWeightIcon from '@material-ui/icons/LineWeight';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import FormatShapesIcon from '@material-ui/icons/FormatShapes';
+import InsertPhotoIcon from '@material-ui/icons/InsertPhoto';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import TextField from '@material-ui/core/TextField';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { SketchPicker } from 'react-color';
 import { v4 as uuid } from 'uuid';
 import { withStyles } from '@material-ui/core/styles';
@@ -80,7 +88,6 @@ class AnnotationCreation extends Component {
 
     const annoState = {};
     annoState.image = false;
-    console.log('edition/creation annotation: ', props.annotation);
 
     if (props.annotation) {
       //
@@ -93,15 +100,15 @@ class AnnotationCreation extends Component {
           } else if (body.type === 'TextualBody') {
             annoState.textBody = body.value;
           } else if (body.type === 'Image') {
-            annoState.textBody = body.value;
-            annoState.image = body.image;
+            // annoState.textBody = body.value; // why text body here ???
+            annoState.image = body;
           }
         });
       } else if (props.annotation.body.type === 'TextualBody') {
         annoState.textBody = props.annotation.body.value;
       } else if (props.annotation.body.type === 'Image') {
-        annoState.textBody = props.annotation.body.value;
-        annoState.image = props.annotation.body.image;
+        // annoState.textBody = props.annotation.body.value; // why text body here ???
+        annoState.image = props.annotation.body;
       }
       //
       // drawing position
@@ -129,6 +136,7 @@ class AnnotationCreation extends Component {
     const toolState = {
       activeTool: 'cursor',
       closedMode: 'closed',
+      colorPopoverOpen: false,
       currentColorType: false,
       fillColor: null,
       strokeColor: '#00BFFF',
@@ -143,14 +151,10 @@ class AnnotationCreation extends Component {
     this.state = {
       ...toolState,
       ...timeState,
-      textBody: '',
-      colorPopoverOpen: false,
-      lineWeightPopoverOpen: false,
-      openAddImgDialog: false,
-      popoverAnchorEl: null,
-      popoverLineWeightAnchorEl: null,
-      svg: null,
-      textEditorStateBustingKey: 0,
+      activeTool: 'cursor',
+      closedMode: 'closed',
+      currentColorType: false,
+      fillColor: null,
       imgConstrain: false,
       imgHeight: {
         lastSubmittedValue: '',
@@ -169,6 +173,13 @@ class AnnotationCreation extends Component {
         validity: 0,
         value: '',
       },
+      lineWeightPopoverOpen: false,
+      openAddImgDialog: false,
+      popoverAnchorEl: null,
+      popoverLineWeightAnchorEl: null,
+      svg: null,
+      textBody: '',
+      textEditorStateBustingKey: 0,
       xywh: null,
       ...annoState,
     };
@@ -246,6 +257,7 @@ class AnnotationCreation extends Component {
     }
 
     this.setState({
+      image: { id: imgUrl.value },
       imgHeight: {
         ...imgHeight,
         lastSubmittedValue: heightValidity === 1 ? imgHeight.value : imgHeight.lastSubmittedValue,
@@ -283,6 +295,18 @@ class AnnotationCreation extends Component {
       popoverLineWeightAnchorEl: null,
       strokeWidth: e.currentTarget.value,
     });
+  }
+
+  /** set annotation start time to current time */
+  setTstartNow() {
+    // eslint-disable-next-line react/destructuring-assignment
+    this.setState({ tstart: Math.floor(this.props.currentTime) });
+  }
+
+  /** set annotation end time to current time */
+  setTendNow() {
+    // eslint-disable-next-line react/destructuring-assignment
+    this.setState({ tend: Math.floor(this.props.currentTime) });
   }
 
   /** */
@@ -354,6 +378,34 @@ class AnnotationCreation extends Component {
     });
   }
 
+  /** seekTo/goto annotation start time */
+  seekToTstart() {
+    const { paused, setCurrentTime, setSeekTo } = this.props;
+    const { tstart } = this.state;
+    if (!paused) {
+      this.setState(setSeekTo(tstart));
+    } else {
+      this.setState(setCurrentTime(tstart));
+    }
+  }
+
+  /** seekTo/goto annotation end time */
+  seekToTend() {
+    const { paused, setCurrentTime, setSeekTo } = this.props;
+    const { tend } = this.state;
+    if (!paused) {
+      this.setState(setSeekTo(tend));
+    } else {
+      this.setState(setCurrentTime(tend));
+    }
+  }
+
+  /** update annotation start time */
+  updateTstart(value) { this.setState({ tstart: value }); }
+
+  /** update annotation end time */
+  updateTend(value) { this.setState({ tend: value }); }
+
   /** */
   isConstrained(event) { // adjust other dimension in proportion to inputted dimension
     const { imgConstrain, imgWidth, imgHeight } = this.state;
@@ -382,47 +434,6 @@ class AnnotationCreation extends Component {
           },
         });
       }
-    }
-  }
-
-
-  /** set annotation start time to current time */
-  setTstartNow() {
-    // eslint-disable-next-line react/destructuring-assignment
-    this.setState({ tstart: Math.floor(this.props.currentTime) });
-  }
-
-  /** set annotation end time to current time */
-  setTendNow() {
-    // eslint-disable-next-line react/destructuring-assignment
-    this.setState({ tend: Math.floor(this.props.currentTime) });
-  }
-
-  /** update annotation start time */
-  updateTstart(value) { this.setState({ tstart: value }); }
-
-  /** update annotation end time */
-  updateTend(value) { this.setState({ tend: value }); }
-
-  /** seekTo/goto annotation start time */
-  seekToTstart() {
-    const { paused, setCurrentTime, setSeekTo } = this.props;
-    const { tstart } = this.state;
-    if (!paused) {
-      this.setState(setSeekTo(tstart));
-    } else {
-      this.setState(setCurrentTime(tstart));
-    }
-  }
-
-  /** seekTo/goto annotation end time */
-  seekToTend() {
-    const { paused, setCurrentTime, setSeekTo } = this.props;
-    const { tend } = this.state;
-    if (!paused) {
-      this.setState(setSeekTo(tend));
-    } else {
-      this.setState(setCurrentTime(tend));
     }
   }
 
@@ -468,11 +479,12 @@ class AnnotationCreation extends Component {
     } = this.props;
     const {
       textBody, image, imgWidth, imgHeight, imgUrl, tags, xywh, svg,
-      imgConstrain,tstart, tend, textEditorStateBustingKey,
+      imgConstrain, tstart, tend, textEditorStateBustingKey,
     } = this.state;
-    const annoBody = { value: textBody };
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
+    const annoBody = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
 
+    let imgBody;
     if (imgWidth.validity === 1 && imgHeight.validity === 1 && imgUrl.validity === 1) {
       imgBody = {
         constrain: imgConstrain,
@@ -488,7 +500,7 @@ class AnnotationCreation extends Component {
       const storageAdapter = config.annotation.adapter(canvas.id);
 
       const anno = new WebAnnotation({
-        body: (!annoBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : annoBody,
+        body: annoBody,
         canvasId: canvas.id,
         fragsel: { t, xywh },
         id: (annotation && annotation.id) || `${uuid()}`,
@@ -510,9 +522,10 @@ class AnnotationCreation extends Component {
     });
 
     this.setState({
-      textBody: '',
+      image: false,
       svg: null,
       tend: null,
+      textBody: '',
       textEditorStateBustingKey: textEditorStateBustingKey + 1,
       tstart: null,
       xywh: null,
@@ -554,7 +567,8 @@ class AnnotationCreation extends Component {
     const {
       activeTool, colorPopoverOpen, currentColorType, fillColor, openAddImgDialog, popoverAnchorEl,
       strokeColor, popoverLineWeightAnchorEl, lineWeightPopoverOpen, strokeWidth, closedMode,
-      textBody, imgUrl, imgWidth, imgHeight, imgConstrain, svg, tstart, tend, textEditorStateBustingKey,
+      textBody, imgUrl, imgWidth, imgHeight, imgConstrain, svg, tstart, tend,
+      textEditorStateBustingKey, image,
     } = this.state;
 
     const mediaIsVideo = typeof VideosReferences.get(windowId) !== 'undefined';
@@ -705,7 +719,7 @@ class AnnotationCreation extends Component {
 
               <Grid item xs={12}>
                 <Typography variant="overline">
-                  <ToggleButton value="true" title="Go to start time" size="small" onClick={this.seekToTend} className={classes.timecontrolsbutton}>
+                  <ToggleButton value="true" title="Go to end time" size="small" onClick={this.seekToTend} className={classes.timecontrolsbutton}>
                     <LastPage />
                   </ToggleButton>
                   End
@@ -727,7 +741,8 @@ class AnnotationCreation extends Component {
             </Grid>
             <Grid item xs={12} style={{ marginBottom: 10 }}>
               <ToggleButton value="image-icon" aria-label="insert an image" onClick={() => this.handleImgDialogChange(true)}>
-                <InsertPhotoIcon />
+                { image === false && <InsertPhotoIcon /> }
+                { image !== false && <img src={image.id} width="100" height="auto" alt="loading failed" /> }
               </ToggleButton>
             </Grid>
             <Dialog open={openAddImgDialog} fullWidth onClose={() => this.handleImgDialogChange(false)} aria-labelledby="form-dialog-title">

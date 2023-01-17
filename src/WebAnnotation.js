@@ -19,7 +19,7 @@ export default class WebAnnotation {
     return {
       body: this.createBody(),
       id: this.id,
-      motivation: 'supplementing',
+      motivation: 'commenting',
       target: this.target(),
       type: 'Annotation',
     };
@@ -37,12 +37,11 @@ export default class WebAnnotation {
       bodies.push(textBody);
     }
 
+    // TODO correct WebAnnotation format
     if (this.image) {
-      const imgBody = {
-        format: 'image/jpg',
-        id: this.image.url,
-        type: 'Image',
-      };
+      const imgBody = { type: 'Image' };
+      Object.assign(imgBody, this.image);
+      imgBody.id = imgBody.url;
       bodies.push(imgBody);
     }
 
