@@ -2,7 +2,7 @@
 export default class WebAnnotation {
   /** */
   constructor({
-    canvasId, id, fragsel, body, tags, svg, manifestId,
+    canvasId, id, fragsel, image, body, tags, svg, manifestId,
   }) {
     this.id = id;
     this.canvasId = canvasId;
@@ -10,6 +10,7 @@ export default class WebAnnotation {
     this.body = body;
     this.tags = tags;
     this.svg = svg;
+    this.image = image;
     this.manifestId = manifestId;
   }
 
@@ -18,7 +19,7 @@ export default class WebAnnotation {
     return {
       body: this.createBody(),
       id: this.id,
-      motivation: 'commenting',
+      motivation: 'supplementing',
       target: this.target(),
       type: 'Annotation',
     };
@@ -27,12 +28,24 @@ export default class WebAnnotation {
   /** */
   createBody() {
     let bodies = [];
-    if (this.body) {
-      bodies.push({
+
+    if (this.body && this.body.value !== '') {
+      const textBody = {
         type: 'TextualBody',
-        value: this.body,
-      });
+        value: this.body.value,
+      };
+      bodies.push(textBody);
     }
+
+    if (this.image) {
+      const imgBody = {
+        format: 'image/jpg',
+        id: this.image.url,
+        type: 'Image',
+      };
+      bodies.push(imgBody);
+    }
+
     if (this.tags) {
       bodies = bodies.concat(this.tags.map((tag) => ({
         purpose: 'tagging',

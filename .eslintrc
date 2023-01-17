@@ -2,7 +2,7 @@
   "env": {
     "jest/globals": true
   },
-  "extends": ["airbnb","react-app"],
+  "extends": ["airbnb"],
   "globals": {
     "page": true,
     "document": true
