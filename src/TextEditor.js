@@ -8,6 +8,7 @@ import ItalicIcon from '@material-ui/icons/FormatItalic';
 import { withStyles } from '@material-ui/core/styles';
 import { stateToHTML } from 'draft-js-export-html';
 import { stateFromHTML } from 'draft-js-import-html';
+import { onAddLink } from './TextEditorLink';
 
 /** */
 class TextEditor extends Component {
@@ -67,6 +68,7 @@ class TextEditor extends Component {
   render() {
     const { classes } = this.props;
     const { editorState } = this.state;
+    const { setEditorState } = this.setState;
     const currentStyle = editorState.getCurrentInlineStyle();
 
     return (
@@ -88,6 +90,11 @@ class TextEditor extends Component {
             <ItalicIcon />
           </ToggleButton>
         </ToggleButtonGroup>
+        <button
+          onClick={() => onAddLink(editorState, setEditorState)}
+        >
+          link
+        </button>
 
         <div className={classes.editorRoot} onClick={this.handleFocus}>
           <Editor
