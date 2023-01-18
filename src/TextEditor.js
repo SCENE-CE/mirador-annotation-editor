@@ -5,18 +5,20 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import BoldIcon from '@material-ui/icons/FormatBold';
 import ItalicIcon from '@material-ui/icons/FormatItalic';
+import LinkIcon from '@material-ui/icons/InsertLink';
 import { withStyles } from '@material-ui/core/styles';
 import { stateToHTML } from 'draft-js-export-html';
 import { stateFromHTML } from 'draft-js-import-html';
-import { onAddLink } from './TextEditorLink';
+import { onAddLink, createLinkDecorator } from './TextEditorLink';
 
 /** */
 class TextEditor extends Component {
   /** */
   constructor(props) {
     super(props);
+    const decorator = createLinkDecorator();
     this.state = {
-      editorState: EditorState.createWithContent(stateFromHTML(props.annoHtml)),
+      editorState: EditorState.createWithContent(stateFromHTML(props.annoHtml), decorator),
     };
     this.onChange = this.onChange.bind(this);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
@@ -89,12 +91,13 @@ class TextEditor extends Component {
           >
             <ItalicIcon />
           </ToggleButton>
+          <ToggleButton
+            onClick={() => onAddLink(editorState, this.onChange)}
+            value="LINK"
+          >
+            <LinkIcon />
+          </ToggleButton>
         </ToggleButtonGroup>
-        <button
-          onClick={() => onAddLink(editorState, setEditorState)}
-        >
-          link
-        </button>
 
         <div className={classes.editorRoot} onClick={this.handleFocus}>
           <Editor
