@@ -16,11 +16,24 @@ class CanvasListItem extends Component {
 
     this.state = {
       isHovering: false,
+      manifests: [],
     };
 
+    this.componentDidMount = this.componentDidMount.bind(this);
     this.handleMouseHover = this.handleMouseHover.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+  }
+
+  /** */
+  componentDidMount() {
+    const searchManifest = async () => {
+      const manifests = await searchManifestAndAddButton(this.props.children[0][0].props.children[0].props.htmlString);
+      this.setState({
+        manifests,
+      });
+    };
+    searchManifest();
   }
 
   /** */
@@ -86,12 +99,8 @@ class CanvasListItem extends Component {
   /** */
   render() {
     const { children } = this.props;
-    const { isHovering } = this.state;
+    const { isHovering, manifests } = this.state;
     const { windowViewType, toggleSingleCanvasDialogOpen } = this.context;
-
-    // What the hell is it ??
-    const textAnnot = children[0][0].props.children[0].props.htmlString;
-    searchManifestAndAddButton(textAnnot);
 
     return (
       <div
@@ -132,6 +141,7 @@ class CanvasListItem extends Component {
         >
           {children}
         </li>
+        <h2>{manifests}</h2>
       </div>
     );
   }
