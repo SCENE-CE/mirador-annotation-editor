@@ -26,18 +26,27 @@ export function searchManifestAndAddButton(html) {
   const urls = html.match(
     /((http|https)\:\/\/[a-z0-9\/:%_+.,#?!@&=-]+)/g,
   );
+
   if (urls) {
-    urls.forEach((url) => {
-      fetch(url, {
+    let requestsArray = urls.map((url) => {
+      let request = new Request(url, {
         method: 'GET',
-      })
-        .then((response) => response.text())
-        .then((text) => {
-          const obj = JSON.parse(text);
-          if (obj.type === 'Manifest') {
-            console.log(`Manifest Found ${url}`);
-          }
-        });
+      });
+
+      return request;
+    });
+    Promise.all(requestsArray.map((request) => {
+      return fetch(request).then((response) => {
+        return response.json();
+      }).then((data) => {
+        if (data.type === 'Manifest') {
+          return data;
+        }
+        return null;
+      });
+    })).then((values) => {
+      console.log('values', values);
+      return values;
     });
   }
 }
