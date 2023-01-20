@@ -6,6 +6,7 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import flatten from 'lodash/flatten';
 import AnnotationActionsContext from './AnnotationActionsContext';
+import { searchManifestAndAddButton } from './utils';
 
 /** */
 class CanvasListItem extends Component {
@@ -87,6 +88,11 @@ class CanvasListItem extends Component {
     const { children } = this.props;
     const { isHovering } = this.state;
     const { windowViewType, toggleSingleCanvasDialogOpen } = this.context;
+
+    // What the hell is it ??
+    const textAnnot = children[0][0].props.children[0].props.htmlString;
+    searchManifestAndAddButton(textAnnot);
+
     return (
       <div
         onMouseEnter={this.handleMouseHover}

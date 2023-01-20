@@ -21,3 +21,23 @@ export function secondsToHMSarray(secs) {
   const h = Math.floor(secs / 3600);
   return [h, Math.floor(secs / 60) - h * 60, secs % 60];
 }
+/** */
+export function searchManifestAndAddButton(html) {
+  const urls = html.match(
+    /((http|https)\:\/\/[a-z0-9\/:%_+.,#?!@&=-]+)/g,
+  );
+  if (urls) {
+    urls.forEach((url) => {
+      fetch(url, {
+        method: 'GET',
+      })
+        .then((response) => response.text())
+        .then((text) => {
+          const obj = JSON.parse(text);
+          if (obj.type === 'Manifest') {
+            console.log(`Manifest Found ${url}`);
+          }
+        });
+    });
+  }
+}
