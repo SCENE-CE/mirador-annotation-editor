@@ -27,13 +27,17 @@ class CanvasListItem extends Component {
 
   /** */
   componentDidMount() {
-    const searchManifest = async () => {
-      const manifests = await searchManifestAndAddButton(this.props.children[0][0].props.children[0].props.htmlString);
-      this.setState({
-        manifests,
+    console.log(this.props);
+    searchManifestAndAddButton(this.props.children[0][0].props.children[0].props.htmlString)
+      .then((values) => {
+        if (values) {
+          console.log(values);
+          this.setState({
+            manifests: values.flat(),
+          });
+          console.log(this.state);
+        }
       });
-    };
-    searchManifest();
   }
 
   /** */
@@ -141,7 +145,11 @@ class CanvasListItem extends Component {
         >
           {children}
         </li>
-        <h2>{manifests}</h2>
+        {manifests &&
+            <ul>
+              {manifests.map((object) => (<li> {object} </li>)) }
+            </ul>
+        }
       </div>
     );
   }

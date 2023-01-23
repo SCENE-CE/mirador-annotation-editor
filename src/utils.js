@@ -22,7 +22,7 @@ export function secondsToHMSarray(secs) {
   return [h, Math.floor(secs / 60) - h * 60, secs % 60];
 }
 /** */
-export function searchManifestAndAddButton(html) {
+export async function searchManifestAndAddButton(html) {
   const urls = html.match(
     /((http|https)\:\/\/[a-z0-9\/:%_+.,#?!@&=-]+)/g,
   );
@@ -35,18 +35,15 @@ export function searchManifestAndAddButton(html) {
 
       return request;
     });
-    Promise.all(requestsArray.map((request) => {
+    return Promise.all(requestsArray.map((request) => {
       return fetch(request).then((response) => {
         return response.json();
       }).then((data) => {
         if (data.type === 'Manifest') {
-          return data;
+          return data.id;
         }
         return null;
       });
-    })).then((values) => {
-      console.log('values', values);
-      return values;
-    });
+    }));
   }
 }
