@@ -5,6 +5,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import flatten from 'lodash/flatten';
+import * as actions from 'mirador/dist/es/src/state/actions';
 import AnnotationActionsContext from './AnnotationActionsContext';
 import { searchManifestAndAddButton } from './utils';
 
@@ -30,8 +31,9 @@ class CanvasListItem extends Component {
     searchManifestAndAddButton(this.props.children[0][0].props.children[0].props.htmlString)
       .then((values) => {
         if (values) {
+          const valuesFlat = values.flat();
           this.setState({
-            manifests: values.flat(),
+            manifests: valuesFlat,
           });
         }
       });
@@ -80,8 +82,9 @@ class CanvasListItem extends Component {
   }
 
   /** */
-  handleOpenOtherManifest() {
-    console.log("Opening TODO");
+  handleOpenOtherManifest(manifestId) {
+    console.log('Opening TODO');
+    actions.addResource(manifestId);
   }
 
   /** */
@@ -147,16 +150,13 @@ class CanvasListItem extends Component {
         >
           {children}
         </li>
-        {manifests &&
-            <div>
+        <div>
+          {manifests.length
+              && manifests.map((o) => (
+                <button value={o} onClick={(e) => this.handleOpenOtherManifest(e.target.value)}> Ouvrir {o} </button>))
+          }
+        </div>
 
-              {manifests &&
-                  manifests.map((o) => (
-                    <button value={o} onClick={() => this.handleOpenOtherManifest(o)}> Ouvrir {o} </button>))
-
-              }
-            </div>
-        }
       </div>
     );
   }

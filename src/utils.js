@@ -28,8 +28,8 @@ export async function searchManifestAndAddButton(html) {
   );
 
   if (urls) {
-    let requestsArray = urls.map((url) => {
-      let request = new Request(url, {
+    const requestsArray = urls.map((url) => {
+      const request = new Request(url, {
         method: 'GET',
       });
 
@@ -43,6 +43,8 @@ export async function searchManifestAndAddButton(html) {
           return data.id;
         }
         return null;
+      }).then((data) => {
+        console.log('Failed to Fatch')
       });
     }));
   }
