@@ -84,7 +84,8 @@ class CanvasListItem extends Component {
   /** */
   handleOpenOtherManifest(manifestId) {
     console.log('Opening TODO');
-    actions.addResource(manifestId);
+    let result = actions.addResource(manifestId);
+    console.log(result);
   }
 
   /** */
@@ -151,7 +152,7 @@ class CanvasListItem extends Component {
           {children}
         </li>
         <div>
-          {manifests.length
+          {manifests.length > 0
               && manifests.map((o) => (
                 <button value={o} onClick={(e) => this.handleOpenOtherManifest(e.target.value)}> Ouvrir {o} </button>))
           }

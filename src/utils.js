@@ -43,8 +43,6 @@ export async function searchManifestAndAddButton(html) {
           return data.id;
         }
         return null;
-      }).then((data) => {
-        console.log('Failed to Fatch')
       });
     }));
   }
