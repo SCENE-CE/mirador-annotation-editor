@@ -27,15 +27,12 @@ class CanvasListItem extends Component {
 
   /** */
   componentDidMount() {
-    console.log(this.props);
     searchManifestAndAddButton(this.props.children[0][0].props.children[0].props.htmlString)
       .then((values) => {
         if (values) {
-          console.log(values);
           this.setState({
             manifests: values.flat(),
           });
-          console.log(this.state);
         }
       });
   }
@@ -80,6 +77,11 @@ class CanvasListItem extends Component {
     this.setState((prevState) => ({
       isHovering: !prevState.isHovering,
     }));
+  }
+
+  /** */
+  handleOpenOtherManifest() {
+    console.log("Opening TODO");
   }
 
   /** */
@@ -146,9 +148,14 @@ class CanvasListItem extends Component {
           {children}
         </li>
         {manifests &&
-            <ul>
-              {manifests.map((object) => (<li> {object} </li>)) }
-            </ul>
+            <div>
+
+              {manifests &&
+                  manifests.map((o) => (
+                    <button value={o} onClick={() => this.handleOpenOtherManifest(o)}> Ouvrir {o} </button>))
+
+              }
+            </div>
         }
       </div>
     );
