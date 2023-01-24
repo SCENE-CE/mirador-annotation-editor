@@ -37,11 +37,11 @@ export default class WebAnnotation {
       bodies.push(textBody);
     }
 
-    // TODO correct WebAnnotation format
     if (this.image) {
-      const imgBody = { type: 'Image' };
-      Object.assign(imgBody, this.image);
-      imgBody.id = imgBody.url;
+      const imgBody = {
+        id: this.image.id,
+        type: 'Image',
+      };
       bodies.push(imgBody);
     }
 

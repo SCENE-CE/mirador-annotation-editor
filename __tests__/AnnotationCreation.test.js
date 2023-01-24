@@ -4,6 +4,7 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import AnnotationCreation from '../src/AnnotationCreation';
 import AnnotationDrawing from '../src/AnnotationDrawing';
 import TextEditor from '../src/TextEditor';
+import ImageFormField from '../src/ImageFormField';
 
 /** */
 function createWrapper(props) {
@@ -35,6 +36,10 @@ describe('AnnotationCreation', () => {
   it('adds the TextEditor component', () => {
     wrapper = createWrapper();
     expect(wrapper.dive().find(TextEditor).length).toBe(1);
+  });
+  it('adds the ImageFormField component', () => {
+    wrapper = createWrapper();
+    expect(wrapper.dive().find(ImageFormField).length).toBe(1);
   });
   it('can handle annotations without target selector', () => {
     wrapper = createWrapper({
