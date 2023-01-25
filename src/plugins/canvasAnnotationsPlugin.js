@@ -30,7 +30,7 @@ class CanvasAnnotationsWrapper extends Component {
   render() {
     const {
       addCompanionWindow, annotationsOnCanvases, canvases, config, receiveAnnotation,
-      switchToSingleCanvasView, TargetComponent, targetProps, windowViewType,
+      switchToSingleCanvasView, TargetComponent, targetProps, windowViewType, addResource
     } = this.props;
     const { singleCanvasDialogOpen } = this.state;
     const props = {
@@ -41,6 +41,7 @@ class CanvasAnnotationsWrapper extends Component {
       <AnnotationActionsContext.Provider
         value={{
           addCompanionWindow,
+          addResource,
           annotationsOnCanvases,
           canvases,
           config,
@@ -68,6 +69,7 @@ class CanvasAnnotationsWrapper extends Component {
 
 CanvasAnnotationsWrapper.propTypes = {
   addCompanionWindow: PropTypes.func.isRequired,
+  addResource: PropTypes.func.isRequired,
   annotationsOnCanvases: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   canvases: PropTypes.arrayOf(
     PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
@@ -115,6 +117,9 @@ function mapStateToProps(state, { targetProps: { windowId } }) {
 const mapDispatchToProps = (dispatch, props) => ({
   addCompanionWindow: (content, additionalProps) => dispatch(
     actions.addCompanionWindow(props.targetProps.windowId, { content, ...additionalProps }),
+  ),
+  addResource: (manifestId) => dispatch(
+    actions.addResource(props.manifestId),
   ),
   receiveAnnotation: (targetId, id, annotation) => dispatch(
     actions.receiveAnnotation(targetId, id, annotation),

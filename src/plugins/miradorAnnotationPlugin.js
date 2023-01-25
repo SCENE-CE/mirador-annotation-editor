@@ -109,6 +109,7 @@ class MiradorAnnotation extends Component {
 
 MiradorAnnotation.propTypes = {
   addCompanionWindow: PropTypes.func.isRequired,
+  addResource: PropTypes.func.isRequired,
   canvases: PropTypes.arrayOf(
     PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
   ).isRequired,
@@ -130,7 +131,7 @@ MiradorAnnotation.propTypes = {
 /** */
 const mapDispatchToProps = (dispatch, props) => ({
   addCompanionWindow: (content, additionalProps) => dispatch(
-    actions.addCompanionWindow(props.targetProps.windowId, { content, ...additionalProps }),
+    actions.addCompanionWindow(props.targetProps.windowId, {content, ...additionalProps}),
   ),
   switchToSingleCanvasView: () => dispatch(
     actions.setWindowViewType(props.targetProps.windowId, 'single'),

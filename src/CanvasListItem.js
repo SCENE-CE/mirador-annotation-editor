@@ -84,8 +84,11 @@ class CanvasListItem extends Component {
   /** */
   handleOpenOtherManifest(manifestId) {
     console.log('Opening TODO');
-    let result = actions.addResource(manifestId);
-    console.log(result);
+    const {
+      addResource,
+    } = this.context;
+
+    addResource('https://iiif.io/api/cookbook/recipe/0266-full-canvas-annotation/manifest.json');
   }
 
   /** */
@@ -154,8 +157,12 @@ class CanvasListItem extends Component {
         <div>
           {manifests.length > 0
               && manifests.map((o) => (
-                <button value={o} onClick={(e) => this.handleOpenOtherManifest(e.target.value)}> Ouvrir {o} </button>))
-          }
+                <button value={o} onClick={(e) => this.handleOpenOtherManifest(e.target.value)}>
+                  {' '}
+                  Ouvrir
+                  {o}
+                </button>
+              ))}
         </div>
 
       </div>
@@ -169,6 +176,7 @@ CanvasListItem.propTypes = {
     PropTypes.func,
     PropTypes.node,
   ]).isRequired,
+
 };
 
 CanvasListItem.contextType = AnnotationActionsContext;
