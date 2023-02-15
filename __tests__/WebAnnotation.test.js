@@ -3,7 +3,9 @@ import WebAnnotation from '../src/WebAnnotation';
 /** */
 function createSubject(args = {}) {
   return new WebAnnotation({
-    body: 'body',
+    body: {
+      value: 'body',
+    },
     canvasId: 'canvasId',
     fragsel: { t: '5,10', xywh: 'xywh' },
     id: 'id',
@@ -17,10 +19,15 @@ describe('WebAnnotation', () => {
   let subject = createSubject();
   describe('constructor', () => {
     it('sets instance accessors', () => {
-      ['body', 'canvasId', 'id', 'svg'].forEach((prop) => {
+      ['canvasId', 'id', 'svg'].forEach((prop) => {
         expect(subject[prop]).toBe(prop);
       });
       expect(subject.fragsel).toStrictEqual({ t: '5,10', xywh: 'xywh' });
+    });
+    it('sets instance accessors for body', () => {
+      ['body'].forEach((prop) => {
+        expect(subject[prop].value).toBe(prop);
+      });
     });
   });
   describe('target', () => {
@@ -109,18 +116,38 @@ describe('WebAnnotation', () => {
       ]);
     });
     it('with text only', () => {
-      subject = createSubject({ tags: null });
+      subject = createSubject({ image: null, tags: null });
       expect(subject.createBody()).toEqual({
         type: 'TextualBody',
         value: 'body',
       });
     });
     it('with tags only', () => {
-      subject = createSubject({ body: null });
+      subject = createSubject({ body: null, image: null });
       expect(subject.createBody()).toEqual({
         purpose: 'tagging',
         type: 'TextualBody',
         value: 'tags',
+      });
+    });
+    it('with image and text', () => {
+      subject = createSubject({ body: { value: 'hello' }, image: { id: 'http://example.photo/pic.jpg' }, tags: null });
+      expect(subject.createBody()).toEqual([
+        {
+          type: 'TextualBody',
+          value: 'hello',
+        },
+        {
+          id: 'http://example.photo/pic.jpg',
+          type: 'Image',
+        },
+      ]);
+    });
+    it('with image only', () => {
+      subject = createSubject({ body: null, image: { id: 'http://example.photo/pic.jpg' }, tags: null });
+      expect(subject.createBody()).toEqual({
+        id: 'http://example.photo/pic.jpg',
+        type: 'Image',
       });
     });
   });

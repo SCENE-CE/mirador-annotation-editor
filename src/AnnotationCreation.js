@@ -19,6 +19,7 @@ import StrokeColorIcon from '@material-ui/icons/BorderColor';
 import LineWeightIcon from '@material-ui/icons/LineWeight';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import FormatShapesIcon from '@material-ui/icons/FormatShapes';
+import TextField from '@material-ui/core/TextField';
 import { SketchPicker } from 'react-color';
 import { v4 as uuid } from 'uuid';
 import { withStyles } from '@material-ui/core/styles';
@@ -30,6 +31,7 @@ import TextEditor from './TextEditor';
 import WebAnnotation from './WebAnnotation';
 import CursorIcon from './icons/Cursor';
 import HMSInput from './HMSInput';
+import ImageFormField from './ImageFormField';
 import { secondsToHMS } from './utils';
 
 /** Extract time information from annotation target */
@@ -60,20 +62,27 @@ class AnnotationCreation extends Component {
     super(props);
 
     const annoState = {};
+
     if (props.annotation) {
       //
       // annotation body
       if (Array.isArray(props.annotation.body)) {
         annoState.tags = [];
         props.annotation.body.forEach((body) => {
-          if (body.purpose === 'tagging') {
+          if (body.purpose === 'tagging' && body.type === 'TextualBody') {
             annoState.tags.push(body.value);
-          } else {
-            annoState.annoBody = body.value;
+          } else if (body.type === 'TextualBody') {
+            annoState.textBody = body.value;
+          } else if (body.type === 'Image') {
+            // annoState.textBody = body.value; // why text body here ???
+            annoState.image = body;
           }
         });
-      } else {
-        annoState.annoBody = props.annotation.body.value;
+      } else if (props.annotation.body.type === 'TextualBody') {
+        annoState.textBody = props.annotation.body.value;
+      } else if (props.annotation.body.type === 'Image') {
+        // annoState.textBody = props.annotation.body.value; // why text body here ???
+        annoState.image = props.annotation.body;
       }
       //
       // drawing position
@@ -101,6 +110,7 @@ class AnnotationCreation extends Component {
     const toolState = {
       activeTool: 'cursor',
       closedMode: 'closed',
+      colorPopoverOpen: false,
       currentColorType: false,
       fillColor: null,
       strokeColor: '#00BFFF',
@@ -115,19 +125,24 @@ class AnnotationCreation extends Component {
     this.state = {
       ...toolState,
       ...timeState,
-      annoBody: '',
-      colorPopoverOpen: false,
+      activeTool: 'cursor',
+      closedMode: 'closed',
+      currentColorType: false,
+      fillColor: null,
+      image: { id: null },
       lineWeightPopoverOpen: false,
       popoverAnchorEl: null,
       popoverLineWeightAnchorEl: null,
       svg: null,
+      textBody: '',
       textEditorStateBustingKey: 0,
       xywh: null,
       ...annoState,
     };
 
     this.submitForm = this.submitForm.bind(this);
-    this.updateBody = this.updateBody.bind(this);
+    // this.updateBody = this.updateBody.bind(this);
+    this.updateTextBody = this.updateTextBody.bind(this);
     this.updateTstart = this.updateTstart.bind(this);
     this.updateTend = this.updateTend.bind(this);
     this.setTstartNow = this.setTstartNow.bind(this);
@@ -143,6 +158,13 @@ class AnnotationCreation extends Component {
     this.handleCloseLineWeight = this.handleCloseLineWeight.bind(this);
     this.closeChooseColor = this.closeChooseColor.bind(this);
     this.updateStrokeColor = this.updateStrokeColor.bind(this);
+    this.handleImgChange = this.handleImgChange.bind(this);
+  }
+
+  /** */
+  handleImgChange(newUrl, imgRef) {
+    const { image } = this.state;
+    this.setState({ image: { ...image, id: newUrl } });
   }
 
   /** */
@@ -174,12 +196,6 @@ class AnnotationCreation extends Component {
     this.setState({ tend: Math.floor(this.props.currentTime) });
   }
 
-  /** update annotation start time */
-  updateTstart(value) { this.setState({ tstart: value }); }
-
-  /** update annotation end time */
-  updateTend(value) { this.setState({ tend: value }); }
-
   /** seekTo/goto annotation start time */
   seekToTstart() {
     const { paused, setCurrentTime, setSeekTo } = this.props;
@@ -201,6 +217,12 @@ class AnnotationCreation extends Component {
       this.setState(setCurrentTime(tend));
     }
   }
+
+  /** update annotation start time */
+  updateTstart(value) { this.setState({ tstart: value }); }
+
+  /** update annotation end time */
+  updateTend(value) { this.setState({ tend: value }); }
 
   /** */
   openChooseColor(e) {
@@ -243,20 +265,25 @@ class AnnotationCreation extends Component {
       annotation, canvases, receiveAnnotation, config,
     } = this.props;
     const {
-      annoBody, tags, xywh, svg, tstart, tend, textEditorStateBustingKey,
+      textBody, image, tags, xywh, svg, tstart, tend, textEditorStateBustingKey,
     } = this.state;
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
+    const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
+
     canvases.forEach((canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
+
       const anno = new WebAnnotation({
-        body: (!annoBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : annoBody,
+        body,
         canvasId: canvas.id,
         fragsel: { t, xywh },
         id: (annotation && annotation.id) || `${uuid()}`,
+        image,
         manifestId: canvas.options.resource.id,
         svg,
         tags,
       }).toJson();
+
       if (annotation) {
         storageAdapter.update(anno).then((annoPage) => {
           receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
@@ -269,9 +296,10 @@ class AnnotationCreation extends Component {
     });
 
     this.setState({
-      annoBody: '',
+      image: { id: null },
       svg: null,
       tend: null,
+      textBody: '',
       textEditorStateBustingKey: textEditorStateBustingKey + 1,
       tstart: null,
       xywh: null,
@@ -293,8 +321,8 @@ class AnnotationCreation extends Component {
   }
 
   /** */
-  updateBody(annoBody) {
-    this.setState({ annoBody });
+  updateTextBody(textBody) {
+    this.setState({ textBody });
   }
 
   /** */
@@ -311,9 +339,10 @@ class AnnotationCreation extends Component {
     } = this.props;
 
     const {
-      activeTool, colorPopoverOpen, currentColorType, fillColor, popoverAnchorEl, strokeColor,
-      popoverLineWeightAnchorEl, lineWeightPopoverOpen, strokeWidth, closedMode, annoBody, svg,
-      tstart, tend, textEditorStateBustingKey,
+      activeTool, colorPopoverOpen, currentColorType, fillColor, popoverAnchorEl,
+      strokeColor, popoverLineWeightAnchorEl, lineWeightPopoverOpen, strokeWidth, closedMode,
+      textBody, svg, tstart, tend,
+      textEditorStateBustingKey, image,
     } = this.state;
 
     const mediaIsVideo = typeof VideosReferences.get(windowId) !== 'undefined';
@@ -326,6 +355,7 @@ class AnnotationCreation extends Component {
       >
         <AnnotationDrawing
           activeTool={activeTool}
+          annotation={annotation}
           fillColor={fillColor}
           strokeColor={strokeColor}
           strokeWidth={strokeWidth}
@@ -440,7 +470,6 @@ class AnnotationCreation extends Component {
                   )
                   : null
               }
-
             </Grid>
           </Grid>
           <Grid container>
@@ -464,7 +493,7 @@ class AnnotationCreation extends Component {
 
               <Grid item xs={12}>
                 <Typography variant="overline">
-                  <ToggleButton value="true" title="Go to start time" size="small" onClick={this.seekToTend} className={classes.timecontrolsbutton}>
+                  <ToggleButton value="true" title="Go to end time" size="small" onClick={this.seekToTend} className={classes.timecontrolsbutton}>
                     <LastPage />
                   </ToggleButton>
                   End
@@ -481,14 +510,22 @@ class AnnotationCreation extends Component {
             )}
             <Grid item xs={12}>
               <Typography variant="overline">
-                Content
+                Image Content
+              </Typography>
+            </Grid>
+            <Grid item xs={12} style={{ marginBottom: 10 }}>
+              <ImageFormField value={image} onChange={this.handleImgChange} />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="overline">
+                Text Content
               </Typography>
             </Grid>
             <Grid item xs={12}>
               <TextEditor
                 key={textEditorStateBustingKey}
-                annoHtml={annoBody}
-                updateAnnotationBody={this.updateBody}
+                annoHtml={textBody}
+                updateAnnotationBody={this.updateTextBody}
               />
             </Grid>
           </Grid>
