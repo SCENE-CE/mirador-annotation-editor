@@ -14,6 +14,7 @@
     "build": "nwb build-react-component",
     "clean": "nwb clean-module",
     "lint": "eslint ./src ./__tests__",
+    "prepare": "npm run build",
     "prepublishOnly": "npm run build",
     "start": "nwb serve-react-demo",
     "test": "npm run lint && jest",
