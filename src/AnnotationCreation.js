@@ -26,6 +26,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
+import Slider from '@material-ui/core/Slider';
 import AnnotationDrawing from './AnnotationDrawing';
 import TextEditor from './TextEditor';
 import WebAnnotation from './WebAnnotation';
@@ -62,7 +63,6 @@ class AnnotationCreation extends Component {
     super(props);
 
     const annoState = {};
-
     if (props.annotation) {
       //
       // annotation body
@@ -137,7 +137,10 @@ class AnnotationCreation extends Component {
       textBody: '',
       textEditorStateBustingKey: 0,
       xywh: null,
+      // eslint-disable-next-line sort-keys
+      valueTime: [],
       ...annoState,
+      valuetextTime: '',
     };
 
     this.submitForm = this.submitForm.bind(this);
@@ -159,7 +162,15 @@ class AnnotationCreation extends Component {
     this.closeChooseColor = this.closeChooseColor.bind(this);
     this.updateStrokeColor = this.updateStrokeColor.bind(this);
     this.handleImgChange = this.handleImgChange.bind(this);
+    this.handleChangeTime = this.handleChangeTime.bind(this);
+    this.valuetextTime = this.valuetextTime.bind(this);
   }
+
+  handleChangeTime = (event, newValueTime) => {
+    this.setState({
+      valueTime: newValueTime,
+    });
+  };
 
   /** */
   handleImgChange(newUrl, imgRef) {
@@ -194,6 +205,11 @@ class AnnotationCreation extends Component {
   setTendNow() {
     // eslint-disable-next-line react/destructuring-assignment
     this.setState({ tend: Math.floor(this.props.currentTime) });
+  }
+
+  // eslint-disable-next-line require-jsdoc
+  valuetextTime() {
+    return `${this.valueTime}°C`;
   }
 
   /** seekTo/goto annotation start time */
@@ -484,7 +500,20 @@ class AnnotationCreation extends Component {
                 </Typography>
               </Grid>
 
+
+
+
               <Grid item xs={12} className={classes.paper}>
+                <Typography id="range-slider" gutterBottom>
+                  Time range
+                </Typography>
+                <Slider
+                  value={this.valueTime}
+                  onChange={this.handleChangeTime}
+                  valueLabelDisplay="auto"
+                  aria-labelledby="range-slider"
+                  getAriaValueText={this.valuetextTime}
+                />
                 <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTstartNow} className={classes.timecontrolsbutton}>
                   <Alarm />
                 </ToggleButton>
