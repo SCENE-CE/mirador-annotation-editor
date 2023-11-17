@@ -138,7 +138,7 @@ class AnnotationCreation extends Component {
       textEditorStateBustingKey: 0,
       xywh: null,
       // eslint-disable-next-line sort-keys
-      valueTime: [],
+      valueTime: [20, 37],
       ...annoState,
       valuetextTime: '',
     };
