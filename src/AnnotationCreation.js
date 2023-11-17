@@ -501,8 +501,6 @@ class AnnotationCreation extends Component {
               </Grid>
 
 
-
-
               <Grid item xs={12} className={classes.paper}>
                 <Typography id="range-slider" gutterBottom>
                   Time range
