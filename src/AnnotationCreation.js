@@ -138,7 +138,7 @@ class AnnotationCreation extends Component {
       textEditorStateBustingKey: 0,
       xywh: null,
       // eslint-disable-next-line sort-keys
-      valueTime: [20, 37],
+      valueTime: [20, 40],
       ...annoState,
       valuetextTime: '',
     };
@@ -358,11 +358,12 @@ class AnnotationCreation extends Component {
       activeTool, colorPopoverOpen, currentColorType, fillColor, popoverAnchorEl,
       strokeColor, popoverLineWeightAnchorEl, lineWeightPopoverOpen, strokeWidth, closedMode,
       textBody, svg, tstart, tend,
-      textEditorStateBustingKey, image,
+      textEditorStateBustingKey, image, valueTime,
     } = this.state;
 
     const mediaIsVideo = typeof VideosReferences.get(windowId) !== 'undefined';
 
+    // let value = [20, 47]
     return (
       <CompanionWindow
         title={annotation ? 'Edit annotation' : 'New annotation'}
@@ -499,15 +500,13 @@ class AnnotationCreation extends Component {
                   Start
                 </Typography>
               </Grid>
-
-
               <Grid item xs={12} className={classes.paper}>
                 <Typography id="range-slider" gutterBottom>
                   Time range
                 </Typography>
                 <Slider
-                  value={this.valueTime}
-                  onChange={this.handleChangeTime}
+                  value={valueTime}
+                  // onChange={this.handleChangeTime}
                   valueLabelDisplay="auto"
                   aria-labelledby="range-slider"
                   getAriaValueText={this.valuetextTime}
