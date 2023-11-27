@@ -506,7 +506,7 @@ class AnnotationCreation extends Component {
                 </Typography>
                 <Slider
                   value={valueTime}
-                  // onChange={this.handleChangeTime}
+                  onChange={this.handleChangeTime}
                   valueLabelDisplay="auto"
                   aria-labelledby="range-slider"
                   getAriaValueText={this.valuetextTime}
