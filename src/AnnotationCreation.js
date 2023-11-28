@@ -138,7 +138,7 @@ class AnnotationCreation extends Component {
       textEditorStateBustingKey: 0,
       xywh: null,
       // eslint-disable-next-line sort-keys
-      valueTime: [20, 40],
+      valueTime: [0, 13],
       ...annoState,
       valuetextTime: '',
     };
@@ -166,11 +166,6 @@ class AnnotationCreation extends Component {
     this.valuetextTime = this.valuetextTime.bind(this);
   }
 
-  handleChangeTime = (event, newValueTime) => {
-    this.setState({
-      valueTime: newValueTime,
-    });
-  };
 
   /** */
   handleImgChange(newUrl, imgRef) {
@@ -239,6 +234,14 @@ class AnnotationCreation extends Component {
 
   /** update annotation end time */
   updateTend(value) { this.setState({ tend: value }); }
+
+  handleChangeTime = (event, newValueTime) => {
+   let timeStart = newValueTime[0];
+   let timeEnd = newValueTime[1];
+
+    this.updateTstart(timeStart);
+    this.updateTend(timeEnd);
+  };
 
   /** */
   openChooseColor(e) {
@@ -510,6 +513,7 @@ class AnnotationCreation extends Component {
                   valueLabelDisplay="auto"
                   aria-labelledby="range-slider"
                   getAriaValueText={this.valuetextTime}
+                  max = {2000}
                 />
                 <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTstartNow} className={classes.timecontrolsbutton}>
                   <Alarm />
