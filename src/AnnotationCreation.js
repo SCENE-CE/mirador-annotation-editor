@@ -238,7 +238,7 @@ class AnnotationCreation extends Component {
   handleChangeTime = (event, newValueTime) => {
    let timeStart = newValueTime[0];
    let timeEnd = newValueTime[1];
-
+  console.log(VideosReferences.valueOf());
     this.updateTstart(timeStart);
     this.updateTend(timeEnd);
   };
@@ -387,6 +387,74 @@ class AnnotationCreation extends Component {
         />
         <form onSubmit={this.submitForm} className={classes.section}>
           <Grid container>
+            { mediaIsVideo && (
+                <>
+                  <Grid item xs={12} className={classes.paper}>
+                    <Typography id="range-slider" gutterBottom>
+                      Time range
+                    </Typography>
+                    <Slider
+                        value={valueTime}
+                        onChange={this.handleChangeTime}
+                        valueLabelDisplay="auto"
+                        aria-labelledby="range-slider"
+                        getAriaValueText={this.valuetextTime}
+                        max = {2000}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ToggleButton value="true" title="Go to start time" size="small" onClick={this.seekToTstart} className={classes.timecontrolsbutton}>
+                      <LastPage />
+                    </ToggleButton>
+                    <Typography variant="overline">
+                      Start
+                    </Typography>
+                  </Grid>
+
+                  <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTstartNow} className={classes.timecontrolsbutton}>
+                    <Alarm />
+                  </ToggleButton>
+                  <HMSInput seconds={tstart} onChange={this.updateTstart} />
+
+                  <Grid item xs={12}>
+                    <Typography variant="overline">
+                      <ToggleButton value="true" title="Go to end time" size="small" onClick={this.seekToTend} className={classes.timecontrolsbutton}>
+                        <LastPage />
+                      </ToggleButton>
+                      End
+                    </Typography>
+                  </Grid>
+
+                  <Grid item xs={12} className={classes.paper}>
+                    <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTendNow} className={classes.timecontrolsbutton}>
+                      <Alarm />
+                    </ToggleButton>
+                    <HMSInput seconds={tend} onChange={this.updateTend} />
+                  </Grid>
+                </>
+            )}
+            <Grid item xs={12}>
+              <Typography variant="overline">
+                Image Content
+              </Typography>
+            </Grid>
+            <Grid item xs={12} style={{ marginBottom: 10 }}>
+              <ImageFormField value={image} onChange={this.handleImgChange} />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="overline">
+                Text Content
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <TextEditor
+                  key={textEditorStateBustingKey}
+                  annoHtml={textBody}
+                  updateAnnotationBody={this.updateTextBody}
+              />
+            </Grid>
+          </Grid>
+          <Grid container>
             <Grid item xs={12}>
               <Typography variant="overline">
                 Target
@@ -490,73 +558,6 @@ class AnnotationCreation extends Component {
                   )
                   : null
               }
-            </Grid>
-          </Grid>
-          <Grid container>
-            { mediaIsVideo && (
-            <>
-              <Grid item xs={12}>
-                <ToggleButton value="true" title="Go to start time" size="small" onClick={this.seekToTstart} className={classes.timecontrolsbutton}>
-                  <LastPage />
-                </ToggleButton>
-                <Typography variant="overline">
-                  Start
-                </Typography>
-              </Grid>
-              <Grid item xs={12} className={classes.paper}>
-                <Typography id="range-slider" gutterBottom>
-                  Time range
-                </Typography>
-                <Slider
-                  value={valueTime}
-                  onChange={this.handleChangeTime}
-                  valueLabelDisplay="auto"
-                  aria-labelledby="range-slider"
-                  getAriaValueText={this.valuetextTime}
-                  max = {2000}
-                />
-                <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTstartNow} className={classes.timecontrolsbutton}>
-                  <Alarm />
-                </ToggleButton>
-                <HMSInput seconds={tstart} onChange={this.updateTstart} />
-              </Grid>
-
-              <Grid item xs={12}>
-                <Typography variant="overline">
-                  <ToggleButton value="true" title="Go to end time" size="small" onClick={this.seekToTend} className={classes.timecontrolsbutton}>
-                    <LastPage />
-                  </ToggleButton>
-                  End
-                </Typography>
-              </Grid>
-
-              <Grid item xs={12} className={classes.paper}>
-                <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTendNow} className={classes.timecontrolsbutton}>
-                  <Alarm />
-                </ToggleButton>
-                <HMSInput seconds={tend} onChange={this.updateTend} />
-              </Grid>
-            </>
-            )}
-            <Grid item xs={12}>
-              <Typography variant="overline">
-                Image Content
-              </Typography>
-            </Grid>
-            <Grid item xs={12} style={{ marginBottom: 10 }}>
-              <ImageFormField value={image} onChange={this.handleImgChange} />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="overline">
-                Text Content
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <TextEditor
-                key={textEditorStateBustingKey}
-                annoHtml={textBody}
-                updateAnnotationBody={this.updateTextBody}
-              />
             </Grid>
           </Grid>
           <Button onClick={closeCompanionWindow}>
