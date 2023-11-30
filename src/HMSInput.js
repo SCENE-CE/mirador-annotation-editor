@@ -22,6 +22,9 @@ class HMSInput extends Component {
     this.someChange = this.someChange.bind(this);
     this.addOneSec = this.addOneSec.bind(this);
     this.subOneSec = this.subOneSec.bind(this);
+    this.modifySec = this.modifySec.bind(this);
+    this.modifyMinute = this.modifyMinute.bind(this);
+    this.modifyHours = this.modifyHours.bind(this);
   }
 
   /** update */
@@ -56,6 +59,52 @@ class HMSInput extends Component {
     this.someChange({ target: { name: 'seconds', value: seconds - 1 } });
   }
 
+// Bind arrow key up and down to call subOneSec or AddOneSec
+  modifySec(event){
+    if(event.key === 'ArrowUp'){
+      this.addOneSec();
+    }else if (event.key === 'ArrowDown'){
+      this.subOneSec();
+    }
+  }
+  /** Add one minute by simulating an input change */
+  addOneMinute(){
+    const { minutes } = this.state;
+    this.someChange( { target: { name: 'minutes', value: minutes + 1} });
+  }
+
+  /** Substract one minute by simulation an input change*/
+  subOneMinute() {
+    const { minutes } = this.state;
+    this.someChange({ target: { name: 'minutes', value: minutes - 1 } });
+  }
+// Bind arrow key up and down to call subOneMinute or AddOneMinute
+
+  modifyMinute(event){
+    if(event.key === 'ArrowUp'){
+      this.addOneMinute();
+    }else if (event.key === 'ArrowDown'){
+      this.subOneMinute();
+    }
+  }
+
+  addOneHour(){
+    const { hours } = this.state;
+    this.someChange({target: {name: 'hours', value: hours + 1}})
+  }
+
+  subOneHour(){
+    const { hours } = this.state;
+    this.someChange({target: {name: 'hours', value: hours - 1}})
+  }
+  modifyHours(event){
+    if(event.key === 'ArrowUp'){
+      this.addOneHour();
+    }else if (event.key === 'ArrowDown'){
+      this.subOneHour();
+    }
+  }
+
   /** Render */
   render() {
     const { hours, minutes, seconds } = this.state;
@@ -63,17 +112,9 @@ class HMSInput extends Component {
     return (
       <div className={classes.root}>
         <div className={classes.root}>
-          <Input className={classes.input} name="hours" value={hours} onChange={this.someChange} />
-          <Input className={classes.input} name="minutes" value={minutes} onChange={this.someChange} />
-          <Input className={classes.input} name="seconds" value={seconds} onChange={this.someChange} />
-        </div>
-        <div className={classes.flexcol}>
-          <IconButton size="small" onClick={this.addOneSec}>
-            <ArrowUpward />
-          </IconButton>
-          <IconButton size="small" onClick={this.subOneSec}>
-            <ArrowDownward />
-          </IconButton>
+          <Input className={classes.input} name="hours" value={hours} onKeyDown={this.modifyHours} onChange={this.someChange} />
+          <Input className={classes.input} name="minutes" value={minutes} onKeyDown={this.modifyMinute} onChange={this.someChange} />
+          <Input className={classes.input} name="seconds" value={seconds} onKeyDown={this.modifySec} onChange={this.someChange} />
         </div>
       </div>
     );

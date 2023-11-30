@@ -404,15 +404,19 @@ class AnnotationCreation extends Component {
                         max = {2000}
                     />
                   </Grid>
+                  <Grid item xs={12} className={classes.paper}>
+                  <Grid item xs={6} className={classes.paper}>
                   <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTstartNow} className={classes.timecontrolsbutton}>
                     <Alarm />
                   </ToggleButton>
                   <HMSInput seconds={tstart} onChange={this.updateTstart} />
-                  <Grid item xs={12} className={classes.paper}>
+                  </Grid>
+                  <Grid item xs={6} className={classes.paper}>
                     <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTendNow} className={classes.timecontrolsbutton}>
                       <Alarm />
                     </ToggleButton>
                     <HMSInput seconds={tend} onChange={this.updateTend} />
+                  </Grid>
                   </Grid>
                 </>
             )}
@@ -620,7 +624,11 @@ const styles = (theme) => ({
     marginLeft: '0',
     marginRight: '5px',
     width: '30px',
+    border: 'none',
   },
+  leftSidePanel: {
+    minWidth: '800px',
+  }
 });
 
 AnnotationCreation.propTypes = {
