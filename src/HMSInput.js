@@ -43,8 +43,13 @@ class HMSInput extends Component {
   someChange(ev) {
     const { onChange } = this.props;
     const { state } = this;
-    state[ev.target.name] = Number(ev.target.value);
-    onChange(state.hours * 3600 + state.minutes * 60 + state.seconds);
+    if(Number(isNaN(ev.target.value))){
+      return;
+    }else{
+      console.log(Number(ev.target.value));
+      state[ev.target.name] = Number(ev.target.value);
+      onChange(state.hours * 3600 + state.minutes * 60 + state.seconds);
+    }
   }
 
   /** Add one second by simulating an input change */
