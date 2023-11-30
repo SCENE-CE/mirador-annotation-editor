@@ -241,6 +241,8 @@ class AnnotationCreation extends Component {
   console.log(VideosReferences.valueOf());
     this.updateTstart(timeStart);
     this.updateTend(timeEnd);
+    this.seekToTstart();
+    this.seekToTend();
   };
 
   /** */
@@ -402,29 +404,10 @@ class AnnotationCreation extends Component {
                         max = {2000}
                     />
                   </Grid>
-                  <Grid item xs={12}>
-                    <ToggleButton value="true" title="Go to start time" size="small" onClick={this.seekToTstart} className={classes.timecontrolsbutton}>
-                      <LastPage />
-                    </ToggleButton>
-                    <Typography variant="overline">
-                      Start
-                    </Typography>
-                  </Grid>
-
                   <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTstartNow} className={classes.timecontrolsbutton}>
                     <Alarm />
                   </ToggleButton>
                   <HMSInput seconds={tstart} onChange={this.updateTstart} />
-
-                  <Grid item xs={12}>
-                    <Typography variant="overline">
-                      <ToggleButton value="true" title="Go to end time" size="small" onClick={this.seekToTend} className={classes.timecontrolsbutton}>
-                        <LastPage />
-                      </ToggleButton>
-                      End
-                    </Typography>
-                  </Grid>
-
                   <Grid item xs={12} className={classes.paper}>
                     <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTendNow} className={classes.timecontrolsbutton}>
                       <Alarm />
