@@ -18,13 +18,7 @@ class HMSInput extends Component {
       minutes: m,
       seconds: s,
     };
-
     this.someChange = this.someChange.bind(this);
-    this.addOneSec = this.addOneSec.bind(this);
-    this.subOneSec = this.subOneSec.bind(this);
-    this.modifySec = this.modifySec.bind(this);
-    this.modifyMinute = this.modifyMinute.bind(this);
-    this.modifyHours = this.modifyHours.bind(this);
   }
 
   /** update */
@@ -43,71 +37,10 @@ class HMSInput extends Component {
   someChange(ev) {
     const { onChange } = this.props;
     const { state } = this;
-    if(Number(isNaN(ev.target.value))){
-      return;
-    }else{
-      console.log(Number(ev.target.value));
       state[ev.target.name] = Number(ev.target.value);
       onChange(state.hours * 3600 + state.minutes * 60 + state.seconds);
-    }
-  }
+      console.log('h : ' + state.hours + ' m : ' + state.minutes + ' s : ' + state.seconds)
 
-  /** Add one second by simulating an input change */
-  addOneSec() {
-    const { seconds } = this.state;
-    this.someChange({ target: { name: 'seconds', value: seconds + 1 } });
-  }
-
-  /** Substract one second by simulating an input change */
-  subOneSec() {
-    const { seconds } = this.state;
-    this.someChange({ target: { name: 'seconds', value: seconds - 1 } });
-  }
-
-// Bind arrow key up and down to call subOneSec or AddOneSec
-  modifySec(event){
-    if(event.key === 'ArrowUp'){
-      this.addOneSec();
-    }else if (event.key === 'ArrowDown'){
-      this.subOneSec();
-    }
-  }
-  /** Add one minute by simulating an input change */
-  addOneMinute(){
-    const { minutes } = this.state;
-    this.someChange( { target: { name: 'minutes', value: minutes + 1} });
-  }
-
-  /** Substract one minute by simulation an input change*/
-  subOneMinute() {
-    const { minutes } = this.state;
-    this.someChange({ target: { name: 'minutes', value: minutes - 1 } });
-  }
-// Bind arrow key up and down to call subOneMinute or AddOneMinute
-
-  modifyMinute(event){
-    if(event.key === 'ArrowUp'){
-      this.addOneMinute();
-    }else if (event.key === 'ArrowDown'){
-      this.subOneMinute();
-    }
-  }
-
-  addOneHour(){
-    const { hours } = this.state;
-    this.someChange({target: {name: 'hours', value: hours + 1}})
-  }
-
-  subOneHour(){
-    const { hours } = this.state;
-    this.someChange({target: {name: 'hours', value: hours - 1}})
-  }
-  modifyHours(event){
-    if(event.key === 'ArrowUp'){
-      this.addOneHour();
-    }else if (event.key === 'ArrowDown'){
-      this.subOneHour();
-    }
   }
 
   /** Render */
@@ -117,9 +50,9 @@ class HMSInput extends Component {
     return (
       <div className={classes.root}>
         <div className={classes.root}>
-          <Input className={classes.input} name="hours" value={hours} onKeyDown={this.modifyHours} onChange={this.someChange} />
-          <Input className={classes.input} name="minutes" value={minutes} onKeyDown={this.modifyMinute} onChange={this.someChange} />
-          <Input className={classes.input} name="seconds" value={seconds} onKeyDown={this.modifySec} onChange={this.someChange} />
+          <Input className={classes.input} type='number' min='0' pattern name="hours" value={hours} onChange={this.someChange} />
+          <Input className={classes.input} type='number' min='0' max='59' name="minutes" value={minutes} onChange={this.someChange} />
+          <Input className={classes.input} type='number' min='0' max='59' name="seconds" value={seconds} onChange={this.someChange} />
         </div>
       </div>
     );
@@ -145,6 +78,19 @@ const styles = (theme) => ({
     margin: '2px',
     textAlign: 'center',
     width: '4ch',
+    // remove arrow from field for Firefox
+    '& input[type=number]': {
+      '-moz-appearance': 'textfield'
+    },
+    // remove arrow from field for Chrome, Safari and Opera
+    '& input[type=number]::-webkit-outer-spin-button': {
+      '-webkit-appearance': 'none',
+      margin: 0
+    },
+    '& input[type=number]::-webkit-inner-spin-button': {
+      '-webkit-appearance': 'none',
+      margin: 0
+    }
   },
 });
 
