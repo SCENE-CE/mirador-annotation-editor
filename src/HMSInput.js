@@ -39,8 +39,6 @@ class HMSInput extends Component {
     const { state } = this;
       state[ev.target.name] = Number(ev.target.value);
       onChange(state.hours * 3600 + state.minutes * 60 + state.seconds);
-      console.log('h : ' + state.hours + ' m : ' + state.minutes + ' s : ' + state.seconds)
-
   }
 
   /** Render */
