@@ -136,9 +136,10 @@ class AnnotationCreation extends Component {
       svg: null,
       textBody: '',
       textEditorStateBustingKey: 0,
-      xywh: null,
-      // eslint-disable-next-line sort-keys
+      // eslint-disable-next-line sort-keys,max-len
+      // TO DO : The state must be updated with the video's timing information when the component is mounted
       valueTime: [0, 13],
+      xywh: null,
       ...annoState,
       valuetextTime: '',
     };
@@ -165,7 +166,6 @@ class AnnotationCreation extends Component {
     this.handleChangeTime = this.handleChangeTime.bind(this);
     this.valuetextTime = this.valuetextTime.bind(this);
   }
-
 
   /** */
   handleImgChange(newUrl, imgRef) {
@@ -202,21 +202,23 @@ class AnnotationCreation extends Component {
     this.setState({ tend: Math.floor(this.props.currentTime) });
   }
 
-  // eslint-disable-next-line require-jsdoc
-  valuetextTime() {
-    return `${this.valueTime}°C`;
-  }
+  handleChangeTime = (event, newValueTime) => {
+    const timeStart = newValueTime[0];
+    const timeEnd = newValueTime[1];
+    console.log(VideosReferences.valueOf());
+    this.updateTstart(timeStart);
+    this.updateTend(timeEnd);
+    this.seekToTstart();
+    this.seekToTend();
+  };
+
+  /** update annotation start time */
+  updateTstart(value) { this.setState({ tstart: value }); }
+
+  /** update annotation end time */
+  updateTend(value) { this.setState({ tend: value }); }
 
   /** seekTo/goto annotation start time */
-  seekToTstart() {
-    const { paused, setCurrentTime, setSeekTo } = this.props;
-    const { tstart } = this.state;
-    if (!paused) {
-      this.setState(setSeekTo(tstart));
-    } else {
-      this.setState(setCurrentTime(tstart));
-    }
-  }
 
   /** seekTo/goto annotation end time */
   seekToTend() {
@@ -229,21 +231,21 @@ class AnnotationCreation extends Component {
     }
   }
 
-  /** update annotation start time */
-  updateTstart(value) { this.setState({ tstart: value }); }
+  // eslint-disable-next-line require-jsdoc
+  seekToTstart() {
+    const { paused, setCurrentTime, setSeekTo } = this.props;
+    const { tstart } = this.state;
+    if (!paused) {
+      this.setState(setSeekTo(tstart));
+    } else {
+      this.setState(setCurrentTime(tstart));
+    }
+  }
 
-  /** update annotation end time */
-  updateTend(value) { this.setState({ tend: value }); }
-
-  handleChangeTime = (event, newValueTime) => {
-   let timeStart = newValueTime[0];
-   let timeEnd = newValueTime[1];
-  console.log(VideosReferences.valueOf());
-    this.updateTstart(timeStart);
-    this.updateTend(timeEnd);
-    this.seekToTstart();
-    this.seekToTend();
-  };
+  // eslint-disable-next-line require-jsdoc
+  valuetextTime() {
+    return `${this.valueTime}°C`;
+  }
 
   /** */
   openChooseColor(e) {
@@ -368,7 +370,6 @@ class AnnotationCreation extends Component {
 
     const mediaIsVideo = typeof VideosReferences.get(windowId) !== 'undefined';
 
-    // let value = [20, 47]
     return (
       <CompanionWindow
         title={annotation ? 'Edit annotation' : 'New annotation'}
@@ -390,35 +391,41 @@ class AnnotationCreation extends Component {
         <form onSubmit={this.submitForm} className={classes.section}>
           <Grid container>
             { mediaIsVideo && (
-                <>
-                  <Grid item xs={12} className={classes.paper}>
-                    <Typography id="range-slider" gutterBottom>
-                      Time range
-                    </Typography>
-                    <Slider
-                        value={valueTime}
-                        onChange={this.handleChangeTime}
-                        valueLabelDisplay="auto"
-                        aria-labelledby="range-slider"
-                        getAriaValueText={this.valuetextTime}
-                        max = {2000}
-                    />
-                  </Grid>
-                  <Grid item xs={12} className={classes.paper}>
-                  <Grid item xs={6} className={classes.paper}>
+            <>
+              <Grid item xs={12} className={classes.paper}>
+                <Typography id="range-slider" gutterBottom>
+                  Time range
+                </Typography>
+                <Slider
+                  value={valueTime}
+                  onChange={this.handleChangeTime}
+                  valueLabelDisplay="auto"
+                  aria-labelledby="range-slider"
+                  getAriaValueText={this.valuetextTime}
+                  max={2000}
+                />
+              </Grid>
+              <div className={`${classes.paper} ${classes.selectTimeField} `}>
+                <div className={`${classes.paper} ${classes.selectTimeModule} `}>
                   <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTstartNow} className={classes.timecontrolsbutton}>
-                    <Alarm />
+                    <Alarm fontSize="small" />
                   </ToggleButton>
+                  <div>
+                    <p>Start</p>
+                  </div>
                   <HMSInput seconds={tstart} onChange={this.updateTstart} />
-                  </Grid>
-                  <Grid item xs={6} className={classes.paper}>
-                    <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTendNow} className={classes.timecontrolsbutton}>
-                      <Alarm />
-                    </ToggleButton>
-                    <HMSInput seconds={tend} onChange={this.updateTend} />
-                  </Grid>
-                  </Grid>
-                </>
+                </div>
+                <div className={`${classes.paper} ${classes.selectTimeModule}`}>
+                  <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTendNow} className={classes.timecontrolsbutton}>
+                    <Alarm fontSize="small" />
+                  </ToggleButton>
+                  <div>
+                    <p>End</p>
+                  </div>
+                  <HMSInput seconds={tend} onChange={this.updateTend} />
+                </div>
+              </div>
+            </>
             )}
             <Grid item xs={12}>
               <Typography variant="overline">
@@ -435,9 +442,9 @@ class AnnotationCreation extends Component {
             </Grid>
             <Grid item xs={12}>
               <TextEditor
-                  key={textEditorStateBustingKey}
-                  annoHtml={textBody}
-                  updateAnnotationBody={this.updateTextBody}
+                key={textEditorStateBustingKey}
+                annoHtml={textBody}
+                updateAnnotationBody={this.updateTextBody}
               />
             </Grid>
           </Grid>
@@ -618,17 +625,27 @@ const styles = (theme) => ({
     paddingRight: theme.spacing(1),
     paddingTop: theme.spacing(2),
   },
+  selectTimeField: {
+    alignContent: 'center',
+    boxShadow: 'rgba(149, 157, 165, 0.2) 0px 4px 5px',
+    display: 'flex',
+    flexDirection: 'wrap',
+    gap: '5px',
+    padding: '5px',
+  },
+  selectTimeModule: {
+    display: 'flex',
+    flexWrap: 'nowrap',
+    justifyContent: 'center',
+  },
   timecontrolsbutton: {
+    border: 'none',
     height: '30px',
     margin: 'auto',
     marginLeft: '0',
     marginRight: '5px',
     width: '30px',
-    border: 'none',
   },
-  leftSidePanel: {
-    minWidth: '800px',
-  }
 });
 
 AnnotationCreation.propTypes = {

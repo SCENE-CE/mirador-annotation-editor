@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { IconButton, Input } from '@material-ui/core';
+import { IconButton, Input, TextField } from '@material-ui/core';
 import { ArrowDownward, ArrowUpward } from '@material-ui/icons';
 import { secondsToHMSarray } from './utils';
 
@@ -48,7 +48,8 @@ class HMSInput extends Component {
     return (
       <div className={classes.root}>
         <div className={classes.root}>
-          <Input className={classes.input} type='number' min='0' pattern name="hours" value={hours} onChange={this.someChange} />
+          <Input className={classes.input}
+          variant="filled" type='number' min='0' pattern name="hours" value={hours} onChange={this.someChange} />
           <Input className={classes.input} type='number' min='0' max='59' name="minutes" value={minutes} onChange={this.someChange} />
           <Input className={classes.input} type='number' min='0' max='59' name="seconds" value={seconds} onChange={this.someChange} />
         </div>
