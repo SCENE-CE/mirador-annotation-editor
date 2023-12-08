@@ -411,22 +411,33 @@ class AnnotationCreation extends Component {
               </Grid>
               <div className={`${classes.paper} ${classes.selectTimeField} `}>
                 <div className={`${classes.paper} ${classes.selectTimeModule} `}>
-                  <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTstartNow} className={classes.timecontrolsbutton}>
-                    <Alarm fontSize="small" />
-                  </ToggleButton>
-                  <div>
-                    <p>Start</p>
+                  <div className={classes.buttonTimeContainer}>
+                    <div>
+                      <p className={classes.textTimeButton}>Start</p>
+                    </div>
+                    <ToggleButton
+                        value="true"
+                        title="Set current time"
+                        size="small"
+                        onClick={this.setTstartNow}
+                        className={classes.timecontrolsbutton}
+                    >
+                      <Alarm fontSize="small"/>
+                    </ToggleButton>
                   </div>
-                  <HMSInput seconds={tstart} onChange={this.updateTstart} />
+                  <HMSInput seconds={tstart} onChange={this.updateTstart}/>
                 </div>
                 <div className={`${classes.paper} ${classes.selectTimeModule}`}>
-                  <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTendNow} className={classes.timecontrolsbutton}>
-                    <Alarm fontSize="small" />
-                  </ToggleButton>
+                  <div className={classes.buttonTimeContainer}>
                   <div>
-                    <p>End</p>
+                    <p className={classes.textTimeButton}>End</p>
                   </div>
-                  <HMSInput seconds={tend} onChange={this.updateTend} />
+                  <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTendNow}
+                                className={classes.timecontrolsbutton}>
+                    <Alarm fontSize="small"/>
+                  </ToggleButton>
+                  </div>
+                  <HMSInput seconds={tend} onChange={this.updateTend}/>
                 </div>
               </div>
             </>
@@ -606,6 +617,10 @@ class AnnotationCreation extends Component {
 
 /** */
 const styles = (theme) => ({
+  buttonTimeContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
   divider: {
     margin: theme.spacing(1, 0.5),
   },
@@ -646,6 +661,10 @@ const styles = (theme) => ({
     flexWrap: 'nowrap',
     justifyContent: 'center',
     padding: '5px',
+  },
+  textTimeButton: {
+    margin:0,
+    fontSize: '15px',
   },
   timecontrolsbutton: {
     border: 'none',

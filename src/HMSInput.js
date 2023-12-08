@@ -37,8 +37,8 @@ class HMSInput extends Component {
   someChange(ev) {
     const { onChange } = this.props;
     const { state } = this;
-      state[ev.target.name] = Number(ev.target.value);
-      onChange(state.hours * 3600 + state.minutes * 60 + state.seconds);
+    state[ev.target.name] = Number(ev.target.value);
+    onChange(state.hours * 3600 + state.minutes * 60 + state.seconds);
   }
 
   /** Render */
@@ -48,10 +48,18 @@ class HMSInput extends Component {
     return (
       <div className={classes.root}>
         <div className={classes.root}>
-          <Input className={classes.input}
-          variant="filled" type='number' min='0' pattern name="hours" value={hours} onChange={this.someChange} />
-          <Input className={classes.input} type='number' min='0' max='59' name="minutes" value={minutes} onChange={this.someChange} />
-          <Input className={classes.input} type='number' min='0' max='59' name="seconds" value={seconds} onChange={this.someChange} />
+          <Input
+            className={classes.input}
+            variant="filled"
+            type="number"
+            min="0"
+            pattern
+            name="hours"
+            value={hours}
+            onChange={this.someChange}
+          />
+          <Input className={classes.input} type="number" min="0" max="59" name="minutes" value={minutes} onChange={this.someChange} />
+          <Input className={classes.input} type="number" min="0" max="59" name="seconds" value={seconds} onChange={this.someChange} />
         </div>
       </div>
     );
@@ -79,17 +87,17 @@ const styles = (theme) => ({
     width: '4ch',
     // remove arrow from field for Firefox
     '& input[type=number]': {
-      '-moz-appearance': 'textfield'
+      '-moz-appearance': 'textfield',
     },
     // remove arrow from field for Chrome, Safari and Opera
     '& input[type=number]::-webkit-outer-spin-button': {
       '-webkit-appearance': 'none',
-      margin: 0
+      margin: 0,
     },
     '& input[type=number]::-webkit-inner-spin-button': {
       '-webkit-appearance': 'none',
-      margin: 0
-    }
+      margin: 0,
+    },
   },
 });
 
