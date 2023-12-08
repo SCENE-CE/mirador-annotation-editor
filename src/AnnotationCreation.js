@@ -389,6 +389,18 @@ class AnnotationCreation extends Component {
           player={mediaIsVideo ? VideosReferences.get(windowId) : OSDReferences.get(windowId)}
         />
         <form onSubmit={this.submitForm} className={classes.section}>
+          <Grid item xs={12}>
+            <Typography variant="overline">
+              Text Content
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <TextEditor
+                key={textEditorStateBustingKey}
+                annoHtml={textBody}
+                updateAnnotationBody={this.updateTextBody}
+            />
+          </Grid>
           <Grid container>
             { mediaIsVideo && (
             <>
@@ -449,18 +461,6 @@ class AnnotationCreation extends Component {
             </Grid>
             <Grid item xs={12} style={{ marginBottom: 10 }}>
               <ImageFormField value={image} onChange={this.handleImgChange} />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="overline">
-                Text Content
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <TextEditor
-                key={textEditorStateBustingKey}
-                annoHtml={textBody}
-                updateAnnotationBody={this.updateTextBody}
-              />
             </Grid>
           </Grid>
           <Grid container>
