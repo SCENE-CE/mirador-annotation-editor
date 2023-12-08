@@ -393,7 +393,7 @@ class AnnotationCreation extends Component {
             { mediaIsVideo && (
             <>
               <Grid item xs={12} className={classes.paper}>
-                <Typography id="range-slider" gutterBottom>
+                <Typography id="range-slider" variant="overline">
                   Time range
                 </Typography>
                 <Slider
