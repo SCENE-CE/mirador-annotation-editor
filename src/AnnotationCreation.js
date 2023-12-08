@@ -394,7 +394,7 @@ class AnnotationCreation extends Component {
             <>
               <Grid item xs={12} className={classes.paper}>
                 <Typography id="range-slider" variant="overline">
-                  Time range
+                  Display period
                 </Typography>
                 <Slider
                   value={valueTime}
@@ -403,6 +403,10 @@ class AnnotationCreation extends Component {
                   aria-labelledby="range-slider"
                   getAriaValueText={this.valuetextTime}
                   max={2000}
+                  color="secondary"
+                  classes={{
+                    root: classes.MuiSliderColorSecondary,
+                  }}
                 />
               </Grid>
               <div className={`${classes.paper} ${classes.selectTimeField} `}>
@@ -615,6 +619,9 @@ const styles = (theme) => ({
     border: 'none',
     margin: theme.spacing(0.5),
   },
+  MuiSliderColorSecondary: {
+    color: 'rgba(1, 0, 0, 0.38)',
+  },
   paper: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -627,16 +634,18 @@ const styles = (theme) => ({
   },
   selectTimeField: {
     alignContent: 'center',
-    boxShadow: 'rgba(149, 157, 165, 0.2) 0px 4px 5px',
     display: 'flex',
     flexDirection: 'wrap',
     gap: '5px',
     padding: '5px',
   },
   selectTimeModule: {
+    border: '1px solid rgba(0, 0, 0, 0.12)',
+    borderRadius: '4px',
     display: 'flex',
     flexWrap: 'nowrap',
     justifyContent: 'center',
+    padding: '5px',
   },
   timecontrolsbutton: {
     border: 'none',
