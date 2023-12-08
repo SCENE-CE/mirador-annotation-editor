@@ -57,9 +57,10 @@ class HMSInput extends Component {
             name="hours"
             value={hours}
             onChange={this.someChange}
+            inputProps={{ style: {textAlign: 'center'} }}
           />
-          <Input className={classes.input} type="number" min="0" max="59" name="minutes" value={minutes} onChange={this.someChange} />
-          <Input className={classes.input} type="number" min="0" max="59" name="seconds" value={seconds} onChange={this.someChange} />
+          <Input className={classes.input} type="number" min="0" max="59" name="minutes" value={minutes} onChange={this.someChange} inputProps={{ style: {textAlign: 'center'} }}/>
+          <Input className={classes.input} type="number" min="0" max="59" name="seconds" value={seconds} onChange={this.someChange} inputProps={{ style: {textAlign: 'center'} }}/>
         </div>
       </div>
     );
@@ -71,7 +72,6 @@ const styles = (theme) => ({
   root: {
     alignItems: 'center',
     display: 'flex',
-    justifyContent: 'end',
   },
   // eslint-disable-next-line sort-keys
   flexcol: {
@@ -83,8 +83,6 @@ const styles = (theme) => ({
   input: {
     height: 'fit-content',
     margin: '2px',
-    textAlign: 'center',
-    width: '4ch',
     // remove arrow from field for Firefox
     '& input[type=number]': {
       '-moz-appearance': 'textfield',
