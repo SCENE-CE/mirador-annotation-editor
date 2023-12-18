@@ -204,11 +204,11 @@ class AnnotationCreation extends Component {
   handleChangeTime = (event, newValueTime) => {
     const timeStart = newValueTime[0];
     const timeEnd = newValueTime[1];
-    console.log(newValueTime);
     this.updateTstart(timeStart);
     this.updateTend(timeEnd);
     this.seekToTstart();
     this.seekToTend();
+    this.setState({ valueTime: newValueTime });
   };
 
   /** update annotation start time */
