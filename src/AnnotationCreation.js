@@ -366,7 +366,12 @@ class AnnotationCreation extends Component {
       textEditorStateBustingKey, image, valueTime,
     } = this.state;
 
+    let mediaVideo;
+    // TODO : Vérifier ce code, c'est étrange de comprarer un typeof à une chaine de caractère.
     const mediaIsVideo = typeof VideosReferences.get(windowId) !== 'undefined';
+    if (mediaIsVideo) {
+      mediaVideo = VideosReferences.get(windowId);
+    }
 
     return (
       <CompanionWindow
@@ -406,6 +411,9 @@ class AnnotationCreation extends Component {
             { mediaIsVideo && (
             <>
               <Grid item xs={12} className={classes.paper}>
+                <Typography>
+                  {mediaIsVideo ? mediaVideo?.video.duration : null}
+                </Typography>
                 <Typography id="range-slider" variant="overline">
                   Display period
                 </Typography>
@@ -415,7 +423,7 @@ class AnnotationCreation extends Component {
                   valueLabelDisplay="auto"
                   aria-labelledby="range-slider"
                   getAriaValueText={this.valuetextTime}
-                  max={3000}
+                  max={mediaVideo ? mediaVideo.video.duration : null}
                   color="secondary"
                   classes={{
                     root: classes.MuiSliderColorSecondary,
