@@ -33,7 +33,6 @@ import CursorIcon from './icons/Cursor';
 import HMSInput from './HMSInput';
 import ImageFormField from './ImageFormField';
 import { secondsToHMS } from './utils';
-
 /** Extract time information from annotation target */
 function timeFromAnnoTarget(annotarget) {
   console.info('TODO proper time extraction from: ', annotarget);
@@ -416,7 +415,7 @@ class AnnotationCreation extends Component {
                   valueLabelDisplay="auto"
                   aria-labelledby="range-slider"
                   getAriaValueText={this.valuetextTime}
-                  max={2000}
+                  max={3000}
                   color="secondary"
                   classes={{
                     root: classes.MuiSliderColorSecondary,
