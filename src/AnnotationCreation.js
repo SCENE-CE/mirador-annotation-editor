@@ -411,9 +411,6 @@ class AnnotationCreation extends Component {
             { mediaIsVideo && (
             <>
               <Grid item xs={12} className={classes.paper}>
-                <Typography>
-                  {mediaIsVideo ? mediaVideo?.video.duration : null}
-                </Typography>
                 <Typography id="range-slider" variant="overline">
                   Display period
                 </Typography>
@@ -425,6 +422,7 @@ class AnnotationCreation extends Component {
                   getAriaValueText={this.valuetextTime}
                   max={mediaVideo ? mediaVideo.video.duration : null}
                   color="secondary"
+                  windowId={windowId}
                   classes={{
                     root: classes.MuiSliderColorSecondary,
                   }}
