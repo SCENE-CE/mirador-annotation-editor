@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { TextField } from '@material-ui/core';
+import { withStyles } from '@mui/material/styles';
+import { TextField } from '@mui/material';
 
 /** URL input with an <img> preview */
 class ImageFormField extends Component {

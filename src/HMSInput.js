@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { IconButton, Input, TextField } from '@material-ui/core';
-import { ArrowDownward, ArrowUpward } from '@material-ui/icons';
+import { withStyles } from '@mui/material/styles';
+import { Input } from '@mui/material';
 import { secondsToHMSarray } from './utils';
 
 /** hh:mm:ss input which behave like a single input for parent */
