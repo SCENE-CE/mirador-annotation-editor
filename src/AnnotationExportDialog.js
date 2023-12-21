@@ -11,7 +11,6 @@ import Typography from '@mui/material/Typography';
 import PropTypes, { bool } from 'prop-types';
 import { styled } from '@mui/system';
 
-
 /** */
 const styles = (theme) => ({
   listitem: {

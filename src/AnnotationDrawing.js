@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import ResizeObserver from 'react-resize-observer';
-import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
+import { OSDReferences } from '../mirador/dist/es/src/plugins/OSDReferences';
+import { VideosReferences } from '../mirador/dist/es/src/plugins/VideosReferences';
 import { renderWithPaperScope, PaperContainer } from '@psychobolt/react-paperjs';
 import
 {
