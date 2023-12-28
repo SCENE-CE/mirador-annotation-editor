@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import * as actions from '../../mirador/src/state/actions';
-import { getWindowViewType } from 'mirador/src/state/selectors';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import GetAppIcon from '@mui/icons-material/GetApp';
+import { getWindowViewType } from '../../mirador/src/state/selectors';
+import * as actions from '../../mirador/src/state/actions';
 import { MiradorMenuButton } from '../../mirador/src/components/MiradorMenuButton';
 import { getVisibleCanvases } from '../../mirador/dist/es/src/state/selectors/canvases';
 import SingleCanvasDialog from '../SingleCanvasDialog';
