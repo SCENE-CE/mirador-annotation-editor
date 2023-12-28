@@ -70,34 +70,33 @@ class TextEditor extends Component {
     const currentStyle = editorState.getCurrentInlineStyle();
 
     return (
-      <div>
-        <ToggleButtonGroup
-          size="small"
-          value={currentStyle.toArray()}
-        >
-          <ToggleButton
-            onClick={this.handleFormating}
-            value="BOLD"
+        <div>
+          <div className={classes.editorRoot} onClick={this.handleFocus}>
+            <Editor
+                editorState={editorState}
+                handleKeyCommand={this.handleKeyCommand}
+                onChange={this.onChange}
+                ref={this.editorRef}
+            />
+          </div>
+          <ToggleButtonGroup
+              size="small"
+              value={currentStyle.toArray()}
           >
-            <BoldIcon />
-          </ToggleButton>
-          <ToggleButton
-            onClick={this.handleFormating}
-            value="ITALIC"
-          >
-            <ItalicIcon />
-          </ToggleButton>
-        </ToggleButtonGroup>
-
-        <div className={classes.editorRoot} onClick={this.handleFocus}>
-          <Editor
-            editorState={editorState}
-            handleKeyCommand={this.handleKeyCommand}
-            onChange={this.onChange}
-            ref={this.editorRef}
-          />
+            <ToggleButton
+                onClick={this.handleFormating}
+                value="BOLD"
+            >
+              <BoldIcon/>
+            </ToggleButton>
+            <ToggleButton
+                onClick={this.handleFormating}
+                value="ITALIC"
+            >
+              <ItalicIcon/>
+            </ToggleButton>
+          </ToggleButtonGroup>
         </div>
-      </div>
     );
   }
 }
