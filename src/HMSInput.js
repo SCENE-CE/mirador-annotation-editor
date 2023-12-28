@@ -56,10 +56,13 @@ class HMSInput extends Component {
             name="hours"
             value={hours}
             onChange={this.someChange}
-            inputProps={{ style: {textAlign: 'center'} }}
+            inputProps={{ style: { textAlign: 'center' } }}
           />
-          <Input className={classes.input} type="number" min="0" max="59" name="minutes" value={minutes} onChange={this.someChange} inputProps={{ style: {textAlign: 'center'} }}/>
-          <Input className={classes.input} type="number" min="0" max="59" name="seconds" value={seconds} onChange={this.someChange} inputProps={{ style: {textAlign: 'center'} }}/>
+          <span className={classes.hmsLabel}>h</span>
+          <Input className={classes.input} type="number" min="0" max="59" name="minutes" value={minutes} onChange={this.someChange} inputProps={{ style: { textAlign: 'center' } }} />
+          <span className={classes.hmsLabel}>m</span>
+          <Input className={classes.input} type="number" min="0" max="59" name="seconds" value={seconds} onChange={this.someChange} inputProps={{ style: { textAlign: 'center' } }} />
+          <span className={classes.hmsLabel}>s</span>
         </div>
       </div>
     );
@@ -77,6 +80,9 @@ const styles = (theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+  },
+  hmsLabel: {
+    color: 'grey',
   },
   // eslint-disable-next-line sort-keys
   input: {

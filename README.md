@@ -1,5 +1,22 @@
 # mirador-annotations
 
+## Install
+
+```
+nvm use
+git clone gitlab@gitlab.tetras-libre.fr:iiif/mirador/mirador-annotations.git
+cd mirador-annotations/
+git checkout mui5/React17
+git clone gitlab@gitlab.tetras-libre.fr:iiif/mirador/mirador-video.git
+rm -r mirador
+mv mirador-video/ mirador
+cd mirador/
+git checkout 3def696e
+npm install
+cd ..
+npm install
+```
+
 [![Travis][build-badge]][build]
 [![npm package][npm-badge]][npm]
 [![Coveralls][coveralls-badge]][coveralls]

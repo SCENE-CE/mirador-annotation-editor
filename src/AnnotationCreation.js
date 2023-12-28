@@ -137,7 +137,7 @@ class AnnotationCreation extends Component {
       textEditorStateBustingKey: 0,
       // eslint-disable-next-line sort-keys,max-len
       // TO DO : The state must be updated with the video's timing information when the component is mounted
-      valueTime: [0, 13],
+      valueTime: [0, 1],
       xywh: null,
       ...annoState,
       valuetextTime: '',
@@ -376,6 +376,8 @@ class AnnotationCreation extends Component {
     const mediaIsVideo = typeof VideosReferences.get(windowId) !== 'undefined';
     if (mediaIsVideo) {
       mediaVideo = VideosReferences.get(windowId);
+      valueTime[0] = tstart;
+      valueTime[1] = tend;
     }
 
     return (
@@ -419,12 +421,15 @@ class AnnotationCreation extends Component {
                 <Typography id="range-slider" variant="overline">
                   Display period
                 </Typography>
+               {/*  <Typography>
+                  {mediaIsVideo ? mediaVideo?.video.duration : null}
+                </Typography> */}
                 <Slider
                   value={valueTime}
                   onChange={this.handleChangeTime}
                   valueLabelDisplay="auto"
                   aria-labelledby="range-slider"
-                  getAriaValueText={this.valuetextTime}
+                  getAriaValueText={secondsToHMS}
                   max={mediaVideo ? mediaVideo.video.duration : null}
                   color="secondary"
                   windowId={windowId}
@@ -696,6 +701,7 @@ const styles = (theme) => ({
   textTimeButton: {
     fontSize: '15px',
     margin: 0,
+    minWidth: '40px',
   },
   timecontrolsbutton: {
     border: 'none',
@@ -703,7 +709,6 @@ const styles = (theme) => ({
     margin: 'auto',
     marginLeft: '0',
     marginRight: '5px',
-    width: '30px',
   },
 });
 
