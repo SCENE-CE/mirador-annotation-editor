@@ -59,4 +59,4 @@ ImageFormField.propTypes = {
 ImageFormField.defaultProps = {
 };
 
-export default withStyles(styles)(ImageFormField);
+export default ImageFormField;

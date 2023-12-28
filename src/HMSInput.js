@@ -114,4 +114,4 @@ HMSInput.propTypes = {
 HMSInput.defaultProps = {
 };
 
-export default withStyles(styles)(HMSInput);
+export default HMSInput;

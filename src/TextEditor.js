@@ -5,7 +5,6 @@ import ToggleButton from '@mui/lab/ToggleButton';
 import ToggleButtonGroup from '@mui/lab/ToggleButtonGroup';
 import BoldIcon from '@mui/icons-material/FormatBold';
 import ItalicIcon from '@mui/icons-material/FormatItalic';
-import { withStyles } from '@mui/material/styles';
 import { stateToHTML } from 'draft-js-export-html';
 import { stateFromHTML } from 'draft-js-import-html';
 
@@ -129,4 +128,4 @@ TextEditor.defaultProps = {
   updateAnnotationBody: () => {},
 };
 
-export default withStyles(styles)(TextEditor);
+export default TextEditor;
