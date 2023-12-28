@@ -411,12 +411,12 @@ class AnnotationCreation extends Component {
             { mediaIsVideo && (
             <>
               <Grid item xs={12} className={classes.paper}>
-                <Typography>
-                  {mediaIsVideo ? mediaVideo?.video.duration : null}
-                </Typography>
                 <Typography id="range-slider" variant="overline">
                   Display period
                 </Typography>
+               {/*  <Typography>
+                  {mediaIsVideo ? mediaVideo?.video.duration : null}
+                </Typography> */}
                 <Slider
                   value={valueTime}
                   onChange={this.handleChangeTime}
@@ -692,6 +692,7 @@ const styles = (theme) => ({
   textTimeButton: {
     fontSize: '15px',
     margin: 0,
+    minWidth: '40px',
   },
   timecontrolsbutton: {
     border: 'none',
@@ -699,7 +700,6 @@ const styles = (theme) => ({
     margin: 'auto',
     marginLeft: '0',
     marginRight: '5px',
-    width: '30px',
   },
 });
 
