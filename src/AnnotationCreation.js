@@ -19,13 +19,13 @@ import StrokeColorIcon from '@material-ui/icons/BorderColor';
 import LineWeightIcon from '@material-ui/icons/LineWeight';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import FormatShapesIcon from '@material-ui/icons/FormatShapes';
-import TextField from '@material-ui/core/TextField';
 import { SketchPicker } from 'react-color';
 import { v4 as uuid } from 'uuid';
 import { withStyles } from '@material-ui/core/styles';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
+import Slider from '@material-ui/core/Slider';
 import AnnotationDrawing from './AnnotationDrawing';
 import TextEditor from './TextEditor';
 import WebAnnotation from './WebAnnotation';
@@ -33,7 +33,6 @@ import CursorIcon from './icons/Cursor';
 import HMSInput from './HMSInput';
 import ImageFormField from './ImageFormField';
 import { secondsToHMS } from './utils';
-
 /** Extract time information from annotation target */
 function timeFromAnnoTarget(annotarget) {
   console.info('TODO proper time extraction from: ', annotarget);
@@ -62,7 +61,6 @@ class AnnotationCreation extends Component {
     super(props);
 
     const annoState = {};
-
     if (props.annotation) {
       //
       // annotation body
@@ -136,8 +134,12 @@ class AnnotationCreation extends Component {
       svg: null,
       textBody: '',
       textEditorStateBustingKey: 0,
+      // eslint-disable-next-line sort-keys,max-len
+      // TO DO : The state must be updated with the video's timing information when the component is mounted
+      valueTime: [0, 1],
       xywh: null,
       ...annoState,
+      valuetextTime: '',
     };
 
     this.submitForm = this.submitForm.bind(this);
@@ -159,6 +161,8 @@ class AnnotationCreation extends Component {
     this.closeChooseColor = this.closeChooseColor.bind(this);
     this.updateStrokeColor = this.updateStrokeColor.bind(this);
     this.handleImgChange = this.handleImgChange.bind(this);
+    this.handleChangeTime = this.handleChangeTime.bind(this);
+    this.valuetextTime = this.valuetextTime.bind(this);
   }
 
   /** */
@@ -196,16 +200,23 @@ class AnnotationCreation extends Component {
     this.setState({ tend: Math.floor(this.props.currentTime) });
   }
 
+  handleChangeTime = (event, newValueTime) => {
+    const timeStart = newValueTime[0];
+    const timeEnd = newValueTime[1];
+    this.updateTstart(timeStart);
+    this.updateTend(timeEnd);
+    this.seekToTstart();
+    this.seekToTend();
+    this.setState({ valueTime: newValueTime });
+  };
+
+  /** update annotation start time */
+  updateTstart(value) { this.setState({ tstart: value }); }
+
+  /** update annotation end time */
+  updateTend(value) { this.setState({ tend: value }); }
+
   /** seekTo/goto annotation start time */
-  seekToTstart() {
-    const { paused, setCurrentTime, setSeekTo } = this.props;
-    const { tstart } = this.state;
-    if (!paused) {
-      this.setState(setSeekTo(tstart));
-    } else {
-      this.setState(setCurrentTime(tstart));
-    }
-  }
 
   /** seekTo/goto annotation end time */
   seekToTend() {
@@ -218,11 +229,21 @@ class AnnotationCreation extends Component {
     }
   }
 
-  /** update annotation start time */
-  updateTstart(value) { this.setState({ tstart: value }); }
+  // eslint-disable-next-line require-jsdoc
+  seekToTstart() {
+    const { paused, setCurrentTime, setSeekTo } = this.props;
+    const { tstart } = this.state;
+    if (!paused) {
+      this.setState(setSeekTo(tstart));
+    } else {
+      this.setState(setCurrentTime(tstart));
+    }
+  }
 
-  /** update annotation end time */
-  updateTend(value) { this.setState({ tend: value }); }
+  // eslint-disable-next-line require-jsdoc
+  valuetextTime() {
+    return this.valueTime;
+  }
 
   /** */
   openChooseColor(e) {
@@ -342,10 +363,17 @@ class AnnotationCreation extends Component {
       activeTool, colorPopoverOpen, currentColorType, fillColor, popoverAnchorEl,
       strokeColor, popoverLineWeightAnchorEl, lineWeightPopoverOpen, strokeWidth, closedMode,
       textBody, svg, tstart, tend,
-      textEditorStateBustingKey, image,
+      textEditorStateBustingKey, image, valueTime,
     } = this.state;
 
+    let mediaVideo;
+    // TODO : Vérifier ce code, c'est étrange de comprarer un typeof à une chaine de caractère.
     const mediaIsVideo = typeof VideosReferences.get(windowId) !== 'undefined';
+    if (mediaIsVideo) {
+      mediaVideo = VideosReferences.get(windowId);
+      valueTime[0] = tstart;
+      valueTime[1] = tend;
+    }
 
     return (
       <CompanionWindow
@@ -366,156 +394,7 @@ class AnnotationCreation extends Component {
           player={mediaIsVideo ? VideosReferences.get(windowId) : OSDReferences.get(windowId)}
         />
         <form onSubmit={this.submitForm} className={classes.section}>
-          <Grid container>
-            <Grid item xs={12}>
-              <Typography variant="overline">
-                Target
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper elevation={0} className={classes.paper}>
-                <ToggleButtonGroup
-                  className={classes.grouped}
-                  value={activeTool}
-                  exclusive
-                  onChange={this.changeTool}
-                  aria-label="tool selection"
-                  size="small"
-                >
-                  <ToggleButton value="cursor" aria-label="select cursor">
-                    <CursorIcon />
-                  </ToggleButton>
-                  <ToggleButton value="edit" aria-label="select cursor">
-                    <FormatShapesIcon />
-                  </ToggleButton>
-                </ToggleButtonGroup>
-                <Divider flexItem orientation="vertical" className={classes.divider} />
-                <ToggleButtonGroup
-                  className={classes.grouped}
-                  value={activeTool}
-                  exclusive
-                  onChange={this.changeTool}
-                  aria-label="tool selection"
-                  size="small"
-                >
-                  <ToggleButton value="rectangle" aria-label="add a rectangle">
-                    <RectangleIcon />
-                  </ToggleButton>
-                  <ToggleButton value="ellipse" aria-label="add a circle">
-                    <CircleIcon />
-                  </ToggleButton>
-                  <ToggleButton value="polygon" aria-label="add a polygon">
-                    <PolygonIcon />
-                  </ToggleButton>
-                  <ToggleButton value="freehand" aria-label="free hand polygon">
-                    <GestureIcon />
-                  </ToggleButton>
-                </ToggleButtonGroup>
-              </Paper>
-            </Grid>
-          </Grid>
-          <Grid container>
-            <Grid item xs={12}>
-              <Typography variant="overline">
-                Style
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <ToggleButtonGroup
-                aria-label="style selection"
-                size="small"
-              >
-                <ToggleButton
-                  value="strokeColor"
-                  aria-label="select color"
-                  onClick={this.openChooseColor}
-                >
-                  <StrokeColorIcon style={{ fill: strokeColor }} />
-                  <ArrowDropDownIcon />
-                </ToggleButton>
-                <ToggleButton
-                  value="strokeColor"
-                  aria-label="select line weight"
-                  onClick={this.openChooseLineWeight}
-                >
-                  <LineWeightIcon />
-                  <ArrowDropDownIcon />
-                </ToggleButton>
-                <ToggleButton
-                  value="fillColor"
-                  aria-label="select color"
-                  onClick={this.openChooseColor}
-                >
-                  <FormatColorFillIcon style={{ fill: fillColor }} />
-                  <ArrowDropDownIcon />
-                </ToggleButton>
-              </ToggleButtonGroup>
-
-              <Divider flexItem orientation="vertical" className={classes.divider} />
-              { /* close / open polygon mode only for freehand drawing mode. */
-                activeTool === 'freehand'
-                  ? (
-                    <ToggleButtonGroup
-                      size="small"
-                      value={closedMode}
-                      onChange={this.changeClosedMode}
-                    >
-                      <ToggleButton value="closed">
-                        <ClosedPolygonIcon />
-                      </ToggleButton>
-                      <ToggleButton value="open">
-                        <OpenPolygonIcon />
-                      </ToggleButton>
-                    </ToggleButtonGroup>
-                  )
-                  : null
-              }
-            </Grid>
-          </Grid>
-          <Grid container>
-            { mediaIsVideo && (
-            <>
-              <Grid item xs={12}>
-                <ToggleButton value="true" title="Go to start time" size="small" onClick={this.seekToTstart} className={classes.timecontrolsbutton}>
-                  <LastPage />
-                </ToggleButton>
-                <Typography variant="overline">
-                  Start
-                </Typography>
-              </Grid>
-
-              <Grid item xs={12} className={classes.paper}>
-                <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTstartNow} className={classes.timecontrolsbutton}>
-                  <Alarm />
-                </ToggleButton>
-                <HMSInput seconds={tstart} onChange={this.updateTstart} />
-              </Grid>
-
-              <Grid item xs={12}>
-                <Typography variant="overline">
-                  <ToggleButton value="true" title="Go to end time" size="small" onClick={this.seekToTend} className={classes.timecontrolsbutton}>
-                    <LastPage />
-                  </ToggleButton>
-                  End
-                </Typography>
-              </Grid>
-
-              <Grid item xs={12} className={classes.paper}>
-                <ToggleButton value="true" title="Set current time" size="small" onClick={this.setTendNow} className={classes.timecontrolsbutton}>
-                  <Alarm />
-                </ToggleButton>
-                <HMSInput seconds={tend} onChange={this.updateTend} />
-              </Grid>
-            </>
-            )}
-            <Grid item xs={12}>
-              <Typography variant="overline">
-                Image Content
-              </Typography>
-            </Grid>
-            <Grid item xs={12} style={{ marginBottom: 10 }}>
-              <ImageFormField value={image} onChange={this.handleImgChange} />
-            </Grid>
+          <div>
             <Grid item xs={12}>
               <Typography variant="overline">
                 Text Content
@@ -528,13 +407,201 @@ class AnnotationCreation extends Component {
                 updateAnnotationBody={this.updateTextBody}
               />
             </Grid>
-          </Grid>
-          <Button onClick={closeCompanionWindow}>
-            Cancel
-          </Button>
-          <Button variant="contained" color="primary" type="submit">
-            Save
-          </Button>
+          </div>
+          <div>
+
+            { mediaIsVideo && (
+            <>
+              <Grid item xs={12} className={classes.paper}>
+                <Typography id="range-slider" variant="overline">
+                  Display period
+                </Typography>
+               {/*  <Typography>
+                  {mediaIsVideo ? mediaVideo?.video.duration : null}
+                </Typography> */}
+                <Slider
+                  value={valueTime}
+                  onChange={this.handleChangeTime}
+                  valueLabelDisplay="auto"
+                  aria-labelledby="range-slider"
+                  getAriaValueText={secondsToHMS}
+                  max={mediaVideo ? mediaVideo.video.duration : null}
+                  color="secondary"
+                  classes={{
+                    root: classes.MuiSliderColorSecondary,
+                  }}
+                />
+              </Grid>
+              <div className={`${classes.paper} ${classes.selectTimeField} `}>
+                <div className={`${classes.paper} ${classes.selectTimeModule} `}>
+                  <div className={classes.buttonTimeContainer}>
+                    <div>
+                      <p className={classes.textTimeButton}>Start</p>
+                    </div>
+                    <ToggleButton
+                      value="true"
+                      title="Set current time"
+                      size="small"
+                      onClick={this.setTstartNow}
+                      className={classes.timecontrolsbutton}
+                    >
+                      <Alarm fontSize="small" />
+                    </ToggleButton>
+                  </div>
+                  <HMSInput seconds={tstart} onChange={this.updateTstart} />
+                </div>
+                <div className={`${classes.paper} ${classes.selectTimeModule}`}>
+                  <div className={classes.buttonTimeContainer}>
+                    <div>
+                      <p className={classes.textTimeButton}>End</p>
+                    </div>
+                    <ToggleButton
+                      value="true"
+                      title="Set current time"
+                      size="small"
+                      onClick={this.setTendNow}
+                      className={classes.timecontrolsbutton}
+                    >
+                      <Alarm fontSize="small" />
+                    </ToggleButton>
+                  </div>
+                  <HMSInput seconds={tend} onChange={this.updateTend} />
+                </div>
+              </div>
+            </>
+            )}
+          </div>
+          <div>
+            <Grid container>
+
+              <Grid item xs={12}>
+                <Typography variant="overline">
+                  Image Content
+                </Typography>
+              </Grid>
+              <Grid item xs={12} style={{ marginBottom: 10 }}>
+                <ImageFormField value={image} onChange={this.handleImgChange} />
+              </Grid>
+            </Grid>
+          </div>
+          <div>
+            <Grid container>
+              <Grid item xs={12}>
+                <Typography variant="overline">
+                  Target
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Paper elevation={0} className={classes.paper}>
+                  <ToggleButtonGroup
+                    className={classes.grouped}
+                    value={activeTool}
+                    exclusive
+                    onChange={this.changeTool}
+                    aria-label="tool selection"
+                    size="small"
+                  >
+                    <ToggleButton value="cursor" aria-label="select cursor">
+                      <CursorIcon />
+                    </ToggleButton>
+                    <ToggleButton value="edit" aria-label="select cursor">
+                      <FormatShapesIcon />
+                    </ToggleButton>
+                  </ToggleButtonGroup>
+                  <Divider flexItem orientation="vertical" className={classes.divider} />
+                  <ToggleButtonGroup
+                    className={classes.grouped}
+                    value={activeTool}
+                    exclusive
+                    onChange={this.changeTool}
+                    aria-label="tool selection"
+                    size="small"
+                  >
+                    <ToggleButton value="rectangle" aria-label="add a rectangle">
+                      <RectangleIcon />
+                    </ToggleButton>
+                    <ToggleButton value="ellipse" aria-label="add a circle">
+                      <CircleIcon />
+                    </ToggleButton>
+                    <ToggleButton value="polygon" aria-label="add a polygon">
+                      <PolygonIcon />
+                    </ToggleButton>
+                    <ToggleButton value="freehand" aria-label="free hand polygon">
+                      <GestureIcon />
+                    </ToggleButton>
+                  </ToggleButtonGroup>
+                </Paper>
+              </Grid>
+            </Grid>
+          </div>
+          <div>
+            <Grid container>
+              <Grid item xs={12}>
+                <Typography variant="overline">
+                  Style
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <ToggleButtonGroup
+                  aria-label="style selection"
+                  size="small"
+                >
+                  <ToggleButton
+                    value="strokeColor"
+                    aria-label="select color"
+                    onClick={this.openChooseColor}
+                  >
+                    <StrokeColorIcon style={{ fill: strokeColor }} />
+                    <ArrowDropDownIcon />
+                  </ToggleButton>
+                  <ToggleButton
+                    value="strokeColor"
+                    aria-label="select line weight"
+                    onClick={this.openChooseLineWeight}
+                  >
+                    <LineWeightIcon />
+                    <ArrowDropDownIcon />
+                  </ToggleButton>
+                  <ToggleButton
+                    value="fillColor"
+                    aria-label="select color"
+                    onClick={this.openChooseColor}
+                  >
+                    <FormatColorFillIcon style={{ fill: fillColor }} />
+                    <ArrowDropDownIcon />
+                  </ToggleButton>
+                </ToggleButtonGroup>
+
+                <Divider flexItem orientation="vertical" className={classes.divider} />
+                { /* close / open polygon mode only for freehand drawing mode. */
+                  activeTool === 'freehand'
+                    ? (
+                      <ToggleButtonGroup
+                        size="small"
+                        value={closedMode}
+                        onChange={this.changeClosedMode}
+                      >
+                        <ToggleButton value="closed">
+                          <ClosedPolygonIcon />
+                        </ToggleButton>
+                        <ToggleButton value="open">
+                          <OpenPolygonIcon />
+                        </ToggleButton>
+                      </ToggleButtonGroup>
+                    )
+                    : null
+                }
+              </Grid>
+            </Grid>
+          </div>
+          <div>
+            <Button onClick={closeCompanionWindow}>
+              Cancel
+            </Button>
+            <Button variant="contained" color="primary" type="submit">
+              Save
+            </Button>
+          </div>
         </form>
         <Popover
           open={lineWeightPopoverOpen}
@@ -574,9 +641,12 @@ class AnnotationCreation extends Component {
     );
   }
 }
-
 /** */
 const styles = (theme) => ({
+  buttonTimeContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
   divider: {
     margin: theme.spacing(1, 0.5),
   },
@@ -590,22 +660,48 @@ const styles = (theme) => ({
     border: 'none',
     margin: theme.spacing(0.5),
   },
+  MuiSliderColorSecondary: {
+    color: 'rgba(1, 0, 0, 0.38)',
+  },
   paper: {
     display: 'flex',
     flexWrap: 'wrap',
   },
   section: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
     paddingBottom: theme.spacing(1),
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),
     paddingTop: theme.spacing(2),
   },
+  selectTimeField: {
+    alignContent: 'center',
+    display: 'flex',
+    flexDirection: 'wrap',
+    gap: '5px',
+    padding: '5px',
+  },
+  selectTimeModule: {
+    border: '1px solid rgba(0, 0, 0, 0.12)',
+    borderRadius: '4px',
+    display: 'flex',
+    flexWrap: 'nowrap',
+    justifyContent: 'center',
+    padding: '5px',
+  },
+  textTimeButton: {
+    fontSize: '15px',
+    margin: 0,
+    minWidth: '40px',
+  },
   timecontrolsbutton: {
+    border: 'none',
     height: '30px',
     margin: 'auto',
     marginLeft: '0',
     marginRight: '5px',
-    width: '30px',
   },
 });
 

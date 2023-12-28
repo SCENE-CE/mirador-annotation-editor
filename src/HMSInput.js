@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { IconButton, Input } from '@material-ui/core';
+import { IconButton, Input, TextField } from '@material-ui/core';
 import { ArrowDownward, ArrowUpward } from '@material-ui/icons';
 import { secondsToHMSarray } from './utils';
 
@@ -18,10 +18,7 @@ class HMSInput extends Component {
       minutes: m,
       seconds: s,
     };
-
     this.someChange = this.someChange.bind(this);
-    this.addOneSec = this.addOneSec.bind(this);
-    this.subOneSec = this.subOneSec.bind(this);
   }
 
   /** update */
@@ -44,18 +41,6 @@ class HMSInput extends Component {
     onChange(state.hours * 3600 + state.minutes * 60 + state.seconds);
   }
 
-  /** Add one second by simulating an input change */
-  addOneSec() {
-    const { seconds } = this.state;
-    this.someChange({ target: { name: 'seconds', value: seconds + 1 } });
-  }
-
-  /** Substract one second by simulating an input change */
-  subOneSec() {
-    const { seconds } = this.state;
-    this.someChange({ target: { name: 'seconds', value: seconds - 1 } });
-  }
-
   /** Render */
   render() {
     const { hours, minutes, seconds } = this.state;
@@ -63,17 +48,22 @@ class HMSInput extends Component {
     return (
       <div className={classes.root}>
         <div className={classes.root}>
-          <Input className={classes.input} name="hours" value={hours} onChange={this.someChange} />
-          <Input className={classes.input} name="minutes" value={minutes} onChange={this.someChange} />
-          <Input className={classes.input} name="seconds" value={seconds} onChange={this.someChange} />
-        </div>
-        <div className={classes.flexcol}>
-          <IconButton size="small" onClick={this.addOneSec}>
-            <ArrowUpward />
-          </IconButton>
-          <IconButton size="small" onClick={this.subOneSec}>
-            <ArrowDownward />
-          </IconButton>
+          <Input
+            className={classes.input}
+            variant="filled"
+            type="number"
+            min="0"
+            pattern
+            name="hours"
+            value={hours}
+            onChange={this.someChange}
+            inputProps={{ style: { textAlign: 'center' } }}
+          />
+          <span className={classes.hmsLabel}>h</span>
+          <Input className={classes.input} type="number" min="0" max="59" name="minutes" value={minutes} onChange={this.someChange} inputProps={{ style: { textAlign: 'center' } }} />
+          <span className={classes.hmsLabel}>m</span>
+          <Input className={classes.input} type="number" min="0" max="59" name="seconds" value={seconds} onChange={this.someChange} inputProps={{ style: { textAlign: 'center' } }} />
+          <span className={classes.hmsLabel}>s</span>
         </div>
       </div>
     );
@@ -85,7 +75,6 @@ const styles = (theme) => ({
   root: {
     alignItems: 'center',
     display: 'flex',
-    justifyContent: 'end',
   },
   // eslint-disable-next-line sort-keys
   flexcol: {
@@ -93,12 +82,26 @@ const styles = (theme) => ({
     flexDirection: 'column',
     justifyContent: 'center',
   },
+  hmsLabel: {
+    color: 'grey',
+  },
   // eslint-disable-next-line sort-keys
   input: {
     height: 'fit-content',
     margin: '2px',
-    textAlign: 'center',
-    width: '4ch',
+    // remove arrow from field for Firefox
+    '& input[type=number]': {
+      '-moz-appearance': 'textfield',
+    },
+    // remove arrow from field for Chrome, Safari and Opera
+    '& input[type=number]::-webkit-outer-spin-button': {
+      '-webkit-appearance': 'none',
+      margin: 0,
+    },
+    '& input[type=number]::-webkit-inner-spin-button': {
+      '-webkit-appearance': 'none',
+      margin: 0,
+    },
   },
 });
 
