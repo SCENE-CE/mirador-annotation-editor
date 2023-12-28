@@ -3,29 +3,29 @@ import PropTypes from 'prop-types';
 import {
   Button, Paper, Grid, Popover, Divider,
   MenuList, MenuItem, ClickAwayListener,
-} from '@material-ui/core';
-import { Alarm, LastPage } from '@material-ui/icons';
-import Typography from '@material-ui/core/Typography';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import RectangleIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CircleIcon from '@material-ui/icons/RadioButtonUnchecked';
-import PolygonIcon from '@material-ui/icons/Timeline';
-import GestureIcon from '@material-ui/icons/Gesture';
-import ClosedPolygonIcon from '@material-ui/icons/ChangeHistory';
-import OpenPolygonIcon from '@material-ui/icons/ShowChart';
-import FormatColorFillIcon from '@material-ui/icons/FormatColorFill';
-import StrokeColorIcon from '@material-ui/icons/BorderColor';
-import LineWeightIcon from '@material-ui/icons/LineWeight';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import FormatShapesIcon from '@material-ui/icons/FormatShapes';
+} from '@mui/material';
+import { Alarm, LastPage } from '@mui/icons-material';
+import Typography from '@mui/material/Typography';
+import ToggleButton from '@mui/lab/ToggleButton';
+import ToggleButtonGroup from '@mui/lab/ToggleButtonGroup';
+import RectangleIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
+import PolygonIcon from '@mui/icons-material/Timeline';
+import GestureIcon from '@mui/icons-material/Gesture';
+import ClosedPolygonIcon from '@mui/icons-material/ChangeHistory';
+import OpenPolygonIcon from '@mui/icons-material/ShowChart';
+import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
+import StrokeColorIcon from '@mui/icons-material/BorderColor';
+import LineWeightIcon from '@mui/icons-material/LineWeight';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import FormatShapesIcon from '@mui/icons-material/FormatShapes';
 import { SketchPicker } from 'react-color';
 import { v4 as uuid } from 'uuid';
-import { withStyles } from '@material-ui/core/styles';
-import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
-import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
-import Slider from '@material-ui/core/Slider';
+import { styled } from '@mui/system';
+import CompanionWindow from '../mirador/dist/es/src/containers/CompanionWindow';
+import { VideosReferences } from '../mirador/dist/es/src/plugins/VideosReferences';
+import { OSDReferences } from '../mirador/dist/es/src/plugins/OSDReferences';
+import Slider from '@mui/material/Slider';
 import AnnotationDrawing from './AnnotationDrawing';
 import TextEditor from './TextEditor';
 import WebAnnotation from './WebAnnotation';
@@ -33,6 +33,7 @@ import CursorIcon from './icons/Cursor';
 import HMSInput from './HMSInput';
 import ImageFormField from './ImageFormField';
 import { secondsToHMS } from './utils';
+
 /** Extract time information from annotation target */
 function timeFromAnnoTarget(annotarget) {
   console.info('TODO proper time extraction from: ', annotarget);
@@ -211,10 +212,14 @@ class AnnotationCreation extends Component {
   };
 
   /** update annotation start time */
-  updateTstart(value) { this.setState({ tstart: value }); }
+  updateTstart(value) {
+    this.setState({ tstart: value });
+  }
 
   /** update annotation end time */
-  updateTend(value) { this.setState({ tend: value }); }
+  updateTend(value) {
+    this.setState({ tend: value });
+  }
 
   /** seekTo/goto annotation start time */
 
@@ -410,7 +415,7 @@ class AnnotationCreation extends Component {
           </div>
           <div>
 
-            { mediaIsVideo && (
+            {mediaIsVideo && (
             <>
               <Grid item xs={12} className={classes.paper}>
                 <Typography id="range-slider" variant="overline">
@@ -427,6 +432,7 @@ class AnnotationCreation extends Component {
                   getAriaValueText={secondsToHMS}
                   max={mediaVideo ? mediaVideo.video.duration : null}
                   color="secondary"
+                  windowId={windowId}
                   classes={{
                     root: classes.MuiSliderColorSecondary,
                   }}
@@ -574,23 +580,23 @@ class AnnotationCreation extends Component {
 
                 <Divider flexItem orientation="vertical" className={classes.divider} />
                 { /* close / open polygon mode only for freehand drawing mode. */
-                  activeTool === 'freehand'
-                    ? (
-                      <ToggleButtonGroup
-                        size="small"
-                        value={closedMode}
-                        onChange={this.changeClosedMode}
-                      >
-                        <ToggleButton value="closed">
-                          <ClosedPolygonIcon />
-                        </ToggleButton>
-                        <ToggleButton value="open">
-                          <OpenPolygonIcon />
-                        </ToggleButton>
-                      </ToggleButtonGroup>
-                    )
-                    : null
-                }
+                                    activeTool === 'freehand'
+                                      ? (
+                                        <ToggleButtonGroup
+                                          size="small"
+                                          value={closedMode}
+                                          onChange={this.changeClosedMode}
+                                        >
+                                          <ToggleButton value="closed">
+                                            <ClosedPolygonIcon />
+                                          </ToggleButton>
+                                          <ToggleButton value="open">
+                                            <OpenPolygonIcon />
+                                          </ToggleButton>
+                                        </ToggleButtonGroup>
+                                      )
+                                      : null
+                                }
               </Grid>
             </Grid>
           </div>
@@ -632,7 +638,7 @@ class AnnotationCreation extends Component {
           onClose={this.closeChooseColor}
         >
           <SketchPicker
-            // eslint-disable-next-line react/destructuring-assignment
+                        // eslint-disable-next-line react/destructuring-assignment
             color={this.state[currentColorType] || {}}
             onChangeComplete={this.updateStrokeColor}
           />
@@ -641,6 +647,7 @@ class AnnotationCreation extends Component {
     );
   }
 }
+
 /** */
 const styles = (theme) => ({
   buttonTimeContainer: {
@@ -735,11 +742,14 @@ AnnotationCreation.propTypes = {
 AnnotationCreation.defaultProps = {
   annotation: null,
   canvases: [],
-  closeCompanionWindow: () => {},
+  closeCompanionWindow: () => {
+  },
   currentTime: null,
   paused: true,
-  setCurrentTime: () => {},
-  setSeekTo: () => {},
+  setCurrentTime: () => {
+  },
+  setSeekTo: () => {
+  },
 };
 
-export default withStyles(styles)(AnnotationCreation);
+export default styled(styles)(AnnotationCreation);
