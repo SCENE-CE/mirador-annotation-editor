@@ -538,7 +538,7 @@ class AnnotationCreation extends Component {
                         <Alarm fontSize="small" />
                       </ToggleButton>
                     </div>
-                    {/* <HMSInput seconds={tstart} onChange={this.updateTstart} /> */}
+                    <HMSInput seconds={tstart} onChange={this.updateTstart} />
                   </div>
                   <div style={{
                     border: '1px solid rgba(0, 0, 0, 0.12)',
@@ -580,7 +580,7 @@ class AnnotationCreation extends Component {
                         <Alarm fontSize="small" />
                       </ToggleButton>
                     </div>
-                    {/* <HMSInput seconds={tend} onChange={this.updateTend} /> */}
+                    <HMSInput seconds={tend} onChange={this.updateTend} />
                   </div>
                 </div>
               </>
@@ -594,7 +594,7 @@ class AnnotationCreation extends Component {
                 </Typography>
               </Grid>
               <Grid item xs={12} style={{ marginBottom: 10 }}>
-                {/* <ImageFormField value={image} onChange={this.handleImgChange} /> */}
+                <ImageFormField value={image} onChange={this.handleImgChange} />
               </Grid>
             </Grid>
           </div>

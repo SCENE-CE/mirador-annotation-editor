@@ -1,117 +1,81 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@mui/material/styles';
-import { Input } from '@mui/material';
+import { Input, styled } from '@mui/material';
 import { secondsToHMSarray } from './utils';
 
-/** hh:mm:ss input which behave like a single input for parent */
-class HMSInput extends Component {
-  /** Initialize state structure & bindings */
-  constructor(props) {
-    super(props);
-
-    // eslint-disable-next-line react/destructuring-assignment
-    const [h, m, s] = secondsToHMSarray(this.props.seconds);
-    this.state = {
-      hours: h,
-      minutes: m,
-      seconds: s,
-    };
-    this.someChange = this.someChange.bind(this);
-  }
-
-  /** update */
-  componentDidUpdate(prevProps) {
-    const { seconds } = this.props;
-    if (prevProps.seconds === seconds) return;
-    const [h, m, s] = secondsToHMSarray(seconds);
-    this.setState({
-      hours: h,
-      minutes: m,
-      seconds: s,
-    });
-  }
-
-  /** If one value is updated, tell the parent component the total seconds counts */
-  someChange(ev) {
-    const { onChange } = this.props;
-    const { state } = this;
-    state[ev.target.name] = Number(ev.target.value);
-    onChange(state.hours * 3600 + state.minutes * 60 + state.seconds);
-  }
-
-  /** Render */
-  render() {
-    const { hours, minutes, seconds } = this.state;
-    const { classes } = this.props;
-    return (
-      <div className={classes.root}>
-        <div className={classes.root}>
-          <Input
-            className={classes.input}
-            variant="filled"
-            type="number"
-            min="0"
-            pattern
-            name="hours"
-            value={hours}
-            onChange={this.someChange}
-            inputProps={{ style: { textAlign: 'center' } }}
-          />
-          <span className={classes.hmsLabel}>h</span>
-          <Input className={classes.input} type="number" min="0" max="59" name="minutes" value={minutes} onChange={this.someChange} inputProps={{ style: { textAlign: 'center' } }} />
-          <span className={classes.hmsLabel}>m</span>
-          <Input className={classes.input} type="number" min="0" max="59" name="seconds" value={seconds} onChange={this.someChange} inputProps={{ style: { textAlign: 'center' } }} />
-          <span className={classes.hmsLabel}>s</span>
-        </div>
-      </div>
-    );
-  }
-}
-
-/** */
-const styles = (theme) => ({
-  root: {
-    alignItems: 'center',
-    display: 'flex',
+const StyledInput = styled(Input)(({ theme }) => ({
+  height: 'fit-content',
+  margin: '2px',
+  '& input[type=number]': {
+    '-moz-appearance': 'textfield',
   },
-  // eslint-disable-next-line sort-keys
-  flexcol: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
+  '& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button': {
+    '-webkit-appearance': 'none',
+    margin: 0,
   },
-  hmsLabel: {
-    color: 'grey',
-  },
-  // eslint-disable-next-line sort-keys
-  input: {
-    height: 'fit-content',
-    margin: '2px',
-    // remove arrow from field for Firefox
-    '& input[type=number]': {
-      '-moz-appearance': 'textfield',
-    },
-    // remove arrow from field for Chrome, Safari and Opera
-    '& input[type=number]::-webkit-outer-spin-button': {
-      '-webkit-appearance': 'none',
-      margin: 0,
-    },
-    '& input[type=number]::-webkit-inner-spin-button': {
-      '-webkit-appearance': 'none',
-      margin: 0,
-    },
-  },
+}));
+
+const StyledHMSLabel = styled('span')({
+  color: 'grey',
 });
 
+const StyledRoot = styled('div')({
+  alignItems: 'center',
+  display: 'flex',
+});
+
+function HMSInput({ seconds, onChange }) {
+  const [hms, setHms] = useState(secondsToHMSarray(seconds));
+
+  useEffect(() => {
+    setHms(secondsToHMSarray(seconds));
+  }, [seconds]);
+
+  const someChange = (ev) => {
+    const newState = { ...hms, [ev.target.name]: Number(ev.target.value) };
+    setHms(newState);
+    onChange(newState.hours * 3600 + newState.minutes * 60 + newState.seconds);
+  };
+
+  return (
+    <StyledRoot>
+      <StyledInput
+        variant="filled"
+        type="number"
+        min="0"
+        name="hours"
+        value={hms.hours}
+        onChange={someChange}
+        inputProps={{ style: { textAlign: 'center' } }}
+      />
+      <StyledHMSLabel>h</StyledHMSLabel>
+      <StyledInput
+        type="number"
+        min="0"
+        max="59"
+        name="minutes"
+        value={hms.minutes}
+        onChange={someChange}
+        inputProps={{ style: { textAlign: 'center' } }}
+      />
+      <StyledHMSLabel>m</StyledHMSLabel>
+      <StyledInput
+        type="number"
+        min="0"
+        max="59"
+        name="seconds"
+        value={hms.seconds}
+        onChange={someChange}
+        inputProps={{ style: { textAlign: 'center' } }}
+      />
+      <StyledHMSLabel>s</StyledHMSLabel>
+    </StyledRoot>
+  );
+}
+
 HMSInput.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  classes: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   seconds: PropTypes.number.isRequired,
-};
-
-HMSInput.defaultProps = {
 };
 
 export default HMSInput;
