@@ -20,12 +20,12 @@ import LineWeightIcon from '@mui/icons-material/LineWeight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import FormatShapesIcon from '@mui/icons-material/FormatShapes';
 import { SketchPicker } from 'react-color';
+import { styled } from '@mui/material/styles';
 import { v4 as uuid } from 'uuid';
-import { styled } from '@mui/system';
+import Slider from '@mui/material/Slider';
 import CompanionWindow from '../mirador/dist/es/src/containers/CompanionWindow';
 import { VideosReferences } from '../mirador/dist/es/src/plugins/VideosReferences';
 import { OSDReferences } from '../mirador/dist/es/src/plugins/OSDReferences';
-import Slider from '@mui/material/Slider';
 import AnnotationDrawing from './AnnotationDrawing';
 import TextEditor from './TextEditor';
 import WebAnnotation from './WebAnnotation';
@@ -225,7 +225,11 @@ class AnnotationCreation extends Component {
 
   /** seekTo/goto annotation end time */
   seekToTend() {
-    const { paused, setCurrentTime, setSeekTo } = this.props;
+    const {
+      paused,
+      setCurrentTime,
+      setSeekTo,
+    } = this.props;
     const { tend } = this.state;
     if (!paused) {
       this.setState(setSeekTo(tend));
@@ -236,7 +240,11 @@ class AnnotationCreation extends Component {
 
   // eslint-disable-next-line require-jsdoc
   seekToTstart() {
-    const { paused, setCurrentTime, setSeekTo } = this.props;
+    const {
+      paused,
+      setCurrentTime,
+      setSeekTo,
+    } = this.props;
     const { tstart } = this.state;
     if (!paused) {
       this.setState(setSeekTo(tstart));
@@ -288,10 +296,20 @@ class AnnotationCreation extends Component {
   submitForm(e) {
     e.preventDefault();
     const {
-      annotation, canvases, receiveAnnotation, config,
+      annotation,
+      canvases,
+      receiveAnnotation,
+      config,
     } = this.props;
     const {
-      textBody, image, tags, xywh, svg, tstart, tend, textEditorStateBustingKey,
+      textBody,
+      image,
+      tags,
+      xywh,
+      svg,
+      tstart,
+      tend,
+      textEditorStateBustingKey,
     } = this.state;
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
@@ -302,7 +320,10 @@ class AnnotationCreation extends Component {
       const anno = new WebAnnotation({
         body,
         canvasId: canvas.id,
-        fragsel: { t, xywh },
+        fragsel: {
+          t,
+          xywh,
+        },
         id: (annotation && annotation.id) || `${uuid()}`,
         image,
         manifestId: canvas.options.resource.id,
@@ -311,13 +332,15 @@ class AnnotationCreation extends Component {
       }).toJson();
 
       if (annotation) {
-        storageAdapter.update(anno).then((annoPage) => {
-          receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
-        });
+        storageAdapter.update(anno)
+          .then((annoPage) => {
+            receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
+          });
       } else {
-        storageAdapter.create(anno).then((annoPage) => {
-          receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
-        });
+        storageAdapter.create(anno)
+          .then((annoPage) => {
+            receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
+          });
       }
     });
 
@@ -352,23 +375,43 @@ class AnnotationCreation extends Component {
   }
 
   /** */
-  updateGeometry({ svg, xywh }) {
+  updateGeometry({
+    svg,
+    xywh,
+  }) {
     this.setState({
-      svg, xywh,
+      svg,
+      xywh,
     });
   }
 
   /** */
   render() {
     const {
-      annotation, classes, closeCompanionWindow, id, windowId,
+      annotation,
+      closeCompanionWindow,
+      id,
+      windowId,
     } = this.props;
 
     const {
-      activeTool, colorPopoverOpen, currentColorType, fillColor, popoverAnchorEl,
-      strokeColor, popoverLineWeightAnchorEl, lineWeightPopoverOpen, strokeWidth, closedMode,
-      textBody, svg, tstart, tend,
-      textEditorStateBustingKey, image, valueTime,
+      activeTool,
+      colorPopoverOpen,
+      currentColorType,
+      fillColor,
+      popoverAnchorEl,
+      strokeColor,
+      popoverLineWeightAnchorEl,
+      lineWeightPopoverOpen,
+      strokeWidth,
+      closedMode,
+      textBody,
+      svg,
+      tstart,
+      tend,
+      textEditorStateBustingKey,
+      image,
+      valueTime,
     } = this.state;
 
     let mediaVideo;
@@ -398,7 +441,9 @@ class AnnotationCreation extends Component {
           windowId={windowId}
           player={mediaIsVideo ? VideosReferences.get(windowId) : OSDReferences.get(windowId)}
         />
-        <form onSubmit={this.submitForm} className={classes.section}>
+        <StyledForm
+          onSubmit={this.submitForm}
+        >
           <div>
             <Grid item xs={12}>
               <Typography variant="overline">
@@ -416,77 +461,140 @@ class AnnotationCreation extends Component {
           <div>
 
             {mediaIsVideo && (
-            <>
-              <Grid item xs={12} className={classes.paper}>
-                <Typography id="range-slider" variant="overline">
-                  Display period
-                </Typography>
-               {/*  <Typography>
+              <>
+                <Grid
+                  item
+                  xs={12}
+                  sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  <Typography id="range-slider" variant="overline">
+                    Display period
+                  </Typography>
+                  {/*  <Typography>
                   {mediaIsVideo ? mediaVideo?.video.duration : null}
                 </Typography> */}
-                <Slider
-                  value={valueTime}
-                  onChange={this.handleChangeTime}
-                  valueLabelDisplay="auto"
-                  aria-labelledby="range-slider"
-                  getAriaValueText={secondsToHMS}
-                  max={mediaVideo ? mediaVideo.video.duration : null}
-                  color="secondary"
-                  windowId={windowId}
-                  classes={{
-                    root: classes.MuiSliderColorSecondary,
+                  <Slider
+                    value={valueTime}
+                    onChange={this.handleChangeTime}
+                    valueLabelDisplay="auto"
+                    aria-labelledby="range-slider"
+                    getAriaValueText={secondsToHMS}
+                    max={mediaVideo ? mediaVideo.video.duration : null}
+                    color="secondary"
+                    windowId={windowId}
+                    sx={{
+                      color: 'rgba(1, 0, 0, 0.38)',
+                    }}
+                  />
+                </Grid>
+                <div style={{
+                  alignContent: 'center',
+                  display: 'flex',
+                  flexDirection: 'wrap',
+                  gap: '5px',
+                  padding: '5px',
+                }}
+                >
+                  <div style={{
+                    border: '1px solid rgba(0, 0, 0, 0.12)',
+                    borderRadius: '4px',
+                    display: 'flex',
+                    flexWrap: 'nowrap',
+                    justifyContent: 'center',
+                    padding: '5px',
                   }}
-                />
-              </Grid>
-              <div className={`${classes.paper} ${classes.selectTimeField} `}>
-                <div className={`${classes.paper} ${classes.selectTimeModule} `}>
-                  <div className={classes.buttonTimeContainer}>
-                    <div>
-                      <p className={classes.textTimeButton}>Start</p>
-                    </div>
-                    <ToggleButton
-                      value="true"
-                      title="Set current time"
-                      size="small"
-                      onClick={this.setTstartNow}
-                      className={classes.timecontrolsbutton}
+                  >
+                    <div style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
                     >
-                      <Alarm fontSize="small" />
-                    </ToggleButton>
-                  </div>
-                  <HMSInput seconds={tstart} onChange={this.updateTstart} />
-                </div>
-                <div className={`${classes.paper} ${classes.selectTimeModule}`}>
-                  <div className={classes.buttonTimeContainer}>
-                    <div>
-                      <p className={classes.textTimeButton}>End</p>
+                      <div>
+                        <p style={{
+                          fontSize: '15px',
+                          margin: 0,
+                          minWidth: '40px',
+                        }}
+                        >
+                          Start
+                        </p>
+                      </div>
+                      <ToggleButton
+                        value="true"
+                        title="Set current time"
+                        size="small"
+                        onClick={this.setTstartNow}
+                        style={{
+                          border: 'none',
+                          height: '30px',
+                          margin: 'auto',
+                          marginLeft: '0',
+                          marginRight: '5px',
+                        }}
+                      >
+                        <Alarm fontSize="small" />
+                      </ToggleButton>
                     </div>
-                    <ToggleButton
-                      value="true"
-                      title="Set current time"
-                      size="small"
-                      onClick={this.setTendNow}
-                      className={classes.timecontrolsbutton}
-                    >
-                      <Alarm fontSize="small" />
-                    </ToggleButton>
+                    {/* <HMSInput seconds={tstart} onChange={this.updateTstart} /> */}
                   </div>
-                  <HMSInput seconds={tend} onChange={this.updateTend} />
+                  <div style={{
+                    border: '1px solid rgba(0, 0, 0, 0.12)',
+                    borderRadius: '4px',
+                    display: 'flex',
+                    flexWrap: 'nowrap',
+                    justifyContent: 'center',
+                    padding: '5px',
+                  }}
+                  >
+                    <div style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                    >
+                      <div>
+                        <p style={{
+                          fontSize: '15px',
+                          margin: 0,
+                          minWidth: '40px',
+                        }}
+                        >
+                          End
+                        </p>
+                      </div>
+                      <ToggleButton
+                        value="true"
+                        title="Set current time"
+                        size="small"
+                        onClick={this.setTendNow}
+                        style={{
+                          border: 'none',
+                          height: '30px',
+                          margin: 'auto',
+                          marginLeft: '0',
+                          marginRight: '5px',
+                        }}
+                      >
+                        <Alarm fontSize="small" />
+                      </ToggleButton>
+                    </div>
+                    {/* <HMSInput seconds={tend} onChange={this.updateTend} /> */}
+                  </div>
                 </div>
-              </div>
-            </>
+              </>
             )}
           </div>
           <div>
             <Grid container>
-
               <Grid item xs={12}>
                 <Typography variant="overline">
                   Image Content
                 </Typography>
               </Grid>
               <Grid item xs={12} style={{ marginBottom: 10 }}>
-                <ImageFormField value={image} onChange={this.handleImgChange} />
+                {/* <ImageFormField value={image} onChange={this.handleImgChange} /> */}
               </Grid>
             </Grid>
           </div>
@@ -498,9 +606,14 @@ class AnnotationCreation extends Component {
                 </Typography>
               </Grid>
               <Grid item xs={12}>
-                <Paper elevation={0} className={classes.paper}>
-                  <ToggleButtonGroup
-                    className={classes.grouped}
+                <Paper
+                  elevation={0}
+                  sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  <StyledToggleButtonGroup
                     value={activeTool}
                     exclusive
                     onChange={this.changeTool}
@@ -513,10 +626,12 @@ class AnnotationCreation extends Component {
                     <ToggleButton value="edit" aria-label="select cursor">
                       <FormatShapesIcon />
                     </ToggleButton>
-                  </ToggleButtonGroup>
-                  <Divider flexItem orientation="vertical" className={classes.divider} />
-                  <ToggleButtonGroup
-                    className={classes.grouped}
+                  </StyledToggleButtonGroup>
+                  <StyledDivider
+                    flexItem
+                    orientation="vertical"
+                  />
+                  <StyledToggleButtonGroup
                     value={activeTool}
                     exclusive
                     onChange={this.changeTool}
@@ -535,7 +650,7 @@ class AnnotationCreation extends Component {
                     <ToggleButton value="freehand" aria-label="free hand polygon">
                       <GestureIcon />
                     </ToggleButton>
-                  </ToggleButtonGroup>
+                  </StyledToggleButtonGroup>
                 </Paper>
               </Grid>
             </Grid>
@@ -578,25 +693,25 @@ class AnnotationCreation extends Component {
                   </ToggleButton>
                 </ToggleButtonGroup>
 
-                <Divider flexItem orientation="vertical" className={classes.divider} />
+                <StyledDivider flexItem orientation="vertical" />
                 { /* close / open polygon mode only for freehand drawing mode. */
-                                    activeTool === 'freehand'
-                                      ? (
-                                        <ToggleButtonGroup
-                                          size="small"
-                                          value={closedMode}
-                                          onChange={this.changeClosedMode}
-                                        >
-                                          <ToggleButton value="closed">
-                                            <ClosedPolygonIcon />
-                                          </ToggleButton>
-                                          <ToggleButton value="open">
-                                            <OpenPolygonIcon />
-                                          </ToggleButton>
-                                        </ToggleButtonGroup>
-                                      )
-                                      : null
-                                }
+                  activeTool === 'freehand'
+                    ? (
+                      <ToggleButtonGroup
+                        size="small"
+                        value={closedMode}
+                        onChange={this.changeClosedMode}
+                      >
+                        <ToggleButton value="closed">
+                          <ClosedPolygonIcon />
+                        </ToggleButton>
+                        <ToggleButton value="open">
+                          <OpenPolygonIcon />
+                        </ToggleButton>
+                      </ToggleButtonGroup>
+                    )
+                    : null
+                }
               </Grid>
             </Grid>
           </div>
@@ -608,7 +723,7 @@ class AnnotationCreation extends Component {
               Save
             </Button>
           </div>
-        </form>
+        </StyledForm>
         <Popover
           open={lineWeightPopoverOpen}
           anchorEl={popoverLineWeightAnchorEl}
@@ -638,7 +753,7 @@ class AnnotationCreation extends Component {
           onClose={this.closeChooseColor}
         >
           <SketchPicker
-                        // eslint-disable-next-line react/destructuring-assignment
+            // eslint-disable-next-line react/destructuring-assignment
             color={this.state[currentColorType] || {}}
             onChangeComplete={this.updateStrokeColor}
           />
@@ -648,8 +763,32 @@ class AnnotationCreation extends Component {
   }
 }
 
-/** */
-const styles = (theme) => ({
+const StyledForm = styled('form')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '20px',
+  paddingBottom: theme.spacing(1),
+  paddingLeft: theme.spacing(2),
+  paddingRight: theme.spacing(1),
+  paddingTop: theme.spacing(2),
+}));
+
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+  '&:first-child': {
+    borderRadius: theme.shape.borderRadius,
+  },
+  '&:not(:first-child)': {
+    borderRadius: theme.shape.borderRadius,
+  },
+  border: 'none',
+  margin: theme.spacing(0.5),
+}));
+
+const StyledDivider = styled(Divider)(({ theme }) => ({
+  margin: theme.spacing(1, 0.5),
+}));
+
+/* const StyledAnnotationCreation = styled('div')(({ ownerState, theme  }) => ({
   buttonTimeContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -668,7 +807,7 @@ const styles = (theme) => ({
     margin: theme.spacing(0.5),
   },
   MuiSliderColorSecondary: {
-    color: 'rgba(1, 0, 0, 0.38)',
+
   },
   paper: {
     display: 'flex',
@@ -710,15 +849,17 @@ const styles = (theme) => ({
     marginLeft: '0',
     marginRight: '5px',
   },
-});
+}); */
 
 AnnotationCreation.propTypes = {
   // TODO proper web annotation type ?
   annotation: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   canvases: PropTypes.arrayOf(
-    PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
+    PropTypes.shape({
+      id: PropTypes.string,
+      index: PropTypes.number,
+    }),
   ),
-  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   closeCompanionWindow: PropTypes.func,
   config: PropTypes.shape({
     annotation: PropTypes.shape({
@@ -752,4 +893,4 @@ AnnotationCreation.defaultProps = {
   },
 };
 
-export default styled(styles)(AnnotationCreation);
+export default AnnotationCreation;
