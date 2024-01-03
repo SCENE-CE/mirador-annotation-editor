@@ -7,7 +7,7 @@ import {
 import { Alarm, LastPage } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/lab/ToggleButton';
-import ToggleButtonGroup from '@mui/lab/ToggleButtonGroup';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import RectangleIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
 import PolygonIcon from '@mui/icons-material/Timeline';
