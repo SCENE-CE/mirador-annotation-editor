@@ -26,13 +26,15 @@ const StyledRoot = styled('div')({
 
 function HMSInput({ seconds, onChange }) {
   const [hms, setHms] = useState(secondsToHMSarray(seconds));
+  console.log('hms', secondsToHMSarray(seconds));
+  console.log('seconds', seconds);
 
   useEffect(() => {
     setHms(secondsToHMSarray(seconds));
   }, [seconds]);
 
   const someChange = (ev) => {
-    const newState = { ...hms, [ev.target.name]: Number(ev.target.value) };
+    const newState = secondsToHMSarray(Number(ev.target.value));
     setHms(newState);
     onChange(newState.hours * 3600 + newState.minutes * 60 + newState.seconds);
   };

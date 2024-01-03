@@ -19,5 +19,9 @@ export function secondsToHMS(secs) {
 /** Split a second to [hours, minutes, seconds]  */
 export function secondsToHMSarray(secs) {
   const h = Math.floor(secs / 3600);
-  return [h, Math.floor(secs / 60) - h * 60, secs % 60];
+  return {
+    hours: h,
+    minutes: Math.floor(secs / 60) - h * 60,
+    seconds: secs % 60,
+  };
 }
