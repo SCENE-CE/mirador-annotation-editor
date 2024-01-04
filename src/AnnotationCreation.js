@@ -33,6 +33,7 @@ import CursorIcon from './icons/Cursor';
 import HMSInput from './HMSInput';
 import ImageFormField from './ImageFormField';
 import { secondsToHMS } from './utils';
+import RangeSlider from './slider';
 
 /** Extract time information from annotation target */
 function timeFromAnnoTarget(annotarget) {
@@ -106,6 +107,7 @@ class AnnotationCreation extends Component {
       }
     }
 
+
     const toolState = {
       activeTool: 'cursor',
       closedMode: 'closed',
@@ -136,11 +138,11 @@ class AnnotationCreation extends Component {
       textBody: '',
       textEditorStateBustingKey: 0,
       // eslint-disable-next-line sort-keys,max-len
-      // TO DO : The state must be updated with the video's timing information when the component is mounted
       valueTime: [0, 1],
       xywh: null,
       ...annoState,
       valuetextTime: '',
+      mediaVideo: null,
     };
 
     this.submitForm = this.submitForm.bind(this);
@@ -166,6 +168,11 @@ class AnnotationCreation extends Component {
     this.valuetextTime = this.valuetextTime.bind(this);
   }
 
+  componentDidMount() {
+      const mediaVideo = VideosReferences.get(this.props.windowId);
+      this.setState({ mediaVideo }); // Update mediaVideo in state
+      console.log('MEDIAVIDEO COMPONENTDIDMOUNT:', mediaVideo)
+  }
   /** */
   handleImgChange(newUrl, imgRef) {
     const { image } = this.state;
@@ -347,10 +354,10 @@ class AnnotationCreation extends Component {
     this.setState({
       image: { id: null },
       svg: null,
-      tend: null,
+      tend: 0,
       textBody: '',
       textEditorStateBustingKey: textEditorStateBustingKey + 1,
-      tstart: null,
+      tstart: 0,
       xywh: null,
     });
   }
@@ -412,16 +419,19 @@ class AnnotationCreation extends Component {
       textEditorStateBustingKey,
       image,
       valueTime,
+      mediaVideo,
     } = this.state;
 
-    let mediaVideo;
     // TODO : Vérifier ce code, c'est étrange de comprarer un typeof à une chaine de caractère.
     const mediaIsVideo = typeof VideosReferences.get(windowId) !== 'undefined';
     if (mediaIsVideo) {
-      mediaVideo = VideosReferences.get(windowId);
       valueTime[0] = tstart;
       valueTime[1] = tend;
     }
+
+    const isVideoDataLoaded = mediaVideo && mediaVideo.video && !isNaN(mediaVideo.video.duration) && mediaVideo.video.duration > 0;
+    console.log(isVideoDataLoaded)
+
 
     return (
       <CompanionWindow
@@ -473,22 +483,29 @@ class AnnotationCreation extends Component {
                   <Typography id="range-slider" variant="overline">
                     Display period
                   </Typography>
-                  {/*  <Typography>
-                  {mediaIsVideo ? mediaVideo?.video.duration : null}
-                </Typography> */}
-                  <Slider
-                    value={valueTime}
-                    onChange={this.handleChangeTime}
-                    valueLabelDisplay="auto"
-                    aria-labelledby="range-slider"
-                    getAriaValueText={secondsToHMS}
-                    max={mediaVideo ? mediaVideo.video.duration : null}
-                    color="secondary"
-                    windowId={windowId}
-                    sx={{
-                      color: 'rgba(1, 0, 0, 0.38)',
-                    }}
-                  />
+                  {isVideoDataLoaded ? (
+                          <div>
+                            <Typography>
+                              {this.state.mediaVideo.video.duration}
+                            </Typography>
+                            <Slider
+                                value={valueTime}
+                                onChange={this.handleChangeTime}
+                                valueLabelDisplay="auto"
+                                aria-labelledby="range-slider"
+                                max={Math.round(this.state.mediaVideo.video.duration)}
+                                color="secondary"
+                                windowId={windowId}
+                                sx={{
+                                  color: 'rgba(1, 0, 0, 0.38)',
+                                }}
+                            />
+                          </div>
+                  ) : (
+                      <Typography>Loading video data...</Typography>
+                  )}
+
+
                 </Grid>
                 <div style={{
                   alignContent: 'center',
