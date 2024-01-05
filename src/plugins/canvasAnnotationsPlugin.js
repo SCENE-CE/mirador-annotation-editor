@@ -34,6 +34,11 @@ class CanvasAnnotationsWrapper extends Component {
     } = this.props;
     const { singleCanvasDialogOpen } = this.state;
 
+    const props = {
+      ...targetProps,
+      listContainerComponent : CanvasListItem,
+    }
+
     return (
       <AnnotationActionsContext.Provider
         value={{
@@ -49,7 +54,7 @@ class CanvasAnnotationsWrapper extends Component {
         }}
       >
         <TargetComponent
-          {...targetProps} // eslint-disable-line react/jsx-props-no-spreading
+          {...props} // eslint-disable-line react/jsx-props-no-spreading
         />
         {windowViewType !== 'single' && (
           <SingleCanvasDialog
