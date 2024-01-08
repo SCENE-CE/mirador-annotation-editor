@@ -36,8 +36,8 @@ class CanvasAnnotationsWrapper extends Component {
 
     const props = {
       ...targetProps,
-      listContainerComponent : CanvasListItem,
-    }
+      listContainerComponent: CanvasListItem,
+    };
 
     return (
       <AnnotationActionsContext.Provider
@@ -54,7 +54,7 @@ class CanvasAnnotationsWrapper extends Component {
         }}
       >
         <TargetComponent
-          {...props} // eslint-disable-line react/jsx-props-no-spreading
+          {...props}
         />
         {windowViewType !== 'single' && (
           <SingleCanvasDialog
