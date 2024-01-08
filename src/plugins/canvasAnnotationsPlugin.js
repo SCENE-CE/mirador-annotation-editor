@@ -30,7 +30,7 @@ class CanvasAnnotationsWrapper extends Component {
   render() {
     const {
       addCompanionWindow, annotationsOnCanvases, canvases, config, receiveAnnotation,
-      switchToSingleCanvasView, TargetComponent, targetProps, windowViewType,
+      switchToSingleCanvasView, TargetComponent, targetProps, windowViewType, containerRef,
     } = this.props;
     const { singleCanvasDialogOpen } = this.state;
 
@@ -55,6 +55,7 @@ class CanvasAnnotationsWrapper extends Component {
       >
         <TargetComponent
           {...props}
+          ref={containerRef}
         />
         {windowViewType !== 'single' && (
           <SingleCanvasDialog
@@ -79,6 +80,10 @@ CanvasAnnotationsWrapper.propTypes = {
       adapter: PropTypes.func,
     }),
   }).isRequired,
+  containerRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
   receiveAnnotation: PropTypes.func.isRequired,
   switchToSingleCanvasView: PropTypes.func.isRequired,
   TargetComponent: PropTypes.oneOfType([
@@ -92,6 +97,7 @@ CanvasAnnotationsWrapper.propTypes = {
 CanvasAnnotationsWrapper.defaultProps = {
   annotationsOnCanvases: {},
   canvases: [],
+  containerRef: null,
 };
 
 /** */
