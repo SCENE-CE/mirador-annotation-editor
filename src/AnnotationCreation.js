@@ -33,7 +33,7 @@ import CursorIcon from './icons/Cursor';
 import HMSInput from './HMSInput';
 import ImageFormField from './ImageFormField';
 import { secondsToHMS } from './utils';
-import RangeSlider from './slider';
+import TextField from '@mui/material/TextField';
 
 /** Extract time information from annotation target */
 function timeFromAnnoTarget(annotarget) {
@@ -107,7 +107,6 @@ class AnnotationCreation extends Component {
       }
     }
 
-
     const toolState = {
       activeTool: 'cursor',
       closedMode: 'closed',
@@ -143,6 +142,7 @@ class AnnotationCreation extends Component {
       ...annoState,
       valuetextTime: '',
       mediaVideo: null,
+      title: '',
     };
 
     this.submitForm = this.submitForm.bind(this);
@@ -166,12 +166,14 @@ class AnnotationCreation extends Component {
     this.handleImgChange = this.handleImgChange.bind(this);
     this.handleChangeTime = this.handleChangeTime.bind(this);
     this.valuetextTime = this.valuetextTime.bind(this);
+    this.updateTitle = this.updateTitle.bind(this);
   }
 
   componentDidMount() {
       const mediaVideo = VideosReferences.get(this.props.windowId);
       this.setState({ mediaVideo }); // Update mediaVideo in state
   }
+
   /** */
   handleImgChange(newUrl, imgRef) {
     const { image } = this.state;
@@ -227,7 +229,10 @@ class AnnotationCreation extends Component {
     this.setState({ tend: value });
   }
 
-  /** seekTo/goto annotation start time */
+  updateTitle(e){
+    const thisTitle = e.target.value;
+    this.setState({title : thisTitle});
+  }
 
   /** seekTo/goto annotation end time */
   seekToTend() {
@@ -308,6 +313,7 @@ class AnnotationCreation extends Component {
       config,
     } = this.props;
     const {
+      title,
       textBody,
       image,
       tags,
@@ -324,6 +330,7 @@ class AnnotationCreation extends Component {
       const storageAdapter = config.annotation.adapter(canvas.id);
 
       const anno = new WebAnnotation({
+        title,
         body,
         canvasId: canvas.id,
         fragsel: {
@@ -351,6 +358,7 @@ class AnnotationCreation extends Component {
     });
 
     this.setState({
+      title: '',
       image: { id: null },
       svg: null,
       tend: 0,
@@ -379,6 +387,7 @@ class AnnotationCreation extends Component {
   updateTextBody(textBody) {
     this.setState({ textBody });
   }
+
 
   /** */
   updateGeometry({
@@ -419,6 +428,7 @@ class AnnotationCreation extends Component {
       image,
       valueTime,
       mediaVideo,
+      title
     } = this.state;
 
     // TODO : Vérifier ce code, c'est étrange de comprarer un typeof à une chaine de caractère.
@@ -430,9 +440,10 @@ class AnnotationCreation extends Component {
 
     const isVideoDataLoaded = mediaVideo && mediaVideo.video && !isNaN(mediaVideo.video.duration) && mediaVideo.video.duration > 0;
 
+
     return (
       <CompanionWindow
-        title={annotation ? 'Edit annotation' : 'New annotation'}
+        title={title ? title : 'New Annotation'}
         windowId={windowId}
         id={id}
       >
@@ -453,18 +464,22 @@ class AnnotationCreation extends Component {
         >
           <div>
             <Grid item xs={12}>
-              <Typography variant="overline">
-                Text Content
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <TextEditor
-                key={textEditorStateBustingKey}
-                annoHtml={textBody}
-                updateAnnotationBody={this.updateTextBody}
+              <TextField
+                  id="outlined-basic"
+                  label="Title"
+                  variant="outlined"
+                  onChange={this.updateTitle}
               />
             </Grid>
           </div>
+          <Grid>
+            <Typography>TODO:METTRE CE CHAMPS TEXTE EN ONGLET</Typography>
+            <TextEditor
+                key={textEditorStateBustingKey}
+                annoHtml={textBody}
+                updateAnnotationBody={this.updateTextBody}
+            />
+          </Grid>
           <div>
 
             {mediaIsVideo && (
@@ -472,42 +487,37 @@ class AnnotationCreation extends Component {
                 <Grid
                   item
                   xs={12}
-                  sx={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                  }}
                 >
                   <Typography id="range-slider" variant="overline">
                     Display period
                   </Typography>
                   {isVideoDataLoaded ? (
-                          <div>
-                            <Typography>
-                              {this.state.mediaVideo.video.duration}
-                            </Typography>
-                            <Slider
-                                value={valueTime}
-                                onChange={this.handleChangeTime}
-                                valueLabelDisplay="auto"
-                                aria-labelledby="range-slider"
-                                max={Math.round(this.state.mediaVideo.video.duration)}
-                                color="secondary"
-                                windowId={windowId}
-                                sx={{
-                                  color: 'rgba(1, 0, 0, 0.38)',
-                                }}
-                            />
-                          </div>
+                    <div>
+                      <Typography>
+                        {this.state.mediaVideo.video.duration}
+                      </Typography>
+                      <Slider
+                        value={valueTime}
+                        onChange={this.handleChangeTime}
+                        valueLabelDisplay="auto"
+                        aria-labelledby="range-slider"
+                        max={Math.round(this.state.mediaVideo.video.duration)}
+                        color="secondary"
+                        windowId={windowId}
+                        sx={{
+                          color: 'rgba(1, 0, 0, 0.38)',
+                        }}
+                      />
+                    </div>
                   ) : (
-                      <Typography>Loading video data...</Typography>
+                    <Typography>Loading video data...</Typography>
                   )}
-
 
                 </Grid>
                 <div style={{
                   alignContent: 'center',
                   display: 'flex',
-                  flexDirection: 'wrap',
+                  flexDirection: 'column',
                   gap: '5px',
                   padding: '5px',
                 }}
