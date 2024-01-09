@@ -13,6 +13,10 @@ import
   FreeformPathTool,
 }
   from '@psychobolt/react-paperjs-editor';
+
+  import { Stage, Layer, Star, Text } from 'react-konva';
+
+
 import { Point } from 'paper';
 import flatten from 'lodash/flatten';
 import EditTool from './EditTool';
@@ -25,6 +29,7 @@ class AnnotationDrawing extends Component {
     super(props);
 
     this.paper = null;
+    this.konvas = null;
     this.getDisplayProps = this.getDisplayProps.bind(this);
     this.onPaperResize = this.onPaperResize.bind(this);
     this.paperDidMount = this.paperDidMount.bind(this);
@@ -159,42 +164,65 @@ class AnnotationDrawing extends Component {
         break;
     }
 
+
+    console.log('rendering konva');
+    // replace with konva
+
     return (
-      <div
-        style={{
-          height: '100%', left: 0, position: 'absolute', top: 0, width: '100%',
-        }}
+      <Stage width={1920} height={1080}
+      
+      style={{
+        height: '100%', left: 0, position: 'absolute', top: 0, width: '100%',
+       
+      }}
+
       >
-        <PaperContainer
-          canvasProps={canvasProps}
-          viewProps={viewProps}
-          onMount={this.paperDidMount}
-        >
-          {renderWithPaperScope((paper) => {
-            const paths = flatten(paper.project.layers.map((layer) => (
-              flatten(mapChildren(layer)).map((aPath) => aPath)
-            )));
-            if (svg && paths.length === 0) {
-              paper.project.importSVG(svg);
-            }
-            paper.settings.handleSize = 10; // eslint-disable-line no-param-reassign
-            paper.settings.hitTolerance = 10; // eslint-disable-line no-param-reassign
-            return (
-              <ActiveTool
-                onPathAdd={this.addPath}
-                pathProps={{
-                  fillColor,
-                  strokeColor,
-                  strokeWidth: strokeWidth / paper.view.zoom,
-                }}
-                paper={paper}
-              />
-            );
-          })}
-        </PaperContainer>
-        <ResizeObserver onResize={this.onPaperResize} />
-      </div>
+        <Layer>
+     
+        
+        </Layer>
+      </Stage>
     );
+
+  //  return (
+
+
+
+      // <div
+      //   style={{
+      //     height: '100%', left: 0, position: 'absolute', top: 0, width: '100%',
+      //   }}
+      // >
+      //   <PaperContainer
+      //     canvasProps={canvasProps}
+      //     viewProps={viewProps}
+      //     onMount={this.paperDidMount}
+      //   >
+      //     {renderWithPaperScope((paper) => {
+      //       const paths = flatten(paper.project.layers.map((layer) => (
+      //         flatten(mapChildren(layer)).map((aPath) => aPath)
+      //       )));
+      //       if (svg && paths.length === 0) {
+      //         paper.project.importSVG(svg);
+      //       }
+      //       paper.settings.handleSize = 10; // eslint-disable-line no-param-reassign
+      //       paper.settings.hitTolerance = 10; // eslint-disable-line no-param-reassign
+      //       return (
+      //         <ActiveTool
+      //           onPathAdd={this.addPath}
+      //           pathProps={{
+      //             fillColor,
+      //             strokeColor,
+      //             strokeWidth: strokeWidth / paper.view.zoom,
+      //           }}
+      //           paper={paper}
+      //         />
+      //       );
+      //     })}
+      //   </PaperContainer>
+      //   <ResizeObserver onResize={this.onPaperResize} />
+      //</div>
+    //);
   }
 
   /** */
