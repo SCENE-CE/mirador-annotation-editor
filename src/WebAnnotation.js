@@ -2,8 +2,9 @@
 export default class WebAnnotation {
   /** */
   constructor({
-    canvasId, id, fragsel, image, body, tags, svg, manifestId,
+    canvasId, id, fragsel, image, body, tags, svg, manifestId, title
   }) {
+    this.title = title;
     this.id = id;
     this.canvasId = canvasId;
     this.fragsel = fragsel;
@@ -17,6 +18,7 @@ export default class WebAnnotation {
   /** */
   toJson() {
     return {
+      title: this.title,
       body: this.createBody(),
       id: this.id,
       motivation: 'commenting',
@@ -43,6 +45,13 @@ export default class WebAnnotation {
         type: 'Image',
       };
       bodies.push(imgBody);
+    }
+
+    if(this.title){
+      const title={
+        type: 'AnnotationTitle',
+        value: this.title,
+      }
     }
 
     if (this.tags) {
@@ -81,7 +90,13 @@ export default class WebAnnotation {
           .join('&'),
       });
     }
+    if(target.selector){
     target.selector = selectors.length === 1 ? selectors[0] : selectors;
+    target = {
+      selector: target.selector,
+      source: this.source(),
+    }
+    }
     return target;
   }
 
