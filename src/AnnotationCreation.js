@@ -19,6 +19,7 @@ import StrokeColorIcon from '@mui/icons-material/BorderColor';
 import LineWeightIcon from '@mui/icons-material/LineWeight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import FormatShapesIcon from '@mui/icons-material/FormatShapes';
+import TitleIcon from '@mui/icons-material/Title';
 import { SketchPicker } from 'react-color';
 import { styled } from '@mui/material/styles';
 import { v4 as uuid } from 'uuid';
@@ -623,7 +624,7 @@ class AnnotationCreation extends Component {
 
                     <ToggleButton value="text" aria-label="select text">
                     
-                      <CursorIcon />
+                      <TitleIcon />
                     </ToggleButton>
                     <ToggleButton value="cursor" aria-label="select cursor">
                       <CursorIcon />

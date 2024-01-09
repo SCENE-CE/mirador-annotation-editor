@@ -146,10 +146,10 @@ class AnnotationDrawing extends Component {
     this.paper = paper;
   }
   handleMouseDown = (e) => {
-    console.log('mouse down', this.props.activeTool);
+    console.log('mouse down', this.props);
 
     const pos = e.target.getStage().getPointerPosition();
-    console.log('pos', pos);
+ 
     let shape = null;
     switch (this.props.activeTool) {
       case 'rectangle':
@@ -161,6 +161,10 @@ class AnnotationDrawing extends Component {
           fill: this.props.fillColor,
           id: uuidv4(),
         };
+        this.setState({
+          newShape: shape,
+          currentShape: shape,
+        });
 
 
         break;
@@ -199,7 +203,7 @@ class AnnotationDrawing extends Component {
 
         this.setState({ newShape: shape }, () => {
           // Add global key press event listener
-          window.addEventListener('keypress', this.handleKeyPress);
+          window.addEventListener('keydown', this.handleKeyPress);
         });
         this.setState({
           newShape: shape,
@@ -226,6 +230,7 @@ class AnnotationDrawing extends Component {
     if (newShape) {
       this.setState({
         shapes: [...shapes, newShape],
+        currentShape: newShape,
         newShape: null,
 
       });
@@ -311,8 +316,24 @@ class AnnotationDrawing extends Component {
 
   handleKeyPress = (e) => {
     const { currentShape,shapes } = this.state;
-    console.log('key press',currentShape, e.key);
+    console.log('key press',e, e.key);
     if (currentShape) {
+      console.log('current shape', currentShape);
+
+      // if supr remove shape
+
+      if (e.key === 'Delete') {
+
+        const index = shapes.findIndex((gshape) => shape.id === currentShape.id);
+        console.log('index', index);
+        const newShapes = [...shapes];
+        newShapes.splice(index, 1);
+        this.setState({
+          shapes: newShapes,
+          currentShape: null,
+        });
+      }
+
       if (e.key === 'Backspace') {
         // Remove the last character
 
@@ -324,6 +345,7 @@ class AnnotationDrawing extends Component {
             ...currentShape,
             text: currentShape.text.slice(0, -1),
           },
+          
         });
 
         const index = shapes.findIndex((shape) => shape.id === currentShape.id);
@@ -372,16 +394,11 @@ class AnnotationDrawing extends Component {
     }
   }
   drawKonvas() {
-    console.log('rendering konva');
-    console.log(this.props)
 
-    const { activeTool, toolState } = this.props;
-    console.log('active tool', activeTool);
 
-    console.log('tool state', toolState);
+
 
     const { shapes, newShape, currentShape } = this.state;
-    console.log('shapes', shapes);
 
 
 
@@ -519,6 +536,14 @@ class AnnotationDrawing extends Component {
       shape.id === id ? { ...shape, x: shapeNode.x(), y: shapeNode.y() } : shape
     );
     this.setState({ shapes: updatedShapes });
+
+    // update the current shape
+    const { currentShape } = this.state;
+    if (currentShape && currentShape.id === id) {
+      this.setState({ currentShape: { ...currentShape, x: shapeNode.x(), y: shapeNode.y() } });
+    }
+    
+
   };
 
   /** */
