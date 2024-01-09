@@ -443,7 +443,7 @@ class AnnotationCreation extends Component {
 
     return (
       <CompanionWindow
-        title={title ? title : 'New annotation'}
+        title={title ? title : 'totos'}
         windowId={windowId}
         id={id}
       >

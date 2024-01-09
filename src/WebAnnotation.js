@@ -89,14 +89,7 @@ export default class WebAnnotation {
           .map((kv) => `${kv[0]}=${kv[1]}`)
           .join('&'),
       });
-    }
-    if(target.selector){
-    target.selector = selectors.length === 1 ? selectors[0] : selectors;
-    target = {
-      selector: target.selector,
-      source: this.source(),
-    }
-    }
+    }target.selector = selectors.length === 1 ? selectors[0] : selectors;
     return target;
   }
 
