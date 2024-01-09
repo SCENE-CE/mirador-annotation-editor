@@ -171,7 +171,6 @@ class AnnotationCreation extends Component {
   componentDidMount() {
       const mediaVideo = VideosReferences.get(this.props.windowId);
       this.setState({ mediaVideo }); // Update mediaVideo in state
-      console.log('MEDIAVIDEO COMPONENTDIDMOUNT:', mediaVideo)
   }
   /** */
   handleImgChange(newUrl, imgRef) {
@@ -430,8 +429,6 @@ class AnnotationCreation extends Component {
     }
 
     const isVideoDataLoaded = mediaVideo && mediaVideo.video && !isNaN(mediaVideo.video.duration) && mediaVideo.video.duration > 0;
-    console.log(isVideoDataLoaded)
-
 
     return (
       <CompanionWindow

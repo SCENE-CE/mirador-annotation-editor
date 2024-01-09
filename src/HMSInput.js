@@ -26,15 +26,12 @@ const StyledRoot = styled('div')({
 
 function HMSInput({ seconds, onChange }) {
   const [hms, setHms] = useState(secondsToHMSarray(0));
-  console.log('hms', hms);
 
   useEffect(() => {
       if(seconds != null) {
-  console.log('seconds', seconds);
     setHms(secondsToHMSarray(seconds));
       }
   }, [seconds]);
-    console.log('seconds AFTER USEEFFECT', seconds);
 
   const someChange = (ev) => {
     const newState = secondsToHMSarray(Number(ev.target.value));

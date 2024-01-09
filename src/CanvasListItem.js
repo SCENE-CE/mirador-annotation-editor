@@ -20,8 +20,6 @@ class CanvasListItem extends Component {
     this.handleMouseHover = this.handleMouseHover.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
-
-    console.log(props.ref);
   }
 
   /** */
@@ -86,9 +84,6 @@ class CanvasListItem extends Component {
 
   /** */
   render() {
-    const { children } = this.props;
-    console.log('canvaslistItem children :', this.props.children);
-    console.log('this.props : ', ...this.props);
     const { isHovering } = this.state;
     const { windowViewType, toggleSingleCanvasDialogOpen } = this.context;
 
@@ -130,7 +125,6 @@ class CanvasListItem extends Component {
         <li
           {...this.props} // eslint-disable-line react/jsx-props-no-spreading
         >
-          {/* {children} */}
         </li>
       </div>
     );
