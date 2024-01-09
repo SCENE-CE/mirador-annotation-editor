@@ -107,7 +107,6 @@ class AnnotationCreation extends Component {
         annoState.xywh = geomFromAnnoTarget(props.annotation.target);
         [annoState.tstart, annoState.tend] = timeFromAnnoTarget(props.annotation.target);
       }
-      console.log(annoState)
     }
 
     const toolState = {
@@ -346,8 +345,6 @@ class AnnotationCreation extends Component {
         svg,
         tags,
       }).toJson();
-      console.log(this.state.annotation);
-      console.log(anno);
       if (annotation) {
         storageAdapter.update(anno)
           .then((annoPage) => {
