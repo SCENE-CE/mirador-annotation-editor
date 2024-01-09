@@ -172,7 +172,6 @@ class AnnotationCreation extends Component {
   componentDidMount() {
       const mediaVideo = VideosReferences.get(this.props.windowId);
       this.setState({ mediaVideo }); // Update mediaVideo in state
-      console.log('MEDIAVIDEO COMPONENTDIDMOUNT:', mediaVideo)
   }
 
   /** */
@@ -233,7 +232,6 @@ class AnnotationCreation extends Component {
   updateTitle(e){
     const thisTitle = e.target.value;
     this.setState({title : thisTitle});
-    console.log(this.state.title)
   }
 
   /** seekTo/goto annotation end time */
@@ -441,7 +439,6 @@ class AnnotationCreation extends Component {
     }
 
     const isVideoDataLoaded = mediaVideo && mediaVideo.video && !isNaN(mediaVideo.video.duration) && mediaVideo.video.duration > 0;
-    console.log(isVideoDataLoaded)
 
 
     return (
