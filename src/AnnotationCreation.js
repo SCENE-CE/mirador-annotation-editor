@@ -620,6 +620,11 @@ class AnnotationCreation extends Component {
                     aria-label="tool selection"
                     size="small"
                   >
+
+                    <ToggleButton value="text" aria-label="select text">
+                    
+                      <CursorIcon />
+                    </ToggleButton>
                     <ToggleButton value="cursor" aria-label="select cursor">
                       <CursorIcon />
                     </ToggleButton>
