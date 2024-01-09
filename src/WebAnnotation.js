@@ -30,8 +30,9 @@ export default class WebAnnotation {
   /** */
   createBody() {
     let bodies = [];
-
+    console.log('CREATEBODY')
     if (this.body && this.body.value !== '') {
+        console.log('TEXT BODY', this.body.value)
       const textBody = {
         type: 'TextualBody',
         value: this.body.value,
@@ -40,6 +41,8 @@ export default class WebAnnotation {
     }
 
     if (this.image) {
+      console.log('IMAGE', this.image.id)
+
       const imgBody = {
         id: this.image.id,
         type: 'Image',
@@ -48,13 +51,17 @@ export default class WebAnnotation {
     }
 
     if(this.title){
+      console.log('TITLE', this.title)
       const title={
         type: 'AnnotationTitle',
         value: this.title,
       }
+      bodies.push(title)
     }
 
     if (this.tags) {
+      console.log('TAG', this.tags)
+
       bodies = bodies.concat(this.tags.map((tag) => ({
         purpose: 'tagging',
         type: 'TextualBody',
@@ -62,8 +69,10 @@ export default class WebAnnotation {
       })));
     }
     if (bodies.length === 1) {
+      console.log('bodies',bodies)
       return bodies[0];
     }
+    console.log('bodies',bodies)
     return bodies;
   }
 

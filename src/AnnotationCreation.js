@@ -76,6 +76,8 @@ class AnnotationCreation extends Component {
           } else if (body.type === 'Image') {
             // annoState.textBody = body.value; // why text body here ???
             annoState.image = body;
+          } else if (body.type === "AnnotationTitle" ) {
+            annoState.title = body
           }
         });
       } else if (props.annotation.body.type === 'TextualBody') {
@@ -105,6 +107,7 @@ class AnnotationCreation extends Component {
         annoState.xywh = geomFromAnnoTarget(props.annotation.target);
         [annoState.tstart, annoState.tend] = timeFromAnnoTarget(props.annotation.target);
       }
+      console.log(annoState)
     }
 
     const toolState = {
@@ -142,7 +145,7 @@ class AnnotationCreation extends Component {
       ...annoState,
       valuetextTime: '',
       mediaVideo: null,
-      title: '',
+      title: 'defaultTitle',
     };
 
     this.submitForm = this.submitForm.bind(this);
@@ -343,7 +346,8 @@ class AnnotationCreation extends Component {
         svg,
         tags,
       }).toJson();
-
+      console.log(this.state.annotation);
+      console.log(anno);
       if (annotation) {
         storageAdapter.update(anno)
           .then((annoPage) => {
@@ -428,7 +432,6 @@ class AnnotationCreation extends Component {
       image,
       valueTime,
       mediaVideo,
-      title
     } = this.state;
 
     // TODO : Vérifier ce code, c'est étrange de comprarer un typeof à une chaine de caractère.
@@ -440,10 +443,9 @@ class AnnotationCreation extends Component {
 
     const isVideoDataLoaded = mediaVideo && mediaVideo.video && !isNaN(mediaVideo.video.duration) && mediaVideo.video.duration > 0;
 
-
     return (
       <CompanionWindow
-        title={title ? title : 'New Annotation'}
+        title={annotation ? annotation.title : 'New Annotation'}
         windowId={windowId}
         id={id}
       >
