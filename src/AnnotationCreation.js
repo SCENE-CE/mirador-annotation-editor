@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { Alarm, LastPage } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
-import ToggleButton from '@mui/lab/ToggleButton';
+import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import RectangleIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
@@ -503,7 +503,7 @@ class AnnotationCreation extends Component {
                         aria-labelledby="range-slider"
                         max={Math.round(this.state.mediaVideo.video.duration)}
                         color="secondary"
-                        windowId={windowId}
+                        windowid={windowId}
                         sx={{
                           color: 'rgba(1, 0, 0, 0.38)',
                         }}
@@ -798,10 +798,10 @@ const StyledForm = styled('form')(({ theme }) => ({
 }));
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  '&:first-child': {
+  '&:forst-of-type': {
     borderRadius: theme.shape.borderRadius,
   },
-  '&:not(:first-child)': {
+  '&:not(:first-of-type)': {
     borderRadius: theme.shape.borderRadius,
   },
   border: 'none',

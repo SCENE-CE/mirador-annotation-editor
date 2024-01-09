@@ -7,10 +7,10 @@ const StyledInput = styled(Input)(({ theme }) => ({
   height: 'fit-content',
   margin: '2px',
   '& input[type=number]': {
-    '-moz-appearance': 'textfield',
+    'MozAppearance': 'textfield',
   },
   '& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button': {
-    '-webkit-appearance': 'none',
+    'WebkitAppearance': 'none',
     margin: 0,
   },
 }));
@@ -77,7 +77,7 @@ function HMSInput({ seconds, onChange }) {
 
 HMSInput.propTypes = {
   onChange: PropTypes.func.isRequired,
-  seconds: PropTypes.number.isRequired,
+  seconds: PropTypes.number,
 };
 
 export default HMSInput;
