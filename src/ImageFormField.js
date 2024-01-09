@@ -19,7 +19,7 @@ function ImageFormField({ value: image, onChange }) {
     } else {
       setImgIsValid(!!image.id);
     }
-  }, [image]);
+}, [image]);
 
   const imgUrl = image.id === null ? '' : image.id;
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
@@ -84,13 +84,14 @@ class CanvasListItem extends Component {
 
   /** */
   render() {
-    const { children } = this.props;
     const { isHovering } = this.state;
     const { windowViewType, toggleSingleCanvasDialogOpen } = this.context;
+
     return (
       <div
         onMouseEnter={this.handleMouseHover}
         onMouseLeave={this.handleMouseHover}
+        className="mirador-annotation-list-item"
       >
         {isHovering && this.editable() && (
           <div
@@ -124,7 +125,6 @@ class CanvasListItem extends Component {
         <li
           {...this.props} // eslint-disable-line react/jsx-props-no-spreading
         >
-          {children}
         </li>
       </div>
     );
@@ -141,4 +141,4 @@ CanvasListItem.propTypes = {
 
 CanvasListItem.contextType = AnnotationActionsContext;
 
-export default CanvasListItem;
+export default forwardRef((props, ref) => <CanvasListItem {...props} containerRef={ref} />);

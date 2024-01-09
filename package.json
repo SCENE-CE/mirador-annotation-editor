@@ -23,6 +23,8 @@
     "test:ci": "jest --ci --reporters=default --reporters=jest-junit --watchAll=false"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
     "@mui/system": "^5.15.1",
     "@psychobolt/react-paperjs": "^1.0.3",
     "@psychobolt/react-paperjs-editor": "0.0.11",
