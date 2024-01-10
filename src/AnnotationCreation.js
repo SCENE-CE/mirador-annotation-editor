@@ -330,11 +330,10 @@ class AnnotationCreation extends Component {
     console.log('annotation in submitform', annotation)
     console.log('config in submitform', config)
     console.log('canvases in submitform', canvases)
-    console.log('tstart', tstart)
     console.log('tstart & tend',tstart, tend)
-    const t = (tstart != null && tend != null) ? `${tstart},${tend}` : null;
+    const timing = (tstart !== null && tend !== null) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
-console.log('t',t)
+console.log('t',timing)
     canvases.forEach((canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
 
@@ -342,8 +341,9 @@ console.log('t',t)
         title,
         body,
         canvasId: canvas.id,
+        annotationTiming: timing,
         fragsel: {
-          t,
+          timing,
           xywh,
         },
         id: (annotation && annotation.id) || `${uuid()}`,
@@ -449,7 +449,6 @@ console.log('t',t)
     }
 
     const isVideoDataLoaded = mediaVideo && mediaVideo.video && !isNaN(mediaVideo.video.duration) && mediaVideo.video.duration > 0;
-  console.log(valueTime)
 
     return (
       <CompanionWindow

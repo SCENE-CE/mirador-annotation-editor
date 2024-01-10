@@ -2,10 +2,11 @@
 export default class WebAnnotation {
   /** */
   constructor({
-    canvasId, id, fragsel, image, body, tags, svg, manifestId, title
+    canvasId, id, fragsel, image, body, tags, svg, manifestId, title, annotationTiming
   }) {
     this.title = title;
     this.id = id;
+    this.annotationTiming = annotationTiming;
     this.canvasId = canvasId;
     this.fragsel = fragsel;
     this.body = body;
