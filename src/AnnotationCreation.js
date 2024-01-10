@@ -503,7 +503,6 @@ class AnnotationCreation extends Component {
                         aria-labelledby="range-slider"
                         max={Math.round(this.state.mediaVideo.video.duration)}
                         color="secondary"
-                        windowid={windowId}
                         sx={{
                           color: 'rgba(1, 0, 0, 0.38)',
                         }}
@@ -798,7 +797,7 @@ const StyledForm = styled('form')(({ theme }) => ({
 }));
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  '&:forst-of-type': {
+  '&:first-of-type': {
     borderRadius: theme.shape.borderRadius,
   },
   '&:not(:first-of-type)': {
