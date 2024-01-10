@@ -63,6 +63,7 @@ class AnnotationCreation extends Component {
     super(props);
 
     const annoState = {};
+
     if (props.annotation) {
       //
       // annotation body
@@ -87,6 +88,7 @@ class AnnotationCreation extends Component {
       //
       // drawing position
       if (props.annotation.target.selector) {
+        console.log('annotatation target SELECTOR',props.annotation.target.selector)
         if (Array.isArray(props.annotation.target.selector)) {
           props.annotation.target.selector.forEach((selector) => {
             if (selector.type === 'SvgSelector') {
@@ -306,6 +308,7 @@ class AnnotationCreation extends Component {
   /** */
   submitForm(e) {
     e.preventDefault();
+    console.log('ENTER SUBMIT FORM')
     const {
       annotation,
       canvases,
@@ -323,9 +326,15 @@ class AnnotationCreation extends Component {
       tend,
       textEditorStateBustingKey,
     } = this.state;
-    const t = (tstart && tend) ? `${tstart},${tend}` : null;
+    console.log('receiveannotation in submitform', receiveAnnotation)
+    console.log('annotation in submitform', annotation)
+    console.log('config in submitform', config)
+    console.log('canvases in submitform', canvases)
+    console.log('tstart', tstart)
+    console.log('tstart & tend',tstart, tend)
+    const t = (tstart != null && tend != null) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
-
+console.log('t',t)
     canvases.forEach((canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
 
@@ -367,6 +376,7 @@ class AnnotationCreation extends Component {
       tstart: 0,
       xywh: null,
     });
+    console.log('annotation in submit',annotation);
   }
 
   /** */
@@ -439,7 +449,7 @@ class AnnotationCreation extends Component {
     }
 
     const isVideoDataLoaded = mediaVideo && mediaVideo.video && !isNaN(mediaVideo.video.duration) && mediaVideo.video.duration > 0;
-
+  console.log(valueTime)
 
     return (
       <CompanionWindow
