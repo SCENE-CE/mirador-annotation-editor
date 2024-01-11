@@ -144,7 +144,6 @@ class AnnotationCreation extends Component {
       ...annoState,
       valuetextTime: '',
       mediaVideo: null,
-      title: 'defaultTitle',
     };
 
     this.submitForm = this.submitForm.bind(this);
@@ -327,7 +326,6 @@ class AnnotationCreation extends Component {
     } = this.state;
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
-
     canvases.forEach((canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
 
@@ -429,6 +427,7 @@ class AnnotationCreation extends Component {
       image,
       valueTime,
       mediaVideo,
+      title
     } = this.state;
 
     // TODO : Vérifier ce code, c'est étrange de comprarer un typeof à une chaine de caractère.
@@ -437,12 +436,10 @@ class AnnotationCreation extends Component {
       valueTime[0] = tstart;
       valueTime[1] = tend;
     }
-
     const isVideoDataLoaded = mediaVideo && mediaVideo.video && !isNaN(mediaVideo.video.duration) && mediaVideo.video.duration > 0;
-
     return (
       <CompanionWindow
-        title={annotation ? annotation.title : 'New Annotation'}
+        title={title ? title.value : 'New Annotation'}
         windowId={windowId}
         id={id}
       >

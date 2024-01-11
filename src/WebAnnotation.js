@@ -4,7 +4,7 @@ export default class WebAnnotation {
   constructor({
     canvasId, id, fragsel, image, body, tags, svg, manifestId, title
   }) {
-    this.title = title;
+    this.title = title,
     this.id = id;
     this.canvasId = canvasId;
     this.fragsel = fragsel;
@@ -18,7 +18,6 @@ export default class WebAnnotation {
   /** */
   toJson() {
     return {
-      title: this.title,
       body: this.createBody(),
       id: this.id,
       motivation: 'commenting',
@@ -46,7 +45,6 @@ export default class WebAnnotation {
       };
       bodies.push(imgBody);
     }
-
     if(this.title){
       const title={
         type: 'AnnotationTitle',
