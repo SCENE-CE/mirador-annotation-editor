@@ -345,7 +345,7 @@ class AnnotationCreation extends Component {
         id: (annotation && annotation.id) || `${uuid()}`,
         image,
         manifestId: canvas.options.resource.id,
-        svg:svg,
+        svg,
         tags,
       }).toJson();
 
@@ -457,12 +457,16 @@ class AnnotationCreation extends Component {
           strokeColor={strokeColor}
           strokeWidth={strokeWidth}
           closed={closedMode === 'closed'}
-          svg={svg}
+        
           updateGeometry={this.updateGeometry}
           windowId={windowId}
           player={mediaIsVideo ? VideosReferences.get(windowId) : OSDReferences.get(windowId)}
-          width={mediaIsVideo ? VideosReferences.get(windowId).video.videoWidth : OSDReferences.get(windowId).viewer.world.getItemAt(0).source.dimensions.x}
-          height={mediaIsVideo ? VideosReferences.get(windowId).video.videoHeight : OSDReferences.get(windowId).viewer.world.getItemAt(0).source.dimensions.y}
+          /// we need to pass the width and height of the image to the annotation drawing component
+          width={1920}
+          height={1080}
+
+
+    
         />
         <StyledForm
           onSubmit={this.submitForm}
