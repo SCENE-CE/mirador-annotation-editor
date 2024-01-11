@@ -7,5 +7,3 @@
 npm-debug.log*
 .idea
 .package-lock.json
-```
-/package-lock.json

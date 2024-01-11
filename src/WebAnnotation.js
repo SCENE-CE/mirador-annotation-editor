@@ -2,8 +2,9 @@
 export default class WebAnnotation {
   /** */
   constructor({
-    canvasId, id, fragsel, image, body, tags, svg, manifestId,
+    canvasId, id, fragsel, image, body, tags, svg, manifestId, title
   }) {
+    this.title = title,
     this.id = id;
     this.canvasId = canvasId;
     this.fragsel = fragsel;
@@ -28,7 +29,6 @@ export default class WebAnnotation {
   /** */
   createBody() {
     let bodies = [];
-
     if (this.body && this.body.value !== '') {
       const textBody = {
         type: 'TextualBody',
@@ -38,11 +38,19 @@ export default class WebAnnotation {
     }
 
     if (this.image) {
+
       const imgBody = {
         id: this.image.id,
         type: 'Image',
       };
       bodies.push(imgBody);
+    }
+    if(this.title){
+      const title={
+        type: 'AnnotationTitle',
+        value: this.title,
+      }
+      bodies.push(title)
     }
 
     if (this.tags) {

@@ -7,10 +7,10 @@ const StyledInput = styled(Input)(({ theme }) => ({
   height: 'fit-content',
   margin: '2px',
   '& input[type=number]': {
-    '-moz-appearance': 'textfield',
+    'MozAppearance': 'textfield',
   },
   '& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button': {
-    '-webkit-appearance': 'none',
+    'WebkitAppearance': 'none',
     margin: 0,
   },
 }));
@@ -25,12 +25,12 @@ const StyledRoot = styled('div')({
 });
 
 function HMSInput({ seconds, onChange }) {
-  const [hms, setHms] = useState(secondsToHMSarray(seconds));
-  console.log('hms', secondsToHMSarray(seconds));
-  console.log('seconds', seconds);
+  const [hms, setHms] = useState(secondsToHMSarray(0));
 
   useEffect(() => {
+      if(seconds != null) {
     setHms(secondsToHMSarray(seconds));
+      }
   }, [seconds]);
 
   const someChange = (ev) => {
@@ -77,7 +77,7 @@ function HMSInput({ seconds, onChange }) {
 
 HMSInput.propTypes = {
   onChange: PropTypes.func.isRequired,
-  seconds: PropTypes.number.isRequired,
+  seconds: PropTypes.number,
 };
 
 export default HMSInput;
