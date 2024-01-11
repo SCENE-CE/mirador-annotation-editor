@@ -123,11 +123,8 @@ class Rectangle extends React.Component {
                     stroke={this.props.stroke || 'black'}
                     strokeWidth={this.props.strokeWidth || 1}
                     id={this.props._id}
-
                     draggable={activeTool === 'cursor' || activeTool === 'edit'}
                     onClick={this.handleClick}
-
-
 
                 />
 
@@ -338,7 +335,7 @@ class AnnotationDrawing extends Component {
                 selectedShape.text = selectedShape.text.slice(0, -1);
             } else {
 
-                // retrun if not a letter 
+                // return if not a letter 
                 if (e.key.length !== 1) {
                     return;
                 }
