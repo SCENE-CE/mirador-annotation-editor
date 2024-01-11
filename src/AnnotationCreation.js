@@ -140,7 +140,6 @@ class AnnotationCreation extends Component {
       textEditorStateBustingKey: 0,
       // eslint-disable-next-line sort-keys,max-len
       valueTime: [0, 1],
-      xywh: null,
       ...annoState,
       valuetextTime: '',
       mediaVideo: null,
