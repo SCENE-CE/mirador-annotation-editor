@@ -7,9 +7,140 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
     Stage, Layer, Star, Text, Circle, Rect
-    , Ellipse, Transformer,
+    , Ellipse, Transformer,Shape
 
 } from 'react-konva';
+
+
+class FreeHand extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.shapeRef = React.createRef();
+        this.trRef = React.createRef();
+    }
+
+    componentDidMount() {
+        if (this.trRef.current) {
+            this.trRef.current.nodes([this.shapeRef.current]);
+            this.trRef.current.getLayer().batchDraw();
+        }
+    }
+
+    handleClick = () => {
+        this.props.onShapeClick(this.props.shape);
+
+    };
+
+    render() {
+        const { activeTool } = this.props;
+        const isSelected = this.props.selected
+    
+// will be a custom shape
+
+        return (
+            <React.Fragment>
+
+
+                <Shape
+
+                    ref={this.shapeRef}
+                    x={this.props.x || 100}
+                    y={this.props.y || 100}
+                    width={this.props.width || 1920}
+                    height={this.props.height || 1080}
+                    fill={this.props.fill || 'red'}
+                    stroke={this.props.stroke || 'black'}
+                    strokeWidth={this.props.strokeWidth || 1}
+                    id={this.props._id}
+                    draggable={activeTool === 'cursor' || activeTool === 'edit'}
+                    onClick={this.handleClick}
+                    sceneFunc={(context, shape) => {
+                        console.log('scene func');
+                        // context.beginPath();
+                        // for (let i = 0; i < shape.points.length; i += 2) {
+                        //     const x = shape.points[i];
+                        //     const y = shape.points[i + 1];
+                        //     context.lineTo(x, y);
+                        // }
+                        // context.fillStyle = shape.fill;
+                        // context.fillStrokeShape(shape);
+                        context.beginPath();
+                        context.moveTo(20, 50);
+                        context.lineTo(220, 80);
+                        context.quadraticCurveTo(150, 100, 260, 170);
+                        context.closePath();
+                        // (!) Konva specific method, it is very important
+                        context.fillStrokeShape(shape);
+
+
+
+                    }}
+
+                />
+
+                <Transformer ref={this.trRef}
+
+                    visible={activeTool === 'edit' && isSelected}
+                />
+            </React.Fragment>
+        );
+
+    }
+  
+  }
+
+class EllipseNode extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.shapeRef = React.createRef();
+        this.trRef = React.createRef();
+    }
+
+    componentDidMount() {
+        if (this.trRef.current) {
+            this.trRef.current.nodes([this.shapeRef.current]);
+            this.trRef.current.getLayer().batchDraw();
+        }
+    }
+
+    handleClick = () => {
+        this.props.onShapeClick(this.props.shape);
+
+    };
+
+    render() {
+        const { activeTool } = this.props;
+        const isSelected = this.props.selected
+      
+        return (
+            <React.Fragment>
+                <Ellipse
+                    // map props to konva
+                    ref={this.shapeRef}
+                    x={this.props.x || 100}
+                    y={this.props.y || 100}
+                    width={this.props.width || 100}
+                    height={this.props.height || 100}
+                    fill={this.props.fill || 'red'}
+                    stroke={this.props.stroke || 'black'}
+                    strokeWidth={this.props.strokeWidth || 1}
+                    id={this.props._id}
+                    draggable={activeTool === 'cursor' || activeTool === 'edit'}
+                    onClick={this.handleClick}
+
+                />
+
+                <Transformer ref={this.trRef}
+
+                    visible={activeTool === 'edit' && isSelected}
+                />
+
+            </React.Fragment>
+        );
+    }
+}
 
 
 
@@ -42,8 +173,7 @@ class TextNode extends React.Component {
     render() {
         const { activeTool } = this.props;
         const isSelected = this.props.selected
-        console.log(this.props._id, 'is selected', isSelected);
-
+      
 
         return (
             <React.Fragment>
@@ -108,8 +238,7 @@ class Rectangle extends React.Component {
     render() {
         const { activeTool } = this.props;
         const isSelected = this.props.selected
-        console.log(this.props._id, 'is selected', isSelected);
-
+   
         return (
             <React.Fragment>
                 <Rect
@@ -259,6 +388,63 @@ class ParentComponent extends React.Component {
                                 />
                             );
                             break;
+                        case 'ellipse':
+                            
+                            return (
+                                <EllipseNode
+
+                                    shape={shape}
+                                    selectedShapeId={selid}
+                                    selectedShape={selectedShape}
+                                    onShapeClick={this.handleShapeClick}
+                                    activeTool={this.props.activeTool}
+                                    selected={selected}
+
+                                    _id={shape.id}
+                                    key={i}
+                                    x={shape.x}
+                                    y={shape.y}
+                                    width={shape.width}
+                                    height={shape.height}
+                                    fill={shape.fill}
+                                    stroke={shape.strokeColor}
+                                    strokeWidth={shape.strokeWidth}
+                                    draggable={this.props.activeTool === 'cursor'}
+                                    onClick={this.props.activeTool === 'cursor' ? () => this.setState({ currentShape: shape }) : null}
+                                    //   onDragEnd={this.handleDragEnd(shape.id)} // Add this line
+                                    onDblClick={this.handleShapeDblClick}
+
+
+                                />
+                            );
+                            break;
+                        case 'freehand':
+                            return (
+                                <FreeHand
+
+                                    shape={shape}
+                                    selectedShapeId={selid}
+                                    selectedShape={selectedShape}
+                                    onShapeClick={this.handleShapeClick}
+                                    activeTool={this.props.activeTool}
+                                    selected={selected}
+
+                                    _id={shape.id}
+                                    key={i}
+                                    x={shape.x}
+                                    y={shape.y}
+                                    points={shape.points}
+                                    fill={shape.fill}
+                                    stroke={shape.strokeColor}
+                                    strokeWidth={shape.strokeWidth}
+                                    draggable={this.props.activeTool === 'cursor'}
+                                    onClick={this.props.activeTool === 'cursor' ? () => this.setState({ currentShape: shape }) : null}
+                                    //   onDragEnd={this.handleDragEnd(shape.id)} // Add this line
+                                    onDblClick={this.handleShapeDblClick}
+                                    
+                                />
+                            );
+                            break;
                     }
                 })}
             </Layer>
@@ -283,6 +469,7 @@ class AnnotationDrawing extends Component {
             shapes: [],
             newShape: null,
             currentShape: null,
+            isDrawing: false,
         };
         this.shapeRefs = {};
         this.transformerRefs = {};
@@ -357,6 +544,7 @@ class AnnotationDrawing extends Component {
 
 
         }
+        
 
        
 
@@ -379,6 +567,7 @@ class AnnotationDrawing extends Component {
         const pos = e.target.getStage().getPointerPosition();
 
         let shape = null;
+        console.log('dbl click', this.props.activeTool);
         switch (this.props.activeTool) {
             case 'rectangle':
 
@@ -424,6 +613,7 @@ class AnnotationDrawing extends Component {
                     type: 'text',
                     x: pos.x,
                     y: pos.y,
+
                     fontSize: 20,
                     fill: this.props.fillColor,
 
@@ -445,18 +635,41 @@ class AnnotationDrawing extends Component {
                 });
 
                 break;
+                case "freehand":
+
+                const points = [pos.x, pos.y];
+
+                    shape = {
+                        type: 'freehand',
+                        x: pos.x,
+                        y: pos.y,
+                        with:1920,
+                        height:1080,
+                      
+                        fill: this.props.fillColor,
+                        points: points,
+    
+    
+                        id: uuidv4(),
+                    };
+                    // this.setState({ newShape: shape }, () => {
+                    //     // Add global key press event listener
+                    //     window.addEventListener('keydown', this.handleKeyPress);
+                    // });
+                    this.setState({
+
+                        selectedShape: shape,
+                        selectedShapeId: shape.id,
+                        newShape: shape,
+                        currentShape: shape,
+                    });
+
 
             // Add cases for other shapes here
             default:
                 break;
         }
 
-        //     this.setState({
-        //       shapes: [...shapes, newShape],
-        //       currentShape: newShape,
-        //       newShape: null,
-
-        //     });
         const { newShape, shapes, currentShape } = this.state;
 
         if (newShape) {
@@ -472,9 +685,35 @@ class AnnotationDrawing extends Component {
     };
 
 
-
-
-
+    handleMouseDown = (e) => {
+        // Check if the current shape is a freehand object
+        if (this.state.selectedShapeId && this.state.currentShape.type === 'freehand') {
+          // Start drawing
+          this.setState({
+            isDrawing: true,
+            shapes: this.state.shapes.map(shape => shape.id === this.state.selectedShapeId 
+              ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] } 
+              : shape)
+          });
+        }
+      };
+    
+      handleMouseMove = (e) => {
+        // Check if we're currently drawing
+        if (!this.state.isDrawing) return;
+    
+        // Add the new point to the current shape
+        this.setState({
+          shapes: this.state.shapes.map(shape => shape.id === this.state.selectedShapeId 
+            ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] } 
+            : shape)
+        });
+      };
+    
+      handleMouseUp = () => {
+        // Stop drawing
+        this.setState({ isDrawing: false });
+      };
 
 
 
@@ -495,9 +734,9 @@ class AnnotationDrawing extends Component {
                 style={{
                     height: '100%', left: 0, position: 'absolute', top: 0, width: '100%',
                 }}
-                //   onMouseDown={this.handleMouseDown}
-                //   onMouseUp={this.handleMouseUp}
-                //   onMouseMove={this.handleMouseMove}
+                   onMouseDown={this.handleMouseDown}
+                   onMouseUp={this.handleMouseUp}
+                  onMouseMove={this.handleMouseMove}
                 onDblClick={this.handleKonvasDblClick}
 
 
