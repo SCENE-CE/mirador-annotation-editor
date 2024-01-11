@@ -480,7 +480,6 @@ class AnnotationDrawing extends Component {
             currentShape: null,
             isDrawing: false,
             svg:  async () => {
-                // Your function implementation here
           
                 
     
@@ -493,7 +492,6 @@ class AnnotationDrawing extends Component {
             
                 console.log('svg',svg);
                     return svg;
-            
             
               },
         };
@@ -768,8 +766,7 @@ class AnnotationDrawing extends Component {
 
         const { shapes, newShape } = this.state;
         const { windowId } = this.props;
-        console.log(windowId)
-
+  
 
 // potentiellement videoRef et windowId
         return (
@@ -784,7 +781,7 @@ class AnnotationDrawing extends Component {
                    onMouseMove={this.handleMouseMove}
                    onDblClick={this.handleKonvasDblClick}
                    id={windowId}
-                   svg={this.svg}
+                  
 
 
             >
