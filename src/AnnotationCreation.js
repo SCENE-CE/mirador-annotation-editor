@@ -77,7 +77,7 @@ class AnnotationCreation extends Component {
           } else if (body.type === 'Image') {
             // annoState.textBody = body.value; // why text body here ???
             annoState.image = body;
-          } else if (body.type === "AnnotationTitle" ) {
+          } else if (body.type === "AnnotationTitle") {
             annoState.title = body
           }
         });
@@ -170,8 +170,8 @@ class AnnotationCreation extends Component {
   }
 
   componentDidMount() {
-      const mediaVideo = VideosReferences.get(this.props.windowId);
-      this.setState({ mediaVideo }); // Update mediaVideo in state
+    const mediaVideo = VideosReferences.get(this.props.windowId);
+    this.setState({ mediaVideo }); // Update mediaVideo in state
   }
 
   /** */
@@ -229,9 +229,9 @@ class AnnotationCreation extends Component {
     this.setState({ tend: value });
   }
 
-  updateTitle(e){
+  updateTitle(e) {
     const thisTitle = e.target.value;
-    this.setState({title : thisTitle});
+    this.setState({ title: thisTitle });
   }
 
   /** seekTo/goto annotation end time */
@@ -311,6 +311,7 @@ class AnnotationCreation extends Component {
       canvases,
       receiveAnnotation,
       config,
+
     } = this.props;
     const {
       title,
@@ -323,9 +324,14 @@ class AnnotationCreation extends Component {
       tend,
       textEditorStateBustingKey,
     } = this.state;
+
+    console.log('submitting form',this.state);
+
+
+
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
-    canvases.forEach((canvas) => {
+    canvases.forEach(async(canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
 
       const anno = new WebAnnotation({
@@ -339,9 +345,12 @@ class AnnotationCreation extends Component {
         id: (annotation && annotation.id) || `${uuid()}`,
         image,
         manifestId: canvas.options.resource.id,
-        svg,
+        svg:svg,
         tags,
       }).toJson();
+
+      console.log(anno);
+
       if (annotation) {
         storageAdapter.update(anno)
           .then((annoPage) => {
@@ -418,7 +427,7 @@ class AnnotationCreation extends Component {
       strokeWidth,
       closedMode,
       textBody,
-      svg,
+      
       tstart,
       tend,
       textEditorStateBustingKey,
@@ -452,6 +461,8 @@ class AnnotationCreation extends Component {
           updateGeometry={this.updateGeometry}
           windowId={windowId}
           player={mediaIsVideo ? VideosReferences.get(windowId) : OSDReferences.get(windowId)}
+          width={mediaIsVideo ? VideosReferences.get(windowId).video.videoWidth : OSDReferences.get(windowId).viewer.world.getItemAt(0).source.dimensions.x}
+          height={mediaIsVideo ? VideosReferences.get(windowId).video.videoHeight : OSDReferences.get(windowId).viewer.world.getItemAt(0).source.dimensions.y}
         />
         <StyledForm
           onSubmit={this.submitForm}
@@ -459,19 +470,19 @@ class AnnotationCreation extends Component {
           <div>
             <Grid item xs={12}>
               <TextField
-                  id="outlined-basic"
-                  label="Title"
-                  variant="outlined"
-                  onChange={this.updateTitle}
+                id="outlined-basic"
+                label="Title"
+                variant="outlined"
+                onChange={this.updateTitle}
               />
             </Grid>
           </div>
           <Grid>
             <Typography>TODO:METTRE CE CHAMPS TEXTE EN ONGLET</Typography>
             <TextEditor
-                key={textEditorStateBustingKey}
-                annoHtml={textBody}
-                updateAnnotationBody={this.updateTextBody}
+              key={textEditorStateBustingKey}
+              annoHtml={textBody}
+              updateAnnotationBody={this.updateTextBody}
             />
           </Grid>
           <div>
@@ -640,7 +651,7 @@ class AnnotationCreation extends Component {
                   >
 
                     <ToggleButton value="text" aria-label="select text">
-                    
+
                       <TitleIcon />
                     </ToggleButton>
                     <ToggleButton value="cursor" aria-label="select cursor">

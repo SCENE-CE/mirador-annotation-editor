@@ -10,7 +10,7 @@ import {
     , Ellipse, Transformer,Shape
 
 } from 'react-konva';
-
+import { exportStageSVG } from 'react-konva-to-svg';
 
 class FreeHand extends React.Component {
 
@@ -469,7 +469,7 @@ class AnnotationDrawing extends Component {
 
 
         this.paper = null;
-        this.konvas = null;
+    
 
 
         // this.addPath = this.addPath.bind(this);
@@ -479,9 +479,33 @@ class AnnotationDrawing extends Component {
             newShape: null,
             currentShape: null,
             isDrawing: false,
+            svg:  async () => {
+                // Your function implementation here
+          
+                
+    
+                // stage is the one with same windowId
+    
+                const stage = window.Konva.stages.find((stage) => stage.attrs.id === this.props.windowId);
+            
+                const svg = await exportStageSVG(stage);
+                   
+            
+                console.log('svg',svg);
+                    return svg;
+            
+            
+              },
         };
         this.shapeRefs = {};
         this.transformerRefs = {};
+
+
+
+
+        
+        
+      
 
 
     }
@@ -489,7 +513,7 @@ class AnnotationDrawing extends Component {
 
     onShapeClick = (shape) => {
 
-
+        this.svg();
         this.setState({ selectedShapeId: shape.id });
         const id = shape.id;
         // find shape by id 
@@ -725,6 +749,16 @@ class AnnotationDrawing extends Component {
       };
 
 
+      exportStageSVG=(stage)=>{
+
+        const svg = exportStageSVG({
+            container: stage,
+            width: 1920,
+            height: 1080,
+            });
+            console.log('svg',svg);
+        }
+
 
 
     drawKonvas() {
@@ -733,20 +767,24 @@ class AnnotationDrawing extends Component {
 
 
         const { shapes, newShape } = this.state;
+        const { windowId } = this.props;
+        console.log(windowId)
 
 
-
+// potentiellement videoRef et windowId
         return (
             <Stage
-                width={1920}
-                height={1080}
+                width={this.props.width || 1920}
+                height={this.props.height || 1080}
                 style={{
                     height: '100%', left: 0, position: 'absolute', top: 0, width: '100%',
                 }}
                    onMouseDown={this.handleMouseDown}
                    onMouseUp={this.handleMouseUp}
-                  onMouseMove={this.handleMouseMove}
-                onDblClick={this.handleKonvasDblClick}
+                   onMouseMove={this.handleMouseMove}
+                   onDblClick={this.handleKonvasDblClick}
+                   id={windowId}
+                   svg={this.svg}
 
 
             >
@@ -797,7 +835,7 @@ AnnotationDrawing.propTypes = {
     fillColor: PropTypes.string,
     strokeColor: PropTypes.string,
     strokeWidth: PropTypes.number,
-    svg: PropTypes.string,
+    svg: PropTypes.func.isRequired,
     updateGeometry: PropTypes.func.isRequired,
     windowId: PropTypes.string.isRequired,
 };
@@ -811,5 +849,6 @@ AnnotationDrawing.defaultProps = {
     strokeWidth: 1,
     svg: null,
 };
+
 
 export default AnnotationDrawing;
