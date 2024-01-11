@@ -23,8 +23,8 @@ class TextNode extends React.Component {
     }
 
     handleClick = () => {
-        this.props.onShapeClick(this.props._id);
-      
+        this.props.onShapeClick(this.props.shape);
+
     };
 
 
@@ -34,68 +34,15 @@ class TextNode extends React.Component {
             this.trRef.current.getLayer().batchDraw();
 
             // add event listener for key down
-           // this.shapeRef.current.addEventListener('keydown', this.handleKeyDown);
+            // this.shapeRef.current.addEventListener('keydown', this.handleKeyDown);
         }
     }
 
-    handleKeyDown = (e) => {
-        // if (e.keyCode === 13) {
-        //     this.shapeRef.current.blur();
-        // }
-        //type text content
-        console.log('Key down:', e.evt.key);
-        //update text content
-
-
-        if (e.evt.key === 'Backspace') {
-            const { shapes } = this.state;
-            const { selectedShapeId } = this.state;
-          
-            // update text of selected shape
-
-            const newShapes = shapes.map((shape) => {
-                if (shape.id === selectedShapeId) {
-                    shape.text = shape.text.slice(0, -1);
-                }
-                return shape;
-            }
-            );
-
-            this.setState({ shapes: newShapes });
-        }else{
-
-            const { shapes } = this.state;
-            const { selectedShapeId } = this.state;
-          
-            // update text of selected shape
-
-            const newShapes = shapes.map((shape) => {
-                if (shape.id === selectedShapeId) {
-                    shape.text = shape.text + e.evt.key;
-                }
-                return shape;
-            }
-            );
-
-            this.setState({ shapes: newShapes });
-
-
-        }
-
-
-      
-
-        
-
-    }
 
     render() {
         const { activeTool } = this.props;
-        console.log("selectedId", this.props._id, window.selectedShapeId);
-
-        const isSelected = this.props._id === window.selectedShapeId;
-
-        console.log('is selected', this.props._id,isSelected);
+        const isSelected = this.props.selected
+        console.log(this.props._id, 'is selected', isSelected);
 
 
         return (
@@ -114,16 +61,13 @@ class TextNode extends React.Component {
                     draggable={activeTool === 'cursor' || activeTool === 'edit'}
                     onClick={this.handleClick}
                     onKeyDown={this.handleKeyDown}
-                    
+
                 // onClick={activeTool === 'cursor' ? null : null}
                 // onDblClick={acveTool === 'edit' ? this.handleClick : null}ti
 
 
 
                 />
-
-
-
 
                 <Transformer ref={this.trRef}
 
@@ -145,10 +89,6 @@ class Rectangle extends React.Component {
         super(props);
         this.shapeRef = React.createRef();
         this.trRef = React.createRef();
-
-     
-
-
     }
 
 
@@ -161,17 +101,14 @@ class Rectangle extends React.Component {
     }
 
     handleClick = () => {
-        this.props.onShapeClick(this.props._id);
-      
+        this.props.onShapeClick(this.props.shape);
+
     };
 
     render() {
         const { activeTool } = this.props;
-        console.log("selectedId", this.props._id, window.selectedShapeId);
-
-        const isSelected = this.props._id === window.selectedShapeId;
-
-        console.log('is selected', this.props._id,isSelected);
+        const isSelected = this.props.selected
+        console.log(this.props._id, 'is selected', isSelected);
 
         return (
             <React.Fragment>
@@ -219,65 +156,53 @@ class ParentComponent extends React.Component {
 
         this.state = {
             selectedShapeId: this.props.selectedShapeId,
-            currentShape: null,
+            selectedShape: null,
+
         };
-        
+
     }
 
 
-    handleShapeClick = (id) => {
-        console.log('shape clicked', id);
-        window.selectedShapeId = id;
-        this.setState({ selectedShapeId: id });
-    
+    handleShapeClick = (shape) => {
 
-
+        this.setState({
+            selectedShapeId: shape.id,
+            selectedShape: shape
+        });
+        this.props.onShapeClick(shape);
         // this.setState({ selectedShapeId: id });
     };
 
-    //handle key down
 
-    // handleKeyPress = (e) => {
-    //     console.log('key press', e);
-    //     if (e.key === 'Backspace') {
-    //         const { shapes } = this.state;
-    //         const { selectedShapeId } = this.state;
-    //         const newShapes = shapes.filter((shape) => shape.id !== selectedShapeId);
-    //         this.setState({ shapes: newShapes });
-    //     }
-    
-    //     if (e.key === 'Escape') {
-    //         this.setState({ currentShape: null });
-    //         window.removeEventListener('keydown', this.handleKeyPress);
-    //     }
-
-    //     if (e.key === 'Enter') {
-    //         this.setState({ currentShape: null });
-    //         window.removeEventListener('keydown', this.handleKeyPress);
-    //     }
-
-
-    //     if (e.key === 'Delete') {
-    //         const { shapes } = this.state;
-    //         const { selectedShapeId } = this.state;
-    //         const newShapes = shapes.filter((shape) => shape.id !== selectedShapeId);
-    //         this.setState({ shapes: newShapes });
-    //     }
-
-
-    // }
 
     render() {
 
         const { shapes
-         } = this.props;
+        } = this.props;
 
-         console.log('shapes', this.props.shapes);
-      
+        const { selectedShapeId } = this.state;
+        let selected = false;
+        let selid = selectedShapeId;
+        let selectedShape = null;
+
+        //if length is 1 and selected shape is null
+        if (shapes.length === 1 && !selectedShapeId) {
+            selected = true;
+            selid = shapes[0].id;
+            selectedShape = shapes[0];
+
+        }
+
         return (
             <Layer>
                 {shapes.map((shape, i) => {
-                   
+
+                    if (selectedShape?.id === shape.id) {
+                        selected = true;
+                        selectedShape = shape;
+                    }
+
+
                     switch (shape.type) {
 
                         case 'rectangle':
@@ -285,7 +210,11 @@ class ParentComponent extends React.Component {
                             return (
                                 <Rectangle
 
-                                
+
+                                    shape={shape}
+                                    selectedShapeId={selid}
+                                    selectedShape={selectedShape}
+                                    onShapeClick={this.handleShapeClick}
                                     activeTool={this.props.activeTool}
                                     _id={shape.id}
                                     key={i}
@@ -297,7 +226,8 @@ class ParentComponent extends React.Component {
                                     stroke={shape.strokeColor}
                                     strokeWidth={shape.strokeWidth}
                                     draggable={this.props.activeTool === 'cursor'}
-                                    onShapeClick={this.handleShapeClick}
+                                    selected={selected}
+                                // onShapeClick={this.handleShapeClick}
 
 
 
@@ -309,8 +239,13 @@ class ParentComponent extends React.Component {
                             return (
                                 <TextNode
 
+                                    shape={shape}
+                                    selectedShapeId={selid}
+                                    selectedShape={selectedShape}
+                                    onShapeClick={this.handleShapeClick}
                                     activeTool={this.props.activeTool}
-                                  
+                                    selected={selected}
+
                                     _id={shape.id}
                                     key={i}
                                     x={shape.x}
@@ -322,7 +257,7 @@ class ParentComponent extends React.Component {
                                     onClick={this.props.activeTool === 'cursor' ? () => this.setState({ currentShape: shape }) : null}
                                     //   onDragEnd={this.handleDragEnd(shape.id)} // Add this line
                                     onDblClick={this.handleShapeDblClick}
-                                    onShapeClick={this.handleShapeClick}
+
 
                                 />
                             );
@@ -354,20 +289,95 @@ class AnnotationDrawing extends Component {
         };
         this.shapeRefs = {};
         this.transformerRefs = {};
- 
+
 
     }
 
 
+    onShapeClick = (shape) => {
 
 
+        this.setState({ selectedShapeId: shape.id });
+        const id = shape.id;
+        // find shape by id 
+        const currentshape = this.state.shapes.find((shape) => shape.id === id);
+        console.log('current shape', currentshape);
+
+
+    };
+
+
+    handleKeyPress = (e) => {
+
+
+        console.log('key press', e);
+        const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape'];
+        // get selected shape
+        const { selectedShapeId } = this.state;
+
+        console.log('selected shape id', selectedShapeId);
+        if (!selectedShapeId) {
+            return;
+        }
+
+        const { shapes } = this.state;
+
+
+        const selectedShape = shapes.find((shape) => shape.id === selectedShapeId);
+
+        if (!selectedShape) {
+            return;
+        }
+
+        if (selectedShape.type === 'text') {
+            console.log('text selected', selectedShape.text);
+
+            // update text
+            // let's handle text update
+            if (e.key === 'Backspace') {
+                selectedShape.text = selectedShape.text.slice(0, -1);
+            } else {
+
+                // retrun if not a letter 
+                if (e.key.length !== 1) {
+                    return;
+                }
+
+                // return if special char
+                if (unnalowedKeys.includes(e.key)) {
+                    return;
+                }
+
+                selectedShape.text += e.key;
+                // update state
+
+
+            }
+
+            const index = shapes.findIndex((shape) => shape.id === selectedShapeId);
+            shapes[index] = selectedShape;
+            this.setState({ shapes: shapes });
+
+
+        }
+
+       
+
+    };
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.activeTool === 'text' && this.props.activeTool !== 'text') {
+            // Remove global key press event listener
+            window.removeEventListener('keypress', this.handleKeyPress);
+        }
+    }
 
 
     //on dbl click
     handleKonvasDblClick = (e) => {
 
 
-        console.log('db click', this.props);
+     
 
         const pos = e.target.getStage().getPointerPosition();
 
@@ -383,6 +393,7 @@ class AnnotationDrawing extends Component {
                     id: uuidv4(),
                 };
                 this.setState({
+                    selectedShapeId: shape.id,
                     newShape: shape,
                     currentShape: shape,
                 });
@@ -398,6 +409,8 @@ class AnnotationDrawing extends Component {
                     id: uuidv4(),
                 };
                 this.setState({
+                    selectedShape: shape,
+                    selectedShapeId: shape.id,
                     newShape: shape,
                     currentShape: shape,
                 });
@@ -427,6 +440,9 @@ class AnnotationDrawing extends Component {
                     window.addEventListener('keydown', this.handleKeyPress);
                 });
                 this.setState({
+
+                    selectedShape: shape,
+                    selectedShapeId: shape.id,
                     newShape: shape,
                     currentShape: shape,
                 });
@@ -470,31 +486,9 @@ class AnnotationDrawing extends Component {
 
 
 
-        console.log('draw konvas', this.props);
 
-        const { shapes, newShape  } = this.state;
+        const { shapes, newShape } = this.state;
 
-        // update selected shape with new props if any
-        // for (let shape of shapes) {
-        //     if (shape.id === window.selectedShapeId) {
-
-        //         shape.strokeColor = this.props.strokeColor;
-        //         shape.strokeWidth = this.props.strokeWidth;
-        //         shape.fill = this.props.fillColor;
-
-        //         // update shape in state
-        //         this.setState({ shapes: [...shapes] });
-            
-
-                
-        //     }
-            
-        // }
-
-
-
-
-        // console.log(JSON.stringify(shapes, null, 2));
 
 
         return (
@@ -508,11 +502,13 @@ class AnnotationDrawing extends Component {
                 //   onMouseUp={this.handleMouseUp}
                 //   onMouseMove={this.handleMouseMove}
                 onDblClick={this.handleKonvasDblClick}
+
+
             >
 
 
                 <ParentComponent shapes={shapes}
-                  
+                    onShapeClick={this.onShapeClick}
                     activeTool={this.props.activeTool}
                     selectedShapeId={this.state.selectedShapeId}
                 />
