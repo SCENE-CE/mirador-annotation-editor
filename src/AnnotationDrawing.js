@@ -33,22 +33,25 @@ class FreeHand extends React.Component {
     };
 
     render() {
-        const { activeTool } = this.props;
+        const { activeTool,points,fill } = this.props;
         const isSelected = this.props.selected
     
 // will be a custom shape
 
         return (
+
+           
             <React.Fragment>
 
 
                 <Shape
 
                     ref={this.shapeRef}
-                    x={this.props.x || 100}
-                    y={this.props.y || 100}
+                    x={0}
+                    y={0}
                     width={this.props.width || 1920}
                     height={this.props.height || 1080}
+                    points={this.props.points || [0, 0, 100, 0, 100, 100]}
                     fill={this.props.fill || 'red'}
                     stroke={this.props.stroke || 'black'}
                     strokeWidth={this.props.strokeWidth || 1}
@@ -56,22 +59,28 @@ class FreeHand extends React.Component {
                     draggable={activeTool === 'cursor' || activeTool === 'edit'}
                     onClick={this.handleClick}
                     sceneFunc={(context, shape) => {
-                        console.log('scene func');
+                        console.log('scene func',points);
+                      
+                         for (let i = 0; i < points.length; i += 2) {
+                            context.beginPath();
+                            //draw rect for each point
+                            
+                            context.rect(points[i] - 2.5, points[i + 1]- 2.5, 5, 5);
+                            // fill rect with color
+                            context.closePath();
+                            
+
+                            context.fillStrokeShape(shape);
+                         }
+                           
+                     
                         // context.beginPath();
-                        // for (let i = 0; i < shape.points.length; i += 2) {
-                        //     const x = shape.points[i];
-                        //     const y = shape.points[i + 1];
-                        //     context.lineTo(x, y);
-                        // }
-                        // context.fillStyle = shape.fill;
+                        // context.moveTo(20, 50);
+                        // context.lineTo(220, 80);
+                        // context.quadraticCurveTo(150, 100, 260, 170);
+                        // context.closePath();
+                        // // (!) Konva specific method, it is very important
                         // context.fillStrokeShape(shape);
-                        context.beginPath();
-                        context.moveTo(20, 50);
-                        context.lineTo(220, 80);
-                        context.quadraticCurveTo(150, 100, 260, 170);
-                        context.closePath();
-                        // (!) Konva specific method, it is very important
-                        context.fillStrokeShape(shape);
 
 
 
