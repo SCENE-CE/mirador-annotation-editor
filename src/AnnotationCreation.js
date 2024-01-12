@@ -36,6 +36,8 @@ import ImageFormField from './ImageFormField';
 import { secondsToHMS } from './utils';
 import TextField from '@mui/material/TextField';
 
+import { exportStageSVG } from 'react-konva-to-svg';
+
 /** Extract time information from annotation target */
 function timeFromAnnoTarget(annotarget) {
   console.info('TODO proper time extraction from: ', annotarget);
@@ -303,8 +305,22 @@ class AnnotationCreation extends Component {
     });
   }
 
+
+  getSvg = async () => {
+    const stage = window.Konva.stages.find((stage) => stage.attrs.id === this.props.windowId);
+
+    const svg = await exportStageSVG(stage);
+
+    return svg;
+
+
+  }
+
+
+
+
   /** */
-  submitForm(e) {
+  async submitForm(e) {
     e.preventDefault();
     const {
       annotation,
@@ -313,25 +329,31 @@ class AnnotationCreation extends Component {
       config,
 
     } = this.props;
+
+
+
     const {
       title,
       textBody,
       image,
       tags,
       xywh,
-      svg,
+  //    svg,
       tstart,
       tend,
       textEditorStateBustingKey,
     } = this.state;
 
-    console.log('submitting form',this.state);
+    console.log('submitting form', this.state);
+
+    const svg = await this.getSvg();
 
 
+    console.log('svg', svg);
 
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
-    canvases.forEach(async(canvas) => {
+    canvases.forEach(async (canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
 
       const anno = new WebAnnotation({
@@ -345,7 +367,7 @@ class AnnotationCreation extends Component {
         id: (annotation && annotation.id) || `${uuid()}`,
         image,
         manifestId: canvas.options.resource.id,
-        svg,
+        svg,//<------
         tags,
       }).toJson();
 
@@ -427,7 +449,7 @@ class AnnotationCreation extends Component {
       strokeWidth,
       closedMode,
       textBody,
-      
+
       tstart,
       tend,
       textEditorStateBustingKey,
@@ -457,7 +479,7 @@ class AnnotationCreation extends Component {
           strokeColor={strokeColor}
           strokeWidth={strokeWidth}
           closed={closedMode === 'closed'}
-        
+
           updateGeometry={this.updateGeometry}
           windowId={windowId}
           player={mediaIsVideo ? VideosReferences.get(windowId) : OSDReferences.get(windowId)}
@@ -466,7 +488,7 @@ class AnnotationCreation extends Component {
           height={1080}
 
 
-    
+
         />
         <StyledForm
           onSubmit={this.submitForm}

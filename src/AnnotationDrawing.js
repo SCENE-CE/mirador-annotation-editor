@@ -308,15 +308,7 @@ class AnnotationDrawing extends Component {
       };
 
 
-      exportStageSVG=(stage)=>{
 
-        const svg = exportStageSVG({
-            container: stage,
-            width: 1920,
-            height: 1080,
-            });
-            console.log('svg',svg);
-        }
 
 
 
