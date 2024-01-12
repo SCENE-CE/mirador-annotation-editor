@@ -2,7 +2,7 @@
 export default class WebAnnotation {
   /** */
   constructor({
-    canvasId, id, fragsel, image, body, tags, svg, manifestId, title
+    canvasId, id, fragsel, image, body, tags, svg, manifestId, title, konvasInformations
   }) {
     this.title = title,
     this.id = id;
@@ -13,6 +13,7 @@ export default class WebAnnotation {
     this.svg = svg;
     this.image = image;
     this.manifestId = manifestId;
+    this.konvasInformations = konvasInformations
   }
 
   /** */
@@ -36,7 +37,14 @@ export default class WebAnnotation {
       };
       bodies.push(textBody);
     }
-
+    console.log('BODY kanvasInfor',this.konvasInformations)
+  if(this.konvasInformations){
+    const konvasInformationsBody = {
+      konvasInformations : this.konvasInformations,
+      type: 'KonvasInformations'
+    }
+    bodies.push(konvasInformationsBody)
+  }
     if (this.image) {
 
       const imgBody = {
@@ -63,6 +71,8 @@ export default class WebAnnotation {
     if (bodies.length === 1) {
       return bodies[0];
     }
+
+    console.log(bodies)
     return bodies;
   }
 

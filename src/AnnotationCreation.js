@@ -88,6 +88,9 @@ class AnnotationCreation extends Component {
       } else if (props.annotation.body.type === 'Image') {
         // annoState.textBody = props.annotation.body.value; // why text body here ???
         annoState.image = props.annotation.body;
+      }else if(props.annotation.body.type === 'KonvasInformations'){
+        annoState.shapes = props.annotation.body
+        console.log(annoState.shapes)
       }
       //
       // drawing position
@@ -110,6 +113,7 @@ class AnnotationCreation extends Component {
         annoState.xywh = geomFromAnnoTarget(props.annotation.target);
         [annoState.tstart, annoState.tend] = timeFromAnnoTarget(props.annotation.target);
       }
+      console.log('annoState',annoState)
     }
 
     const toolState = {
@@ -145,6 +149,7 @@ class AnnotationCreation extends Component {
       ...annoState,
       valuetextTime: '',
       mediaVideo: null,
+      konvasInformations: {},
     };
 
     this.submitForm = this.submitForm.bind(this);
@@ -169,6 +174,7 @@ class AnnotationCreation extends Component {
     this.handleChangeTime = this.handleChangeTime.bind(this);
     this.valuetextTime = this.valuetextTime.bind(this);
     this.updateTitle = this.updateTitle.bind(this);
+    this.addPath = this.addPath.bind(this);
   }
 
   componentDidMount() {
@@ -306,22 +312,41 @@ class AnnotationCreation extends Component {
   }
 
 
+  childRef = React.createRef();
+async addPath(svg){
+    const{ xywh } = this.props;
+    const thisSvg = svg;
+  const { shapes } = await this.childRef.getData();
+
+  const konvasInformations = {
+      shapes: shapes,
+      svg: thisSvg,
+      xywh: xywh,
+    }
+    this.updateGeometry({svg, xywh, konvasInformations})
+    console.log("konvasinformation", konvasInformations)
+  }
+
   getSvg = async () => {
     const stage = window.Konva.stages.find((stage) => stage.attrs.id === this.props.windowId);
 
     const svg = await exportStageSVG(stage);
 
     return svg;
-
-
   }
-
-
 
 
   /** */
   async submitForm(e) {
     e.preventDefault();
+    if(!this.state.svg){
+      this.setState({svg: await this.getSvg()})
+    }
+
+    console.log('svg', this.state.svg);
+
+    await this.addPath(this.state.svg);
+
     const {
       annotation,
       canvases,
@@ -330,30 +355,33 @@ class AnnotationCreation extends Component {
 
     } = this.props;
 
-
-
     const {
       title,
       textBody,
       image,
       tags,
       xywh,
-  //    svg,
+      svg,
       tstart,
       tend,
       textEditorStateBustingKey,
+      konvasInformations
     } = this.state;
 
-    console.log('submitting form', this.state);
+    if(!this.state.svg){
+    this.setState({svg: await this.getSvg()}, ()=>{
+       this.addPath(this.state.svg);
+    })
+    }
 
-    const svg = await this.getSvg();
+    console.log('svg', this.state.svg);
 
+   await this.addPath(this.state.svg);
 
-    console.log('svg', svg);
 
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
-    canvases.forEach(async (canvas) => {
+    canvases.forEach((canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
 
       const anno = new WebAnnotation({
@@ -367,8 +395,9 @@ class AnnotationCreation extends Component {
         id: (annotation && annotation.id) || `${uuid()}`,
         image,
         manifestId: canvas.options.resource.id,
-        svg,//<------
+        svg,
         tags,
+        konvasInformations,
       }).toJson();
 
       console.log(anno);
@@ -421,10 +450,12 @@ class AnnotationCreation extends Component {
   updateGeometry({
     svg,
     xywh,
+                   konvasInformations
   }) {
     this.setState({
       svg,
       xywh,
+      konvasInformations
     });
   }
 
@@ -449,7 +480,7 @@ class AnnotationCreation extends Component {
       strokeWidth,
       closedMode,
       textBody,
-
+      shapes,
       tstart,
       tend,
       textEditorStateBustingKey,
@@ -479,16 +510,15 @@ class AnnotationCreation extends Component {
           strokeColor={strokeColor}
           strokeWidth={strokeWidth}
           closed={closedMode === 'closed'}
-
           updateGeometry={this.updateGeometry}
+          addPath={this.addPath}
           windowId={windowId}
+          shapes={shapes}
           player={mediaIsVideo ? VideosReferences.get(windowId) : OSDReferences.get(windowId)}
+          ref={(childRef) => (this.childRef = childRef)}
           /// we need to pass the width and height of the image to the annotation drawing component
           width={1920}
           height={1080}
-
-
-
         />
         <StyledForm
           onSubmit={this.submitForm}

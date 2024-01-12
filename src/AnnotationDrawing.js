@@ -4,72 +4,37 @@ import PropTypes from 'prop-types';
 import { OSDReferences } from '../mirador/dist/es/src/plugins/OSDReferences';
 import { VideosReferences } from '../mirador/dist/es/src/plugins/VideosReferences';
 import { v4 as uuidv4 } from 'uuid';
-
 import {
     Stage, Layer, Star, Text, Circle, Rect
     , Ellipse, Transformer,Shape
-
 } from 'react-konva';
 import { exportStageSVG } from 'react-konva-to-svg';
-
-
-
 import ParentComponent from './shapes/ParentComponent';
-
-
-
-
-
-
-
 
 /** Create a portal with a drawing canvas and a form to fill annotations details */
 class AnnotationDrawing extends Component {
     /** */
     constructor(props) {
         super(props);
-
-
         this.paper = null;
-    
-
-
-        // this.addPath = this.addPath.bind(this);
         this.drawKonvas = this.drawKonvas.bind(this);
         this.state = {
             shapes: [],
             newShape: null,
             currentShape: null,
             isDrawing: false,
-            svg:  async () => {
-          
-                
-    
-                // stage is the one with same windowId
-    
-                const stage = window.Konva.stages.find((stage) => stage.attrs.id === this.props.windowId);
-            
-                const svg = await exportStageSVG(stage);
-                   
-            
-                console.log('svg',svg);
-                    return svg;
-            
-              },
         };
         this.shapeRefs = {};
         this.transformerRefs = {};
-
-
-
-
-        
-        
-      
-
-
     }
 
+    getData() {
+        const { shapes } = this.state
+        console.log('getData', shapes)
+        return {
+            shapes : shapes
+        } ;
+    }
 
     onShapeClick = (shape) => {
 
@@ -81,7 +46,6 @@ class AnnotationDrawing extends Component {
 
 
     };
-
 
     handleKeyPress = (e) => {
 
@@ -123,23 +87,14 @@ class AnnotationDrawing extends Component {
                 if (unnalowedKeys.includes(e.key)) {
                     return;
                 }
-
                 selectedShape.text += e.key;
                 // update state
-
-
             }
 
             const index = shapes.findIndex((shape) => shape.id === selectedShapeId);
             shapes[index] = selectedShape;
             this.setState({ shapes: shapes });
-
-
         }
-        
-
-       
-
     };
 
     componentDidUpdate(prevProps) {
@@ -152,12 +107,7 @@ class AnnotationDrawing extends Component {
 
     //on dbl click
     handleKonvasDblClick = (e) => {
-
-
-     
-
         const pos = e.target.getStage().getPointerPosition();
-
         let shape = null;
         console.log('dbl click', this.props.activeTool);
         switch (this.props.activeTool) {
@@ -261,9 +211,7 @@ class AnnotationDrawing extends Component {
             default:
                 break;
         }
-
         const { newShape, shapes, currentShape } = this.state;
-
         if (newShape) {
             this.setState({
                 shapes: [...shapes, newShape],
@@ -272,10 +220,7 @@ class AnnotationDrawing extends Component {
 
             });
         }
-
-
     };
-
 
     handleMouseDown = (e) => {
         // Check if the current shape is a freehand object
@@ -307,21 +252,11 @@ class AnnotationDrawing extends Component {
         this.setState({ isDrawing: false });
       };
 
-
-
-
-
-
     drawKonvas() {
-
-
-
-
         const { shapes, newShape } = this.state;
         const { windowId } = this.props;
-  
-
 // potentiellement videoRef et windowId
+        console.log('shapes', shapes)
         return (
             <Stage
                 width={this.props.width || 1920}
@@ -334,30 +269,16 @@ class AnnotationDrawing extends Component {
                    onMouseMove={this.handleMouseMove}
                    onDblClick={this.handleKonvasDblClick}
                    id={windowId}
-                  
-
 
             >
-
-
                 <ParentComponent shapes={shapes}
                     onShapeClick={this.onShapeClick}
                     activeTool={this.props.activeTool}
                     selectedShapeId={this.state.selectedShapeId}
                 />
-
-
             </Stage>
         );
-
-
-
-
     }
-
-
-
-
     /** */
     render() {
         const { windowId } = this.props;
@@ -387,6 +308,7 @@ AnnotationDrawing.propTypes = {
     strokeWidth: PropTypes.number,
     svg: PropTypes.func.isRequired,
     updateGeometry: PropTypes.func.isRequired,
+    addPath: PropTypes.func.isRequired,
     windowId: PropTypes.string.isRequired,
 };
 
