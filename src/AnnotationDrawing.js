@@ -7,10 +7,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
     Stage, Layer, Star, Text, Circle, Rect
-    , Ellipse, Transformer,Shape
+    , Ellipse, Transformer, Shape
 
 } from 'react-konva';
-import { exportStageSVG } from 'react-konva-to-svg';
 
 
 
@@ -29,10 +28,7 @@ class AnnotationDrawing extends Component {
     constructor(props) {
         super(props);
 
-
         this.paper = null;
-    
-
 
         // this.addPath = this.addPath.bind(this);
         this.drawKonvas = this.drawKonvas.bind(this);
@@ -41,31 +37,9 @@ class AnnotationDrawing extends Component {
             newShape: null,
             currentShape: null,
             isDrawing: false,
-            svg:  async () => {
-          
-                
-    
-                // stage is the one with same windowId
-    
-                const stage = window.Konva.stages.find((stage) => stage.attrs.id === this.props.windowId);
-            
-                const svg = await exportStageSVG(stage);
-                   
-            
-                console.log('svg',svg);
-                    return svg;
-            
-              },
         };
         this.shapeRefs = {};
         this.transformerRefs = {};
-
-
-
-
-        
-        
-      
 
 
     }
@@ -90,6 +64,17 @@ class AnnotationDrawing extends Component {
         const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape'];
         // get selected shape
         const { selectedShapeId } = this.state;
+
+        // if delete is pressed we whant to delete the shape
+
+        if (e.key === 'Delete') {
+            console.log('delete key pressed');
+            const { shapes } = this.state;
+            const index = shapes.findIndex((shape) => shape.id === selectedShapeId);
+            shapes.splice(index, 1);
+            this.setState({ shapes: shapes, selectedShapeId: null });
+            return;
+        }
 
         console.log('selected shape id', selectedShapeId);
         if (!selectedShapeId) {
@@ -136,9 +121,9 @@ class AnnotationDrawing extends Component {
 
 
         }
-        
 
-       
+
+
 
     };
 
@@ -150,66 +135,40 @@ class AnnotationDrawing extends Component {
     }
 
 
-    //on dbl click
-    handleKonvasDblClick = (e) => {
 
+    handleMouseDown = (e) => {
 
-     
+        try{
 
         const pos = e.target.getStage().getPointerPosition();
-
+        console.log('mouse down', this.props.activeTool);
         let shape = null;
-        console.log('dbl click', this.props.activeTool);
         switch (this.props.activeTool) {
             case 'rectangle':
-
-                shape = {
-                    type: 'rectangle', x: pos.x, y: pos.y, width: 0, height: 0,
-                    strokeColor: this.props.strokeColor,
-                    strokeWidth: this.props.strokeWidth,
-                    fill: this.props.fillColor,
-                    id: uuidv4(),
-                };
+            case 'ellipse':
                 this.setState({
-                    selectedShapeId: shape.id,
-                    newShape: shape,
-                    currentShape: shape,
-                });
-
-
-                break;
-            case "ellipse":
-                shape = {
-                    type: 'ellipse', x: pos.x, y: pos.y, width: 0, height: 0,
-                    stroke: this.props.strokeColor,
-                    strokeWidth: this.props.strokeWidth,
-                    fill: this.props.fillColor,
-                    id: uuidv4(),
-                };
-                this.setState({
-                    selectedShape: shape,
-                    selectedShapeId: shape.id,
-                    newShape: shape,
-                    currentShape: shape,
+                    isDrawing: true,
+                    currentShape: {
+                        type: this.props.activeTool,
+                        x: pos.x,
+                        y: pos.y,
+                        width: 0,
+                        height: 0,
+                        stroke: this.props.strokeColor,
+                        strokeWidth: this.props.strokeWidth,
+                        fill: this.props.fillColor,
+                        id: uuidv4(),
+                    },
                 });
                 break;
-            // case "polygon":
-            //   this.setState({ newShape: { type: 'circle', x: pos.x, y: pos.y, width: 0, height: 0 } });
-            //   break;
-            // case "freehand":
-            //   this.setState({ newShape: { type: 'freehand', x: pos.x, y: pos.y, width: 0, height: 0 } });
-            //   break;
-            case "text":
+                case "text":
 
-                shape = {
+               shape = {
                     type: 'text',
                     x: pos.x,
                     y: pos.y,
-
                     fontSize: 20,
                     fill: this.props.fillColor,
-
-
                     text: 'text',
                     id: uuidv4(),
                 };
@@ -220,92 +179,129 @@ class AnnotationDrawing extends Component {
                 });
                 this.setState({
 
+                    shapes: [...this.state.shapes, shape],
+                    selectedShape: shape,
+                    selectedShapeId: shape.id,
+                    newShape: shape,
+                    currentShape: shape,
+                });  
+                console.log('text', shape);
+                break;  
+                case "freehand":
+
+
+                const points = [pos.x, pos.y];
+
+                shape = {
+                    type: 'freehand',
+                    x: pos.x,
+                    y: pos.y,
+                    with:1920,
+                    height:1080,
+                    fill: this.props.fillColor,
+                    points: points,
+                    id: uuidv4(),
+                };
+
+                this.setState({
+
+                    shapes: [...this.state.shapes, shape],
                     selectedShape: shape,
                     selectedShapeId: shape.id,
                     newShape: shape,
                     currentShape: shape,
                 });
-
-                break;
-                case "freehand":
-
-                const points = [pos.x, pos.y];
-
-                    shape = {
-                        type: 'freehand',
-                        x: pos.x,
-                        y: pos.y,
-                        with:1920,
-                        height:1080,
-                      
-                        fill: this.props.fillColor,
-                        points: points,
-    
-    
-                        id: uuidv4(),
-                    };
-                    // this.setState({ newShape: shape }, () => {
-                    //     // Add global key press event listener
-                    //     window.addEventListener('keydown', this.handleKeyPress);
-                    // });
-                    this.setState({
-
-                        selectedShape: shape,
-                        selectedShapeId: shape.id,
-                        newShape: shape,
-                        currentShape: shape,
-                    });
-
-
-            // Add cases for other shapes here
-            default:
-                break;
+               
+            // other cases
         }
 
-        const { newShape, shapes, currentShape } = this.state;
 
-        if (newShape) {
+
+        if( this.state.currentShape===null ) return;
+        // Check if the current shape is a freehand object
+        if (this.state.selectedShapeId && this.state.currentShape.type === 'freehand') {
+            // Start drawing
             this.setState({
-                shapes: [...shapes, newShape],
-                currentShape: newShape,
-                newShape: null,
-
+                isDrawing: true,
+                shapes: this.state.shapes.map(shape => shape.id === this.state.selectedShapeId
+                    ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] }
+                    : shape)
             });
         }
 
+        }catch(e){
+            console.log('error',e);
+        }
+    };
+
+    // handleMouseMove = (e) => {
+    //     // Check if we're currently drawing
+    //     if (!this.state.isDrawing) return;
+
+
+    //     // Add the new point to the current shape
+       
+    // };
+
+
+    handleMouseMove = (e) => {
+
+        try{
+        console.log('mouse move', this.props.activeTool);
+        if (!this.state.isDrawing) return;
+   
+
+        if(this.state.currentShape===null ) return;
+        const pos = e.target.getStage().getPointerPosition();
+
+        switch (this.props.activeTool) {
+            case 'rectangle':
+            case 'ellipse':
+        this.setState({
+            currentShape: {
+                ...this.state.currentShape,
+                width: pos.x - this.state.currentShape.x,
+                height: pos.y - this.state.currentShape.y,
+            },
+        });
+
+        break;
+        case "freehand":
+            this.setState({
+                shapes: this.state.shapes.map(shape => shape.id === this.state.selectedShapeId
+                    ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] }
+                    : shape)
+            });
+            break;
+
+        default:
+            break;
+        }
+
+        }catch(e){
+            console.log('error',e);
+        }
 
     };
 
-
-    handleMouseDown = (e) => {
-        // Check if the current shape is a freehand object
-        if (this.state.selectedShapeId && this.state.currentShape.type === 'freehand') {
-          // Start drawing
-          this.setState({
-            isDrawing: true,
-            shapes: this.state.shapes.map(shape => shape.id === this.state.selectedShapeId 
-              ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] } 
-              : shape)
-          });
-        }
-      };
-    
-      handleMouseMove = (e) => {
-        // Check if we're currently drawing
-        if (!this.state.isDrawing) return;
-    
-        // Add the new point to the current shape
-        this.setState({
-          shapes: this.state.shapes.map(shape => shape.id === this.state.selectedShapeId 
-            ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] } 
-            : shape)
-        });
-      };
-    
-      handleMouseUp = () => {
+    handleMouseUp = () => {
         // Stop drawing
-        this.setState({ isDrawing: false });
-      };
+
+        try{
+        console.log('mouse up', this.props.activeTool);
+        if (!this.state.isDrawing) return;
+        if (!this.state.currentShape) return;
+
+        this.setState((prevState) => ({
+            isDrawing: false,
+            shapes: [...prevState.shapes, prevState.currentShape],
+            currentShape: null,
+        }));
+        }
+        catch(e){
+            console.log('error',e);
+        }
+    };
 
 
 
@@ -317,11 +313,11 @@ class AnnotationDrawing extends Component {
 
 
 
-        const { shapes, newShape } = this.state;
+        const { shapes, currentShape, newShape, isDrawing } = this.state;
         const { windowId } = this.props;
-  
 
-// potentiellement videoRef et windowId
+
+        // potentiellement videoRef et windowId
         return (
             <Stage
                 width={this.props.width || 1920}
@@ -329,22 +325,49 @@ class AnnotationDrawing extends Component {
                 style={{
                     height: '100%', left: 0, position: 'absolute', top: 0, width: '100%',
                 }}
-                   onMouseDown={this.handleMouseDown}
-                   onMouseUp={this.handleMouseUp}
-                   onMouseMove={this.handleMouseMove}
-                   onDblClick={this.handleKonvasDblClick}
-                   id={windowId}
-                  
+                onMouseDown={this.handleMouseDown}
+                onMouseUp={this.handleMouseUp}
+                onMouseMove={this.handleMouseMove}
+                //  onDblClick={this.handleKonvasDblClick}
+                id={windowId}
+
 
 
             >
 
 
-                <ParentComponent shapes={shapes}
+                { <ParentComponent shapes={shapes}
                     onShapeClick={this.onShapeClick}
                     activeTool={this.props.activeTool}
                     selectedShapeId={this.state.selectedShapeId}
-                />
+                /> }
+
+                <Layer>
+
+                    {isDrawing && currentShape && (
+                        currentShape.type === 'rectangle' ? (
+                            <Rect
+                                x={currentShape.x}
+                                y={currentShape.y}
+                                width={currentShape.width}
+                                height={currentShape.height}
+                                fill={this.props.fillColor}
+                                stroke={this.props.strokeColor}
+                            // other props
+                            />
+                        ) : (
+                            <Ellipse
+                                x={currentShape.x}
+                                y={currentShape.y}
+                                radiusX={currentShape.width / 2}
+                                radiusY={currentShape.height / 2}
+                                fill={this.props.fillColor}
+                                stroke={this.props.strokeColor}
+                            // other props
+                            />
+                        )
+                    )}
+                </Layer>
 
 
             </Stage>
