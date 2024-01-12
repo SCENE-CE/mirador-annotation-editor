@@ -29,6 +29,7 @@ class AnnotationDrawing extends Component {
     }
 
     getData() {
+        console.log('props annotation drawing',this.props.shapes)
         const { shapes } = this.state
         console.log('getData', shapes)
         return {
@@ -102,6 +103,14 @@ class AnnotationDrawing extends Component {
             // Remove global key press event listener
             window.removeEventListener('keypress', this.handleKeyPress);
         }
+    }
+
+    componentDidMount() {
+    //     console.log('ENTER COMPONENT DID MOUNT')
+    //     console.log(this.state.shapes)
+    //     console.log(this.props.shapes)
+    // this.state.shapes = this.props.shapes;
+    // console.log(this.state.shapes)
     }
 
 

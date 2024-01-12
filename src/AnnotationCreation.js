@@ -52,6 +52,7 @@ function timeFromAnnoTarget(annotarget) {
 /** Extract xywh from annotation target */
 function geomFromAnnoTarget(annotarget) {
   console.info('TODO proper xywh extraction from: ', annotarget);
+  console.log(annotarget)
   const r = /xywh=((-?[0-9]+,?)+)/.exec(annotarget);
   if (!r || r.length !== 3) {
     return '';
@@ -66,6 +67,7 @@ class AnnotationCreation extends Component {
     super(props);
 
     const annoState = {};
+    console.log(props)
     if (props.annotation) {
       //
       // annotation body
@@ -89,6 +91,7 @@ class AnnotationCreation extends Component {
         // annoState.textBody = props.annotation.body.value; // why text body here ???
         annoState.image = props.annotation.body;
       }else if(props.annotation.body.type === 'KonvasInformations'){
+        console.log('ENTERING KONVAS INFO')
         annoState.shapes = props.annotation.body
         console.log(annoState.shapes)
       }
@@ -113,6 +116,7 @@ class AnnotationCreation extends Component {
         annoState.xywh = geomFromAnnoTarget(props.annotation.target);
         [annoState.tstart, annoState.tend] = timeFromAnnoTarget(props.annotation.target);
       }
+      console.log('props', this.props.annotation)
       console.log('annoState',annoState)
     }
 
@@ -313,10 +317,32 @@ class AnnotationCreation extends Component {
 
 
   childRef = React.createRef();
+  //TODO: Renommer correctement cette fonction
+  //Cette fonction récupère les information spaciale et de forme des shapes konvas en vu de les sauvegarder
 async addPath(svg){
     const{ xywh } = this.props;
+    console.log('wywh',xywh);
     const thisSvg = svg;
   const { shapes } = await this.childRef.getData();
+
+  const x = 0
+  const y = 0
+  const width = 0
+  const height = 0
+//TODO: Ne fonctionne que s'il n'y a qu'une seule shape
+  if(shapes[0]){
+  const width = shapes[0].x
+  const height = shapes[0].y
+  }
+
+  console.log('xywh', x, y , width, height)
+  this.setState({xywh: [
+    Math.floor(x),
+    Math.floor(y),
+    Math.floor(width),
+    Math.floor(height),
+  ].join(','),})
+  console.log('state xywh', this.state.xywh)
 
   const konvasInformations = {
       shapes: shapes,
@@ -344,7 +370,7 @@ async addPath(svg){
     }
 
     console.log('svg', this.state.svg);
-
+//Cette fonction DOIT être situé avant les props et les states afin de fonctionné correctement
     await this.addPath(this.state.svg);
 
     const {
@@ -375,8 +401,6 @@ async addPath(svg){
     }
 
     console.log('svg', this.state.svg);
-
-   await this.addPath(this.state.svg);
 
 
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
@@ -450,7 +474,7 @@ async addPath(svg){
   updateGeometry({
     svg,
     xywh,
-                   konvasInformations
+    konvasInformations
   }) {
     this.setState({
       svg,

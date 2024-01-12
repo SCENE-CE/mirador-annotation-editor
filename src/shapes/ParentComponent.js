@@ -50,6 +50,7 @@ class ParentComponent extends React.Component {
         let selectedShape = null;
 
         //if length is 1 and selected shape is null
+
         if (shapes.length === 1 && !selectedShapeId) {
             selected = true;
             selid = shapes[0].id;
@@ -127,7 +128,7 @@ class ParentComponent extends React.Component {
                             );
                             break;
                         case 'ellipse':
-                            
+
                             return (
                                 <EllipseNode
 
@@ -179,7 +180,7 @@ class ParentComponent extends React.Component {
                                     onClick={this.props.activeTool === 'cursor' ? () => this.setState({ currentShape: shape }) : null}
                                     //   onDragEnd={this.handleDragEnd(shape.id)} // Add this line
                                     onDblClick={this.handleShapeDblClick}
-                                    
+
                                 />
                             );
                             break;

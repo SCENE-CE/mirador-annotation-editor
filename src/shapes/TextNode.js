@@ -27,7 +27,6 @@ class TextNode extends React.Component {
         if (this.trRef.current) {
             this.trRef.current.nodes([this.shapeRef.current]);
             this.trRef.current.getLayer().batchDraw();
-
             // add event listener for key down
             // this.shapeRef.current.addEventListener('keydown', this.handleKeyDown);
         }

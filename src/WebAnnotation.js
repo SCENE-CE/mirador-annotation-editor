@@ -7,9 +7,12 @@ export default class WebAnnotation {
     this.title = title,
     this.id = id;
     this.canvasId = canvasId;
+    // temps et spacialisation de l'annotation
     this.fragsel = fragsel;
+    //infos sur l'annotation image ? Durée ? Spacialisation ? Titre ? Texte ?
     this.body = body;
     this.tags = tags;
+    //shapes de présentation Konvas au format svg
     this.svg = svg;
     this.image = image;
     this.manifestId = manifestId;
@@ -40,8 +43,8 @@ export default class WebAnnotation {
     console.log('BODY kanvasInfor',this.konvasInformations)
   if(this.konvasInformations){
     const konvasInformationsBody = {
+      type: 'KonvasInformations',
       konvasInformations : this.konvasInformations,
-      type: 'KonvasInformations'
     }
     bodies.push(konvasInformationsBody)
   }
@@ -100,12 +103,14 @@ export default class WebAnnotation {
       });
     }
     target.selector = selectors.length === 1 ? selectors[0] : selectors;
+    console.log('target',target)
     return target;
   }
 
   /** */
   source() {
     let source = this.canvasId;
+    console.log('source:', source)
     if (this.manifest) {
       source = {
         id: this.canvasId,
