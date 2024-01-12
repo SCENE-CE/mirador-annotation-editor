@@ -76,7 +76,7 @@ class AnnotationDrawing extends Component {
             return;
         }
 
-       
+
         if (!selectedShapeId) {
             return;
         }
@@ -99,10 +99,7 @@ class AnnotationDrawing extends Component {
                 selectedShape.text = selectedShape.text.slice(0, -1);
             } else {
 
-                // return if not a letter 
-                if (e.key.length !== 1) {
-                    return;
-                }
+
 
                 // return if special char
                 if (unnalowedKeys.includes(e.key)) {
@@ -128,10 +125,18 @@ class AnnotationDrawing extends Component {
     };
 
     componentDidUpdate(prevProps) {
-        if (prevProps.activeTool === 'text' && this.props.activeTool !== 'text') {
-            // Remove global key press event listener
-            window.removeEventListener('keypress', this.handleKeyPress);
-        }
+
+        console.log('did update', this.props.activeTool);
+        // check for selectined fhape, if colors are changesd we update the shape
+        // Remove global key press event listener
+        window.removeEventListener('keypress', this.handleKeyPress);
+  
+
+
+
+
+
+
     }
 
 
@@ -159,7 +164,7 @@ class AnnotationDrawing extends Component {
                             fill: this.props.fillColor,
                             id: uuidv4(),
                         },
-                    },() => {
+                    }, () => {
                         // Add global key press event listener
                         window.addEventListener('keydown', this.handleKeyPress);
                     });
@@ -176,7 +181,7 @@ class AnnotationDrawing extends Component {
                         id: uuidv4(),
                     };
 
-                
+
                     this.setState({
 
                         shapes: [...this.state.shapes, shape],
@@ -184,7 +189,7 @@ class AnnotationDrawing extends Component {
                         selectedShapeId: shape.id,
                         newShape: shape,
                         currentShape: shape,
-                    },() => {
+                    }, () => {
                         // Add global key press event listener
                         window.addEventListener('keydown', this.handleKeyPress);
                     });
@@ -211,7 +216,7 @@ class AnnotationDrawing extends Component {
                         selectedShapeId: shape.id,
                         newShape: shape,
                         currentShape: shape,
-                    },() => {
+                    }, () => {
                         // Add global key press event listener
                         window.addEventListener('keydown', this.handleKeyPress);
                     });
@@ -241,7 +246,7 @@ class AnnotationDrawing extends Component {
                         selectedShapeId: shape.id,
                         newShape: shape,
                         currentShape: shape,
-                    },() => {
+                    }, () => {
                         // Add global key press event listener
                         window.addEventListener('keydown', this.handleKeyPress);
                     });
@@ -399,6 +404,36 @@ class AnnotationDrawing extends Component {
 
         const { shapes, currentShape, newShape, isDrawing } = this.state;
         const { windowId } = this.props;
+
+     
+
+        const shape = shapes.find((shape) => shape.id === this.state.selectedShapeId);
+
+        if (shape) {
+            
+        
+
+            // if all the props are the same we don't update the shape
+
+            if (this.props.fillColor !== shape.fill || this.props.strokeColor !== shape.strokeColor || this.props.strokeWidth !== shape.strokeWidth) {
+                shape.fill = this.props.fillColor;
+                shape.strokeColor = this.props.strokeColor;
+                shape.strokeWidth = this.props.strokeWidth;
+            
+    
+    
+            const index = shapes.findIndex((shape) => shape.id === this.state.selectedShapeId);
+            shapes[index] = shape;
+            this.setState({ shapes: shapes });
+               
+            }
+
+
+         
+
+    }
+
+
 
 
         // potentiellement videoRef et windowId
