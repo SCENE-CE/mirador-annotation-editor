@@ -76,7 +76,7 @@ class AnnotationDrawing extends Component {
             return;
         }
 
-        console.log('selected shape id', selectedShapeId);
+       
         if (!selectedShapeId) {
             return;
         }
@@ -138,99 +138,133 @@ class AnnotationDrawing extends Component {
 
     handleMouseDown = (e) => {
 
-        try{
+        try {
 
-        const pos = e.target.getStage().getPointerPosition();
-        console.log('mouse down', this.props.activeTool);
-        let shape = null;
-        switch (this.props.activeTool) {
-            case 'rectangle':
-            case 'ellipse':
-                this.setState({
-                    isDrawing: true,
-                    currentShape: {
-                        type: this.props.activeTool,
-                        x: pos.x,
-                        y: pos.y,
-                        width: 0,
-                        height: 0,
-                        stroke: this.props.strokeColor,
-                        strokeWidth: this.props.strokeWidth,
-                        fill: this.props.fillColor,
-                        id: uuidv4(),
-                    },
-                });
-                break;
+            const pos = e.target.getStage().getPointerPosition();
+            console.log('mouse down', this.props.activeTool);
+            let shape = null;
+            switch (this.props.activeTool) {
+                case 'rectangle':
+                case 'ellipse':
+                    this.setState({
+                        isDrawing: true,
+                        currentShape: {
+                            type: this.props.activeTool,
+                            x: pos.x,
+                            y: pos.y,
+                            width: 0,
+                            height: 0,
+                            strokeColor: this.props.strokeColor,
+                            strokeWidth: this.props.strokeWidth,
+                            fill: this.props.fillColor,
+                            id: uuidv4(),
+                        },
+                    },() => {
+                        // Add global key press event listener
+                        window.addEventListener('keydown', this.handleKeyPress);
+                    });
+                    break;
                 case "text":
 
-               shape = {
-                    type: 'text',
-                    x: pos.x,
-                    y: pos.y,
-                    fontSize: 20,
-                    fill: this.props.fillColor,
-                    text: 'text',
-                    id: uuidv4(),
-                };
+                    shape = {
+                        type: 'text',
+                        x: pos.x,
+                        y: pos.y,
+                        fontSize: 20,
+                        fill: this.props.fillColor,
+                        text: 'text',
+                        id: uuidv4(),
+                    };
 
-                this.setState({ newShape: shape }, () => {
-                    // Add global key press event listener
-                    window.addEventListener('keydown', this.handleKeyPress);
-                });
-                this.setState({
+                
+                    this.setState({
 
-                    shapes: [...this.state.shapes, shape],
-                    selectedShape: shape,
-                    selectedShapeId: shape.id,
-                    newShape: shape,
-                    currentShape: shape,
-                });  
-                console.log('text', shape);
-                break;  
+                        shapes: [...this.state.shapes, shape],
+                        selectedShape: shape,
+                        selectedShapeId: shape.id,
+                        newShape: shape,
+                        currentShape: shape,
+                    },() => {
+                        // Add global key press event listener
+                        window.addEventListener('keydown', this.handleKeyPress);
+                    });
+                    console.log('text', shape);
+                    break;
+
+
+                case "line":
+                    shape = {
+                        type: 'line',
+                        x: pos.x,
+                        y: pos.y,
+                        with: 10,
+                        height: 10,
+                        fill: this.props.fillColor,
+                        points: [0, 0, 0, 0, 0, 0],
+                        id: uuidv4(),
+                    };
+
+                    this.setState({
+
+                        shapes: [...this.state.shapes, shape],
+                        selectedShape: shape,
+                        selectedShapeId: shape.id,
+                        newShape: shape,
+                        currentShape: shape,
+                    },() => {
+                        // Add global key press event listener
+                        window.addEventListener('keydown', this.handleKeyPress);
+                    });
+                    break;
+
+
                 case "freehand":
 
 
-                const points = [pos.x, pos.y];
+                    const points = [pos.x, pos.y];
 
-                shape = {
-                    type: 'freehand',
-                    x: pos.x,
-                    y: pos.y,
-                    with:1920,
-                    height:1080,
-                    fill: this.props.fillColor,
-                    points: points,
-                    id: uuidv4(),
-                };
+                    shape = {
+                        type: 'freehand',
+                        x: pos.x,
+                        y: pos.y,
+                        with: 1920,
+                        height: 1080,
+                        fill: this.props.fillColor,
+                        points: points,
+                        id: uuidv4(),
+                    };
 
+                    this.setState({
+
+                        shapes: [...this.state.shapes, shape],
+                        selectedShape: shape,
+                        selectedShapeId: shape.id,
+                        newShape: shape,
+                        currentShape: shape,
+                    },() => {
+                        // Add global key press event listener
+                        window.addEventListener('keydown', this.handleKeyPress);
+                    });
+
+                // other cases
+            }
+
+
+
+            if (this.state.currentShape === null) return;
+            // Check if the current shape is a freehand object
+            if (this.state.selectedShapeId && this.state.currentShape.type === 'freehand') {
+                // Start drawing
                 this.setState({
-
-                    shapes: [...this.state.shapes, shape],
-                    selectedShape: shape,
-                    selectedShapeId: shape.id,
-                    newShape: shape,
-                    currentShape: shape,
+                    isDrawing: true,
+                    shapes: this.state.shapes.map(shape => shape.id === this.state.selectedShapeId
+                        ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] }
+                        : shape)
                 });
-               
-            // other cases
-        }
+            }
 
-
-
-        if( this.state.currentShape===null ) return;
-        // Check if the current shape is a freehand object
-        if (this.state.selectedShapeId && this.state.currentShape.type === 'freehand') {
-            // Start drawing
-            this.setState({
-                isDrawing: true,
-                shapes: this.state.shapes.map(shape => shape.id === this.state.selectedShapeId
-                    ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] }
-                    : shape)
-            });
-        }
-
-        }catch(e){
-            console.log('error',e);
+        } catch (e) {
+            console.log('error', e);
         }
     };
 
@@ -240,46 +274,72 @@ class AnnotationDrawing extends Component {
 
 
     //     // Add the new point to the current shape
-       
+
     // };
 
 
     handleMouseMove = (e) => {
 
-        try{
-        console.log('mouse move', this.props.activeTool);
-        if (!this.state.isDrawing) return;
-   
+        try {
+            console.log('mouse move', this.props.activeTool);
+            if (!this.state.isDrawing) return;
 
-        if(this.state.currentShape===null ) return;
-        const pos = e.target.getStage().getPointerPosition();
 
-        switch (this.props.activeTool) {
-            case 'rectangle':
-            case 'ellipse':
-        this.setState({
-            currentShape: {
-                ...this.state.currentShape,
-                width: pos.x - this.state.currentShape.x,
-                height: pos.y - this.state.currentShape.y,
-            },
-        });
+            if (this.state.currentShape === null) return;
+            const pos = e.target.getStage().getPointerPosition();
 
-        break;
-        case "freehand":
-            this.setState({
-                shapes: this.state.shapes.map(shape => shape.id === this.state.selectedShapeId
-                    ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] }
-                    : shape)
-            });
-            break;
+            switch (this.props.activeTool) {
+                case 'rectangle':
+                case 'ellipse':
 
-        default:
-            break;
-        }
+                    // prevent negative radius for ellipse
 
-        }catch(e){
-            console.log('error',e);
+                    if (this.state.currentShape.type === 'ellipse') {
+                        if (pos.x < this.state.currentShape.x) {
+                            pos.x = this.state.currentShape.x;
+                        }
+                        if (pos.y < this.state.currentShape.y) {
+                            pos.y = this.state.currentShape.y;
+                        }
+                    }
+
+
+
+                    this.setState({
+                        currentShape: {
+                            ...this.state.currentShape,
+                            width: pos.x - this.state.currentShape.x,
+                            height: pos.y - this.state.currentShape.y,
+                        },
+                    });
+
+                    break;
+                case "line":
+                    // update ponts 
+
+
+
+
+                    this.setState({
+                        currentShape: {
+                            ...this.state.currentShape,
+                            points: [0, 0, 0, 0, pos.x, pos.y],
+                        },
+                    });
+                case "freehand":
+                    this.setState({
+                        shapes: this.state.shapes.map(shape => shape.id === this.state.selectedShapeId
+                            ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] }
+                            : shape)
+                    });
+                    break;
+
+                default:
+                    break;
+            }
+
+        } catch (e) {
+            console.log('error', e);
         }
 
     };
@@ -287,19 +347,43 @@ class AnnotationDrawing extends Component {
     handleMouseUp = () => {
         // Stop drawing
 
-        try{
-        console.log('mouse up', this.props.activeTool);
-        if (!this.state.isDrawing) return;
-        if (!this.state.currentShape) return;
+        try {
+            console.log('mouse up', this.props.activeTool);
+            if (!this.state.isDrawing) return;
+            if (!this.state.currentShape) return;
 
-        this.setState((prevState) => ({
-            isDrawing: false,
-            shapes: [...prevState.shapes, prevState.currentShape],
-            currentShape: null,
-        }));
+            switch (this.props.activeTool) {
+
+                case 'rectangle':
+                case 'ellipse':
+
+                    this.setState((prevState) => ({
+                        isDrawing: false,
+                        shapes: [...prevState.shapes, prevState.currentShape],
+                        currentShape: null,
+                    }));
+                    break;
+                case "line":
+                    this.setState((prevState) => ({
+                        isDrawing: false,
+                        shapes: [...prevState.shapes, prevState.currentShape],
+                        currentShape: null,
+                    }));
+                    break;
+                case "freehand":
+                    this.setState((prevState) => ({
+                        isDrawing: false,
+                        shapes: [...prevState.shapes, prevState.currentShape],
+                        currentShape: null,
+                    }));
+                    break;
+                default:
+
+
+            }
         }
-        catch(e){
-            console.log('error',e);
+        catch (e) {
+            console.log('error', e);
         }
     };
 
@@ -336,11 +420,11 @@ class AnnotationDrawing extends Component {
             >
 
 
-                { <ParentComponent shapes={shapes}
+                {<ParentComponent shapes={shapes}
                     onShapeClick={this.onShapeClick}
                     activeTool={this.props.activeTool}
                     selectedShapeId={this.state.selectedShapeId}
-                /> }
+                />}
 
                 <Layer>
 

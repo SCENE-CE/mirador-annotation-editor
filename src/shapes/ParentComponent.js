@@ -8,6 +8,7 @@ import Rectangle from './Rectangle';
 
 import EllipseNode from './EllipseNode';
 import TextNode from './TextNode';
+import LineNode from './LineNode';
 import {
     Stage, Layer, Star, Text, Circle, Rect
     , Ellipse, Transformer,Shape
@@ -183,6 +184,32 @@ class ParentComponent extends React.Component {
                                 />
                             );
                             break;
+                        case 'line':
+                             return (
+                                  <LineNode
+    
+                                        shape={shape}
+                                        selectedShapeId={selid}
+                                        selectedShape={selectedShape}
+                                        onShapeClick={this.handleShapeClick}
+                                        activeTool={this.props.activeTool}
+                                        selected={selected}
+    
+                                        _id={shape.id}
+                                        key={i}
+                                        x={shape.x}
+                                        y={shape.y}
+                                        points={shape.points}
+                                        fill={shape.fill}
+                                        stroke={shape.strokeColor}
+                                        strokeWidth={shape.strokeWidth}
+                                        draggable={this.props.activeTool === 'cursor'}
+                                        onClick={this.props.activeTool === 'cursor' ? () => this.setState({ currentShape: shape }) : null}
+                                        //   onDragEnd={this.handleDragEnd(shape.id)} // Add this line
+                                        onDblClick={this.handleShapeDblClick}
+                                        />   
+                                );
+                        
                     }
                 })}
             </Layer>
