@@ -1,232 +1,107 @@
-import React, { Component, useState } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
+import { Layer } from 'react-konva';
 
 import FreeHand from './FreeHand';
 import Rectangle from './Rectangle';
-
 import EllipseNode from './EllipseNode';
 import TextNode from './TextNode';
 import LineNode from './LineNode';
-import {
-    Stage, Layer, Star, Text, Circle, Rect
-    , Ellipse, Transformer,Shape
 
-} from 'react-konva';
+/** Loads Konva and display in function of their type */
 
-class ParentComponent extends React.Component {
-    constructor(props) {
-        super(props);
+function ParentComponent({
+  shapes, onShapeClick, selectedShapeIdProp, activeTool,
+}) {
+  // TODO Simplify these state
+  const [selectedShapeId, setSelectedShapeId] = useState(selectedShapeIdProp);
+  const [selectedShape, setSelectedShape] = useState(null);
 
-        this.state = {
-            selectedShapeId: this.props.selectedShapeId,
-            selectedShape: null,
-
-        };
-
+  useEffect(() => {
+    if (shapes.length === 1 && !selectedShapeId) {
+      setSelectedShapeId(shapes[0].id);
+      setSelectedShape(shapes[0]);
     }
+  }, [shapes, selectedShapeId]);
 
+  /**
+    * Triggered onShapeClick provided function when a shape is clicked
+    * @param {object} shape
+    */
+  const handleShapeClick = (shape) => {
+    console.log("handleShapeClick", shape);
+    setSelectedShapeId(shape.id);
+    setSelectedShape(shape);
+    onShapeClick(shape);
+  };
 
-    handleShapeClick = (shape) => {
-
-        this.setState({
-            selectedShapeId: shape.id,
-            selectedShape: shape
-        });
-        this.props.onShapeClick(shape);
-        // this.setState({ selectedShapeId: id });
-    };
-
-
-
-    render() {
-
-        const { shapes
-        } = this.props;
-
-        const { selectedShapeId } = this.state;
-        let selected = false;
-        let selid = selectedShapeId;
-        let selectedShape = null;
-
-        //if length is 1 and selected shape is null
-        if (shapes.length === 1 && !selectedShapeId) {
-            selected = true;
-            selid = shapes[0].id;
-            selectedShape = shapes[0];
-
+  return (
+    <Layer>
+      {shapes.map((shape, i) => {
+        const isSelected = selectedShape?.id === shape.id;
+        switch (shape.type) {
+          case 'rectangle':
+            return (
+              <Rectangle
+                {...{
+                  ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                }}
+                key={i}
+              />
+            );
+          case 'text':
+            return (
+              <TextNode
+                {...{
+                  ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                }}
+                key={i}
+              />
+            );
+          case 'ellipse':
+            return (
+              <EllipseNode
+                {...{
+                  ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                }}
+                key={i}
+              />
+            );
+          case 'freehand':
+            return (
+              <FreeHand
+                {...{
+                  ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                }}
+                key={i}
+              />
+            );
+          case 'line':
+            return (
+              <LineNode
+                {...{
+                    ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                }}
+                key={i}
+              />
+            );
+          default:
+            return null;
         }
-
-        return (
-            <Layer>
-                {shapes.map((shape, i) => {
-
-                    if (selectedShape?.id === shape.id) {
-                        selected = true;
-                        selectedShape = shape;
-                    }
-
-
-                    switch (shape.type) {
-
-                        case 'rectangle':
-
-                            return (
-                                <Rectangle
-
-
-                                    shape={shape}
-                                    selectedShapeId={selid}
-                                    selectedShape={selectedShape}
-                                    onShapeClick={this.handleShapeClick}
-                                    activeTool={this.props.activeTool}
-                                    _id={shape.id}
-                                    key={i}
-                                    x={shape.x}
-                                    y={shape.y}
-                                    width={shape.width}
-                                    height={shape.height}
-                                    fill={shape.fill}
-                                    stroke={shape.strokeColor}
-                                    strokeWidth={shape.strokeWidth}
-                                    draggable={this.props.activeTool === 'cursor'}
-                                    selected={selected}
-                                // onShapeClick={this.handleShapeClick}
-
-
-
-
-                                />
-                            );
-                            break;
-                        case 'text':
-                            return (
-                                <TextNode
-
-                                    shape={shape}
-                                    selectedShapeId={selid}
-                                    selectedShape={selectedShape}
-                                    onShapeClick={this.handleShapeClick}
-                                    activeTool={this.props.activeTool}
-                                    selected={selected}
-
-                                    _id={shape.id}
-                                    key={i}
-                                    x={shape.x}
-                                    y={shape.y}
-                                    fontSize={shape.fontSize}
-                                    fill={shape.fill}
-                                    text={shape.text}
-                                    draggable={this.props.activeTool === 'cursor'}
-                                    onClick={this.props.activeTool === 'cursor' ? () => this.setState({ currentShape: shape }) : null}
-                                    //   onDragEnd={this.handleDragEnd(shape.id)} // Add this line
-                                    onDblClick={this.handleShapeDblClick}
-
-
-                                />
-                            );
-                            break;
-                        case 'ellipse':
-                            
-                            return (
-                                <EllipseNode
-
-                                    shape={shape}
-                                    selectedShapeId={selid}
-                                    selectedShape={selectedShape}
-                                    onShapeClick={this.handleShapeClick}
-                                    activeTool={this.props.activeTool}
-                                    selected={selected}
-
-                                    _id={shape.id}
-                                    key={i}
-                                    x={shape.x}
-                                    y={shape.y}
-                                    width={shape.width}
-                                    height={shape.height}
-                                    fill={shape.fill}
-                                    stroke={shape.strokeColor}
-                                    strokeWidth={shape.strokeWidth}
-                                    draggable={this.props.activeTool === 'cursor'}
-                                    onClick={this.props.activeTool === 'cursor' ? () => this.setState({ currentShape: shape }) : null}
-                                    //   onDragEnd={this.handleDragEnd(shape.id)} // Add this line
-                                    onDblClick={this.handleShapeDblClick}
-
-
-                                />
-                            );
-                            break;
-                        case 'freehand':
-                            return (
-                                <FreeHand
-
-                                    shape={shape}
-                                    selectedShapeId={selid}
-                                    selectedShape={selectedShape}
-                                    onShapeClick={this.handleShapeClick}
-                                    activeTool={this.props.activeTool}
-                                    selected={selected}
-
-                                    _id={shape.id}
-                                    key={i}
-                                    x={shape.x}
-                                    y={shape.y}
-                                    points={shape.points}
-                                    fill={shape.fill}
-                                    stroke={shape.strokeColor}
-                                    strokeWidth={shape.strokeWidth}
-                                    draggable={this.props.activeTool === 'cursor'}
-                                    onClick={this.props.activeTool === 'cursor' ? () => this.setState({ currentShape: shape }) : null}
-                                    //   onDragEnd={this.handleDragEnd(shape.id)} // Add this line
-                                    onDblClick={this.handleShapeDblClick}
-                                    
-                                />
-                            );
-                            break;
-                        case 'line':
-                             return (
-                                  <LineNode
-    
-                                        shape={shape}
-                                        selectedShapeId={selid}
-                                        selectedShape={selectedShape}
-                                        onShapeClick={this.handleShapeClick}
-                                        activeTool={this.props.activeTool}
-                                        selected={selected}
-    
-                                        _id={shape.id}
-                                        key={i}
-                                        x={shape.x}
-                                        y={shape.y}
-                                        points={shape.points}
-                                        fill={shape.fill}
-                                        stroke={shape.strokeColor}
-                                        strokeWidth={shape.strokeWidth}
-                                        draggable={this.props.activeTool === 'cursor'}
-                                        onClick={this.props.activeTool === 'cursor' ? () => this.setState({ currentShape: shape }) : null}
-                                        //   onDragEnd={this.handleDragEnd(shape.id)} // Add this line
-                                        onDblClick={this.handleShapeDblClick}
-                                        />   
-                                );
-                        
-                    }
-                })}
-            </Layer>
-        );
-    }
+      })}
+    </Layer>
+  );
 }
 
-
 ParentComponent.propTypes = {
-    shapes: PropTypes.arrayOf(PropTypes.object).isRequired,
-    onShapeClick: PropTypes.func.isRequired,
-    selectedShapeId: PropTypes.string,
-    activeTool: PropTypes.string.isRequired,
+  shapes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onShapeClick: PropTypes.func.isRequired,
+  selectedShapeIdProp: PropTypes.string,
+  activeTool: PropTypes.string.isRequired,
 };
 
 ParentComponent.defaultProps = {
-    selectedShapeId: null,
+  selectedShapeIdProp: null,
 };
 
 export default ParentComponent;

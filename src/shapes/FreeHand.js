@@ -5,9 +5,7 @@ import { Transformer, Shape } from 'react-konva';
 function FreeHand({
   activeTool, fill, height, onShapeClick, points, selectedShapeId, shape, stroke, strokeWidth, width,
 }) {
-  // TODO checf if selectedShapeId is needed
-
-
+  // TODO check if selectedShapeId is needed
   const shapeRef = useRef();
   const trRef = useRef();
 
@@ -18,6 +16,7 @@ function FreeHand({
     }
   }, [selectedShapeId, shape]);
 
+  // TODO check if id directly can be used
   const isSelected = selectedShapeId === shape.id;
 
   /** */
@@ -37,7 +36,7 @@ function FreeHand({
         fill={fill || 'red'}
         stroke={stroke || 'black'}
         strokeWidth={strokeWidth || 1}
-        id={shape.id}
+        id={shape.id} // TODO check if id directly can be used
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
         sceneFunc={(context, freeHandShape) => {
