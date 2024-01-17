@@ -155,6 +155,7 @@ function AnnotationDrawing(props) {
             y: pos.y,
           };
           setShapes([...shapes, shape]);
+          setNewShape(shape);
           setCurrentShape(shape);
           window.addEventListener('keydown', handleKeyPress);
           break;
@@ -170,7 +171,7 @@ function AnnotationDrawing(props) {
         // Start drawing
         setIsDrawing(true);
         setShapes(shapes.map((s) => (s.id === currentShape.id
-          ? { ...shape, points: [...s.points, e.evt.clientX, e.evt.clientY] }
+          ? { ...s, points: [...s.points, e.evt.clientX, e.evt.clientY] }
           : shape)));
       }
     } catch (error) {
@@ -270,9 +271,10 @@ function AnnotationDrawing(props) {
         shape.strokeColor = props.strokeColor;
         shape.strokeWidth = props.strokeWidth;
 
-        // TODO breaking somethinh here
-        const updatedShapes = shapes.map((s) => (s.id === currentShape?.id ? shape : s));
-        setShapes(updatedShapes);
+        // TODO breaking somethinh here ?
+        const index = shapes.findIndex((s) => s.id === currentShape.id);
+        shapes[index] = shape;
+        setShapes(shapes);
       }
     }
 
