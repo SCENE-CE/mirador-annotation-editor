@@ -1,88 +1,72 @@
-import React, { Component, useState } from 'react';
-
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Rect, Transformer } from 'react-konva';
 
+function Rectangle({
+  shape, onShapeClick, activeTool, selectedShapeId, x, y, width, height, fill, stroke, strokeWidth,
+}) {
+  const shapeRef = useRef();
+  const trRef = useRef();
+  const isSelected = selectedShapeId === shape.id;
 
-import {
-    Stage, Layer, Star, Text, Circle, Rect
-    , Ellipse, Transformer,Shape
-
-} from 'react-konva';
-
-
-class Rectangle extends React.Component {
-    constructor(props) {
-        super(props);
-        this.shapeRef = React.createRef();
-        this.trRef = React.createRef();
+  useEffect(() => {
+    if (trRef.current) {
+      trRef.current.nodes([shapeRef.current]);
+      trRef.current.getLayer().batchDraw();
     }
+  }, [isSelected]);
 
+  const handleClick = () => {
+    onShapeClick(shape);
+  };
 
+  return (
+    <>
+      <Rect
+        ref={shapeRef}
+        x={x || 100}
+        y={y || 100}
+        width={width || 100}
+        height={height || 100}
+        fill={fill || 'red'}
+        stroke={stroke || 'black'}
+        strokeWidth={strokeWidth || 1}
+        id={shape.id}
+        draggable={activeTool === 'cursor' || activeTool === 'edit'}
+        onClick={handleClick}
+      />
 
-    componentDidMount() {
-        if (this.trRef.current) {
-            this.trRef.current.nodes([this.shapeRef.current]);
-            this.trRef.current.getLayer().batchDraw();
-        }
-    }
-
-    handleClick = () => {
-        this.props.onShapeClick(this.props.shape);
-
-    };
-
-    render() {
-        const { activeTool } = this.props;
-        const isSelected = this.props.selectedShapeId === this.props.shape.id
-      
-   
-        console.log('rect props', this.props);
-        return (
-            <React.Fragment>
-                <Rect
-                    // map props to konva
-                    ref={this.shapeRef}
-                    x={this.props.x || 100}
-                    y={this.props.y || 100}
-                    width={this.props.width || 100}
-                    height={this.props.height || 100}
-                    fill={this.props.fill || 'red'}
-                    stroke={this.props.stroke || 'black'}
-                    strokeWidth={this.props.strokeWidth || 1}
-                    id={this.props._id}
-                    draggable={activeTool === 'cursor' || activeTool === 'edit'}
-                    onClick={this.handleClick}
-
-                />
-
-
-
-
-
-                <Transformer ref={this.trRef}
-
-                    visible={activeTool === 'edit' && isSelected}
-                />
-
-
-
-
-            </React.Fragment>
-        );
-    }
+      <Transformer
+        ref={trRef}
+        visible={activeTool === 'edit' && isSelected}
+      />
+    </>
+  );
 }
 
-
-
 Rectangle.propTypes = {
-    shape: PropTypes.object.isRequired,
-    onShapeClick: PropTypes.func.isRequired,
-    activeTool: PropTypes.string.isRequired,
-    selected: PropTypes.bool,
+  shape: PropTypes.object.isRequired,
+  onShapeClick: PropTypes.func.isRequired,
+  activeTool: PropTypes.string.isRequired,
+  selectedShapeId: PropTypes.string,
+  x: PropTypes.number,
+  y: PropTypes.number,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  fill: PropTypes.string,
+  stroke: PropTypes.string,
+  strokeWidth: PropTypes.number,
 };
 
 Rectangle.defaultProps = {
-    selected: false,
+  selectedShapeId: null,
+  x: 100,
+  y: 100,
+  width: 100,
+  height: 100,
+  fill: 'red',
+  stroke: 'black',
+  strokeWidth: 1,
 };
 
 export default Rectangle;
