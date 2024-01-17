@@ -486,7 +486,7 @@ class AnnotationCreation extends Component {
           /// we need to pass the width and height of the image to the annotation drawing component
           width={1920}
           height={1080}
-
+          // TODO Ajouter du style pour que le Konva et la vidéo se superpose
 
 
         />

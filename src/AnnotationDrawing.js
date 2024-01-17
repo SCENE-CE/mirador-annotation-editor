@@ -15,11 +15,12 @@ function AnnotationDrawing(props) {
   const [currentShape, setCurrentShape] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [selectedShapeId, setSelectedShapeId] = useState(null);
-  const [newShape, setNewShape] = useState(null);
 
+  // TODO A supprimer ?
   const shapeRefs = {};
   const transformerRefs = {};
 
+  // TODO useful ?
   useEffect(() => {
     // ComponentDidMount logic here
     // Add event listeners
@@ -31,6 +32,7 @@ function AnnotationDrawing(props) {
     };
   }, []);
 
+  // TODO Can be removed ?
   useEffect(() => {
     // componentDidUpdate logic for props.activeTool
   }, [props.activeTool]);
@@ -129,6 +131,7 @@ function AnnotationDrawing(props) {
           break;
 
         case 'line':
+          // Not totally functionnal
           // TODO Not sure for this one
           setIsDrawing(true);
           shape = {
@@ -152,14 +155,18 @@ function AnnotationDrawing(props) {
           const points = [pos.x, pos.y];
           shape = {
             fill: props.fillColor,
-            height: 1080,
+            height: 1080, // TODO Why ? Check Konva bounding box
             id: uuidv4(),
             points,
             type: 'freehand',
-            width: 1920, // TODO Why ?
+            width: 1920, // TODO Why ? Check Konva bounding box
             x: pos.x,
             y: pos.y,
           };
+          // Get KOnva bounding box
+            // eslint-disable-next-line no-case-declarations
+           // const bb = shapeRefs[shape.id].getClientRect();
+
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
           window.addEventListener('keydown', handleKeyPress);
@@ -225,6 +232,7 @@ function AnnotationDrawing(props) {
             points: [0, 0, 0, 0, pos.x, pos.y],
           });
 
+            break;
           // TODO Break missing ?
         case 'freehand':
           setShapes(shapes.map((shape) => (shape.id === currentShape.id
@@ -271,12 +279,12 @@ function AnnotationDrawing(props) {
 
     if (shape) {
       // if all the props are the same we don't update the shape
+      // Update graphical properties of my shape
       if (props.fillColor !== shape.fill || props.strokeColor !== shape.strokeColor || props.strokeWidth !== shape.strokeWidth) {
         shape.fill = props.fillColor;
         shape.strokeColor = props.strokeColor;
         shape.strokeWidth = props.strokeWidth;
 
-        // TODO breaking somethinh here ?
         const index = shapes.findIndex((s) => s.id === currentShape.id);
         shapes[index] = shape;
         setShapes(shapes);

@@ -26,23 +26,16 @@ class FreeHand extends React.Component {
 
     handleClick = () => {
         this.props.onShapeClick(this.props.shape);
-
     };
 
     render() {
         const { activeTool,points,fill } = this.props;
         const isSelected = this.props.selectedShapeId === this.props.shape.id
 
-// will be a custom shape
-
+        // will be a custom shape
         return (
-
-
             <React.Fragment>
-
-
                 <Shape
-
                     ref={this.shapeRef}
                     x={0}
                     y={0}
@@ -65,11 +58,8 @@ class FreeHand extends React.Component {
                             context.rect(points[i] - 2.5, points[i + 1]- 2.5, 5, 5);
                             // fill rect with color
                             context.closePath();
-
-
                             context.fillStrokeShape(shape);
                          }
-
 
                         // context.beginPath();
                         // context.moveTo(20, 50);
@@ -79,23 +69,16 @@ class FreeHand extends React.Component {
                         // // (!) Konva specific method, it is very important
                         // context.fillStrokeShape(shape);
 
-
-
                     }}
-
                 />
 
                 <Transformer ref={this.trRef}
-
                     visible={activeTool === 'edit' && isSelected}
                 />
             </React.Fragment>
         );
-
     }
-
   }
-
 
     FreeHand.propTypes = {
         activeTool: PropTypes.string.isRequired,
