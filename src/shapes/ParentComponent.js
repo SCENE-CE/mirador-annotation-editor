@@ -80,7 +80,7 @@ function ParentComponent({
             return (
               <LineNode
                 {...{
-                    ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                  ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
                 }}
                 key={i}
               />

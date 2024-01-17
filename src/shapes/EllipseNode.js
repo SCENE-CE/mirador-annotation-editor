@@ -1,75 +1,72 @@
-import React, { Component, useState } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Ellipse, Transformer } from 'react-konva';
 
-import {
-    Stage, Layer, Star, Text, Circle, Rect
-    , Ellipse, Transformer,Shape
+function EllipseNode({
+  onShapeClick, shape, activeTool, selectedShapeId, x, y, width, height, fill, stroke, strokeWidth,
+}) {
+  const shapeRef = useRef();
+  const trRef = useRef();
+  const isSelected = selectedShapeId === shape.id;
 
-} from 'react-konva';
-
-
-
-class EllipseNode extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.shapeRef = React.createRef();
-        this.trRef = React.createRef();
+  useEffect(() => {
+    if (trRef.current) {
+      trRef.current.nodes([shapeRef.current]);
+      trRef.current.getLayer().batchDraw();
     }
+  }, [isSelected]);
 
-    componentDidMount() {
-        if (this.trRef.current) {
-            this.trRef.current.nodes([this.shapeRef.current]);
-            this.trRef.current.getLayer().batchDraw();
-        }
-    }
+  const handleClick = () => {
+    onShapeClick(shape);
+  };
 
-    handleClick = () => {
-        this.props.onShapeClick(this.props.shape);
+  return (
+    <>
+      <Ellipse
+        ref={shapeRef}
+        x={x || 100}
+        y={y || 100}
+        width={width || 100}
+        height={height || 100}
+        fill={fill || 'red'}
+        stroke={stroke || 'black'}
+        strokeWidth={strokeWidth || 1}
+        id={shape.id}
+        draggable={activeTool === 'cursor' || activeTool === 'edit'}
+        onClick={handleClick}
+      />
 
-    };
-
-    render() {
-        const { activeTool } = this.props;
-        const isSelected = this.props.selectedShapeId === this.props.shape.id
-      
-        return (
-            <React.Fragment>
-                <Ellipse
-                    // map props to konva
-                    ref={this.shapeRef}
-                    x={this.props.x || 100}
-                    y={this.props.y || 100}
-                    width={this.props.width || 100}
-                    height={this.props.height || 100}
-                    fill={this.props.fill || 'red'}
-                    stroke={this.props.stroke || 'black'}
-                    strokeWidth={this.props.strokeWidth || 1}
-                    id={this.props._id}
-                    draggable={activeTool === 'cursor' || activeTool === 'edit'}
-                    onClick={this.handleClick}
-
-                />
-
-                <Transformer ref={this.trRef}
-
-                    visible={activeTool === 'edit' && isSelected}
-                />
-
-            </React.Fragment>
-        );
-    }
+      <Transformer
+        ref={trRef}
+        visible={activeTool === 'edit' && isSelected}
+      />
+    </>
+  );
 }
 
-
-
 EllipseNode.propTypes = {
-    onShapeClick: PropTypes.func.isRequired,
-    shape: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-    activeTool: PropTypes.string.isRequired,
-    selected: PropTypes.bool.isRequired,
+  onShapeClick: PropTypes.func.isRequired,
+  shape: PropTypes.object.isRequired,
+  activeTool: PropTypes.string.isRequired,
+  selectedShapeId: PropTypes.string,
+  x: PropTypes.number,
+  y: PropTypes.number,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  fill: PropTypes.string,
+  stroke: PropTypes.string,
+  strokeWidth: PropTypes.number,
+};
+
+EllipseNode.defaultProps = {
+  selectedShapeId: null,
+  x: 100,
+  y: 100,
+  width: 100,
+  height: 100,
+  fill: 'red',
+  stroke: 'black',
+  strokeWidth: 1,
 };
 
 export default EllipseNode;
-
