@@ -15,6 +15,7 @@ function AnnotationDrawing(props) {
   const [currentShape, setCurrentShape] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [selectedShapeId, setSelectedShapeId] = useState(null);
+  const [lines, setLines] = React.useState([]); // For free drawing
 
   // TODO A supprimer ?
   const shapeRefs = {};
@@ -50,6 +51,9 @@ function AnnotationDrawing(props) {
     console.log('key press', e);
     const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape'];
 
+    if (!currentShape) {
+      return;
+    }
     // if delete is pressed we whant to delete the shape
 
     if (e.key === 'Delete') {
@@ -57,10 +61,6 @@ function AnnotationDrawing(props) {
       const index = shapes.findIndex((shape) => shape.id === currentShape.id);
       setShapes(shapes.splice(index, 1));
       setCurrentShape(null);
-      return;
-    }
-
-    if (!currentShape) {
       return;
     }
 
@@ -84,6 +84,8 @@ function AnnotationDrawing(props) {
       shapes[index] = currentShape;
       setShapes(shapes);
     }
+
+    e.stopPropagation();
   };
 
   /** */
@@ -152,17 +154,28 @@ function AnnotationDrawing(props) {
         case 'freehand':
           setIsDrawing(true);
           // eslint-disable-next-line no-case-declarations
-          const points = [pos.x, pos.y];
+          const tool = 'pen';
           shape = {
             fill: props.fillColor,
-            height: 1080, // TODO Why ? Check Konva bounding box
+            height: 10,
             id: uuidv4(),
-            points,
+            lines: [pos.x, pos.y],
+            points: [0, 0, 0, 0, 0, 0],
             type: 'freehand',
-            width: 1920, // TODO Why ? Check Konva bounding box
+            width: 10,
             x: pos.x,
             y: pos.y,
           };
+          // shape = {
+          //   fill: props.fillColor,
+          //   height: 1080, // TODO Why ? Check Konva bounding box
+          //   id: uuidv4(),
+          //   points,
+          //   type: 'freehand',
+          //   width: 1920, // TODO Why ? Check Konva bounding box
+          //   x: pos.x,
+          //   y: pos.y,
+          // };
           // Get KOnva bounding box
             // eslint-disable-next-line no-case-declarations
            // const bb = shapeRefs[shape.id].getClientRect();
@@ -175,17 +188,17 @@ function AnnotationDrawing(props) {
           // Handle other cases if any
       }
 
-      if (!currentShape) {
-        return;
-      }
-      // Check if the current shape is a freehand object
-      if (currentShape.type === 'freehand') {
-        // Start drawing
-        setIsDrawing(true);
-        setShapes(shapes.map((s) => (s.id === currentShape.id
-          ? { ...s, points: [...s.points, e.evt.clientX, e.evt.clientY] }
-          : shape)));
-      }
+      // if (!currentShape) {
+      //   return;
+      // }
+      // // Check if the current shape is a freehand object
+      // if (currentShape.type === 'freehand') {
+      //   // Start drawing
+      //   setIsDrawing(true);
+      //   setShapes(shapes.map((s) => (s.id === currentShape.id
+      //     ? { ...s, points: [...s.points, e.evt.clientX, e.evt.clientY] }
+      //     : shape)));
+      // }
     } catch (error) {
       console.log('error', error);
     }
@@ -233,8 +246,11 @@ function AnnotationDrawing(props) {
           });
 
             break;
-          // TODO Break missing ?
         case 'freehand':
+          currentShape.lines.push(pos.x );
+          currentShape.lines.push(pos.y );
+
+          setCurrentShape(currentShape);
           setShapes(shapes.map((shape) => (shape.id === currentShape.id
             ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] }
             : shape)));

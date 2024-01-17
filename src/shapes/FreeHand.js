@@ -1,9 +1,10 @@
-import React, {Component, useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Transformer, Shape } from 'react-konva';
+import {Transformer, Shape, Line} from 'react-konva';
 
+/** FreeHand shape displaying */
 function FreeHand({
-  activeTool, fill, height, onShapeClick, points, selectedShapeId, shape, stroke, strokeWidth, width,
+  activeTool, fill, height, onShapeClick, points, selectedShapeId, shape, stroke, strokeWidth, width, x, y,
 }) {
   // TODO check if selectedShapeId is needed
   const shapeRef = useRef();
@@ -26,27 +27,20 @@ function FreeHand({
 
   return (
     <>
-      <Shape
-        ref={shapeRef}
-        x={0}
-        y={0}
-        width={width || 1920}
-        height={height || 1080}
-        points={points || [0, 0, 100, 0, 100, 100]}
-        fill={fill || 'red'}
-        stroke={stroke || 'black'}
-        strokeWidth={strokeWidth || 1}
-        id={shape.id} // TODO check if id directly can be used
-        draggable={activeTool === 'cursor' || activeTool === 'edit'}
-        onClick={handleClick}
-        sceneFunc={(context, freeHandShape) => {
-          for (let i = 0; i < points.length; i += 2) {
-            context.beginPath();
-            context.rect(points[i] - 2.5, points[i + 1] - 2.5, 5, 5);
-            context.closePath();
-            context.fillStrokeShape(freeHandShape);
-          }
-        }}
+      <Line
+          ref={shapeRef}
+          id={shape.id}
+          points={shape.lines}
+          stroke="#df4b26"
+          strokeWidth={5}
+          tension={0.5}
+          lineCap="round"
+          lineJoin="round"
+          onClick={handleClick}
+          id={shape.id} // TODO check if id directly can be used
+          ref={shapeRef}
+          fill={fill || 'red'}
+          globalCompositeOperation="source-over"
       />
 
       <Transformer
@@ -62,7 +56,7 @@ FreeHand.propTypes = {
   fill: PropTypes.string,
   height: PropTypes.number,
   onShapeClick: PropTypes.func.isRequired,
-  points: PropTypes.array,
+  points: PropTypes.arrayOf(PropTypes.number),
   shape: PropTypes.object.isRequired,
   stroke: PropTypes.string,
   strokeWidth: PropTypes.number,
