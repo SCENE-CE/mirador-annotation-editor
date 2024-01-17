@@ -162,18 +162,17 @@ function AnnotationDrawing(props) {
           // Handle other cases if any
       }
 
-      // TODO Why this ?
-      // if (this.state.currentShape === null) return;
-      // // Check if the current shape is a freehand object
-      // if (this.state.selectedShapeId && this.state.currentShape.type === 'freehand') {
-      //   // Start drawing
-      //   this.setState({
-      //     isDrawing: true,
-      //     shapes: this.state.shapes.map((shape) => (shape.id === this.state.selectedShapeId
-      //       ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] }
-      //       : shape)),
-      //   });
-      // }
+      if (!currentShape) {
+        return;
+      }
+      // Check if the current shape is a freehand object
+      if (currentShape.type === 'freehand') {
+        // Start drawing
+        setIsDrawing(true);
+        setShapes(shapes.map((s) => (s.id === currentShape.id
+          ? { ...shape, points: [...s.points, e.evt.clientX, e.evt.clientY] }
+          : shape)));
+      }
     } catch (error) {
       console.log('error', error);
     }
@@ -222,7 +221,7 @@ function AnnotationDrawing(props) {
 
           // TODO Break missing ?
         case 'freehand':
-          setShapes(shapes.map((shape) => (shape.id === selectedShapeId
+          setShapes(shapes.map((shape) => (shape.id === currentShape.id
             ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] }
             : shape)));
           break;
@@ -235,10 +234,8 @@ function AnnotationDrawing(props) {
     }
   };
 
-  /** */
+  /** Stop drawing */
   const handleMouseUp = () => {
-    // Stop drawing
-
     try {
       console.log('mouse up', props.activeTool);
       if (!isDrawing) return;
@@ -264,7 +261,7 @@ function AnnotationDrawing(props) {
 
   /** */
   const drawKonvas = () => {
-    const shape = shapes.find((s) => s.id === selectedShapeId);
+    const shape = shapes.find((s) => s.id === currentShape?.id);
 
     if (shape) {
       // if all the props are the same we don't update the shape
@@ -273,7 +270,8 @@ function AnnotationDrawing(props) {
         shape.strokeColor = props.strokeColor;
         shape.strokeWidth = props.strokeWidth;
 
-        const updatedShapes = shapes.map((s) => (s.id === selectedShapeId ? shape : s));
+        // TODO breaking somethinh here
+        const updatedShapes = shapes.map((s) => (s.id === currentShape?.id ? shape : s));
         setShapes(updatedShapes);
       }
     }
