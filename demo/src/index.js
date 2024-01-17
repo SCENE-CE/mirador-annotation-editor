@@ -10,11 +10,6 @@ const config = {
     // adapter: (canvasId) => new AnnototAdapter(canvasId, endpointUrl),
     exportLocalStorageAnnotations: false, // display annotation JSON export button
   },
-  id: 'demo',
-  window: {
-    defaultSideBarPanel: 'annotations',
-    sideBarOpenByDefault: true,
-  },
   catalog: [
     { manifestId: 'https://dzkimgs.l.u-tokyo.ac.jp/videos/iiif_in_japan_2017/manifest.json' },
     { manifestId: 'https://iiif.io/api/cookbook/recipe/0219-using-caption-file/manifest.json' },
@@ -24,7 +19,15 @@ const config = {
     { manifestId: 'https://iiif.io/api/cookbook/recipe/0074-multiple-language-captions/manifest.json' },
     { manifestId: 'https://iiif.harvardartmuseums.org/manifests/object/299843' },
     { manifestId: 'https://iiif.io/api/cookbook/recipe/0002-mvm-audio/manifest.json' },
-  ]
+  ],
+  id: 'demo',
+  window: {
+    defaultSideBarPanel: 'annotations',
+    sideBarOpenByDefault: true,
+  },
+  windows: [
+    { manifestId: 'https://dzkimgs.l.u-tokyo.ac.jp/videos/iiif_in_japan_2017/manifest.json' },
+  ],
 };
 
 mirador.viewer(config, [...annotationPlugins]);
