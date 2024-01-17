@@ -88,7 +88,10 @@ function AnnotationDrawing(props) {
   const handleMouseDown = (e) => {
     try {
       const pos = e.target.getStage().getPointerPosition();
+      const relativePos = e.target.getStage().getRelativePointerPosition();
       console.log('mouse down', props.activeTool);
+      console.log('pos', pos);
+      console.log('relativePos', relativePos);
       let shape = null;
       switch (props.activeTool) {
         case 'rectangle':
@@ -106,7 +109,7 @@ function AnnotationDrawing(props) {
             y: pos.y,
           });
           // Add global key press event listener
-          window.addEventListener('keydown', this.handleKeyPress);
+          window.addEventListener('keydown', handleKeyPress);
           break;
         case 'text':
 
@@ -126,6 +129,8 @@ function AnnotationDrawing(props) {
           break;
 
         case 'line':
+          // TODO Not sure for this one
+          setIsDrawing(true);
           shape = {
             fill: props.fillColor,
             height: 10,
@@ -142,6 +147,7 @@ function AnnotationDrawing(props) {
           break;
 
         case 'freehand':
+          setIsDrawing(true);
           // eslint-disable-next-line no-case-declarations
           const points = [pos.x, pos.y];
           shape = {
@@ -150,12 +156,11 @@ function AnnotationDrawing(props) {
             id: uuidv4(),
             points,
             type: 'freehand',
-            width: 1920,
+            width: 1920, // TODO Why ?
             x: pos.x,
             y: pos.y,
           };
           setShapes([...shapes, shape]);
-          setNewShape(shape);
           setCurrentShape(shape);
           window.addEventListener('keydown', handleKeyPress);
           break;

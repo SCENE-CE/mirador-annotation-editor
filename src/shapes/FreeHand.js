@@ -32,12 +32,12 @@ class FreeHand extends React.Component {
     render() {
         const { activeTool,points,fill } = this.props;
         const isSelected = this.props.selectedShapeId === this.props.shape.id
-    
+
 // will be a custom shape
 
         return (
 
-           
+
             <React.Fragment>
 
 
@@ -56,21 +56,21 @@ class FreeHand extends React.Component {
                     draggable={activeTool === 'cursor' || activeTool === 'edit'}
                     onClick={this.handleClick}
                     sceneFunc={(context, shape) => {
-                        console.log('scene func',points);
-                      
+                        // console.log('scene func',points);
+                        //
                          for (let i = 0; i < points.length; i += 2) {
                             context.beginPath();
                             //draw rect for each point
-                            
+
                             context.rect(points[i] - 2.5, points[i + 1]- 2.5, 5, 5);
                             // fill rect with color
                             context.closePath();
-                            
+
 
                             context.fillStrokeShape(shape);
                          }
-                           
-                     
+
+
                         // context.beginPath();
                         // context.moveTo(20, 50);
                         // context.lineTo(220, 80);
@@ -93,7 +93,7 @@ class FreeHand extends React.Component {
         );
 
     }
-  
+
   }
 
 
