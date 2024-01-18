@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import { Ellipse, Transformer } from 'react-konva';
 
 function EllipseNode({
-  onShapeClick, shape, activeTool, selectedShapeId, x, y, width, height, fill, stroke, strokeWidth,
+  onShapeClick, shape, activeTool, isSelected, x, y, width, height, fill, stroke, strokeWidth,
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
-  const isSelected = selectedShapeId === shape.id;
 
   useEffect(() => {
     if (trRef.current) {

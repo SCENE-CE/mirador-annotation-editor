@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { Rect, Transformer } from 'react-konva';
 
 function Rectangle({
-  shape, onShapeClick, activeTool, selectedShapeId, x, y, width, height, fill, stroke, strokeWidth,
+  shape, onShapeClick, activeTool, x, y, width, height, fill, stroke, strokeWidth, isSelected,
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
-  const isSelected = selectedShapeId === shape.id;
+
+  console.log('Shape', shape);
+  console.log('isSelected', isSelected);
 
   useEffect(() => {
     if (trRef.current) {

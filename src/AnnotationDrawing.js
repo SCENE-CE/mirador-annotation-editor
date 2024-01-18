@@ -25,8 +25,8 @@ function AnnotationDrawing(props) {
   useEffect(() => {
     // ComponentDidMount logic here
     // Add event listeners
-    window.addEventListener('keydown', handleKeyPress);
-
+    //window.addEventListener('keydown', handleKeyPress);
+    console.log('component did mount');
     // ComponentWillUnmount logic
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
@@ -280,7 +280,7 @@ function AnnotationDrawing(props) {
           // For these cases, the action is similar: stop drawing and add the shape
           setIsDrawing(false);
           setShapes([...shapes, currentShape]);
-          setCurrentShape(null);
+          //setCurrentShape(null);
           break;
         default:
           // Handle any other cases if necessary
@@ -325,7 +325,7 @@ function AnnotationDrawing(props) {
           shapes={shapes}
           onShapeClick={onShapeClick}
           activeTool={props.activeTool}
-          selectedShapeId={selectedShapeId}
+          selectedShapeId={currentShape?.id}
         />
 
         <Layer>

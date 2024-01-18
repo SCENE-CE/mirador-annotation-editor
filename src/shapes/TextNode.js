@@ -3,12 +3,15 @@ import PropTypes from 'prop-types';
 import { Text, Transformer } from 'react-konva';
 
 function TextNode({
-  shape, selectedShapeId, x, y, fontSize, fill, text, onShapeClick, activeTool,
+  shape, selectedShapeId, x, y, fontSize, fill, text, onShapeClick, activeTool, isSelected,
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
 
+    console.log('Shape', shape);
+
   const handleClick = () => {
+      console.log("TextNode handleClick", shape.id);
     onShapeClick(shape);
   };
 
@@ -18,8 +21,6 @@ function TextNode({
       trRef.current.getLayer().batchDraw();
     }
   }, []); // Empty array to mimic componentDidMount behavior
-
-  const isSelected = selectedShapeId === shape.id;
 
   return (
     <>

@@ -11,15 +11,13 @@ import LineNode from './LineNode';
 /** Loads Konva and display in function of their type */
 
 function ParentComponent({
-  shapes, onShapeClick, selectedShapeIdProp, activeTool,
+  shapes, onShapeClick, selectedShapeId, activeTool,
 }) {
   // TODO Simplify these state
-  const [selectedShapeId, setSelectedShapeId] = useState(selectedShapeIdProp);
   const [selectedShape, setSelectedShape] = useState(null);
 
   useEffect(() => {
     if (shapes.length === 1 && !selectedShapeId) {
-      setSelectedShapeId(shapes[0].id);
       setSelectedShape(shapes[0]);
     }
   }, [shapes, selectedShapeId]);
@@ -30,7 +28,6 @@ function ParentComponent({
     */
   const handleShapeClick = (shape) => {
     console.log("handleShapeClick", shape);
-    setSelectedShapeId(shape.id);
     setSelectedShape(shape);
     onShapeClick(shape);
   };
@@ -41,7 +38,7 @@ function ParentComponent({
   return (
     <Layer>
       {shapes.map((shape, i) => {
-        const isSelected = selectedShape?.id === shape.id;
+        const isSelected = selectedShapeId === shape.id;
         switch (shape.type) {
           case 'rectangle':
             return (
