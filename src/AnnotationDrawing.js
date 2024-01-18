@@ -10,13 +10,19 @@ import { VideosReferences } from '../mirador/dist/es/src/plugins/VideosReference
 import ParentComponent from './shapes/ParentComponent';
 
 /** All the stuff to draw on the canvas */
+
+let unscoppedshapes = [];
+let selectedShape = null;
 function AnnotationDrawing(props) {
+
+  console.log('AnnotationDrawing props', props);
   const [shapes, setShapes] = useState([]);
   const [currentShape, setCurrentShape] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [selectedShapeId, setSelectedShapeId] = useState(null);
   const [lines, setLines] = React.useState([]); // For free drawing
 
+ 
   // TODO A supprimer ?
   const shapeRefs = {};
   const transformerRefs = {};
@@ -25,18 +31,107 @@ function AnnotationDrawing(props) {
   useEffect(() => {
     // ComponentDidMount logic here
     // Add event listeners
-    //window.addEventListener('keydown', handleKeyPress);
+  
     console.log('component did mount');
+    console.log('useEffect')
+
+    console.log('useEffect shapes', shapes);
+    console.log('useEffect currentShape', currentShape);
+
+    // current shape intex in  shaes
+    const index = shapes.findIndex((shape) => shape.id === currentShape?.id);
+
+    console.log('useEffect index', index);
+  
+
     // ComponentWillUnmount logic
     return () => {
-      window.removeEventListener('keydown', handleKeyPress);
+      console.log('component will unmount');
+      
+    
     };
   }, []);
 
   // TODO Can be removed ?
   useEffect(() => {
+
     // componentDidUpdate logic for props.activeTool
-  }, [props.activeTool, shapes]);
+    const handleKeyPress = (e) => {
+      e.stopPropagation();
+      console.log('key press', e);
+      console.log('unscooped shapes', unscoppedshapes);
+      console.log('Key press shapes ' , shapes);
+      console.log('Key press current shape ' , currentShape);
+      const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape'];
+  
+      console.log('current shape', currentShape);
+      console.log('current shape id', currentShape?.id);
+  
+      if (!currentShape) {
+        return;
+      }
+      // if delete is pressed we whant to delete the shape
+  
+
+  
+      if (e.key === 'Delete') {
+        console.log('delete key pressed current shape',currentShape)
+        console.log('delete key pressed');
+        const index = shapes.findIndex((shape) => shape.id === currentShape.id);
+        shapes.splice(index, 1)
+
+        setShapes(shapes);
+  
+        //unscoppedshapes = unscoppedshapes.filter((shape) => shape.id !== currentShape.id);
+  
+        setCurrentShape(shapes[index - 1]);
+       
+        return;
+      }
+  
+      if (currentShape.type === 'text') {
+        console.log('text selected', currentShape.text);
+  
+        // update text
+        // let's handle text update
+        if (e.key === 'Backspace') {
+          currentShape.text = currentShape.text.slice(0, -1);
+        } else {
+          // return if special char
+          if (unnalowedKeys.includes(e.key)) {
+            return;
+          }
+          currentShape.text += e.key;
+        }
+  
+        console.log('Key press before end shapes ' , shapes);
+        console.log('Key press before end current shape ' , currentShape);
+  
+        // TODO Improve that Use currentShape.id instead of selectedShapeId
+        const index = shapes.findIndex((shape) => shape.id === currentShape.id);
+        shapes[index] = currentShape;
+
+        setShapes(shapes);
+        setCurrentShape(currentShape);
+    
+  
+        console.log('Key press end shapes ' , shapes);
+        console.log('Key press end current shape ' , currentShape);
+    
+      }
+     
+    
+    };
+
+   
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    }
+
+  }, [currentShape]);
+
+
 
   /** */
   const onShapeClick = (shape) => {
@@ -47,63 +142,11 @@ function AnnotationDrawing(props) {
   };
 
   /** */
-  const handleKeyPress = (e) => {
-    console.log('key press', e);
-    console.log('Key press shapes ' , shapes);
-    console.log('Key press current shape ' , currentShape);
-    const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape'];
 
-    console.log('current shape', currentShape);
-    console.log('current shape id', currentShape?.id);
-
-    if (!currentShape) {
-      return;
-    }
-    // if delete is pressed we whant to delete the shape
-
-
-    if (e.key === 'Delete') {
-      console.log('delete key pressed');
-      const index = shapes.findIndex((shape) => shape.id === currentShape.id);
-      setShapes(shapes.splice(index, 1));
-      setCurrentShape(null);
-      return;
-    }
-
-    if (currentShape.type === 'text') {
-      console.log('text selected', currentShape.text);
-
-      // update text
-      // let's handle text update
-      if (e.key === 'Backspace') {
-        currentShape.text = currentShape.text.slice(0, -1);
-      } else {
-        // return if special char
-        if (unnalowedKeys.includes(e.key)) {
-          return;
-        }
-        currentShape.text += e.key;
-      }
-
-      console.log('Key press before end shapes ' , shapes);
-      console.log('Key press before end current shape ' , currentShape);
-
-      // TODO Improve that Use currentShape.id instead of selectedShapeId
-      const index = shapes.findIndex((shape) => shape.id === currentShape.id);
-      shapes[index] = currentShape;
-      setShapes(shapes);
-
-      console.log('Key press end shapes ' , shapes);
-      console.log('Key press end current shape ' , currentShape);
-    }
-
-    e.stopPropagation();
-  };
 
   /** */
   const handleMouseDown = (e) => {
-    console.log("HandleMouseDown " + window.addEventListenerCounter);
-    window.addEventListenerCounter++;
+ 
     try {
       const pos = e.target.getStage().getPointerPosition();
       const relativePos = e.target.getStage().getRelativePointerPosition();
@@ -114,20 +157,23 @@ function AnnotationDrawing(props) {
       switch (props.activeTool) {
         case 'rectangle':
         case 'ellipse':
+
+        shape={
+          fill: props.fillColor,
+          height: 0,
+          id: uuidv4(),
+          strokeColor: props.strokeColor,
+          strokeWidth: props.strokeWidth,
+          type: props.activeTool,
+          width: 0,
+          x: pos.x,
+          y: pos.y,
+        }
           setIsDrawing(true);
-          setCurrentShape({
-            fill: props.fillColor,
-            height: 0,
-            id: uuidv4(),
-            strokeColor: props.strokeColor,
-            strokeWidth: props.strokeWidth,
-            type: props.activeTool,
-            width: 0,
-            x: pos.x,
-            y: pos.y,
-          });
+          setCurrentShape(shape);
+          unscoppedshapes.push(shape);
           // Add global key press event listener
-          window.addEventListener('keydown', handleKeyPress);
+        //  window.addEventListener('keydown', handleKeyPress);
           break;
         case 'text':
 
@@ -147,8 +193,9 @@ function AnnotationDrawing(props) {
           setCurrentShape(shape);
           console.log('Mouse Down after shapes ' , shapes);
           console.log('Mouse Down after current shape ' , currentShape);
+          unscoppedshapes.push(shape);
 
-          window.addEventListener('keydown', handleKeyPress);
+       //   window.addEventListener('keydown', handleKeyPress);
 
 
           break;
@@ -169,7 +216,8 @@ function AnnotationDrawing(props) {
           };
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
-          window.addEventListener('keydown', handleKeyPress);
+          unscoppedshapes.push(shape);
+      //    window.addEventListener('keydown', handleKeyPress);
           break;
 
         case 'freehand':
@@ -203,7 +251,8 @@ function AnnotationDrawing(props) {
 
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
-          window.addEventListener('keydown', handleKeyPress);
+          unscoppedshapes.push(shape);
+       //   window.addEventListener('keydown', handleKeyPress);
           break;
         default:
           // Handle other cases if any
@@ -337,6 +386,7 @@ function AnnotationDrawing(props) {
 
     return (
       <Stage
+      
         width={props.width || 1920}
         height={props.height || 1080}
         style={{
@@ -349,6 +399,7 @@ function AnnotationDrawing(props) {
         id={props.windowId}
       >
         <ParentComponent
+          
           shapes={shapes}
           onShapeClick={onShapeClick}
           activeTool={props.activeTool}

@@ -20,6 +20,7 @@ function FreeHand({
 
   /** */
   const handleClick = () => {
+    console.log("FreeHand handleClick shape id", shape.id);
     onShapeClick(shape);
   };
 
@@ -34,9 +35,8 @@ function FreeHand({
           tension={0.5}
           lineCap="round"
           lineJoin="round"
+          closed={false}
           onClick={handleClick}
-          id={shape.id} // TODO check if id directly can be used
-          ref={shapeRef}
           fill={fill || 'red'}
           globalCompositeOperation="source-over"
       />

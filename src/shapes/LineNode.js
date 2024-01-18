@@ -31,6 +31,7 @@ function LineNode({
         stroke={fill}
         strokeWidth={strokeWidth || 1}
         id={shape.id}
+        closed={false}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
       />
