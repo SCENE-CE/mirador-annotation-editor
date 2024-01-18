@@ -119,9 +119,9 @@ function AnnotationDrawing(props) {
         currentShape.text += e.key;
       }
       debug('add text fin');
-
-      updateCurrentShapeInShapes();
       setCurrentShape(currentShape);
+      updateCurrentShapeInShapes();
+     
 
      debug('Handle key press fin');
     }
@@ -135,7 +135,9 @@ function AnnotationDrawing(props) {
         shapes[index] = currentShape;
         setShapes(shapes);
       } else {
+   
         setShapes([...shapes, currentShape]);
+        
       }
   };
 
@@ -164,7 +166,8 @@ function AnnotationDrawing(props) {
         }
           setIsDrawing(true);
           setCurrentShape(shape);
-          unscoppedshapes.push(shape);
+          setShapes([...shapes, shape]);
+    
           // Add global key press event listener
         //  window.addEventListener('keydown', handleKeyPress);
           break;
@@ -180,14 +183,10 @@ function AnnotationDrawing(props) {
             y: pos.y,
           };
 
-          console.log('Mouse Down shapes ' , shapes);
-          console.log('Mouse Down current shape ' , currentShape);
+         
           setShapes([...shapes, shape]);
-          setCurrentShape(shape);
-          console.log('Mouse Down after shapes ' , shapes);
-          console.log('Mouse Down after current shape ' , currentShape);
-          unscoppedshapes.push(shape);
-
+          setCurrentShape(shapes[shapes.length - 1]);
+        
        //   window.addEventListener('keydown', handleKeyPress);
 
 
@@ -208,8 +207,8 @@ function AnnotationDrawing(props) {
             y: pos.y,
           };
           setShapes([...shapes, shape]);
-          setCurrentShape(shape);
-          unscoppedshapes.push(shape);
+          setCurrentShape(shapes[shapes.length - 1]);
+     
       //    window.addEventListener('keydown', handleKeyPress);
           break;
 
@@ -243,10 +242,26 @@ function AnnotationDrawing(props) {
            // const bb = shapeRefs[shape.id].getClientRect();
 
           setShapes([...shapes, shape]);
-          setCurrentShape(shape);
-          unscoppedshapes.push(shape);
+          setCurrentShape(shapes[shapes.length - 1]);
+         
        //   window.addEventListener('keydown', handleKeyPress);
           break;
+          case "arrow":
+
+            setIsDrawing(true);
+            shape = {
+              fill: props.fillColor,
+              height: 10,
+              id: uuidv4(),
+              points: [0, 0, 0, 0, 0, 0],
+              type: 'arrow',
+              width: 10,
+              x: pos.x,
+              y: pos.y,
+            };
+            setShapes([...shapes, shape]);
+            setCurrentShape(shapes[shapes.length - 1]);
+
         case 'debug':
           debug('debug');
         default:
@@ -302,6 +317,7 @@ function AnnotationDrawing(props) {
             height: pos.y - currentShape.y,
             width: pos.x - currentShape.x,
           });
+          updateCurrentShapeInShapes();
 
           break;
         case 'line':
@@ -311,17 +327,29 @@ function AnnotationDrawing(props) {
             ...currentShape,
             points: [0, 0, 0, 0, pos.x, pos.y],
           });
+          updateCurrentShapeInShapes();
 
             break;
         case 'freehand':
-          currentShape.lines.push(pos.x );
-          currentShape.lines.push(pos.y );
+          currentShape.points.push(pos.x );
+          currentShape.points.push(pos.y );
 
           setCurrentShape(currentShape);
-          setShapes(shapes.map((shape) => (shape.id === currentShape.id
-            ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] }
-            : shape)));
+          // setShapes(shapes.map((shape) => (shape.id === currentShape.id
+          //   ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] }
+          //   : shape)));
+
+          updateCurrentShapeInShapes();
+
+
           break;
+        case 'arrow':
+          // update ponts
+          currentShape.points[2] = pos.x;
+          currentShape.points[3] = pos.y;
+          setCurrentShape(currentShape);
+          updateCurrentShapeInShapes();
+          break;  
 
         default:
           break;
@@ -354,7 +382,7 @@ function AnnotationDrawing(props) {
           //setCurrentShape(null);
           break;
         case 'text':
-
+          updateCurrentShapeInShapes();
         default:
           // Handle any other cases if necessary
       }
@@ -414,27 +442,33 @@ function AnnotationDrawing(props) {
         />
 
         <Layer>
-          {isDrawing && currentShape && (
-            currentShape.type === 'rectangle' ? (
-              <Rect
-                x={currentShape.x}
-                y={currentShape.y}
-                width={currentShape.width}
-                height={currentShape.height}
-                fill={props.fillColor}
-                stroke={props.strokeColor}
-              />
-            ) : (
-              <Ellipse
-                x={currentShape.x}
-                y={currentShape.y}
-                radiusX={currentShape.width / 2}
-                radiusY={currentShape.height / 2}
-                fill={props.fillColor}
-                stroke={props.strokeColor}
-              />
-            )
-          )}
+      {isDrawing && currentShape && (
+    currentShape.type === 'rectangle' ? (
+      <Rect
+        x={currentShape.x}
+        y={currentShape.y}
+        width={currentShape.width}
+        height={currentShape.height}
+        fill={props.fillColor}
+        stroke={props.strokeColor}
+      />
+    ) : currentShape.type === 'ellipse' ? (
+      <Ellipse
+        x={currentShape.x}
+        y={currentShape.y}
+        radiusX={currentShape.width / 2}
+        radiusY={currentShape.height / 2}
+        fill={props.fillColor}
+        stroke={props.strokeColor}
+      />
+    ) : currentShape.type === 'arrow' ? (
+      <Arrow
+        points={[currentShape.x, currentShape.y, currentShape.width, currentShape.height]}
+        fill={props.fillColor}
+        stroke={props.strokeColor}
+      />
+    ) : null
+  )}
         </Layer>
       </Stage>
     );
