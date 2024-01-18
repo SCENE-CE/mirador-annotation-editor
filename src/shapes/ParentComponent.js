@@ -7,6 +7,7 @@ import Rectangle from './Rectangle';
 import EllipseNode from './EllipseNode';
 import TextNode from './TextNode';
 import LineNode from './LineNode';
+import ArrowNode from './ArrowNode';
 
 /** Loads Konva and display in function of their type */
 
@@ -82,6 +83,17 @@ function ParentComponent({
                 key={i}
               />
             );
+          
+            case 'arrow':
+              return (
+                <ArrowNode
+                  {...{
+                    ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                  
+                  }}
+                  key={i}
+                />
+              );
           default:
             return null;
         }

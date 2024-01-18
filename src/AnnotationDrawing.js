@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState,useLayoutEffect } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import {
-  Stage, Layer, Rect, Ellipse,
+  Stage, Layer, Rect, Ellipse,Arrow, Line, Text, Transformer, Group,
 } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
 import { OSDReferences } from '../mirador/dist/es/src/plugins/OSDReferences';
@@ -21,7 +21,7 @@ function AnnotationDrawing(props) {
   const [isDrawing, setIsDrawing] = useState(false);
   const [selectedShapeId, setSelectedShapeId] = useState(null);
   const [lines, setLines] = React.useState([]); // For free drawing
-
+  const [redraw, setRedraw] = useState(false);
 
   // TODO A supprimer ?
   const shapeRefs = {};
@@ -326,6 +326,7 @@ function AnnotationDrawing(props) {
         default:
           break;
       }
+      setRedraw(prevRedraw => !prevRedraw);
     } catch (error) {
       console.log('error', error);
     }
@@ -347,7 +348,7 @@ function AnnotationDrawing(props) {
           // For these cases, the action is similar: stop drawing and add the shape
           setIsDrawing(false);
           debug('in mouse up');
-          console.log('Test' , [...shapes, currentShape]);
+        // console.log('Test' , [...shapes, currentShape]);
           updateCurrentShapeInShapes();
           debug('in mouse up after');
           //setCurrentShape(null);

@@ -702,6 +702,9 @@ class AnnotationCreation extends Component {
                     aria-label="tool selection"
                     size="small"
                   >
+                    <ToggleButton value="arrow" aria-label="add an arrow">
+                    <RectangleIcon />
+                    </ToggleButton>
                     <ToggleButton value="rectangle" aria-label="add a rectangle">
                       <RectangleIcon />
                     </ToggleButton>
