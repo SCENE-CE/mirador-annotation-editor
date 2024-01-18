@@ -130,6 +130,7 @@ function AnnotationDrawing(props) {
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
           console.log('text', shape);
+          window.addEventListener('keydown', handleKeyPress);
           break;
 
         case 'line':
