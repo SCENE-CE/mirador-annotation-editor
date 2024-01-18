@@ -51,10 +51,14 @@ function AnnotationDrawing(props) {
     console.log('key press', e);
     const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape'];
 
+    console.log('current shape', currentShape);
+    console.log('current shape id', currentShape?.id);
+
     if (!currentShape) {
       return;
     }
     // if delete is pressed we whant to delete the shape
+
 
     if (e.key === 'Delete') {
       console.log('delete key pressed');
@@ -79,8 +83,8 @@ function AnnotationDrawing(props) {
         currentShape.text += e.key;
       }
 
-      // TODO Improve that
-      const index = shapes.findIndex((shape) => shape.id === selectedShapeId);
+      // TODO Improve that Use currentShape.id instead of selectedShapeId
+      const index = shapes.findIndex((shape) => shape.id === currentShape.id);
       shapes[index] = currentShape;
       setShapes(shapes);
     }
@@ -269,7 +273,7 @@ function AnnotationDrawing(props) {
   const handleMouseUp = () => {
     try {
       console.log('mouse up', props.activeTool);
-      if (!isDrawing) return;
+    //  if (!isDrawing) return;
       if (!currentShape) return;
 
       switch (props.activeTool) {
@@ -282,6 +286,12 @@ function AnnotationDrawing(props) {
           setShapes([...shapes, currentShape]);
           //setCurrentShape(null);
           break;
+        case 'text':
+          console.log('text', currentShape);
+          console.log('text', currentShape.id);
+          setShapes([...shapes, currentShape]);
+          console.log('BUG1 shapes', shapes);
+
         default:
           // Handle any other cases if necessary
       }
