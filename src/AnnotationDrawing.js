@@ -22,137 +22,113 @@ function AnnotationDrawing(props) {
   const [selectedShapeId, setSelectedShapeId] = useState(null);
   const [lines, setLines] = React.useState([]); // For free drawing
 
- 
+
   // TODO A supprimer ?
   const shapeRefs = {};
   const transformerRefs = {};
+
+  const debug = ( command ) => {
+    console.log('***************************');
+    console.log( command );
+    console.log( 'shapes', shapes );
+    console.log( 'shapes taille', shapes.length );
+    console.log( 'currentShape', currentShape );
+    console.log('isDrawing', isDrawing );
+    console.log('props.activeTool', props.activeTool );
+    console.log('-----------------------------');
+  };
 
   // TODO useful ?
   useEffect(() => {
     // ComponentDidMount logic here
     // Add event listeners
-  
-    console.log('component did mount');
-    console.log('useEffect')
 
-    console.log('useEffect shapes', shapes);
-    console.log('useEffect currentShape', currentShape);
+    debug('UseEffect 1');
 
     // current shape intex in  shaes
-    const index = shapes.findIndex((shape) => shape.id === currentShape?.id);
-
-    console.log('useEffect index', index);
-  
+    //const index = shapes.findIndex((shape) => shape.id === currentShape?.id);
 
     // ComponentWillUnmount logic
     return () => {
       console.log('component will unmount');
-      
-    
+
     };
   }, []);
 
   // TODO Can be removed ?
   useEffect(() => {
-
-    // componentDidUpdate logic for props.activeTool
-    const handleKeyPress = (e) => {
-      e.stopPropagation();
-      console.log('key press', e);
-      console.log('unscooped shapes', unscoppedshapes);
-      console.log('Key press shapes ' , shapes);
-      console.log('Key press current shape ' , currentShape);
-      const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape'];
-  
-      console.log('current shape', currentShape);
-      console.log('current shape id', currentShape?.id);
-  
-      if (!currentShape) {
-        return;
-      }
-      // if delete is pressed we whant to delete the shape
-  
-
-  
-      if (e.key === 'Delete') {
-        console.log('delete key pressed current shape',currentShape)
-        console.log('delete key pressed');
-        const index = shapes.findIndex((shape) => shape.id === currentShape.id);
-        shapes.splice(index, 1)
-
-        setShapes(shapes);
-  
-        //unscoppedshapes = unscoppedshapes.filter((shape) => shape.id !== currentShape.id);
-  
-        setCurrentShape(shapes[index - 1]);
-       
-        return;
-      }
-  
-      if (currentShape.type === 'text') {
-        console.log('text selected', currentShape.text);
-  
-        // update text
-        // let's handle text update
-        if (e.key === 'Backspace') {
-          currentShape.text = currentShape.text.slice(0, -1);
-        } else {
-          // return if special char
-          if (unnalowedKeys.includes(e.key)) {
-            return;
-          }
-          currentShape.text += e.key;
-        }
-  
-        console.log('Key press before end shapes ' , shapes);
-        console.log('Key press before end current shape ' , currentShape);
-  
-        // TODO Improve that Use currentShape.id instead of selectedShapeId
-        const index = shapes.findIndex((shape) => shape.id === currentShape.id);
-        shapes[index] = currentShape;
-
-        setShapes(shapes);
-        setCurrentShape(currentShape);
-    
-  
-        console.log('Key press end shapes ' , shapes);
-        console.log('Key press end current shape ' , currentShape);
-    
-      }
-     
-    
-    };
-
-   
+    debug('useEffect 2');
     window.addEventListener('keydown', handleKeyPress);
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
-    }
-
+    };
   }, [currentShape]);
-
-
 
   /** */
   const onShapeClick = (shape) => {
+    debug('onShapeClick');
     setSelectedShapeId(shape.id);
     // find shape by id
     setCurrentShape(shapes.find((s) => s.id === shape.id));
-    console.log('current shape', currentShape);
+    debug('onShapeClickEnd');
   };
 
   /** */
+  const handleKeyPress = (e) => {
+    e.stopPropagation();
+    debug('handleKeyPress debut');
+    const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape'];
 
+    if (!currentShape) {
+      return;
+    }
+
+    if (e.key === 'Delete') {
+      debug('delete debut');
+      const index = shapes.findIndex((shape) => shape.id === currentShape.id);
+      shapes.splice(index, 1);
+      setShapes(shapes);
+      //setCurrentShape(shapes[shapes.length - 1]); Multidelete
+      setCurrentShape(null);
+      debug('delete fin');
+
+      return;
+    }
+
+    if (currentShape.type === 'text') {
+      debug('add text debut');
+
+      // update text
+      // let's handle text update
+      if (e.key === 'Backspace') {
+        currentShape.text = currentShape.text.slice(0, -1);
+      } else {
+        // return if special char
+        if (unnalowedKeys.includes(e.key)) {
+          return;
+        }
+        currentShape.text += e.key;
+      }
+      debug('add text fin');
+
+      // TODO Improve that Use currentShape.id instead of selectedShapeId
+      const index = shapes.findIndex((shape) => shape.id === currentShape.id);
+      shapes[index] = currentShape;
+
+      setShapes(shapes);
+      setCurrentShape(currentShape);
+
+     debug('Handle key press fin');
+    }
+  };
 
   /** */
   const handleMouseDown = (e) => {
- 
+
     try {
       const pos = e.target.getStage().getPointerPosition();
       const relativePos = e.target.getStage().getRelativePointerPosition();
-      console.log('mouse down', props.activeTool);
-      console.log('pos', pos);
-      console.log('relativePos', relativePos);
+     debug('mouse down debut');
       let shape = null;
       switch (props.activeTool) {
         case 'rectangle':
@@ -258,6 +234,8 @@ function AnnotationDrawing(props) {
           // Handle other cases if any
       }
 
+      debug('mouse down fin');
+
       // if (!currentShape) {
       //   return;
       // }
@@ -276,8 +254,8 @@ function AnnotationDrawing(props) {
 
   /** */
   const handleMouseMove = (e) => {
+
     try {
-      console.log('mouse move', props.activeTool);
       if (!isDrawing) {
         return;
       }
@@ -336,8 +314,9 @@ function AnnotationDrawing(props) {
 
   /** Stop drawing */
   const handleMouseUp = () => {
+    debug('mouse up debut');
+
     try {
-      console.log('mouse up', props.activeTool);
     //  if (!isDrawing) return;
       if (!currentShape) return;
 
@@ -352,13 +331,12 @@ function AnnotationDrawing(props) {
           //setCurrentShape(null);
           break;
         case 'text':
-          console.log('Mouse Up current shape ', currentShape);
-          console.log('Mouse Up current shape id', currentShape.id);
-          console.log('Mousse up shapes', shapes);
 
         default:
           // Handle any other cases if necessary
       }
+      debug('mouse up fin');
+
     } catch (error) {
       console.log('error', error);
     }
@@ -366,6 +344,11 @@ function AnnotationDrawing(props) {
 
   /** */
   const drawKonvas = () => {
+
+    debug('draw konva debut', props.activeTool);
+
+
+
     const shape = shapes.find((s) => s.id === currentShape?.id);
 
     if (shape) {
@@ -376,17 +359,18 @@ function AnnotationDrawing(props) {
         shape.strokeColor = props.strokeColor;
         shape.strokeWidth = props.strokeWidth;
 
-        console.log('Draw Konva shapes ' , shapes);
-        console.log('Drow shape ' , currentShape);
         const index = shapes.findIndex((s) => s.id === currentShape.id);
         shapes[index] = shape;
         setShapes(shapes);
       }
     }
 
+    debug('Drow shape avant render');
+
+
     return (
       <Stage
-      
+
         width={props.width || 1920}
         height={props.height || 1080}
         style={{
@@ -399,7 +383,7 @@ function AnnotationDrawing(props) {
         id={props.windowId}
       >
         <ParentComponent
-          
+
           shapes={shapes}
           onShapeClick={onShapeClick}
           activeTool={props.activeTool}
