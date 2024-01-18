@@ -58,10 +58,17 @@ function AnnotationDrawing(props) {
   // TODO Can be removed ?
   useEffect(() => {
     debug('useEffect 2');
-    window.addEventListener('keydown', handleKeyPress);
-    return () => {
-      window.removeEventListener('keydown', handleKeyPress);
-    };
+    //console.log('eventListener ', window.getEventListeners(window).keydown.length);
+
+
+
+    if (shapes.find((s) => s.id === currentShape?.id)) {
+      window.addEventListener('keydown', handleKeyPress);
+      return () => {
+        window.removeEventListener('keydown', handleKeyPress);
+      };
+
+    }
   }, [currentShape]);
 
   /** */
@@ -86,8 +93,10 @@ function AnnotationDrawing(props) {
     if (e.key === 'Delete') {
       debug('delete debut');
       const index = shapes.findIndex((shape) => shape.id === currentShape.id);
-      shapes.splice(index, 1);
-      setShapes(shapes);
+      if(index !== -1) {
+        shapes.splice(index, 1);
+        setShapes(shapes);
+      }
       //setCurrentShape(shapes[shapes.length - 1]); Multidelete
       setCurrentShape(null);
       debug('delete fin');
