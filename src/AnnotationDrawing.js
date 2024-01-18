@@ -36,7 +36,7 @@ function AnnotationDrawing(props) {
   // TODO Can be removed ?
   useEffect(() => {
     // componentDidUpdate logic for props.activeTool
-  }, [props.activeTool]);
+  }, [props.activeTool, shapes]);
 
   /** */
   const onShapeClick = (shape) => {
@@ -49,6 +49,8 @@ function AnnotationDrawing(props) {
   /** */
   const handleKeyPress = (e) => {
     console.log('key press', e);
+    console.log('Key press shapes ' , shapes);
+    console.log('Key press current shape ' , currentShape);
     const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape'];
 
     console.log('current shape', currentShape);
@@ -83,10 +85,16 @@ function AnnotationDrawing(props) {
         currentShape.text += e.key;
       }
 
+      console.log('Key press before end shapes ' , shapes);
+      console.log('Key press before end current shape ' , currentShape);
+
       // TODO Improve that Use currentShape.id instead of selectedShapeId
       const index = shapes.findIndex((shape) => shape.id === currentShape.id);
       shapes[index] = currentShape;
       setShapes(shapes);
+
+      console.log('Key press end shapes ' , shapes);
+      console.log('Key press end current shape ' , currentShape);
     }
 
     e.stopPropagation();
@@ -94,6 +102,8 @@ function AnnotationDrawing(props) {
 
   /** */
   const handleMouseDown = (e) => {
+    console.log("HandleMouseDown " + window.addEventListenerCounter);
+    window.addEventListenerCounter++;
     try {
       const pos = e.target.getStage().getPointerPosition();
       const relativePos = e.target.getStage().getRelativePointerPosition();
@@ -131,10 +141,16 @@ function AnnotationDrawing(props) {
             y: pos.y,
           };
 
+          console.log('Mouse Down shapes ' , shapes);
+          console.log('Mouse Down current shape ' , currentShape);
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
-          console.log('text', shape);
+          console.log('Mouse Down after shapes ' , shapes);
+          console.log('Mouse Down after current shape ' , currentShape);
+
           window.addEventListener('keydown', handleKeyPress);
+
+
           break;
 
         case 'line':
@@ -287,10 +303,9 @@ function AnnotationDrawing(props) {
           //setCurrentShape(null);
           break;
         case 'text':
-          console.log('text', currentShape);
-          console.log('text', currentShape.id);
-          setShapes([...shapes, currentShape]);
-          console.log('BUG1 shapes', shapes);
+          console.log('Mouse Up current shape ', currentShape);
+          console.log('Mouse Up current shape id', currentShape.id);
+          console.log('Mousse up shapes', shapes);
 
         default:
           // Handle any other cases if necessary
@@ -312,6 +327,8 @@ function AnnotationDrawing(props) {
         shape.strokeColor = props.strokeColor;
         shape.strokeWidth = props.strokeWidth;
 
+        console.log('Draw Konva shapes ' , shapes);
+        console.log('Drow shape ' , currentShape);
         const index = shapes.findIndex((s) => s.id === currentShape.id);
         shapes[index] = shape;
         setShapes(shapes);

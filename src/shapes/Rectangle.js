@@ -8,9 +8,6 @@ function Rectangle({
   const shapeRef = useRef();
   const trRef = useRef();
 
-  console.log('Shape', shape);
-  console.log('isSelected', isSelected);
-
   useEffect(() => {
     if (trRef.current) {
       trRef.current.nodes([shapeRef.current]);

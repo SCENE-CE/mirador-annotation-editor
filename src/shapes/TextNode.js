@@ -8,10 +8,10 @@ function TextNode({
   const shapeRef = useRef();
   const trRef = useRef();
 
-    console.log('Shape', shape);
+    console.log('Text node shape', shape);
 
   const handleClick = () => {
-      console.log("TextNode handleClick", shape.id);
+    console.log("TextNode handleClick shape id", shape.id);
     onShapeClick(shape);
   };
 

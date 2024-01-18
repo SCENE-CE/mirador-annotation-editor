@@ -32,9 +32,6 @@ function ParentComponent({
     onShapeClick(shape);
   };
 
-  console.log("ParentComponent", shapes.length);
-  console.log("ParentComponent", shapes[shapes.length - 1]);
-
   return (
     <Layer>
       {shapes.map((shape, i) => {

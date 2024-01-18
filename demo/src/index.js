@@ -31,3 +31,6 @@ const config = {
 };
 
 mirador.viewer(config, [...annotationPlugins]);
+
+
+window.addEventListenerCounter = 0;
