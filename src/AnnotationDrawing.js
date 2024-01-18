@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useEffect, useState,useLayoutEffect } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import {
@@ -56,7 +56,7 @@ function AnnotationDrawing(props) {
   }, []);
 
   // TODO Can be removed ?
-  useEffect(() => {
+  useLayoutEffect(() => {
     debug('useEffect 2');
     //console.log('eventListener ', window.getEventListeners(window).keydown.length);
 
