@@ -23,6 +23,10 @@ function ParentComponent({
     }
   }, [shapes, selectedShapeId]);
 
+  useEffect(() => {
+
+  }, [selectedShape]);
+
   /**
     * Triggered onShapeClick provided function when a shape is clicked
     * @param {object} shape

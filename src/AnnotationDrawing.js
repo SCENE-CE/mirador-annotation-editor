@@ -63,9 +63,12 @@ function AnnotationDrawing(props) {
 
 
     if (shapes.find((s) => s.id === currentShape?.id)) {
+     console.log('eventListener set')//, window.getEventListeners(window).keydown.length);
       window.addEventListener('keydown', handleKeyPress);
       return () => {
         window.removeEventListener('keydown', handleKeyPress);
+        console.log('eventListener removed')
+     //   console.log('eventListener ', window.getEventListeners(window).keydown.length);
       };
 
     }
@@ -85,45 +88,44 @@ function AnnotationDrawing(props) {
     e.stopPropagation();
     debug('handleKeyPress debut');
     const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape'];
-
+  
     if (!currentShape) {
       return;
     }
-
+  
     if (e.key === 'Delete') {
       debug('delete debut');
-      const index = shapes.findIndex((shape) => shape.id === currentShape.id);
-      if(index !== -1) {
-        shapes.splice(index, 1);
-        setShapes(shapes);
-      }
-      //setCurrentShape(shapes[shapes.length - 1]); Multidelete
+      const newShapes = shapes.filter((shape) => shape.id !== currentShape.id);
+      setShapes(newShapes);
       setCurrentShape(null);
       debug('delete fin');
       window.removeEventListener('keydown', handleKeyPress);
       return;
     }
-
+  
     if (currentShape.type === 'text') {
       debug('add text debut');
-
-      // update text
-      // let's handle text update
+  
+      let newText = currentShape.text;
       if (e.key === 'Backspace') {
-        currentShape.text = currentShape.text.slice(0, -1);
+        newText = newText.slice(0, -1);
       } else {
-        // return if special char
         if (unnalowedKeys.includes(e.key)) {
           return;
         }
-        currentShape.text += e.key;
+        newText += e.key;
       }
+  
+      const newCurrentShape = { ...currentShape, text: newText };
+      setCurrentShape(newCurrentShape);
+  
+      const newShapes = shapes.map((shape) =>
+        shape.id === currentShape.id ? newCurrentShape : shape
+      );
+      setShapes(newShapes);
+  
       debug('add text fin');
-      setCurrentShape(currentShape);
-      updateCurrentShapeInShapes();
-     
-
-     debug('Handle key press fin');
+      debug('Handle key press fin');
     }
   };
 
@@ -155,18 +157,19 @@ function AnnotationDrawing(props) {
 
         shape={
           fill: props.fillColor,
-          height: 0,
           id: uuidv4(),
           strokeColor: props.strokeColor,
           strokeWidth: props.strokeWidth,
           type: props.activeTool,
-          width: 0,
+          width: 1,
+          height: 1,
           x: pos.x,
           y: pos.y,
         }
           setIsDrawing(true);
-          setCurrentShape(shape);
+        
           setShapes([...shapes, shape]);
+          setCurrentShape(shape);
     
           // Add global key press event listener
         //  window.addEventListener('keydown', handleKeyPress);
@@ -185,7 +188,7 @@ function AnnotationDrawing(props) {
 
          
           setShapes([...shapes, shape]);
-          setCurrentShape(shapes[shapes.length - 1]);
+          setCurrentShape(shape);
         
        //   window.addEventListener('keydown', handleKeyPress);
 
@@ -207,7 +210,7 @@ function AnnotationDrawing(props) {
             y: pos.y,
           };
           setShapes([...shapes, shape]);
-          setCurrentShape(shapes[shapes.length - 1]);
+          setCurrentShape(shape);
      
       //    window.addEventListener('keydown', handleKeyPress);
           break;
@@ -242,7 +245,7 @@ function AnnotationDrawing(props) {
            // const bb = shapeRefs[shape.id].getClientRect();
 
           setShapes([...shapes, shape]);
-          setCurrentShape(shapes[shapes.length - 1]);
+          setCurrentShape(shape);
          
        //   window.addEventListener('keydown', handleKeyPress);
           break;
@@ -260,7 +263,7 @@ function AnnotationDrawing(props) {
               y: pos.y,
             };
             setShapes([...shapes, shape]);
-            setCurrentShape(shapes[shapes.length - 1]);
+            setCurrentShape(shape);
 
         case 'debug':
           debug('debug');
@@ -361,8 +364,10 @@ function AnnotationDrawing(props) {
   };
 
   /** Stop drawing */
-  const handleMouseUp = () => {
+  const handleMouseUp = (e) => {
     debug('mouse up debut');
+
+    const pos = e.target.getStage().getPointerPosition();
 
     try {
     //  if (!isDrawing) return;
@@ -373,16 +378,17 @@ function AnnotationDrawing(props) {
         case 'ellipse':
         case 'line':
         case 'freehand':
+        case 'arrow':
           // For these cases, the action is similar: stop drawing and add the shape
-          setIsDrawing(false);
-          debug('in mouse up');
-        // console.log('Test' , [...shapes, currentShape]);
+          setIsDrawing(false);d
           updateCurrentShapeInShapes();
+          setCurrentShape(currentShape);
           debug('in mouse up after');
           //setCurrentShape(null);
           break;
         case 'text':
           updateCurrentShapeInShapes();
+          setCurrentShape(currentShape);
         default:
           // Handle any other cases if necessary
       }
