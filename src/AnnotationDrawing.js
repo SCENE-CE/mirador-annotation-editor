@@ -91,7 +91,7 @@ function AnnotationDrawing(props) {
       //setCurrentShape(shapes[shapes.length - 1]); Multidelete
       setCurrentShape(null);
       debug('delete fin');
-
+      window.removeEventListener('keydown', handleKeyPress);
       return;
     }
 
