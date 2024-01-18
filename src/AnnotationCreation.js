@@ -19,6 +19,7 @@ import StrokeColorIcon from '@mui/icons-material/BorderColor';
 import LineWeightIcon from '@mui/icons-material/LineWeight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import FormatShapesIcon from '@mui/icons-material/FormatShapes';
+import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 import TitleIcon from '@mui/icons-material/Title';
 import { SketchPicker } from 'react-color';
 import { styled } from '@mui/material/styles';
@@ -685,6 +686,9 @@ class AnnotationCreation extends Component {
                     </ToggleButton>
                     <ToggleButton value="edit" aria-label="select cursor">
                       <FormatShapesIcon />
+                    </ToggleButton>
+                    <ToggleButton value="debug" aria-label="select cursor">
+                      <AccessibilityNewIcon />
                     </ToggleButton>
                   </StyledToggleButtonGroup>
                   <StyledDivider

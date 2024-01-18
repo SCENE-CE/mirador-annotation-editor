@@ -111,15 +111,23 @@ function AnnotationDrawing(props) {
       }
       debug('add text fin');
 
-      // TODO Improve that Use currentShape.id instead of selectedShapeId
-      const index = shapes.findIndex((shape) => shape.id === currentShape.id);
-      shapes[index] = currentShape;
-
-      setShapes(shapes);
+      updateCurrentShapeInShapes();
       setCurrentShape(currentShape);
 
      debug('Handle key press fin');
     }
+  };
+
+  const updateCurrentShapeInShapes = () => {
+
+      const index = shapes.findIndex((s) => s.id === currentShape.id);
+
+      if(index !== -1){
+        shapes[index] = currentShape;
+        setShapes(shapes);
+      } else {
+        setShapes([...shapes, currentShape]);
+      }
   };
 
   /** */
@@ -230,6 +238,8 @@ function AnnotationDrawing(props) {
           unscoppedshapes.push(shape);
        //   window.addEventListener('keydown', handleKeyPress);
           break;
+        case 'debug':
+          debug('debug');
         default:
           // Handle other cases if any
       }
@@ -327,7 +337,10 @@ function AnnotationDrawing(props) {
         case 'freehand':
           // For these cases, the action is similar: stop drawing and add the shape
           setIsDrawing(false);
-          setShapes([...shapes, currentShape]);
+          debug('in mouse up');
+          console.log('Test' , [...shapes, currentShape]);
+          updateCurrentShapeInShapes();
+          debug('in mouse up after');
           //setCurrentShape(null);
           break;
         case 'text':
@@ -345,7 +358,7 @@ function AnnotationDrawing(props) {
   /** */
   const drawKonvas = () => {
 
-    debug('draw konva debut', props.activeTool);
+   // debug('draw konva debut', props.activeTool);
 
 
 
@@ -359,9 +372,9 @@ function AnnotationDrawing(props) {
         shape.strokeColor = props.strokeColor;
         shape.strokeWidth = props.strokeWidth;
 
-        const index = shapes.findIndex((s) => s.id === currentShape.id);
+        /*const index = shapes.findIndex((s) => s.id === currentShape.id);
         shapes[index] = shape;
-        setShapes(shapes);
+        setShapes(shapes);*/
       }
     }
 
