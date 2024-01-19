@@ -15,7 +15,7 @@ let unscoppedshapes = [];
 let selectedShape = null;
 function AnnotationDrawing(props) {
 
-  console.log('AnnotationDrawing props', props);
+ // console.log('AnnotationDrawing props', props);
   const [shapes, setShapes] = useState([]);
   const [currentShape, setCurrentShape] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -28,14 +28,14 @@ function AnnotationDrawing(props) {
   const transformerRefs = {};
 
   const debug = ( command ) => {
-    console.log('***************************');
-    console.log( command );
-    console.log( 'shapes', shapes );
-    console.log( 'shapes taille', shapes.length );
-    console.log( 'currentShape', currentShape );
-    console.log('isDrawing', isDrawing );
-    console.log('props.activeTool', props.activeTool );
-    console.log('-----------------------------');
+    // console.log('***************************');
+    // console.log( command );
+    // console.log( 'shapes', shapes );
+    // console.log( 'shapes taille', shapes.length );
+    // console.log( 'currentShape', currentShape );
+    // console.log('isDrawing', isDrawing );
+    // console.log('props.activeTool', props.activeTool );
+    // console.log('-----------------------------');
   };
 
   // TODO useful ?
@@ -63,6 +63,13 @@ function AnnotationDrawing(props) {
 
 
     if (shapes.find((s) => s.id === currentShape?.id)) {
+
+      props.setShapeProperties({
+        fill: currentShape.fillColor,
+        strokeColor: currentShape.strokeColor,
+        strokeWidth: currentShape.strokeWidth,
+      })
+
      console.log('eventListener set')//, window.getEventListeners(window).keydown.length);
       window.addEventListener('keydown', handleKeyPress);
       return () => {
@@ -135,7 +142,7 @@ function AnnotationDrawing(props) {
 
       if(index !== -1){
         shapes[index] = currentShape;
-        setShapes(shapes);
+        setShapes([...shapes]);
       } else {
    
         setShapes([...shapes, currentShape]);
@@ -380,7 +387,7 @@ function AnnotationDrawing(props) {
         case 'freehand':
         case 'arrow':
           // For these cases, the action is similar: stop drawing and add the shape
-          setIsDrawing(false);d
+          setIsDrawing(false);
           updateCurrentShapeInShapes();
           setCurrentShape(currentShape);
           debug('in mouse up after');

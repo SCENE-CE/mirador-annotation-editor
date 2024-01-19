@@ -170,6 +170,7 @@ class AnnotationCreation extends Component {
     this.handleChangeTime = this.handleChangeTime.bind(this);
     this.valuetextTime = this.valuetextTime.bind(this);
     this.updateTitle = this.updateTitle.bind(this);
+    this.setShapeProperties = this.setShapeProperties.bind(this);
   }
 
   componentDidMount() {
@@ -418,6 +419,45 @@ class AnnotationCreation extends Component {
     this.setState({ textBody });
   }
 
+
+  /** */
+  setShapeProperties(options) {
+    //set strokeWidth , strokeColor, fillColor
+//toolState and state
+
+
+   const state = this.state;
+   console.log('options', options,state);
+   if(!state){
+return;
+    }
+
+Object.assign({
+  strokeColor: options.strokeColor|| state.strokeColor,
+  strokeWidth: options.strokeWidth || state.strokeWidth,
+}
+, state.activeTool);
+
+Object.assign({
+  fillColor: options.fill || state.fillColor,
+}, state);
+
+console.log('state', state);
+// set new state
+
+this.setState({
+  ...state
+});
+
+
+
+ 
+
+
+
+
+  }
+
   /** */
   updateGeometry({
     svg,
@@ -487,6 +527,7 @@ class AnnotationCreation extends Component {
           /// we need to pass the width and height of the image to the annotation drawing component
           width={1920}
           height={1080}
+          setShapeProperties={this.setShapeProperties}
           // TODO Ajouter du style pour que le Konva et la vidéo se superpose
 
 
