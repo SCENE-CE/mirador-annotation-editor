@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button, Paper, Grid, Popover, Divider,
@@ -25,9 +25,12 @@ import { SketchPicker } from 'react-color';
 import { styled } from '@mui/material/styles';
 import { v4 as uuid } from 'uuid';
 import Slider from '@mui/material/Slider';
+import TextField from '@mui/material/TextField';
+import { exportStageSVG } from 'react-konva-to-svg';
 import CompanionWindow from '../mirador/dist/es/src/containers/CompanionWindow';
 import { VideosReferences } from '../mirador/dist/es/src/plugins/VideosReferences';
 import { OSDReferences } from '../mirador/dist/es/src/plugins/OSDReferences';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import AnnotationDrawing from './AnnotationDrawing';
 import TextEditor from './TextEditor';
 import WebAnnotation from './WebAnnotation';
@@ -35,9 +38,6 @@ import CursorIcon from './icons/Cursor';
 import HMSInput from './HMSInput';
 import ImageFormField from './ImageFormField';
 import { secondsToHMS } from './utils';
-import TextField from '@mui/material/TextField';
-
-import { exportStageSVG } from 'react-konva-to-svg';
 
 /** Extract time information from annotation target */
 function timeFromAnnoTarget(annotarget) {
@@ -60,15 +60,13 @@ function geomFromAnnoTarget(annotarget) {
   return r[1];
 }
 
-/** */
-class AnnotationCreation extends Component {
-  /** */
-  constructor(props) {
-    super(props);
-
+/** Component for creating annotations.
+ * Display in companion window when a manifest is open and an annoation created or edited */
+function AnnotationCreation(props) {
+  // Initial state setup
+  const [state, setState] = useState(() => {
     const annoState = {};
     if (props.annotation) {
-      //
       // annotation body
       if (Array.isArray(props.annotation.body)) {
         annoState.tags = [];
@@ -80,8 +78,8 @@ class AnnotationCreation extends Component {
           } else if (body.type === 'Image') {
             // annoState.textBody = body.value; // why text body here ???
             annoState.image = body;
-          } else if (body.type === "AnnotationTitle") {
-            annoState.title = body
+          } else if (body.type === 'AnnotationTitle') {
+            annoState.title = body;
           }
         });
       } else if (props.annotation.body.type === 'TextualBody') {
@@ -128,7 +126,7 @@ class AnnotationCreation extends Component {
       ? { tend: Math.floor(props.currentTime) + 10, tstart: Math.floor(props.currentTime) }
       : { tend: null, tstart: null };
 
-    this.state = {
+    return {
       ...toolState,
       ...timeState,
       activeTool: 'cursor',
@@ -137,218 +135,212 @@ class AnnotationCreation extends Component {
       fillColor: null,
       image: { id: null },
       lineWeightPopoverOpen: false,
+      mediaVideo: null,
       popoverAnchorEl: null,
       popoverLineWeightAnchorEl: null,
       textBody: '',
       textEditorStateBustingKey: 0,
-      // eslint-disable-next-line sort-keys,max-len
-      valueTime: [0, 1],
       ...annoState,
       valuetextTime: '',
-      mediaVideo: null,
+      valueTime: [0, 1],
     };
+  });
 
-    this.submitForm = this.submitForm.bind(this);
-    // this.updateBody = this.updateBody.bind(this);
-    this.updateTextBody = this.updateTextBody.bind(this);
-    this.updateTstart = this.updateTstart.bind(this);
-    this.updateTend = this.updateTend.bind(this);
-    this.setTstartNow = this.setTstartNow.bind(this);
-    this.setTendNow = this.setTendNow.bind(this);
-    this.seekToTstart = this.seekToTstart.bind(this);
-    this.seekToTend = this.seekToTend.bind(this);
-    this.updateGeometry = this.updateGeometry.bind(this);
-    this.changeTool = this.changeTool.bind(this);
-    this.changeClosedMode = this.changeClosedMode.bind(this);
-    this.openChooseColor = this.openChooseColor.bind(this);
-    this.openChooseLineWeight = this.openChooseLineWeight.bind(this);
-    this.handleLineWeightSelect = this.handleLineWeightSelect.bind(this);
-    this.handleCloseLineWeight = this.handleCloseLineWeight.bind(this);
-    this.closeChooseColor = this.closeChooseColor.bind(this);
-    this.updateStrokeColor = this.updateStrokeColor.bind(this);
-    this.handleImgChange = this.handleImgChange.bind(this);
-    this.handleChangeTime = this.handleChangeTime.bind(this);
-    this.valuetextTime = this.valuetextTime.bind(this);
-    this.updateTitle = this.updateTitle.bind(this);
-    this.setShapeProperties = this.setShapeProperties.bind(this);
+  // You can use useEffect for componentDidMount, componentDidUpdate, and componentWillUnmount
+  useEffect(() => {
+    // componentDidMount logic
+    const mediaVideo = VideosReferences.get(props.windowId);
+    setState((prevState) => ({ ...prevState, mediaVideo }));
 
-  }
-
-  componentDidMount() {
-    const mediaVideo = VideosReferences.get(this.props.windowId);
-    this.setState({ mediaVideo }); // Update mediaVideo in state
-  }
+    // componentWillUnmount logic (if needed)
+    return () => {
+      // cleanup logic here
+    };
+  }, []); // Empty array means this effect runs once, similar to componentDidMount
+  // listen on window id ?
 
   /** */
-  handleImgChange(newUrl, imgRef) {
-    const { image } = this.state;
-    this.setState({ image: { ...image, id: newUrl } });
-  }
+  const handleImgChange = (newUrl, imgRef) => {
+    setState((prevState) => ({
+      ...prevState,
+      image: { ...prevState.image, id: newUrl },
+    }));
+  };
 
   /** */
-  handleCloseLineWeight(e) {
-    this.setState({
+  const handleCloseLineWeight = (e) => {
+    setState((prevState) => ({
+      ...prevState,
       lineWeightPopoverOpen: false,
       popoverLineWeightAnchorEl: null,
-    });
-  }
+    }));
+  };
 
   /** */
-  handleLineWeightSelect(e) {
-    this.setState({
+  const handleLineWeightSelect = (e) => {
+    setState((prevState) => ({
+      ...prevState,
       lineWeightPopoverOpen: false,
       popoverLineWeightAnchorEl: null,
       strokeWidth: e.currentTarget.value,
-    });
-  }
+    }));
+  };
 
   /** set annotation start time to current time */
-  setTstartNow() {
-    // eslint-disable-next-line react/destructuring-assignment
-    this.setState({ tstart: Math.floor(this.props.currentTime) });
-  }
+  const setTstartNow = () => {
+    setState((prevState) => ({
+      ...prevState,
+      tstart: Math.floor(props.currentTime),
+    }));
+  };
 
   /** set annotation end time to current time */
-  setTendNow() {
-    // eslint-disable-next-line react/destructuring-assignment
-    this.setState({ tend: Math.floor(this.props.currentTime) });
-  }
+  const setTendNow = () => {
+    setState((prevState) => ({
+      ...prevState,
+      tend: Math.floor(props.currentTime),
+    }));
+  };
 
-  handleChangeTime = (event, newValueTime) => {
+  /**
+   * @param {number} newValueTime
+   */
+  const setValueTime = (newValueTime) => {
+    setState((prevState) => ({
+      ...prevState,
+      valueTime: newValueTime,
+    }));
+  };
+
+  /**
+   * @param {Event} event
+   * @param {number} newValueTime
+   */
+  const handleChangeTime = (event, newValueTime) => {
     const timeStart = newValueTime[0];
     const timeEnd = newValueTime[1];
-    this.updateTstart(timeStart);
-    this.updateTend(timeEnd);
-    this.seekToTstart();
-    this.seekToTend();
-    this.setState({ valueTime: newValueTime });
+    updateTstart(timeStart);
+    updateTend(timeEnd);
+    seekToTstart();
+    seekToTend();
+    setValueTime(newValueTime);
   };
 
   /** update annotation start time */
-  updateTstart(value) {
-    this.setState({ tstart: value });
-  }
+  const updateTstart = (value) => {
+    setState((prevState) => ({
+      ...prevState,
+      tstart: value,
+    }));
+  };
 
   /** update annotation end time */
-  updateTend(value) {
-    this.setState({ tend: value });
-  }
+  const updateTend = (value) => {
+    setState((prevState) => ({
+      ...prevState,
+      tend: value,
+    }));
+  };
 
-  updateTitle(e) {
-    const thisTitle = e.target.value;
-    this.setState({ title: thisTitle });
-  }
+  /** update annotation title */
+  const updateTitle = (e) => {
+    setState((prevState) => ({
+      ...prevState,
+      title: e.target.value,
+    }));
+  };
 
   /** seekTo/goto annotation end time */
-  seekToTend() {
-    const {
-      paused,
-      setCurrentTime,
-      setSeekTo,
-    } = this.props;
-    const { tend } = this.state;
-    if (!paused) {
-      this.setState(setSeekTo(tend));
-    } else {
-      this.setState(setCurrentTime(tend));
-    }
-  }
+  const seekToTend = () => {
+    setState((prevState) => ({
+      ...prevState,
+      ...props.setSeekTo(prevState.tend),
+      ...props.setCurrentTime(prevState.tend),
+    }));
+  };
 
   // eslint-disable-next-line require-jsdoc
-  seekToTstart() {
-    const {
-      paused,
-      setCurrentTime,
-      setSeekTo,
-    } = this.props;
-    const { tstart } = this.state;
-    if (!paused) {
-      this.setState(setSeekTo(tstart));
-    } else {
-      this.setState(setCurrentTime(tstart));
-    }
-  }
+  const seekToTstart = () => {
+    setState((prevState) => ({
+      ...prevState,
+      ...props.setSeekTo(prevState.tstart),
+      ...props.setCurrentTime(prevState.tstart),
+    }));
+  };
 
   // eslint-disable-next-line require-jsdoc
-  valuetextTime() {
-    return this.valueTime;
-  }
+  const valuetextTime = () => state.valueTime;
 
   /** */
-  openChooseColor(e) {
-    this.setState({
+  const openChooseColor = (e) => {
+    setState((prevState) => ({
+      ...prevState,
       colorPopoverOpen: true,
       currentColorType: e.currentTarget.value,
       popoverAnchorEl: e.currentTarget,
-    });
-  }
+    }));
+  };
 
   /** */
-  openChooseLineWeight(e) {
-    this.setState({
+  const openChooseLineWeight = (e) => {
+    setState((prevState) => ({
+      ...prevState,
       lineWeightPopoverOpen: true,
       popoverLineWeightAnchorEl: e.currentTarget,
-    });
-  }
+    }));
+  };
 
-  /** */
-  closeChooseColor(e) {
-    this.setState({
+  /** Close color popover window */
+  const closeChooseColor = (e) => {
+    setState((prevState) => ({
+      ...prevState,
       colorPopoverOpen: false,
       currentColorType: null,
       popoverAnchorEl: null,
-    });
-  }
+    }));
+  };
 
-  /** */
-  updateStrokeColor(color) {
-    const { currentColorType } = this.state;
-    this.setState({
-      [currentColorType]: color.hex,
-    });
-  }
+  /** Update strokecolor */
+  const updateStrokeColor = (color) => {
+    setState((prevState) => ({
+      ...prevState,
+      [prevState.currentColorType]: color.hex,
+    }));
+  };
 
-
-  getSvg = async () => {
-    const stage = window.Konva.stages.find((stage) => stage.attrs.id === this.props.windowId);
-
-    const svg = await exportStageSVG(stage);
-
+  /**
+   * Get SVG picture containing all the stuff draw in the stage (Konva Stage).
+   * This image will be put in overlay of the iiif media
+   */
+  const getSvg = async () => {
+    const stage = window.Konva.stages.find((stage) => stage.attrs.id === props.windowId);
+    const svg = await exportStageSVG(stage); // TODO clean
     return svg;
+  };
 
-
-  }
-
-
-
-
-  /** */
-  async submitForm(e) {
+  /**
+   * Validate form and save annotation
+   */
+  const submitForm = async (e) => {
     e.preventDefault();
-
-    //if activeTool is edit set to cursor then resubmit 
-    // TODO find a more elegant solution 
-    if (this.state.activeTool === 'edit') {
-      // even if linter say other wise the await seems usefull
-      await this.setState({
+    // TODO Possibly problem of syncing
+    // TODO Improve this code
+    // If we are in edit mode, we have the transformer on the stage saved in the annotation
+    if (state.activeTool === 'edit') {
+      setState((prevState) => ({
+        ...prevState,
         activeTool: 'cursor',
-      });
-      this.submitForm(e);
-
-      return
+      }));
+      submitForm(e);
+      return;
     }
-
-
 
     const {
       annotation,
       canvases,
       receiveAnnotation,
       config,
-
-    } = this.props;
-
-
+    } = props;
 
     const {
       title,
@@ -356,24 +348,23 @@ class AnnotationCreation extends Component {
       image,
       tags,
       xywh,
-      //    svg,
       tstart,
       tend,
       textEditorStateBustingKey,
-    } = this.state;
+    } = state;
 
-    console.log('submitting form', this.state);
+    console.log('submitting form', state);
 
-    const svg = await this.getSvg();
-
+    // TODO rename variable for better comprenhension
+    const svg = await getSvg();
 
     console.log('svg', svg);
-
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
+
+    // TODO promises not handled. Use promiseAll ?
     canvases.forEach(async (canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
-
       const anno = new WebAnnotation({
         title,
         body,
@@ -385,7 +376,7 @@ class AnnotationCreation extends Component {
         id: (annotation && annotation.id) || `${uuid()}`,
         image,
         manifestId: canvas.options.resource.id,
-        svg,//<------
+        svg,
         tags,
       }).toJson();
 
@@ -404,7 +395,8 @@ class AnnotationCreation extends Component {
       }
     });
 
-    this.setState({
+    // TODO check if we need other thing in state
+    setState({
       title: '',
       image: { id: null },
       svg: null,
@@ -414,477 +406,455 @@ class AnnotationCreation extends Component {
       tstart: 0,
       xywh: null,
     });
-  }
+  };
 
   /** */
-  changeTool(e, tool) {
-    this.setState({
+  const changeTool = (e, tool) => {
+    setState((prevState) => ({
+      ...prevState,
       activeTool: tool,
-    });
-  }
+    }));
+  };
 
   /** */
-  changeClosedMode(e) {
-    this.setState({
+  const changeClosedMode = (e) => {
+    setState((prevState) => ({
+      ...prevState,
       closedMode: e.currentTarget.value,
-    });
-  }
+    }));
+  };
 
   /** */
-  updateTextBody(textBody) {
-    this.setState({ textBody });
-  }
-
-
-  /** */
-  setShapeProperties(options) {
-    return new Promise(() => {
-      const state = this.state;
-
-      if (!state) {
-        return;
-      }
-      if (options.fill) {
-        state.fillColor = options.fill;
-      }
-
-      if (options.strokeWidth) {
-        state.strokeWidth = options.strokeWidth;
-      }
-
-      if (options.stroke) {
-        state.strokeColor = options.stroke;
-      }
-
-
-      this.setState({
-        ...state
-      });
-
-
-
-    })
-
-
-
-  }
-
-  //* */
-
-
+  const updateTextBody = (textBody) => {
+    setState((prevState) => ({
+      ...prevState,
+      textBody,
+    }));
+  };
 
   /** */
-  updateGeometry({
+  const setShapeProperties = (options) => new Promise(() => {
+    if (options.fill) {
+      state.fillColor = options.fill;
+    }
+
+    if (options.strokeWidth) {
+      state.strokeWidth = options.strokeWidth;
+    }
+
+    if (options.stroke) {
+      state.strokeColor = options.stroke;
+    }
+
+    setState({ ...state });
+  });
+
+  /** */
+  const updateGeometry = ({
     svg,
     xywh,
-  }) {
-    this.setState({
+  }) => {
+    setState((prevState) => ({
+      ...prevState,
       svg,
       xywh,
-    });
-  }
+    }));
+  };
 
   /** */
-  render() {
-    const {
-      annotation,
-      closeCompanionWindow,
-      id,
-      windowId,
-    } = this.props;
+  const {
+    annotation,
+    closeCompanionWindow,
+    id,
+    windowId,
+  } = props;
 
-    const {
-      activeTool,
-      colorPopoverOpen,
-      currentColorType,
-      fillColor,
-      popoverAnchorEl,
-      strokeColor,
-      popoverLineWeightAnchorEl,
-      lineWeightPopoverOpen,
-      strokeWidth,
-      closedMode,
-      textBody,
+  const {
+    activeTool,
+    colorPopoverOpen,
+    currentColorType,
+    fillColor,
+    popoverAnchorEl,
+    strokeColor,
+    popoverLineWeightAnchorEl,
+    lineWeightPopoverOpen,
+    strokeWidth,
+    closedMode,
+    textBody,
+    tstart,
+    tend,
+    textEditorStateBustingKey,
+    image,
+    valueTime,
+    mediaVideo,
+    title,
+  } = state;
 
-      tstart,
-      tend,
-      textEditorStateBustingKey,
-      image,
-      valueTime,
-      mediaVideo,
-      title
-    } = this.state;
+  // TODO : Vérifier ce code, c'est étrange de comprarer un typeof à une chaine de caractère.
+  const mediaIsVideo = typeof VideosReferences.get(windowId) !== 'undefined';
+  if (mediaIsVideo) {
+    valueTime[0] = tstart;
+    valueTime[1] = tend;
+  }
+  const isVideoDataLoaded = mediaVideo && mediaVideo.video && !isNaN(mediaVideo.video.duration) && mediaVideo.video.duration > 0;
 
-    // TODO : Vérifier ce code, c'est étrange de comprarer un typeof à une chaine de caractère.
-    const mediaIsVideo = typeof VideosReferences.get(windowId) !== 'undefined';
-    if (mediaIsVideo) {
-      valueTime[0] = tstart;
-      valueTime[1] = tend;
-    }
-    const isVideoDataLoaded = mediaVideo && mediaVideo.video && !isNaN(mediaVideo.video.duration) && mediaVideo.video.duration > 0;
-    return (
-      <CompanionWindow
-        title={title ? title.value : 'New Annotation'}
+  return (
+    <CompanionWindow
+      title={title ? title.value : 'New Annotation'}
+      windowId={windowId}
+      id={id}
+    >
+      <AnnotationDrawing
+        activeTool={activeTool}
+        annotation={annotation}
+        fillColor={fillColor}
+        strokeColor={strokeColor}
+        strokeWidth={strokeWidth}
+        closed={closedMode === 'closed'}
+        updateGeometry={updateGeometry}
         windowId={windowId}
-        id={id}
-      >
-        <AnnotationDrawing
-          activeTool={activeTool}
-          annotation={annotation}
-          fillColor={fillColor}
-          strokeColor={strokeColor}
-          strokeWidth={strokeWidth}
-          closed={closedMode === 'closed'}
-
-          updateGeometry={this.updateGeometry}
-          windowId={windowId}
-          player={mediaIsVideo ? VideosReferences.get(windowId) : OSDReferences.get(windowId)}
-          /// we need to pass the width and height of the image to the annotation drawing component
-          width={1920}
-          height={1080}
-          setShapeProperties={this.setShapeProperties}
-
+        player={mediaIsVideo ? VideosReferences.get(windowId) : OSDReferences.get(windowId)}
+        /// we need to pass the width and height of the image to the annotation drawing component
+        width={1920}
+        height={1080}
+        setShapeProperties={setShapeProperties}
         // TODO Ajouter du style pour que le Konva et la vidéo se superpose
-
-
-        />
-        <StyledForm
-          onSubmit={this.submitForm}
-        >
-          <div>
-            <Grid item xs={12}>
-              <TextField
-                id="outlined-basic"
-                label="Title"
-                variant="outlined"
-                onChange={this.updateTitle}
-              />
-            </Grid>
-          </div>
-          <Grid>
-            <Typography>TODO:METTRE CE CHAMPS TEXTE EN ONGLET</Typography>
-            <TextEditor
-              key={textEditorStateBustingKey}
-              annoHtml={textBody}
-              updateAnnotationBody={this.updateTextBody}
+      />
+      <StyledForm
+        onSubmit={submitForm}
+      >
+        <div>
+          <Grid item xs={12}>
+            <TextField
+              id="outlined-basic"
+              label="Title"
+              variant="outlined"
+              onChange={updateTitle}
             />
           </Grid>
-          <div>
+        </div>
+        <Grid>
+          <Typography>TODO:METTRE CE CHAMPS TEXTE EN ONGLET</Typography>
+          <TextEditor
+            key={textEditorStateBustingKey}
+            annoHtml={textBody}
+            updateAnnotationBody={updateTextBody}
+          />
+        </Grid>
+        <div>
 
-            {mediaIsVideo && (
-              <>
-                <Grid
-                  item
-                  xs={12}
-                >
-                  <Typography id="range-slider" variant="overline">
-                    Display period
-                  </Typography>
-                  {isVideoDataLoaded ? (
-                    <div>
-                      <Typography>
-                        {this.state.mediaVideo.video.duration}
-                      </Typography>
-                      <Slider
-                        value={valueTime}
-                        onChange={this.handleChangeTime}
-                        valueLabelDisplay="auto"
-                        aria-labelledby="range-slider"
-                        max={Math.round(this.state.mediaVideo.video.duration)}
-                        color="secondary"
-                        windowid={windowId}
-                        sx={{
-                          color: 'rgba(1, 0, 0, 0.38)',
-                        }}
-                      />
-                    </div>
-                  ) : (
-                    <Typography>Loading video data...</Typography>
-                  )}
+          {mediaIsVideo && (
+            <>
+              <Grid
+                item
+                xs={12}
+              >
+                <Typography id="range-slider" variant="overline">
+                  Display period
+                </Typography>
+                {isVideoDataLoaded ? (
+                  <div>
+                    <Typography>
+                      {state.mediaVideo.video.duration}
+                    </Typography>
+                    <Slider
+                      value={valueTime}
+                      onChange={handleChangeTime}
+                      valueLabelDisplay="auto"
+                      aria-labelledby="range-slider"
+                      max={Math.round(state.mediaVideo.video.duration)}
+                      color="secondary"
+                      windowid={windowId}
+                      sx={{
+                        color: 'rgba(1, 0, 0, 0.38)',
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <Typography>Loading video data...</Typography>
+                )}
 
-                </Grid>
+              </Grid>
+              <div style={{
+                alignContent: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '5px',
+                padding: '5px',
+              }}
+              >
                 <div style={{
-                  alignContent: 'center',
+                  border: '1px solid rgba(0, 0, 0, 0.12)',
+                  borderRadius: '4px',
                   display: 'flex',
-                  flexDirection: 'column',
-                  gap: '5px',
+                  flexWrap: 'nowrap',
+                  justifyContent: 'center',
                   padding: '5px',
                 }}
                 >
                   <div style={{
-                    border: '1px solid rgba(0, 0, 0, 0.12)',
-                    borderRadius: '4px',
                     display: 'flex',
-                    flexWrap: 'nowrap',
-                    justifyContent: 'center',
-                    padding: '5px',
+                    flexDirection: 'column',
                   }}
                   >
-                    <div style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                    }}
-                    >
-                      <div>
-                        <p style={{
-                          fontSize: '15px',
-                          margin: 0,
-                          minWidth: '40px',
-                        }}
-                        >
-                          Start
-                        </p>
-                      </div>
-                      <ToggleButton
-                        value="true"
-                        title="Set current time"
-                        size="small"
-                        onClick={this.setTstartNow}
-                        style={{
-                          border: 'none',
-                          height: '30px',
-                          margin: 'auto',
-                          marginLeft: '0',
-                          marginRight: '5px',
-                        }}
+                    <div>
+                      <p style={{
+                        fontSize: '15px',
+                        margin: 0,
+                        minWidth: '40px',
+                      }}
                       >
-                        <Alarm fontSize="small" />
-                      </ToggleButton>
+                        Start
+                      </p>
                     </div>
-                    <HMSInput seconds={tstart} onChange={this.updateTstart} />
-                  </div>
-                  <div style={{
-                    border: '1px solid rgba(0, 0, 0, 0.12)',
-                    borderRadius: '4px',
-                    display: 'flex',
-                    flexWrap: 'nowrap',
-                    justifyContent: 'center',
-                    padding: '5px',
-                  }}
-                  >
-                    <div style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                    }}
+                    <ToggleButton
+                      value="true"
+                      title="Set current time"
+                      size="small"
+                      onClick={setTstartNow}
+                      style={{
+                        border: 'none',
+                        height: '30px',
+                        margin: 'auto',
+                        marginLeft: '0',
+                        marginRight: '5px',
+                      }}
                     >
-                      <div>
-                        <p style={{
-                          fontSize: '15px',
-                          margin: 0,
-                          minWidth: '40px',
-                        }}
-                        >
-                          End
-                        </p>
-                      </div>
-                      <ToggleButton
-                        value="true"
-                        title="Set current time"
-                        size="small"
-                        onClick={this.setTendNow}
-                        style={{
-                          border: 'none',
-                          height: '30px',
-                          margin: 'auto',
-                          marginLeft: '0',
-                          marginRight: '5px',
-                        }}
-                      >
-                        <Alarm fontSize="small" />
-                      </ToggleButton>
-                    </div>
-                    <HMSInput seconds={tend} onChange={this.updateTend} />
+                      <Alarm fontSize="small" />
+                    </ToggleButton>
                   </div>
+                  <HMSInput seconds={tstart} onChange={updateTstart} />
                 </div>
-              </>
-            )}
-          </div>
-          <div>
-            <Grid container>
-              <Grid item xs={12}>
-                <Typography variant="overline">
-                  Image Content
-                </Typography>
-              </Grid>
-              <Grid item xs={12} style={{ marginBottom: 10 }}>
-                <ImageFormField value={image} onChange={this.handleImgChange} />
-              </Grid>
-            </Grid>
-          </div>
-          <div>
-            <Grid container>
-              <Grid item xs={12}>
-                <Typography variant="overline">
-                  Target
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper
-                  elevation={0}
-                  sx={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                  }}
+                <div style={{
+                  border: '1px solid rgba(0, 0, 0, 0.12)',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  flexWrap: 'nowrap',
+                  justifyContent: 'center',
+                  padding: '5px',
+                }}
                 >
-                  <StyledToggleButtonGroup
-                    value={activeTool}
-                    exclusive
-                    onChange={this.changeTool}
-                    aria-label="tool selection"
-                    size="small"
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
                   >
-
-                    <ToggleButton value="text" aria-label="select text">
-
-                      <TitleIcon />
+                    <div>
+                      <p style={{
+                        fontSize: '15px',
+                        margin: 0,
+                        minWidth: '40px',
+                      }}
+                      >
+                        End
+                      </p>
+                    </div>
+                    <ToggleButton
+                      value="true"
+                      title="Set current time"
+                      size="small"
+                      onClick={setTendNow}
+                      style={{
+                        border: 'none',
+                        height: '30px',
+                        margin: 'auto',
+                        marginLeft: '0',
+                        marginRight: '5px',
+                      }}
+                    >
+                      <Alarm fontSize="small" />
                     </ToggleButton>
-                    <ToggleButton value="cursor" aria-label="select cursor">
-                      <CursorIcon />
-                    </ToggleButton>
-                    <ToggleButton value="edit" aria-label="select cursor">
-                      <FormatShapesIcon />
-                    </ToggleButton>
-                    <ToggleButton value="debug" aria-label="select cursor">
-                      <AccessibilityNewIcon />
-                    </ToggleButton>
-                  </StyledToggleButtonGroup>
-                  <StyledDivider
-                    flexItem
-                    orientation="vertical"
-                  />
-                  <StyledToggleButtonGroup
-                    value={activeTool}
-                    exclusive
-                    onChange={this.changeTool}
-                    aria-label="tool selection"
-                    size="small"
-                  >
-                    <ToggleButton value="arrow" aria-label="add an arrow">
-                      <RectangleIcon />
-                    </ToggleButton>
-                    <ToggleButton value="rectangle" aria-label="add a rectangle">
-                      <RectangleIcon />
-                    </ToggleButton>
-                    <ToggleButton value="ellipse" aria-label="add a circle">
-                      <CircleIcon />
-                    </ToggleButton>
-                    <ToggleButton value="polygon" aria-label="add a polygon">
-                      <PolygonIcon />
-                    </ToggleButton>
-                    <ToggleButton value="freehand" aria-label="free hand polygon">
-                      <GestureIcon />
-                    </ToggleButton>
-                  </StyledToggleButtonGroup>
-                </Paper>
-              </Grid>
+                  </div>
+                  <HMSInput seconds={tend} onChange={updateTend} />
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+        <div>
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography variant="overline">
+                Image Content
+              </Typography>
             </Grid>
-          </div>
-          <div>
-            <Grid container>
-              <Grid item xs={12}>
-                <Typography variant="overline">
-                  Style
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <ToggleButtonGroup
-                  aria-label="style selection"
+            <Grid item xs={12} style={{ marginBottom: 10 }}>
+              <ImageFormField value={image} onChange={handleImgChange} />
+            </Grid>
+          </Grid>
+        </div>
+        <div>
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography variant="overline">
+                Target
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper
+                elevation={0}
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <StyledToggleButtonGroup
+                  value={activeTool}
+                  exclusive
+                  onChange={changeTool}
+                  aria-label="tool selection"
                   size="small"
                 >
-                  <ToggleButton
-                    value="strokeColor"
-                    aria-label="select color"
-                    onClick={this.openChooseColor}
-                  >
-                    <StrokeColorIcon style={{ fill: strokeColor }} />
-                    <ArrowDropDownIcon />
-                  </ToggleButton>
-                  <ToggleButton
-                    value="strokeColor"
-                    aria-label="select line weight"
-                    onClick={this.openChooseLineWeight}
-                  >
-                    <LineWeightIcon />
-                    <ArrowDropDownIcon />
-                  </ToggleButton>
-                  <ToggleButton
-                    value="fillColor"
-                    aria-label="select color"
-                    onClick={this.openChooseColor}
-                  >
-                    <FormatColorFillIcon style={{ fill: fillColor }} />
-                    <ArrowDropDownIcon />
-                  </ToggleButton>
-                </ToggleButtonGroup>
 
-                <StyledDivider flexItem orientation="vertical" />
-                { /* close / open polygon mode only for freehand drawing mode. */
-                  activeTool === 'freehand'
-                    ? (
-                      <ToggleButtonGroup
-                        size="small"
-                        value={closedMode}
-                        onChange={this.changeClosedMode}
-                      >
-                        <ToggleButton value="closed">
-                          <ClosedPolygonIcon />
-                        </ToggleButton>
-                        <ToggleButton value="open">
-                          <OpenPolygonIcon />
-                        </ToggleButton>
-                      </ToggleButtonGroup>
-                    )
-                    : null
-                }
-              </Grid>
+                  <ToggleButton value="text" aria-label="select text">
+                    <TitleIcon />
+                  </ToggleButton>
+                  <ToggleButton value="cursor" aria-label="select cursor">
+                    <CursorIcon />
+                  </ToggleButton>
+                  <ToggleButton value="edit" aria-label="select cursor">
+                    <FormatShapesIcon />
+                  </ToggleButton>
+                  <ToggleButton value="debug" aria-label="select cursor">
+                    <AccessibilityNewIcon />
+                  </ToggleButton>
+                </StyledToggleButtonGroup>
+                <StyledDivider
+                  flexItem
+                  orientation="vertical"
+                />
+                <StyledToggleButtonGroup
+                  value={activeTool}
+                  exclusive
+                  onChange={changeTool}
+                  aria-label="tool selection"
+                  size="small"
+                >
+                  <ToggleButton value="arrow" aria-label="add an arrow">
+                    <ArrowOutwardIcon />
+                  </ToggleButton>
+                  <ToggleButton value="rectangle" aria-label="add a rectangle">
+                    <RectangleIcon />
+                  </ToggleButton>
+                  <ToggleButton value="ellipse" aria-label="add a circle">
+                    <CircleIcon />
+                  </ToggleButton>
+                  <ToggleButton value="polygon" aria-label="add a polygon">
+                    <PolygonIcon />
+                  </ToggleButton>
+                  <ToggleButton value="freehand" aria-label="free hand polygon">
+                    <GestureIcon />
+                  </ToggleButton>
+                </StyledToggleButtonGroup>
+              </Paper>
             </Grid>
-          </div>
-          <div>
-            <Button onClick={closeCompanionWindow}>
-              Cancel
-            </Button>
-            <Button variant="contained" color="primary" type="submit">
-              Save
-            </Button>
-          </div>
-        </StyledForm>
-        <Popover
-          open={lineWeightPopoverOpen}
-          anchorEl={popoverLineWeightAnchorEl}
-        >
-          <Paper>
-            <ClickAwayListener onClickAway={this.handleCloseLineWeight}>
-              <MenuList autoFocus role="listbox">
-                {[1, 3, 5, 10, 50].map((option, index) => (
-                  <MenuItem
-                    key={option}
-                    onClick={this.handleLineWeightSelect}
-                    value={option}
-                    selected={option == strokeWidth}
-                    role="option"
-                    aria-selected={option == strokeWidth}
-                  >
-                    {option}
-                  </MenuItem>
-                ))}
-              </MenuList>
-            </ClickAwayListener>
-          </Paper>
-        </Popover>
-        <Popover
-          open={colorPopoverOpen}
-          anchorEl={popoverAnchorEl}
-          onClose={this.closeChooseColor}
-        >
-          <SketchPicker
-            // eslint-disable-next-line react/destructuring-assignment
-            color={this.state[currentColorType] || {}}
-            onChangeComplete={this.updateStrokeColor}
-          />
-        </Popover>
-      </CompanionWindow>
-    );
-  }
+          </Grid>
+        </div>
+        <div>
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography variant="overline">
+                Style
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <ToggleButtonGroup
+                aria-label="style selection"
+                size="small"
+              >
+                <ToggleButton
+                  value="strokeColor"
+                  aria-label="select color"
+                  onClick={openChooseColor}
+                >
+                  <StrokeColorIcon style={{ fill: strokeColor }} />
+                  <ArrowDropDownIcon />
+                </ToggleButton>
+                <ToggleButton
+                  value="strokeColor"
+                  aria-label="select line weight"
+                  onClick={openChooseLineWeight}
+                >
+                  <LineWeightIcon />
+                  <ArrowDropDownIcon />
+                </ToggleButton>
+                <ToggleButton
+                  value="fillColor"
+                  aria-label="select color"
+                  onClick={openChooseColor}
+                >
+                  <FormatColorFillIcon style={{ fill: fillColor }} />
+                  <ArrowDropDownIcon />
+                </ToggleButton>
+              </ToggleButtonGroup>
+
+              <StyledDivider flexItem orientation="vertical" />
+              { /* close / open polygon mode only for freehand drawing mode. */
+                activeTool === 'freehand'
+                  ? (
+                    <ToggleButtonGroup
+                      size="small"
+                      value={closedMode}
+                      onChange={changeClosedMode}
+                    >
+                      <ToggleButton value="closed">
+                        <ClosedPolygonIcon />
+                      </ToggleButton>
+                      <ToggleButton value="open">
+                        <OpenPolygonIcon />
+                      </ToggleButton>
+                    </ToggleButtonGroup>
+                  )
+                  : null
+              }
+            </Grid>
+          </Grid>
+        </div>
+        <div>
+          <Button onClick={closeCompanionWindow}>
+            Cancel
+          </Button>
+          <Button variant="contained" color="primary" type="submit">
+            Save
+          </Button>
+        </div>
+      </StyledForm>
+      <Popover
+        open={lineWeightPopoverOpen}
+        anchorEl={popoverLineWeightAnchorEl}
+      >
+        <Paper>
+          <ClickAwayListener onClickAway={handleCloseLineWeight}>
+            <MenuList autoFocus role="listbox">
+              {[1, 3, 5, 10, 50].map((option, index) => (
+                <MenuItem
+                  key={option}
+                  onClick={handleLineWeightSelect}
+                  value={option}
+                  selected={option == strokeWidth}
+                  role="option"
+                  aria-selected={option == strokeWidth}
+                >
+                  {option}
+                </MenuItem>
+              ))}
+            </MenuList>
+          </ClickAwayListener>
+        </Paper>
+      </Popover>
+      <Popover
+        open={colorPopoverOpen}
+        anchorEl={popoverAnchorEl}
+        onClose={closeChooseColor}
+      >
+        <SketchPicker
+          // eslint-disable-next-line react/destructuring-assignment
+          color={state[currentColorType] || {}}
+          onChangeComplete={updateStrokeColor}
+        />
+      </Popover>
+    </CompanionWindow>
+  );
 }
 
 const StyledForm = styled('form')(({ theme }) => ({
@@ -912,69 +882,6 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
 }));
 
-/* const StyledAnnotationCreation = styled('div')(({ ownerState, theme  }) => ({
-  buttonTimeContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  divider: {
-    margin: theme.spacing(1, 0.5),
-  },
-  grouped: {
-    '&:first-child': {
-      borderRadius: theme.shape.borderRadius,
-    },
-    '&:not(:first-child)': {
-      borderRadius: theme.shape.borderRadius,
-    },
-    border: 'none',
-    margin: theme.spacing(0.5),
-  },
-  MuiSliderColorSecondary: {
-
-  },
-  paper: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  section: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-    paddingBottom: theme.spacing(1),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-    paddingTop: theme.spacing(2),
-  },
-  selectTimeField: {
-    alignContent: 'center',
-    display: 'flex',
-    flexDirection: 'wrap',
-    gap: '5px',
-    padding: '5px',
-  },
-  selectTimeModule: {
-    border: '1px solid rgba(0, 0, 0, 0.12)',
-    borderRadius: '4px',
-    display: 'flex',
-    flexWrap: 'nowrap',
-    justifyContent: 'center',
-    padding: '5px',
-  },
-  textTimeButton: {
-    fontSize: '15px',
-    margin: 0,
-    minWidth: '40px',
-  },
-  timecontrolsbutton: {
-    border: 'none',
-    height: '30px',
-    margin: 'auto',
-    marginLeft: '0',
-    marginRight: '5px',
-  },
-}); */
-
 AnnotationCreation.propTypes = {
   // TODO proper web annotation type ?
   annotation: PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -985,6 +892,7 @@ AnnotationCreation.propTypes = {
     }),
   ),
   closeCompanionWindow: PropTypes.func,
+
   config: PropTypes.shape({
     annotation: PropTypes.shape({
       adapter: PropTypes.func,
@@ -997,7 +905,6 @@ AnnotationCreation.propTypes = {
   }).isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]),
   id: PropTypes.string.isRequired,
-  paused: PropTypes.bool,
   receiveAnnotation: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func,
   setSeekTo: PropTypes.func,

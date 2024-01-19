@@ -34,8 +34,8 @@ function ParentComponent({
   const handleShapeClick = (shape) => {
     onShapeClick(shape);
     setSelectedShape(shape);
-   
-  
+
+
   };
 
   return (
@@ -88,13 +88,13 @@ function ParentComponent({
                 key={i}
               />
             );
-          
+
             case 'arrow':
               return (
                 <ArrowNode
                   {...{
                     ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
-                  
+
                   }}
                   key={i}
                 />
