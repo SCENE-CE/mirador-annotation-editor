@@ -30,6 +30,7 @@ import { exportStageSVG } from 'react-konva-to-svg';
 import CompanionWindow from '../mirador/dist/es/src/containers/CompanionWindow';
 import { VideosReferences } from '../mirador/dist/es/src/plugins/VideosReferences';
 import { OSDReferences } from '../mirador/dist/es/src/plugins/OSDReferences';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import AnnotationDrawing from './AnnotationDrawing';
 import TextEditor from './TextEditor';
 import WebAnnotation from './WebAnnotation';
@@ -432,24 +433,21 @@ function AnnotationCreation(props) {
   };
 
   /** */
-  const setShapeProperties = (options) => {
-    return new Promise(() => {
+  const setShapeProperties = (options) => new Promise(() => {
+    if (options.fill) {
+      state.fillColor = options.fill;
+    }
 
-      if (options.fill) {
-        state.fillColor = options.fill;
-      }
+    if (options.strokeWidth) {
+      state.strokeWidth = options.strokeWidth;
+    }
 
-      if (options.strokeWidth) {
-        state.strokeWidth = options.strokeWidth;
-      }
+    if (options.stroke) {
+      state.strokeColor = options.stroke;
+    }
 
-      if (options.stroke) {
-        state.strokeColor = options.stroke;
-      }
-
-      setState({ ...state});
-    });
-  }
+    setState({ ...state });
+  });
 
   /** */
   const updateGeometry = ({
@@ -709,7 +707,6 @@ function AnnotationCreation(props) {
                 >
 
                   <ToggleButton value="text" aria-label="select text">
-                      <TitleIcon />
                     <TitleIcon />
                   </ToggleButton>
                   <ToggleButton value="cursor" aria-label="select cursor">
@@ -734,7 +731,7 @@ function AnnotationCreation(props) {
                   size="small"
                 >
                   <ToggleButton value="arrow" aria-label="add an arrow">
-                    <RectangleIcon />
+                    <ArrowOutwardIcon />
                   </ToggleButton>
                   <ToggleButton value="rectangle" aria-label="add a rectangle">
                     <RectangleIcon />
