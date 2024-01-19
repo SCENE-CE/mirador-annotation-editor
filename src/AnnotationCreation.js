@@ -37,6 +37,9 @@ import CursorIcon from './icons/Cursor';
 import HMSInput from './HMSInput';
 import ImageFormField from './ImageFormField';
 import { secondsToHMS } from './utils';
+import TextField from '@mui/material/TextField';
+
+import { exportStageSVG } from 'react-konva-to-svg';
 
 /** Extract time information from annotation target */
 function timeFromAnnoTarget(annotarget) {
@@ -138,7 +141,6 @@ function AnnotationCreation(props) {
       popoverAnchorEl: null,
       popoverLineWeightAnchorEl: null,
       textBody: '',
-      // eslint-disable-next-line sort-keys,max-len
       textEditorStateBustingKey: 0,
       ...annoState,
       valueTime: [0, 1],
@@ -323,6 +325,19 @@ function AnnotationCreation(props) {
   /** */
   const submitForm = async (e) => {
     e.preventDefault();
+    //if activeTool is edit set to cursor then resubmit
+
+    // TODO Possibly problem of syncing
+    // It would be better to repaint ?
+    if(state.activeTool === 'edit'){
+      setState((prevState) => ({
+        ...prevState,
+        activeTool: 'cursor',
+      }));
+      submitForm(e);
+      return
+    }
+
     const {
       annotation,
       canvases,
@@ -421,22 +436,28 @@ function AnnotationCreation(props) {
   };
 
   /** */
-  // TODO possibly brake something during the refactoring
   const setShapeProperties = (options) => {
-    console.log('options', options, state);
+    return new Promise(() => {
+      const state = this.state;
 
-    ({
-      strokeColor: options.strokeColor || state.strokeColor,
-      strokeWidth: options.strokeWidth || state.strokeWidth,
-      ...state.activeTool,
+      if (!state) {
+        return;
+      }
+      if (options.fill) {
+        state.fillColor = options.fill;
+      }
+
+      if (options.strokeWidth) {
+        state.strokeWidth = options.strokeWidth;
+      }
+
+      if (options.stroke) {
+        state.strokeColor = options.stroke;
+      }
+
+      setState(state)
     });
-
-    ({ fillColor: options.fill || state.fillColor, ...state });
-
-    console.log('state', state);
-
-    setState(state);
-  };
+  }
 
   /** */
   const updateGeometry = ({
@@ -696,7 +717,7 @@ function AnnotationCreation(props) {
                 >
 
                   <ToggleButton value="text" aria-label="select text">
-
+                      <TitleIcon />
                     <TitleIcon />
                   </ToggleButton>
                   <ToggleButton value="cursor" aria-label="select cursor">
