@@ -24,22 +24,20 @@ function AnnotationDrawing(props) {
   const [redraw, setRedraw] = useState(false);
 
   const {fillColor, strokeColor, strokeWidth} = props;
-  // TODO A supprimer ?
-  const shapeRefs = {};
-  const transformerRefs = {};
 
 
-
-
+  /** Debug function facility */
   const debug = ( command ) => {
-    // console.log('***************************');
-    // console.log( command );
-    // console.log( 'shapes', shapes );
-    // console.log( 'shapes taille', shapes.length );
-    // console.log( 'currentShape', currentShape );
-    // console.log('isDrawing', isDrawing );
-    // console.log('props.activeTool', props.activeTool );
-    // console.log('-----------------------------');
+    if(config.debugMode) {
+      console.debug('***************************');
+      console.debug(command);
+      console.debug('shapes', shapes);
+      console.debug('shapes taille', shapes.length);
+      console.debug('currentShape', currentShape);
+      console.debug('isDrawing', isDrawing);
+      console.debug('props.activeTool', props.activeTool);
+      console.debug('-----------------------------');
+    }
   };
 
   useEffect(() => {
@@ -47,37 +45,28 @@ function AnnotationDrawing(props) {
 
     // update current shape
     if (currentShape) {
- 
+
       currentShape.fill = fillColor;
       currentShape.strokeColor = strokeColor;
       currentShape.strokeWidth = strokeWidth;
-      
+
       setCurrentShape({...currentShape});
       updateCurrentShapeInShapes();
-      
+
     }
 
   }, [fillColor, strokeColor, strokeWidth]);
 
-  // TODO useful ?
-  useEffect(() => {
- 
-
-    return () => {
-      console.log('component will unmount');
-
-    };
-  }, []);
 
   // TODO Can be removed ?
   useLayoutEffect(() => {
 
     if (shapes.find((s) => s.id === currentShape?.id)) {
-
+      console.log('useLayoutEffect shapes', shapes);
       window.addEventListener('keydown', handleKeyPress);
       return () => {
         window.removeEventListener('keydown', handleKeyPress);
-  
+
       };
 
     }
@@ -85,15 +74,10 @@ function AnnotationDrawing(props) {
 
   /** */
   const onShapeClick = async (shape) => {
-
-    console.log("onShapeClick")
-
     setSelectedShapeId(shape.id);
     // find shape by id
     setCurrentShape(shapes.find((s) => s.id === shape.id));
     props.setShapeProperties(shape);
- 
-
   };
 
   /** */
@@ -101,24 +85,24 @@ function AnnotationDrawing(props) {
     e.stopPropagation();
   //  debug('handleKeyPress debut');
     const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape'];
-  
+
     if (!currentShape) {
       return;
     }
-  
+
     if (e.key === 'Delete') {
-    
+
       const newShapes = shapes.filter((shape) => shape.id !== currentShape.id);
       setShapes(newShapes);
       setCurrentShape(null);
-  
+
       window.removeEventListener('keydown', handleKeyPress);
       return;
     }
-  
+
     if (currentShape.type === 'text') {
   //    debug('add text debut');
-  
+
       let newText = currentShape.text;
       if (e.key === 'Backspace') {
         newText = newText.slice(0, -1);
@@ -128,30 +112,29 @@ function AnnotationDrawing(props) {
         }
         newText += e.key;
       }
-  
+
       const newCurrentShape = { ...currentShape, text: newText };
       setCurrentShape(newCurrentShape);
-  
+
       const newShapes = shapes.map((shape) =>
         shape.id === currentShape.id ? newCurrentShape : shape
       );
       setShapes(newShapes);
-  
- 
+
+
     }
   };
 
   const updateCurrentShapeInShapes = () => {
-
       const index = shapes.findIndex((s) => s.id === currentShape.id);
 
       if(index !== -1){
         shapes[index] = currentShape;
         setShapes([...shapes]);
       } else {
-   
+
         setShapes([...shapes, currentShape]);
-        
+
       }
   };
 
@@ -179,10 +162,10 @@ function AnnotationDrawing(props) {
           y: pos.y,
         }
           setIsDrawing(true);
-        
+
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
-    
+
           // Add global key press event listener
         //  window.addEventListener('keydown', handleKeyPress);
           break;
@@ -198,10 +181,10 @@ function AnnotationDrawing(props) {
             y: pos.y,
           };
 
-         
+
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
-        
+
        //   window.addEventListener('keydown', handleKeyPress);
 
 
@@ -223,7 +206,7 @@ function AnnotationDrawing(props) {
           };
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
-     
+
       //    window.addEventListener('keydown', handleKeyPress);
           break;
 
@@ -258,7 +241,7 @@ function AnnotationDrawing(props) {
 
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
-         
+
        //   window.addEventListener('keydown', handleKeyPress);
           break;
           case "arrow":
@@ -365,7 +348,7 @@ function AnnotationDrawing(props) {
           currentShape.points[3] = pos.y;
           setCurrentShape(currentShape);
           updateCurrentShapeInShapes();
-          break;  
+          break;
 
         default:
           break;
@@ -378,7 +361,7 @@ function AnnotationDrawing(props) {
 
   /** Stop drawing */
   const handleMouseUp = (e) => {
-  
+
 
     const pos = e.target.getStage().getPointerPosition();
 
@@ -440,7 +423,7 @@ function AnnotationDrawing(props) {
           onShapeClick={onShapeClick}
           activeTool={props.activeTool}
           selectedShapeId={currentShape?.id}
-         
+
         />
 
         <Layer>

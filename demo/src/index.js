@@ -20,6 +20,7 @@ const config = {
     { manifestId: 'https://iiif.harvardartmuseums.org/manifests/object/299843' },
     { manifestId: 'https://iiif.io/api/cookbook/recipe/0002-mvm-audio/manifest.json' },
   ],
+  debugMode: true,
   id: 'demo',
   window: {
     defaultSideBarPanel: 'annotations',
@@ -31,6 +32,3 @@ const config = {
 };
 
 mirador.viewer(config, [...annotationPlugins]);
-
-
-window.addEventListenerCounter = 0;

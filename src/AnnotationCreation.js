@@ -27,7 +27,7 @@ import { v4 as uuid } from 'uuid';
 import Slider from '@mui/material/Slider';
 import TextField from '@mui/material/TextField';
 import { exportStageSVG } from 'react-konva-to-svg';
-import { CompanionWindow } from '../mirador/dist/es/src/containers/CompanionWindow';
+import CompanionWindow from '../mirador/dist/es/src/containers/CompanionWindow';
 import { VideosReferences } from '../mirador/dist/es/src/plugins/VideosReferences';
 import { OSDReferences } from '../mirador/dist/es/src/plugins/OSDReferences';
 import AnnotationDrawing from './AnnotationDrawing';
@@ -37,9 +37,6 @@ import CursorIcon from './icons/Cursor';
 import HMSInput from './HMSInput';
 import ImageFormField from './ImageFormField';
 import { secondsToHMS } from './utils';
-import TextField from '@mui/material/TextField';
-
-import { exportStageSVG } from 'react-konva-to-svg';
 
 /** Extract time information from annotation target */
 function timeFromAnnoTarget(annotarget) {
@@ -143,8 +140,8 @@ function AnnotationCreation(props) {
       textBody: '',
       textEditorStateBustingKey: 0,
       ...annoState,
-      valueTime: [0, 1],
       valuetextTime: '',
+      valueTime: [0, 1],
     };
   });
 
@@ -244,6 +241,7 @@ function AnnotationCreation(props) {
     }));
   };
 
+  /** update annotation title */
   const updateTitle = (e) => {
     setState((prevState) => ({
       ...prevState,
@@ -255,8 +253,8 @@ function AnnotationCreation(props) {
   const seekToTend = () => {
     setState((prevState) => ({
       ...prevState,
-      ...setSeekTo(prevState.tend),
-      ...setCurrentTime(prevState.tend),
+      ...props.setSeekTo(prevState.tend),
+      ...props.setCurrentTime(prevState.tend),
     }));
   };
 
@@ -291,6 +289,7 @@ function AnnotationCreation(props) {
     }));
   };
 
+  /** Close color popover window */
   const closeChooseColor = (e) => {
     setState((prevState) => ({
       ...prevState,
@@ -300,14 +299,7 @@ function AnnotationCreation(props) {
     }));
   };
 
-  // TODO Not sur for the converting of that one
-  // updateStrokeColor(color) {
-  //   const { currentColorType } = state;
-  //   setState({
-  //     [currentColorType]: color.hex,
-  //   });
-  // }
-  /** */
+  /** Update strokecolor */
   const updateStrokeColor = (color) => {
     setState((prevState) => ({
       ...prevState,
@@ -315,27 +307,31 @@ function AnnotationCreation(props) {
     }));
   };
 
-  // TODO not sure for this one also
+  /**
+   * Get SVG picture containing all the stuff draw in the stage (Konva Stage).
+   * This image will be put in overlay of the iiif media
+   */
   const getSvg = async () => {
     const stage = window.Konva.stages.find((stage) => stage.attrs.id === props.windowId);
     const svg = await exportStageSVG(stage); // TODO clean
     return svg;
   };
 
-  /** */
+  /**
+   * Validate form and save annotation
+   */
   const submitForm = async (e) => {
     e.preventDefault();
-    //if activeTool is edit set to cursor then resubmit
-
     // TODO Possibly problem of syncing
-    // It would be better to repaint ?
-    if(state.activeTool === 'edit'){
+    // TODO Improve this code
+    // If we are in edit mode, we have the transformer on the stage saved in the annotation
+    if (state.activeTool === 'edit') {
       setState((prevState) => ({
         ...prevState,
         activeTool: 'cursor',
       }));
       submitForm(e);
-      return
+      return;
     }
 
     const {
@@ -438,11 +434,7 @@ function AnnotationCreation(props) {
   /** */
   const setShapeProperties = (options) => {
     return new Promise(() => {
-      const state = this.state;
 
-      if (!state) {
-        return;
-      }
       if (options.fill) {
         state.fillColor = options.fill;
       }
@@ -455,7 +447,7 @@ function AnnotationCreation(props) {
         state.strokeColor = options.stroke;
       }
 
-      setState(state)
+      setState({ ...state});
     });
   }
 
@@ -903,6 +895,7 @@ AnnotationCreation.propTypes = {
     }),
   ),
   closeCompanionWindow: PropTypes.func,
+
   config: PropTypes.shape({
     annotation: PropTypes.shape({
       adapter: PropTypes.func,
