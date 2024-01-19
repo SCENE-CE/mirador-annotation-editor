@@ -327,14 +327,15 @@ class AnnotationCreation extends Component {
     e.preventDefault();
 
     //if activeTool is edit set to cursor then resubmit 
-
-    if(this.state.activeTool === 'edit'){
-   await this.setState({
+    // TODO find a more elegant solution 
+    if (this.state.activeTool === 'edit') {
+      // even if linter say other wise the await seems usefull
+      await this.setState({
         activeTool: 'cursor',
       });
       this.submitForm(e);
-     
-      return 
+
+      return
     }
 
 
