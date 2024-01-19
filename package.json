@@ -57,7 +57,7 @@
     "@mui/x-tree-view": "^6.17.0",
     "canvas": "^2.6.1",
     "enzyme": "^3.11.0",
-    "eslint": "^8.11.0",
+    "eslint": "^8.56.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-react-app": "^7.0.0",
     "eslint-plugin-flowtype": "^8.0.3",
