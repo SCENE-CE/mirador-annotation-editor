@@ -266,12 +266,16 @@ function AnnotationDrawing(props) {
             setIsDrawing(true);
             shape = {
               fill: props.fillColor,
+              stroke:props.fillColor,
 
+              pointerLength: 20,
+              pointerWidth : 20,
               height: 10,
               id: uuidv4(),
-              points: [0, 0, 0, 0, 0, 0],
+              points: [pos.x,pos.y,pos.x,pos.y],
               type: 'arrow',
-              width: 10,
+              width: 20,
+
               x: pos.x,
               y: pos.y,
             };
@@ -363,7 +367,7 @@ function AnnotationDrawing(props) {
           // update ponts
           currentShape.points[2] = pos.x;
           currentShape.points[3] = pos.y;
-          setCurrentShape(currentShape);
+          setCurrentShape({...currentShape});
           updateCurrentShapeInShapes();
           break;  
 
@@ -394,18 +398,20 @@ function AnnotationDrawing(props) {
         case 'arrow':
           // For these cases, the action is similar: stop drawing and add the shape
           setIsDrawing(false);
+          setCurrentShape({...currentShape});
           updateCurrentShapeInShapes();
-          setCurrentShape(currentShape);
-          debug('in mouse up after');
+         
+    
           //setCurrentShape(null);
           break;
         case 'text':
+          setCurrentShape({...currentShape});
           updateCurrentShapeInShapes();
-          setCurrentShape(currentShape);
+         
         default:
           // Handle any other cases if necessary
       }
-      debug('mouse up fin');
+    
 
     } catch (error) {
       console.log('error', error);
@@ -465,7 +471,7 @@ function AnnotationDrawing(props) {
       />
     ) : currentShape.type === 'arrow' ? (
       <Arrow
-        points={[currentShape.x, currentShape.y, currentShape.width, currentShape.height]}
+        points={[...currentShape.points]}
         fill={props.fillColor}
         stroke={props.strokeColor}
       />
