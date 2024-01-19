@@ -171,6 +171,7 @@ class AnnotationCreation extends Component {
     this.valuetextTime = this.valuetextTime.bind(this);
     this.updateTitle = this.updateTitle.bind(this);
     this.setShapeProperties = this.setShapeProperties.bind(this);
+  
   }
 
   componentDidMount() {
@@ -422,41 +423,46 @@ class AnnotationCreation extends Component {
 
   /** */
   setShapeProperties(options) {
-    //set strokeWidth , strokeColor, fillColor
-//toolState and state
-
-
-   const state = this.state;
-   console.log('options', options,state);
-   if(!state){
-return;
-    }
-
-Object.assign({
-  strokeColor: options.strokeColor|| state.strokeColor,
-  strokeWidth: options.strokeWidth || state.strokeWidth,
-}
-, state.activeTool);
-
-Object.assign({
-  fillColor: options.fill || state.fillColor,
-}, state);
-
-console.log('state', state);
-// set new state
-
-this.setState({
-  ...state
-});
-
-
-
- 
-
-
+    return new Promise(()=>{
+      const state = this.state;
+      console.log('setShapeProperties', options,state);
+      if(!state){
+   return;
+       }
+       if(options.fill){
+         state.fillColor = options.fill;
+       }
+   
+       if(options.strokeWidth){
+         state.strokeWidth = options.strokeWidth;
+       }
+   
+       if(options.stroke){
+         state.strokeColor = options.stroke;
+       }
+   
+   
+   
+   
+   
+   console.log('state', state);
+   // set new state
+   
+   this.setState({
+     ...state
+   });
+   
+   
+   
+    })
+    
 
 
   }
+
+  //* */
+
+
 
   /** */
   updateGeometry({
@@ -528,6 +534,7 @@ this.setState({
           width={1920}
           height={1080}
           setShapeProperties={this.setShapeProperties}
+         
           // TODO Ajouter du style pour que le Konva et la vidéo se superpose
 
 

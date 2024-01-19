@@ -23,9 +23,13 @@ function AnnotationDrawing(props) {
   const [lines, setLines] = React.useState([]); // For free drawing
   const [redraw, setRedraw] = useState(false);
 
+  const {fillColor, strokeColor, strokeWidth} = props;
   // TODO A supprimer ?
   const shapeRefs = {};
   const transformerRefs = {};
+
+
+
 
   const debug = ( command ) => {
     // console.log('***************************');
@@ -38,17 +42,30 @@ function AnnotationDrawing(props) {
     // console.log('-----------------------------');
   };
 
+  useEffect(() => {
+    // Perform an action when fillColor, strokeColor, or strokeWidth change
+
+    // update current shape
+    if (currentShape) {
+      console.log('update current shape');
+      console.log('fillColor', currentShape.fill,fillColor);
+      console.log('strokeColor', currentShape.strokeColor,strokeColor);
+      console.log('strokeWidth', currentShape.strokeWidth,strokeWidth);
+      currentShape.fill = fillColor;
+      currentShape.strokeColor = strokeColor;
+      currentShape.strokeWidth = strokeWidth;
+      
+      setCurrentShape({...currentShape});
+      updateCurrentShapeInShapes();
+      
+    }
+
+  }, [fillColor, strokeColor, strokeWidth]);
+
   // TODO useful ?
   useEffect(() => {
-    // ComponentDidMount logic here
-    // Add event listeners
+ 
 
-    debug('UseEffect 1');
-
-    // current shape intex in  shaes
-    //const index = shapes.findIndex((shape) => shape.id === currentShape?.id);
-
-    // ComponentWillUnmount logic
     return () => {
       console.log('component will unmount');
 
@@ -57,43 +74,34 @@ function AnnotationDrawing(props) {
 
   // TODO Can be removed ?
   useLayoutEffect(() => {
-    debug('useEffect 2');
-    //console.log('eventListener ', window.getEventListeners(window).keydown.length);
-
-
 
     if (shapes.find((s) => s.id === currentShape?.id)) {
 
-      props.setShapeProperties({
-        fill: currentShape.fillColor,
-        strokeColor: currentShape.strokeColor,
-        strokeWidth: currentShape.strokeWidth,
-      })
-
-     console.log('eventListener set')//, window.getEventListeners(window).keydown.length);
       window.addEventListener('keydown', handleKeyPress);
       return () => {
         window.removeEventListener('keydown', handleKeyPress);
-        console.log('eventListener removed')
-     //   console.log('eventListener ', window.getEventListeners(window).keydown.length);
+  
       };
 
     }
   }, [currentShape]);
 
   /** */
-  const onShapeClick = (shape) => {
-    debug('onShapeClick');
+  const onShapeClick = async (shape) => {
+
+    console.log("onShapeClick")
+
     setSelectedShapeId(shape.id);
     // find shape by id
     setCurrentShape(shapes.find((s) => s.id === shape.id));
-    debug('onShapeClickEnd');
+ 
+
   };
 
   /** */
   const handleKeyPress = (e) => {
     e.stopPropagation();
-    debug('handleKeyPress debut');
+  //  debug('handleKeyPress debut');
     const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape'];
   
     if (!currentShape) {
@@ -101,17 +109,17 @@ function AnnotationDrawing(props) {
     }
   
     if (e.key === 'Delete') {
-      debug('delete debut');
+    
       const newShapes = shapes.filter((shape) => shape.id !== currentShape.id);
       setShapes(newShapes);
       setCurrentShape(null);
-      debug('delete fin');
+  
       window.removeEventListener('keydown', handleKeyPress);
       return;
     }
   
     if (currentShape.type === 'text') {
-      debug('add text debut');
+  //    debug('add text debut');
   
       let newText = currentShape.text;
       if (e.key === 'Backspace') {
@@ -131,8 +139,7 @@ function AnnotationDrawing(props) {
       );
       setShapes(newShapes);
   
-      debug('add text fin');
-      debug('Handle key press fin');
+ 
     }
   };
 
@@ -156,7 +163,7 @@ function AnnotationDrawing(props) {
     try {
       const pos = e.target.getStage().getPointerPosition();
       const relativePos = e.target.getStage().getRelativePointerPosition();
-     debug('mouse down debut');
+    //  debug('mouse down debut');
       let shape = null;
       switch (props.activeTool) {
         case 'rectangle':
@@ -278,7 +285,7 @@ function AnnotationDrawing(props) {
           // Handle other cases if any
       }
 
-      debug('mouse down fin');
+
 
       // if (!currentShape) {
       //   return;
@@ -372,7 +379,7 @@ function AnnotationDrawing(props) {
 
   /** Stop drawing */
   const handleMouseUp = (e) => {
-    debug('mouse up debut');
+  
 
     const pos = e.target.getStage().getPointerPosition();
 
@@ -413,24 +420,6 @@ function AnnotationDrawing(props) {
 
 
 
-    const shape = shapes.find((s) => s.id === currentShape?.id);
-
-    if (shape) {
-      // if all the props are the same we don't update the shape
-      // Update graphical properties of my shape
-      if (props.fillColor !== shape.fill || props.strokeColor !== shape.strokeColor || props.strokeWidth !== shape.strokeWidth) {
-        shape.fill = props.fillColor;
-        shape.strokeColor = props.strokeColor;
-        shape.strokeWidth = props.strokeWidth;
-
-        /*const index = shapes.findIndex((s) => s.id === currentShape.id);
-        shapes[index] = shape;
-        setShapes(shapes);*/
-      }
-    }
-
-    debug('Drow shape avant render');
-
 
     return (
       <Stage
@@ -452,6 +441,7 @@ function AnnotationDrawing(props) {
           onShapeClick={onShapeClick}
           activeTool={props.activeTool}
           selectedShapeId={currentShape?.id}
+         
         />
 
         <Layer>

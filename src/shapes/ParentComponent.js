@@ -32,9 +32,10 @@ function ParentComponent({
     * @param {object} shape
     */
   const handleShapeClick = (shape) => {
-    console.log("handleShapeClick", shape);
-    setSelectedShape(shape);
     onShapeClick(shape);
+    setSelectedShape(shape);
+   
+  
   };
 
   return (
