@@ -325,6 +325,20 @@ class AnnotationCreation extends Component {
   /** */
   async submitForm(e) {
     e.preventDefault();
+
+    //if activeTool is edit set to cursor then resubmit 
+
+    if(this.state.activeTool === 'edit'){
+   await this.setState({
+        activeTool: 'cursor',
+      });
+      this.submitForm(e);
+     
+      return 
+    }
+
+
+
     const {
       annotation,
       canvases,
