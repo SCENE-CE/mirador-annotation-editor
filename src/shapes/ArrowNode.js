@@ -28,8 +28,7 @@ function ArrowNode({
     onShapeClick(shape);
   };
 
-  console.log("ArrowNode", shape)
-
+ 
   return (
     <>
       <Arrow

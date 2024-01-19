@@ -42,7 +42,7 @@ function AnnotationDrawing(props) {
   /** */
   useEffect(() => {
 
-    console.log('shapes', shapes);
+   // console.log('shapes', shapes);
   }, [shapes]);
 
   useEffect(() => {
@@ -52,7 +52,8 @@ function AnnotationDrawing(props) {
     if (currentShape) {
 
       currentShape.fill = fillColor;
-      currentShape.strokeColor = strokeColor;
+      currentShape.stroke = strokeColor;
+      
       currentShape.strokeWidth = strokeWidth;
 
       setCurrentShape({...currentShape});
@@ -158,7 +159,7 @@ function AnnotationDrawing(props) {
         shape={
           fill: props.fillColor,
           id: uuidv4(),
-          strokeColor: props.strokeColor,
+          stroke: props.strokeColor,
           strokeWidth: props.strokeWidth,
           type: props.activeTool,
           width: 1,
@@ -431,39 +432,7 @@ function AnnotationDrawing(props) {
 
         />
 
-        <Layer>
-      {/* {isDrawing && currentShape && (
-    currentShape.type === 'rectangle' ? (
-      <Rect
-        x={currentShape.x}
-        y={currentShape.y}
-        width={currentShape.width}
-        height={currentShape.height}
-        fill={props.fillColor}
-        stroke={props.strokeColor}
-      />
-    ) : currentShape.type === 'ellipse' ? (
-      <Ellipse
-        x={currentShape.x}
-        y={currentShape.y}
-        radiusX={currentShape.width / 2}
-        radiusY={currentShape.height / 2}
-        fill={props.fillColor}
-        stroke={props.strokeColor}
-      />
-    ) : currentShape.type === 'arrow' ? (
-      <Arrow
-        points={[...currentShape.points]}
-        fill={props.strokeColor}
-        stroke={props.strokeColor}
-        pointerLength={currentShape.pointerLength}
-        pointerWidth={currentShape.pointerWidth}
-        x={currentShape.x}
-        y={currentShape.y}
-      />
-    ) : null
-  )} */}
-        </Layer>
+   
       </Stage>
     );
   };

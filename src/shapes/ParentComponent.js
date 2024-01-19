@@ -41,7 +41,7 @@ function ParentComponent({
   return (
     <Layer>
       {shapes.map((shape, i) => {
-        console.log(shape)
+     
         const isSelected = selectedShapeId === shape.id;
         switch (shape.type) {
           case 'rectangle':
