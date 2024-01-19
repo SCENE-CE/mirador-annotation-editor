@@ -94,6 +94,7 @@ function AnnotationDrawing(props) {
     setSelectedShapeId(shape.id);
     // find shape by id
     setCurrentShape(shapes.find((s) => s.id === shape.id));
+    props.setShapeProperties(shape);
  
 
   };
