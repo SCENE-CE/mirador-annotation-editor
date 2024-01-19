@@ -26,8 +26,8 @@ case $action in
     "post_install")
         rm -f ./mirador/node_modules/dnd-multi-backend/dist/index.js
         rm -f ./mirador/node_modules/react-dnd-multi-backend/dist/index.js
-        cp ./post_install_assets/dnd-multi-backend/index.js ./mirador/node_modules/dnd-multi-backend/dist/index.js
-        cp ./post_install_assets/react-dnd-multi-backend/index.js ./mirador/node_modules/react-dnd-multi-backend/dist/index.js
+        cp ./post_install_assets/dnd-multi-backend/index.js node_modules/dnd-multi-backend/dist/index.js
+        cp ./post_install_assets/react-dnd-multi-backend/index.js node_modules/react-dnd-multi-backend/dist/index.js
         ;;
 
     "help")
