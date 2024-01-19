@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Arrow, Transformer } from 'react-konva';
+import { Shape } from 'paper/dist/paper-core';
 
 
 
@@ -27,23 +28,24 @@ function ArrowNode({
     onShapeClick(shape);
   };
 
+  console.log("ArrowNode", shape)
+
   return (
     <>
       <Arrow
         ref={shapeRef}
-        x={x || 100}
-        y={y || 100}
-        width={width || 100}
-        height={height || 100}
-        fill={fill || 'red'}
-        stroke={stroke || 'black'}
-        strokeWidth={strokeWidth || 1}
+       
+        fill={shape.stroke}
+    
+        stroke={shape.stroke}
+        points={shape.points}
+      
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
-        pointerLength={20}
-        pointerWidth={20}
-        points={points || [0, 0, width / 2, height / 2]}
+        pointerLength={shape.pointerLength}
+        pointerWidth={shape.pointerWidth}
+        
       />
 
       <Transformer

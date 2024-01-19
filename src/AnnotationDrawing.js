@@ -61,7 +61,7 @@ function AnnotationDrawing(props) {
   useLayoutEffect(() => {
 
     if (shapes.find((s) => s.id === currentShape?.id)) {
-      console.log('useLayoutEffect shapes', shapes);
+     
       window.addEventListener('keydown', handleKeyPress);
       return () => {
         window.removeEventListener('keydown', handleKeyPress);
@@ -246,6 +246,7 @@ function AnnotationDrawing(props) {
           case "arrow":
 
             setIsDrawing(true);
+            console.log('arrow',props)
             shape = {
               fill: props.fillColor,
               stroke:props.fillColor,
@@ -256,10 +257,11 @@ function AnnotationDrawing(props) {
               id: uuidv4(),
               points: [pos.x,pos.y,pos.x,pos.y],
               type: 'arrow',
-              width: 20,
+              width: 10,
+              height: 10,
 
-              x: pos.x,
-              y: pos.y,
+              x: 0,
+              y: 0,
             };
             setShapes([...shapes, shape]);
             setCurrentShape(shape);
@@ -349,6 +351,10 @@ function AnnotationDrawing(props) {
           // update ponts
           currentShape.points[2] = pos.x;
           currentShape.points[3] = pos.y;
+          currentShape.width = pos.x - currentShape.points[0];
+          currentShape.height = pos.y - currentShape.points[1];
+          currentShape.fill = props.fillColor;
+          currentShape.stroke = props.fillColor;
           setCurrentShape({...currentShape});
           updateCurrentShapeInShapes();
           break;
@@ -454,8 +460,10 @@ function AnnotationDrawing(props) {
     ) : currentShape.type === 'arrow' ? (
       <Arrow
         points={[...currentShape.points]}
-        fill={props.fillColor}
+        fill={props.strokeColor}
         stroke={props.strokeColor}
+        pointerLength={currentShape.pointerLength}
+        pointerWidth={currentShape.pointerWidth}
       />
     ) : null
   )}

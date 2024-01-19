@@ -41,6 +41,7 @@ function ParentComponent({
   return (
     <Layer>
       {shapes.map((shape, i) => {
+        console.log(shape)
         const isSelected = selectedShapeId === shape.id;
         switch (shape.type) {
           case 'rectangle':
@@ -93,7 +94,11 @@ function ParentComponent({
               return (
                 <ArrowNode
                   {...{
-                    ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                    ...shape,
+                     activeTool, 
+                     isSelected, 
+                     onShapeClick: handleShapeClick,
+                     shape
 
                   }}
                   key={i}
