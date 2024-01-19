@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getVisibleCanvases } from '../../mirador/src/state/selectors/canvases';
+import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
 import isEqual from 'lodash/isEqual';
-import * as actions from '../../mirador/src/state/actions';
+import * as actions from 'mirador/dist/es/src/state/actions';
 
 /** */
 class ExternalStorageAnnotation extends Component {

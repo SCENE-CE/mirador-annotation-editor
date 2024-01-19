@@ -6,8 +6,8 @@ import {
   Stage, Layer, Rect, Ellipse,Arrow, Line, Text, Transformer, Group,
 } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
-import { OSDReferences } from '../mirador/dist/es/src/plugins/OSDReferences';
-import { VideosReferences } from '../mirador/dist/es/src/plugins/VideosReferences';
+import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
+import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './shapes/ParentComponent';
 
 /** All the stuff to draw on the canvas */
@@ -382,18 +382,18 @@ function AnnotationDrawing(props) {
           setIsDrawing(false);
           setCurrentShape({...currentShape});
           updateCurrentShapeInShapes();
-         
-    
+
+
           //setCurrentShape(null);
           break;
         case 'text':
           setCurrentShape({...currentShape});
           updateCurrentShapeInShapes();
-         
+
         default:
           // Handle any other cases if necessary
       }
-    
+
 
     } catch (error) {
       console.log('error', error);
