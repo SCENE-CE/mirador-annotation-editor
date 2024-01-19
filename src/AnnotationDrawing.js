@@ -39,6 +39,12 @@ function AnnotationDrawing(props) {
     }
   };
 
+  /** */
+  useEffect(() => {
+
+    console.log('shapes', shapes);
+  }, [shapes]);
+
   useEffect(() => {
     // Perform an action when fillColor, strokeColor, or strokeWidth change
 
@@ -247,19 +253,14 @@ function AnnotationDrawing(props) {
 
             setIsDrawing(true);
             shape = {
-              fill: props.fillColor,
-              stroke:props.fillColor,
-
+              fill: props.fillColor ||"red",
+              stroke:props.fillColor ||"red",
               pointerLength: 20,
               pointerWidth : 20,
-              height: 10,
               id: uuidv4(),
               points: [pos.x,pos.y,pos.x,pos.y],
               type: 'arrow',
-              width: 20,
 
-              x: pos.x,
-              y: pos.y,
             };
             setShapes([...shapes, shape]);
             setCurrentShape(shape);
@@ -333,10 +334,14 @@ function AnnotationDrawing(props) {
 
             break;
         case 'freehand':
-          currentShape.points.push(pos.x );
-          currentShape.points.push(pos.y );
 
-          setCurrentShape(currentShape);
+
+        const freehandShape = {...currentShape}
+
+        freehandShape.points.push(pos.x );
+        freehandShape.points.push(pos.y );
+
+          setCurrentShape(freehandShape);
           // setShapes(shapes.map((shape) => (shape.id === currentShape.id
           //   ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] }
           //   : shape)));
@@ -347,16 +352,24 @@ function AnnotationDrawing(props) {
           break;
         case 'arrow':
           // update ponts
-          currentShape.points[2] = pos.x;
-          currentShape.points[3] = pos.y;
-          setCurrentShape({...currentShape});
+          const arrowShape = {}
+          arrowShape.points = [currentShape.points[0],currentShape.points[1],pos.x,pos.y];
+          arrowShape.id = currentShape.id;
+          arrowShape.type = currentShape.type;
+          arrowShape.pointerLength = currentShape.pointerLength;
+          arrowShape.pointerWidth = currentShape.pointerWidth;
+          arrowShape.x = currentShape.x;
+          arrowShape.y = currentShape.y;
+          arrowShape.fill = props.fillColor || "red";
+          arrowShape.stroke = props.fillColor || "red";
+          setCurrentShape(arrowShape);
           updateCurrentShapeInShapes();
           break;
 
         default:
           break;
       }
-      setRedraw(prevRedraw => !prevRedraw);
+     // setRedraw(prevRedraw => !prevRedraw);
     } catch (error) {
       console.log('error', error);
     }
@@ -372,27 +385,14 @@ function AnnotationDrawing(props) {
     //  if (!isDrawing) return;
       if (!currentShape) return;
 
-      switch (props.activeTool) {
-        case 'rectangle':
-        case 'ellipse':
-        case 'line':
-        case 'freehand':
-        case 'arrow':
+
           // For these cases, the action is similar: stop drawing and add the shape
           setIsDrawing(false);
-          setCurrentShape({...currentShape});
-          updateCurrentShapeInShapes();
+         // setCurrentShape({...currentShape});
+         // updateCurrentShapeInShapes();
 
 
           //setCurrentShape(null);
-          break;
-        case 'text':
-          setCurrentShape({...currentShape});
-          updateCurrentShapeInShapes();
-
-        default:
-          // Handle any other cases if necessary
-      }
 
 
     } catch (error) {
@@ -432,7 +432,7 @@ function AnnotationDrawing(props) {
         />
 
         <Layer>
-      {isDrawing && currentShape && (
+      {/* {isDrawing && currentShape && (
     currentShape.type === 'rectangle' ? (
       <Rect
         x={currentShape.x}
@@ -454,11 +454,15 @@ function AnnotationDrawing(props) {
     ) : currentShape.type === 'arrow' ? (
       <Arrow
         points={[...currentShape.points]}
-        fill={props.fillColor}
+        fill={props.strokeColor}
         stroke={props.strokeColor}
+        pointerLength={currentShape.pointerLength}
+        pointerWidth={currentShape.pointerWidth}
+        x={currentShape.x}
+        y={currentShape.y}
       />
     ) : null
-  )}
+  )} */}
         </Layer>
       </Stage>
     );
