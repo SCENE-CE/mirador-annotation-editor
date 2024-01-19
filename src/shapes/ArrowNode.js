@@ -1,18 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Arrow, Transformer } from 'react-konva';
-//
-
-//  x: stage.width() / 4,
-// y: stage.height() / 4,
-// points: [0, 0, width / 2, height / 2],
-// pointerLength: 20,
-// pointerWidth: 20,
-// fill: 'black',
-// stroke: 'black',
-// strokeWidth: 4,
 
 
+
+
+//**  */
 function ArrowNode({
   onShapeClick, shape, activeTool, isSelected, x, y, width, height, fill, stroke, strokeWidth,
   pointerLength, pointerWidth,

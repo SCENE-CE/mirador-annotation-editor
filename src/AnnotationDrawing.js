@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 import React, { Component, useEffect, useState,useLayoutEffect } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
@@ -11,8 +12,6 @@ import ParentComponent from './shapes/ParentComponent';
 
 /** All the stuff to draw on the canvas */
 
-let unscoppedshapes = [];
-let selectedShape = null;
 function AnnotationDrawing(props) {
 
  // console.log('AnnotationDrawing props', props);
