@@ -47,10 +47,7 @@ function AnnotationDrawing(props) {
 
     // update current shape
     if (currentShape) {
-      console.log('update current shape');
-      console.log('fillColor', currentShape.fill,fillColor);
-      console.log('strokeColor', currentShape.strokeColor,strokeColor);
-      console.log('strokeWidth', currentShape.strokeWidth,strokeWidth);
+ 
       currentShape.fill = fillColor;
       currentShape.strokeColor = strokeColor;
       currentShape.strokeWidth = strokeWidth;
@@ -269,6 +266,7 @@ function AnnotationDrawing(props) {
             setIsDrawing(true);
             shape = {
               fill: props.fillColor,
+
               height: 10,
               id: uuidv4(),
               points: [0, 0, 0, 0, 0, 0],

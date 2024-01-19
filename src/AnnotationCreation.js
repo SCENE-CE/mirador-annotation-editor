@@ -171,7 +171,7 @@ class AnnotationCreation extends Component {
     this.valuetextTime = this.valuetextTime.bind(this);
     this.updateTitle = this.updateTitle.bind(this);
     this.setShapeProperties = this.setShapeProperties.bind(this);
-  
+
   }
 
   componentDidMount() {
@@ -341,7 +341,7 @@ class AnnotationCreation extends Component {
       image,
       tags,
       xywh,
-  //    svg,
+      //    svg,
       tstart,
       tend,
       textEditorStateBustingKey,
@@ -423,39 +423,33 @@ class AnnotationCreation extends Component {
 
   /** */
   setShapeProperties(options) {
-    return new Promise(()=>{
+    return new Promise(() => {
       const state = this.state;
-      console.log('setShapeProperties', options,state);
-      if(!state){
-   return;
-       }
-       if(options.fill){
-         state.fillColor = options.fill;
-       }
-   
-       if(options.strokeWidth){
-         state.strokeWidth = options.strokeWidth;
-       }
-   
-       if(options.stroke){
-         state.strokeColor = options.stroke;
-       }
-   
-   
-   
-   
-   
-   console.log('state', state);
-   // set new state
-   
-   this.setState({
-     ...state
-   });
-   
-   
-   
+
+      if (!state) {
+        return;
+      }
+      if (options.fill) {
+        state.fillColor = options.fill;
+      }
+
+      if (options.strokeWidth) {
+        state.strokeWidth = options.strokeWidth;
+      }
+
+      if (options.stroke) {
+        state.strokeColor = options.stroke;
+      }
+
+
+      this.setState({
+        ...state
+      });
+
+
+
     })
-    
+
 
 
   }
@@ -534,8 +528,8 @@ class AnnotationCreation extends Component {
           width={1920}
           height={1080}
           setShapeProperties={this.setShapeProperties}
-         
-          // TODO Ajouter du style pour que le Konva et la vidéo se superpose
+
+        // TODO Ajouter du style pour que le Konva et la vidéo se superpose
 
 
         />
@@ -751,7 +745,7 @@ class AnnotationCreation extends Component {
                     size="small"
                   >
                     <ToggleButton value="arrow" aria-label="add an arrow">
-                    <RectangleIcon />
+                      <RectangleIcon />
                     </ToggleButton>
                     <ToggleButton value="rectangle" aria-label="add a rectangle">
                       <RectangleIcon />
