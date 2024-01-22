@@ -16,12 +16,22 @@ function MiradorAnnotation(props) {
   const [annotationExportDialogOpen, setAnnotationExportDialogOpen] = useState(false);
   const [singleCanvasDialogOpen, setSingleCanvasDialogOpen] = useState(false);
 
+  const dispatch = useDispatch();
+
+  const addCompanionWindow = (content, additionalProps) => {
+    dispatch(actions.addCompanionWindow(props.targetProps.windowId, { content, ...additionalProps }));
+  };
+
+  const switchToSingleCanvasView = () => {
+    dispatch(actions.setWindowViewType(props.targetProps.windowId, 'single'));
+  };
+
   const windowViewType = useSelector((state) => getWindowViewType(state, { windowId: props.targetProps.windowId }));
   const canvases = useSelector((state) => getVisibleCanvases(state, { windowId: props.targetProps.windowId }));
   const config = useSelector((state) => state.config);
 
   const openCreateAnnotationCompanionWindow = useCallback((e) => {
-    props.addCompanionWindow('annotationCreation', {
+    addCompanionWindow('annotationCreation', {
       position: 'right',
     });
   }, [props]);
@@ -52,7 +62,7 @@ function MiradorAnnotation(props) {
         <SingleCanvasDialog
           open={singleCanvasDialogOpen}
           handleClose={toggleSingleCanvasDialogOpen}
-          switchToSingleCanvasView={props.switchToSingleCanvasView}
+          switchToSingleCanvasView={switchToSingleCanvasView}
         />
       )}
       {offerExportDialog && (
@@ -77,7 +87,6 @@ function MiradorAnnotation(props) {
 }
 
 MiradorAnnotation.propTypes = {
-  addCompanionWindow: PropTypes.func.isRequired,
   canvases: PropTypes.arrayOf(
     PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
   ).isRequired,
@@ -87,7 +96,6 @@ MiradorAnnotation.propTypes = {
       exportLocalStorageAnnotations: PropTypes.bool,
     }),
   }).isRequired,
-  switchToSingleCanvasView: PropTypes.func.isRequired,
   TargetComponent: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.node,
@@ -96,6 +104,9 @@ MiradorAnnotation.propTypes = {
   windowViewType: PropTypes.string.isRequired,
 };
 
-// mapDispatchToProps and mapStateToProps logic should be handled outside of this component
 
-export default MiradorAnnotation;
+export default {
+  component: MiradorAnnotation,
+  mode: 'wrap',
+  target: 'AnnotationSettings',
+};
