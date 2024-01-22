@@ -1,6 +1,6 @@
 # mirador-annotations
 
-## Install
+## Install (local)
 
 ```
 nvm use
@@ -24,6 +24,18 @@ npm install
 `mirador-annotations` is a [Mirador 3](https://github.com/projectmirador/mirador) plugin that adds annotation creation tools to the user interface. Users can` create rectangle, oval, and polygon annotations and add text descriptors. A [live demo](https://mirador-annotations.netlify.app/) that stores annotations in local storage is available for testing. See the [issue queue](https://github.com/ProjectMirador/mirador-annotations/issues) for design proposals for additional functionality.
 
 ![annotation creation panel](https://user-images.githubusercontent.com/5402927/86628717-23c3ae80-bf7f-11ea-8f0b-389c39eb4398.png)
+
+
+## Install using docker
+
+This method requires `docker` and `docker-compose` (or `docker compose`)
+
+```
+cp .env.sample .env
+$EDITOR .env
+# Change the variables you need
+docker-compose up 
+```
 
 ## Persisting Annotations
 Persisting annotations requires implementing an a IIIF annotation server. Several [examples of annotation servers](https://github.com/IIIF/awesome-iiif#annotation-servers) are available on iiif-awesome.
