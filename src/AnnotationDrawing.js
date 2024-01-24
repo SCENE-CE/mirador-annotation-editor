@@ -54,6 +54,18 @@ function AnnotationDrawing(props) {
   /** */
   useEffect(() => {
 
+   // if tool is cursor or edit select latest shape
+
+    if (props.activeTool === 'cursor' || props.activeTool === 'edit') {
+      const newCurrentShape = shapes[shapes.length - 1];
+          // get latest shape in the list
+         if(newCurrentShape) {
+          setCurrentShape(newCurrentShape );
+         
+         }
+    
+    }
+
 
     // console.log('shapes', shapes);
   }, [shapes]);
@@ -117,10 +129,6 @@ function AnnotationDrawing(props) {
 
       const newShapes = shapes.filter((shape) => shape.id !== currentShape.id);
       setShapes(newShapes);
-      // get latest shape in the list
-      const newCurrentShape = newShapes[newShapes.length - 1];
-      setCurrentShape(newShapes.length > 0 ? newCurrentShape : null);
-      updateCurrentShapeInShapes();
 
 
 

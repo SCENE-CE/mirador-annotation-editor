@@ -32,10 +32,10 @@ function Freehand({
         <>
             <Group
                 ref={shapeRef}
-                width={ 1920}
-                height={1080}
-                x={ 0}
-                y={ 0}
+                // width={ 1920}
+                // height={1080}
+                // x={ 0}
+                // y={ 0}
                 onClick={handleClick}
             >
                 {shape.lines.map((line, i) => (
@@ -48,9 +48,7 @@ function Freehand({
                         tension={0.5}
                         lineCap="round"
                         lineJoin="round"
-                        globalCompositeOperation={
-                            line.tool === 'eraser' ? 'destination-out' : 'source-over'
-                        }
+                       
                     />
                 ))}
 
