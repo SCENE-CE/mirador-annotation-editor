@@ -100,9 +100,12 @@ function AnnotationDrawing(props) {
 
       const newShapes = shapes.filter((shape) => shape.id !== currentShape.id);
       setShapes(newShapes);
-      setCurrentShape(null);
+      // get latest shape in the list
+      const newCurrentShape = newShapes[newShapes.length - 1];
+      setCurrentShape(newShapes.length > 0 ? newCurrentShape : null);
 
-      window.removeEventListener('keydown', handleKeyPress);
+
+    //  window.removeEventListener('keydown', handleKeyPress);
       return;
     }
 
@@ -220,20 +223,21 @@ function AnnotationDrawing(props) {
       //    window.addEventListener('keydown', handleKeyPress);
           break;
 
-        case 'freehand':
+        case 'polygon':
           setIsDrawing(true);
           // eslint-disable-next-line no-case-declarations
-          const tool = 'pen';
+      
           shape = {
             fill: props.fillColor,
-            height: 10,
+            stroke: props.strokeColor,
+   
             id: uuidv4(),
-            lines: [pos.x, pos.y],
-            points: [0, 0, 0, 0, 0, 0],
-            type: 'freehand',
-            width: 10,
-            x: pos.x,
-            y: pos.y,
+           
+            points: [pos.x, pos.y],
+            type: 'polygon',
+            
+            x: 0,
+            y: 0,
           };
           // shape = {
           //   fill: props.fillColor,
@@ -341,18 +345,16 @@ function AnnotationDrawing(props) {
           updateCurrentShapeInShapes();
 
             break;
-        case 'freehand':
+        case 'polygon':
 
         
-        const freehandShape = {...currentShape}
+        const polygonShape = {...currentShape}
 
-        freehandShape.points.push(pos.x );
-        freehandShape.points.push(pos.y );
+        polygonShape.points[2] = pos.x;
+        polygonShape.points[3] = pos.y;
 
-          setCurrentShape(freehandShape);
-          // setShapes(shapes.map((shape) => (shape.id === currentShape.id
-          //   ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] }
-          //   : shape)));
+          setCurrentShape(polygonShape);
+         
 
           updateCurrentShapeInShapes();
 

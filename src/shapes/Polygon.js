@@ -25,12 +25,13 @@ function FreeHand({
   };
 
   return (
+    console.log("FreeHand shape", shape),
     <>
       <Line
           ref={shapeRef}
           id={shape.id}
-          points={shape.lines}
-          stroke="#df4b26"
+          points={shape.points}
+          stroke={shape.stroke || 'black'}
           strokeWidth={5}
           tension={0.5}
           lineCap="round"
@@ -38,6 +39,7 @@ function FreeHand({
           closed={false}
           onClick={handleClick}
           fill={fill || 'red'}
+          draggable={activeTool === 'cursor' || activeTool === 'edit'}
           globalCompositeOperation="source-over"
       />
 
