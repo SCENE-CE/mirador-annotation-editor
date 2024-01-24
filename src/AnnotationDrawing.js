@@ -1,5 +1,5 @@
 /* eslint-disable require-jsdoc */
-import React, { Component, useEffect, useState, useLayoutEffect } from 'react';
+import React, { Component, useEffect, useState, useLayoutEffect,useRef } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import {
@@ -21,6 +21,18 @@ function AnnotationDrawing(props) {
   const [selectedShapeId, setSelectedShapeId] = useState(null);
   const [lines, setLines] = React.useState([]); // For free drawing
   const [redraw, setRedraw] = useState(false);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
+
+  // useEffect(() => {
+  //   if (containerRef.current) {
+  //     setDimensions({
+  //       width: containerRef.current.offsetWidth,
+  //       height: containerRef.current.offsetHeight,
+  //     });
+  //   }
+  // }, []);
+
 
   const { fillColor, strokeColor, strokeWidth } = props;
 
@@ -41,6 +53,7 @@ function AnnotationDrawing(props) {
 
   /** */
   useEffect(() => {
+
 
     // console.log('shapes', shapes);
   }, [shapes]);
@@ -80,9 +93,9 @@ function AnnotationDrawing(props) {
 
   /** */
   const onShapeClick = async (shape) => {
-    // const newShapes = shapes.filter((s) => s.id !== shape.id); // remove shape from the list
-    // newShapes.push(shape); // add shape to the end of the list
-    // setShapes(newShapes); // update shapes list
+    const newShapes = shapes.filter((s) => s.id !== shape.id); // remove shape from the list
+     newShapes.push(shape); // add shape to the end of the list
+     setShapes(newShapes); // update shapes list
 
     setSelectedShapeId(shape.id);
     // find shape by id
@@ -218,19 +231,28 @@ function AnnotationDrawing(props) {
 
           break;
 
-        case 'line':
+
+        case 'freehand':
           // Not totally functionnal
           // TODO Not sure for this one
           setIsDrawing(true);
           shape = {
             fill: props.fillColor,
-            height: 10,
+       
             id: uuidv4(),
-            points: [0, 0, 0, 0, 0, 0],
-            type: 'line',
-            width: 10,
-            x: pos.x,
-            y: pos.y,
+            lines: [
+              {
+                points: [pos.x, pos.y, pos.x, pos.y],
+                stroke: props.strokeColor,
+                strokeWidth: props.strokeWidth,
+                tool: 'pen',
+              },
+            ],
+            type: 'freehand',
+            x: 0,
+            y: 0,
+      
+         
           };
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
@@ -327,6 +349,7 @@ function AnnotationDrawing(props) {
         return;
       }
       const pos = e.target.getStage().getPointerPosition();
+   
 
       switch (props.activeTool) {
         case 'rectangle':
@@ -350,13 +373,16 @@ function AnnotationDrawing(props) {
           updateCurrentShapeInShapes();
 
           break;
-        case 'line':
-          // update ponts
-
-          setCurrentShape({
-            ...currentShape,
-            points: [0, 0, 0, 0, pos.x, pos.y],
+        case 'freehand':
+     
+          const shape = { ...currentShape };
+          shape.lines.push({
+            points: [pos.x, pos.y, pos.x, pos.y],
+            stroke: props.strokeColor,
+            strokeWidth: props.strokeWidth,
           });
+      
+          setCurrentShape(shape);
           updateCurrentShapeInShapes();
 
           break;
@@ -375,6 +401,8 @@ function AnnotationDrawing(props) {
 
 
           break;
+
+
         case 'arrow':
           // update ponts
           const arrowShape = {}
@@ -437,13 +465,13 @@ function AnnotationDrawing(props) {
 
 
     return (
+    
       <Stage
 
-        width={props.width || 1920}
-        height={props.height || 1080}
-        style={{
-          height: '100%', left: 0, position: 'absolute', top: 0, width: '100%',
-        }}
+        width={ 1920}
+        height={ 1080}
+        style={{ position: 'absolute', top: 0, left: 0 }} 
+
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
@@ -451,16 +479,19 @@ function AnnotationDrawing(props) {
         id={props.windowId}
       >
         <ParentComponent
+        
 
           shapes={shapes}
           onShapeClick={onShapeClick}
           activeTool={props.activeTool}
           selectedShapeId={currentShape?.id}
+       
 
         />
 
-
       </Stage>
+
+
     );
   };
 

@@ -331,7 +331,8 @@ function AnnotationCreation(props) {
         ...prevState,
         activeTool: 'cursor',
       }));
-      submitForm(e);
+    
+  
       return;
     }
 
