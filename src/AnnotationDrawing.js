@@ -93,7 +93,7 @@ function AnnotationDrawing(props) {
   useLayoutEffect(() => {
 
     if (shapes.find((s) => s.id === currentShape?.id)) {
-      console.log('useLayoutEffect shapes', shapes);
+    
       window.addEventListener('keydown', handleKeyPress);
       return () => {
         window.removeEventListener('keydown', handleKeyPress);
@@ -182,8 +182,8 @@ function AnnotationDrawing(props) {
 
 
 
-      const pos = e.target.getStage().getPointerPosition();
-      const relativePos = e.target.getStage().getRelativePointerPosition();
+      const pos = e.target.getStage().getRelativePointerPosition();
+     // const relativePos = e.target.getStage().getRelativePointerPosition();
       //  debug('mouse down debut');
       let shape = null;
       switch (props.activeTool) {
@@ -349,7 +349,7 @@ function AnnotationDrawing(props) {
       if (!currentShape) {
         return;
       }
-      const pos = e.target.getStage().getPointerPosition();
+      const pos = e.target.getStage().getRelativePointerPosition();
    
 
       switch (props.activeTool) {
@@ -439,8 +439,7 @@ function AnnotationDrawing(props) {
   const handleMouseUp = (e) => {
 
 
-    const pos = e.target.getStage().getPointerPosition();
-
+    const pos = e.target.getStage().getRelativePointerPosition();
     try {
       //  if (!isDrawing) return;
       if (!currentShape) return;
@@ -467,19 +466,28 @@ function AnnotationDrawing(props) {
 
 
 
+
     return (
     
       <Stage
 
-        width={ 1920}
-        height={ 1080}
-        style={{ position: 'absolute', top: 0, left: 0 }} 
+        width={ props.width}  
+        height={ props.height}
+        style={{ position: 'absolute', top: 0, left: 0 ,
+        width: "100%",
+        height: "auto",
+        objectFit: "contain",
+        overflowClipMargin: "content-box",
+        overflow: "clip"
+      
+      }} 
 
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
         // onDblClick={handleKonvasDblClick}
         id={props.windowId}
+
       >
         <ParentComponent
         
@@ -488,7 +496,10 @@ function AnnotationDrawing(props) {
           onShapeClick={onShapeClick}
           activeTool={props.activeTool}
           selectedShapeId={currentShape?.id}
-       
+          style={{ position: 'absolute', top: 0, left: 0 ,width: "100%", height: "auto",objectFit: "contain",overflowClipMargin: "content-box",overflow: "clip"}}
+          scale={props.scale}
+          width={props.originalWidth}
+          height={props.originalHeight}
 
         />
 

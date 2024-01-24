@@ -15,6 +15,7 @@ import Freehand from './Freehand';
 
 function ParentComponent({
   shapes, onShapeClick, selectedShapeId, activeTool,
+  scale, width, height,
 }) {
   // TODO Simplify these state
   const [selectedShape, setSelectedShape] = useState(null);
@@ -41,7 +42,13 @@ function ParentComponent({
   };
 
   return (
-    <Layer>
+    <Layer
+    width={width}
+    height={height}
+    scaleX={scale}
+    scaleY={scale}
+    
+    >
       {shapes.map((shape, i) => {
      
         const isSelected = selectedShapeId === shape.id;

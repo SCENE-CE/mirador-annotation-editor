@@ -499,13 +499,52 @@ function AnnotationCreation(props) {
   }
   const isVideoDataLoaded = mediaVideo && mediaVideo.video && !isNaN(mediaVideo.video.duration) && mediaVideo.video.duration > 0;
 
+  console.log('VideosReferences.get(windowId)', VideosReferences.get(windowId));
+
+  const videoref=VideosReferences.get(windowId);
+  const osdref=OSDReferences.get(windowId);
+  let overlay= null;
+  if(videoref){
+   // console.log('videoref',videoref);
+    overlay=videoref.canvasOverlay
+  }
+  if(osdref){
+    console.log('osdref',osdref);
+
+  }
+
+  console.log('overlay',overlay);
+
+  const scale = overlay.containerWidth / overlay.canvasWidth;
+
+  
+
+  // stage.width(sceneWidth * scale);
+  // stage.height(sceneHeight * scale);
+  // stage.scale({ x: scale, y: scale });
+
+
   return (
+
+
+    // we need to get the width and height of the image to pass it to the annotation drawing component
+
+
     <CompanionWindow
       title={title ? title.value : 'New Annotation'}
       windowId={windowId}
       id={id}
     >
       <AnnotationDrawing
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: 'auto',
+          border: '1px solid orange',
+          }}
+        scale={scale}  
         activeTool={activeTool}
         annotation={annotation}
         fillColor={fillColor}
@@ -516,8 +555,10 @@ function AnnotationCreation(props) {
         windowId={windowId}
         player={mediaIsVideo ? VideosReferences.get(windowId) : OSDReferences.get(windowId)}
         /// we need to pass the width and height of the image to the annotation drawing component
-        width={1920}
-        height={1080}
+        width={overlay ? overlay.containerWidth : 1920}
+        height={overlay ? overlay.containerHeight : 1080}
+        orignalWidth={overlay ? overlay.canvasWidth : 1920}
+        orignalHeight={overlay ? overlay.canvasHeight : 1080}
         setShapeProperties={setShapeProperties}
         // TODO Ajouter du style pour que le Konva et la vidéo se superpose
       />
