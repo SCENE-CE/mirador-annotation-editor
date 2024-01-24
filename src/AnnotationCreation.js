@@ -513,7 +513,7 @@ function AnnotationCreation(props) {
 
   }
 
-  console.log('overlay',overlay);
+ 
 
   const scale = overlay.containerWidth / overlay.canvasWidth;
 
@@ -542,7 +542,7 @@ function AnnotationCreation(props) {
           left: 0,
           width: '100%',
           height: 'auto',
-          border: '1px solid orange',
+       
           }}
         scale={scale}  
         activeTool={activeTool}

@@ -183,6 +183,8 @@ function AnnotationDrawing(props) {
 
 
       const pos = e.target.getStage().getRelativePointerPosition();
+      pos.x = pos.x/props.scale;
+      pos.y = pos.y/props.scale;
      // const relativePos = e.target.getStage().getRelativePointerPosition();
       //  debug('mouse down debut');
       let shape = null;
@@ -350,6 +352,8 @@ function AnnotationDrawing(props) {
         return;
       }
       const pos = e.target.getStage().getRelativePointerPosition();
+      pos.x = pos.x/props.scale;
+      pos.y = pos.y/props.scale;
    
 
       switch (props.activeTool) {
@@ -440,6 +444,8 @@ function AnnotationDrawing(props) {
 
 
     const pos = e.target.getStage().getRelativePointerPosition();
+    pos.x = pos.x/props.scale;
+    pos.y = pos.y/props.scale;
     try {
       //  if (!isDrawing) return;
       if (!currentShape) return;
