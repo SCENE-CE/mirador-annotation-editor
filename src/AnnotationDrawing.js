@@ -56,7 +56,7 @@ function AnnotationDrawing(props) {
 
    // if tool is cursor or edit select latest shape
 
-    if (props.activeTool === 'cursor' || props.activeTool === 'edit') {
+    if (!isDrawing) {
       const newCurrentShape = shapes[shapes.length - 1];
           // get latest shape in the list
          if(newCurrentShape) {
