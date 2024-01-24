@@ -116,7 +116,7 @@ function AnnotationDrawing(props) {
   const handleKeyPress = (e) => {
     e.stopPropagation();
     //  debug('handleKeyPress debut');
-    const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape'];
+    const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape', 'Tab','AltGraph','CapsLock','NumLock','ScrollLock','Pause','Insert','Home','PageUp','PageDown','End','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','ContextMenu','PrintScreen','Help','Clear','F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12','OS']
 
     if (!currentShape) {
       return;
@@ -245,10 +245,12 @@ function AnnotationDrawing(props) {
                 points: [pos.x, pos.y, pos.x, pos.y],
                 stroke: props.strokeColor,
                 strokeWidth: props.strokeWidth,
-                tool: 'pen',
+                x: 0,
+                y: 0,
               },
             ],
             type: 'freehand',
+
             x: 0,
             y: 0,
       
@@ -376,8 +378,11 @@ function AnnotationDrawing(props) {
         case 'freehand':
      
           const shape = { ...currentShape };
+
+          const lastpoints = shape.lines[shape.lines.length - 1].points;
+
           shape.lines.push({
-            points: [pos.x, pos.y, pos.x, pos.y],
+            points: [lastpoints[2].x, lastpoints[2].y, pos.x, pos.y],
             stroke: props.strokeColor,
             strokeWidth: props.strokeWidth,
           });

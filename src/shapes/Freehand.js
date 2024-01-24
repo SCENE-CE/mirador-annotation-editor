@@ -32,10 +32,10 @@ function Freehand({
         <>
             <Group
                 ref={shapeRef}
-                width={width || 1920}
-                height={height || 1080}
-                x={x || 0}
-                y={y || 0}
+                width={ 1920}
+                height={1080}
+                x={ 0}
+                y={ 0}
                 onClick={handleClick}
             >
                 {shape.lines.map((line, i) => (
