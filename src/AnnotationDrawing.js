@@ -1,86 +1,68 @@
 /* eslint-disable require-jsdoc */
-import React, { Component, useEffect, useState,useLayoutEffect } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import {
-  Stage, Layer, Rect, Ellipse,Arrow, Line, Text, Transformer, Group,
+  Stage, Layer, Rect, Ellipse, Arrow, Line, Text, Transformer, Group,
 } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './shapes/ParentComponent';
 
 /** All the stuff to draw on the canvas */
 
 function AnnotationDrawing(props) {
-
- // console.log('AnnotationDrawing props', props);
   const [shapes, setShapes] = useState([]);
   const [currentShape, setCurrentShape] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [selectedShapeId, setSelectedShapeId] = useState(null);
-  const [lines, setLines] = React.useState([]); // For free drawing
-  const [redraw, setRedraw] = useState(false);
 
-  const {fillColor, strokeColor, strokeWidth} = props;
-
+  const { fillColor, strokeColor, strokeWidth } = props;
 
   /** Debug function facility */
-  const debug = ( command ) => {
-    if(config.debugMode) {
-      console.debug('***************************');
-      console.debug(command);
-      console.debug('shapes', shapes);
-      console.debug('shapes taille', shapes.length);
-      console.debug('currentShape', currentShape);
-      console.debug('isDrawing', isDrawing);
-      console.debug('props.activeTool', props.activeTool);
-      console.debug('-----------------------------');
-    }
+  const debug = (command) => {
+    console.debug('***************************');
+    console.debug(command);
+    console.debug('shapes', shapes);
+    console.debug('shapes taille', shapes.length);
+    console.debug('currentShape', currentShape);
+    console.debug('isDrawing', isDrawing);
+    console.debug('props.activeTool', props.activeTool);
+    console.debug('-----------------------------');
   };
 
   /** */
   useEffect(() => {
-
-   // console.log('shapes', shapes);
+    // Perform a repaint when shapes change
   }, [shapes]);
 
   useEffect(() => {
     // Perform an action when fillColor, strokeColor, or strokeWidth change
-
     // update current shape
     if (currentShape) {
-
       currentShape.fill = fillColor;
       currentShape.stroke = strokeColor;
-      
       currentShape.strokeWidth = strokeWidth;
-
-      setCurrentShape({...currentShape});
+      setCurrentShape({ ...currentShape });
       updateCurrentShapeInShapes();
-
     }
-
   }, [fillColor, strokeColor, strokeWidth]);
 
-
-  // TODO Can be removed ?
+  // TODO Can be removed ? --> move currentSHape and shapes in the same state
   useLayoutEffect(() => {
-
     if (shapes.find((s) => s.id === currentShape?.id)) {
       console.log('useLayoutEffect shapes', shapes);
       window.addEventListener('keydown', handleKeyPress);
       return () => {
         window.removeEventListener('keydown', handleKeyPress);
-
       };
-
     }
   }, [currentShape]);
 
   /** */
   const onShapeClick = async (shape) => {
-    setSelectedShapeId(shape.id);
     // find shape by id
     setCurrentShape(shapes.find((s) => s.id === shape.id));
     props.setShapeProperties(shape);
@@ -89,7 +71,6 @@ function AnnotationDrawing(props) {
   /** */
   const handleKeyPress = (e) => {
     e.stopPropagation();
-  //  debug('handleKeyPress debut');
     const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape'];
 
     if (!currentShape) {
@@ -97,18 +78,17 @@ function AnnotationDrawing(props) {
     }
 
     if (e.key === 'Delete') {
-
       const newShapes = shapes.filter((shape) => shape.id !== currentShape.id);
       setShapes(newShapes);
-      setCurrentShape(null);
-
-      window.removeEventListener('keydown', handleKeyPress);
+      // get latest shape in the list
+      const newCurrentShape = newShapes[newShapes.length - 1];
+      setCurrentShape(newShapes.length > 0 ? newCurrentShape : null);
+      updateCurrentShapeInShapes();
       return;
     }
 
+    // TODO This comportment must be handle by the text component
     if (currentShape.type === 'text') {
-  //    debug('add text debut');
-
       let newText = currentShape.text;
       if (e.key === 'Backspace') {
         newText = newText.slice(0, -1);
@@ -119,64 +99,47 @@ function AnnotationDrawing(props) {
         newText += e.key;
       }
 
-      const newCurrentShape = { ...currentShape, text: newText };
-      setCurrentShape(newCurrentShape);
-
-      const newShapes = shapes.map((shape) =>
-        shape.id === currentShape.id ? newCurrentShape : shape
-      );
-      setShapes(newShapes);
-
-
+      setCurrentShape({ ...currentShape, text: newText });
+      setShapes(shapes.map((shape) => (shape.id === currentShape.id ? currentShape : shape)));
     }
   };
 
   const updateCurrentShapeInShapes = () => {
-      const index = shapes.findIndex((s) => s.id === currentShape.id);
+    const index = shapes.findIndex((s) => s.id === currentShape.id);
 
-      if(index !== -1){
-        shapes[index] = currentShape;
-        setShapes([...shapes]);
-      } else {
-
-        setShapes([...shapes, currentShape]);
-
-      }
+    if (index !== -1) {
+      shapes[index] = currentShape;
+      setShapes([...shapes]);
+    } else {
+      setShapes([...shapes, currentShape]);
+    }
   };
 
   /** */
   const handleMouseDown = (e) => {
-
     try {
       const pos = e.target.getStage().getPointerPosition();
-      const relativePos = e.target.getStage().getRelativePointerPosition();
-    //  debug('mouse down debut');
       let shape = null;
       switch (props.activeTool) {
         case 'rectangle':
         case 'ellipse':
-
-        shape={
-          fill: props.fillColor,
-          id: uuidv4(),
-          stroke: props.strokeColor,
-          strokeWidth: props.strokeWidth,
-          type: props.activeTool,
-          width: 1,
-          height: 1,
-          x: pos.x,
-          y: pos.y,
-        }
+          shape = {
+            fill: props.fillColor,
+            height: 1,
+            id: uuidv4(),
+            stroke: props.strokeColor,
+            strokeWidth: props.strokeWidth,
+            type: props.activeTool,
+            width: 1,
+            x: pos.x,
+            y: pos.y,
+          };
           setIsDrawing(true);
 
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
-
-          // Add global key press event listener
-        //  window.addEventListener('keydown', handleKeyPress);
           break;
         case 'text':
-
           shape = {
             fill: props.fillColor,
             fontSize: 20,
@@ -187,18 +150,11 @@ function AnnotationDrawing(props) {
             y: pos.y,
           };
 
-
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
-
-       //   window.addEventListener('keydown', handleKeyPress);
-
-
           break;
 
         case 'line':
-          // Not totally functionnal
-          // TODO Not sure for this one
           setIsDrawing(true);
           shape = {
             fill: props.fillColor,
@@ -212,79 +168,43 @@ function AnnotationDrawing(props) {
           };
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
-
-      //    window.addEventListener('keydown', handleKeyPress);
           break;
-
-        case 'freehand':
+        case 'polygon':
           setIsDrawing(true);
-          // eslint-disable-next-line no-case-declarations
-          const tool = 'pen';
           shape = {
             fill: props.fillColor,
-            height: 10,
             id: uuidv4(),
-            lines: [pos.x, pos.y],
-            points: [0, 0, 0, 0, 0, 0],
-            type: 'freehand',
-            width: 10,
-            x: pos.x,
-            y: pos.y,
+            points: [pos.x, pos.y],
+            stroke: props.strokeColor,
+            type: 'polygon',
+            x: 0,
+            y: 0,
           };
-          // shape = {
-          //   fill: props.fillColor,
-          //   height: 1080, // TODO Why ? Check Konva bounding box
-          //   id: uuidv4(),
-          //   points,
-          //   type: 'freehand',
-          //   width: 1920, // TODO Why ? Check Konva bounding box
-          //   x: pos.x,
-          //   y: pos.y,
-          // };
-          // Get KOnva bounding box
-            // eslint-disable-next-line no-case-declarations
-           // const bb = shapeRefs[shape.id].getClientRect();
+          setShapes([...shapes, shape]);
+          setCurrentShape(shape);
+          break;
+        case 'arrow':
+          setIsDrawing(true);
+          shape = {
+            fill: props.fillColor || 'red',
+            id: uuidv4(),
+            pointerLength: 20,
+            pointerWidth: 20,
+            points: [pos.x, pos.y, pos.x, pos.y],
+            stroke: props.fillColor || 'red',
+            type: 'arrow',
+          };
 
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
 
-       //   window.addEventListener('keydown', handleKeyPress);
-          break;
-          case "arrow":
-
-            setIsDrawing(true);
-            shape = {
-              fill: props.fillColor ||"red",
-              stroke:props.fillColor ||"red",
-              pointerLength: 20,
-              pointerWidth : 20,
-              id: uuidv4(),
-              points: [pos.x,pos.y,pos.x,pos.y],
-              type: 'arrow',
-
-            };
-            setShapes([...shapes, shape]);
-            setCurrentShape(shape);
-
         case 'debug':
           debug('debug');
+          break;
         default:
           // Handle other cases if any
+          break;
       }
-
-
-
-      // if (!currentShape) {
-      //   return;
-      // }
-      // // Check if the current shape is a freehand object
-      // if (currentShape.type === 'freehand') {
-      //   // Start drawing
-      //   setIsDrawing(true);
-      //   setShapes(shapes.map((s) => (s.id === currentShape.id
-      //     ? { ...s, points: [...s.points, e.evt.clientX, e.evt.clientY] }
-      //     : shape)));
-      // }
     } catch (error) {
       console.log('error', error);
     }
@@ -292,7 +212,6 @@ function AnnotationDrawing(props) {
 
   /** */
   const handleMouseMove = (e) => {
-
     try {
       if (!isDrawing) {
         return;
@@ -325,36 +244,30 @@ function AnnotationDrawing(props) {
 
           break;
         case 'line':
-          // update ponts
-
           setCurrentShape({
             ...currentShape,
             points: [0, 0, 0, 0, pos.x, pos.y],
           });
+          // TODO simplify in one state
           updateCurrentShapeInShapes();
+          break;
+        case 'polygon':
 
-            break;
-        case 'freehand':
 
+          const polygonShape = { ...currentShape }
 
-        const freehandShape = {...currentShape}
+          polygonShape.points[2] = pos.x;
+          polygonShape.points[3] = pos.y;
 
-        freehandShape.points.push(pos.x );
-        freehandShape.points.push(pos.y );
+          setCurrentShape(polygonShape);
 
-          setCurrentShape(freehandShape);
-          // setShapes(shapes.map((shape) => (shape.id === currentShape.id
-          //   ? { ...shape, points: [...shape.points, e.evt.clientX, e.evt.clientY] }
-          //   : shape)));
 
           updateCurrentShapeInShapes();
-
-
           break;
         case 'arrow':
           // update ponts
           const arrowShape = {}
-          arrowShape.points = [currentShape.points[0],currentShape.points[1],pos.x,pos.y];
+          arrowShape.points = [currentShape.points[0], currentShape.points[1], pos.x, pos.y];
           arrowShape.id = currentShape.id;
           arrowShape.type = currentShape.type;
           arrowShape.pointerLength = currentShape.pointerLength;
@@ -366,11 +279,9 @@ function AnnotationDrawing(props) {
           setCurrentShape(arrowShape);
           updateCurrentShapeInShapes();
           break;
-
         default:
           break;
       }
-     // setRedraw(prevRedraw => !prevRedraw);
     } catch (error) {
       console.log('error', error);
     }
@@ -378,64 +289,36 @@ function AnnotationDrawing(props) {
 
   /** Stop drawing */
   const handleMouseUp = (e) => {
-
-
-    const pos = e.target.getStage().getPointerPosition();
-
     try {
-    //  if (!isDrawing) return;
       if (!currentShape) return;
 
-
-          // For these cases, the action is similar: stop drawing and add the shape
-          setIsDrawing(false);
-         // setCurrentShape({...currentShape});
-         // updateCurrentShapeInShapes();
-
-
-          //setCurrentShape(null);
-
-
+      setIsDrawing(false);
     } catch (error) {
       console.log('error', error);
     }
   };
 
   /** */
-  const drawKonvas = () => {
-
-   // debug('draw konva debut', props.activeTool);
-
-
-
-
-    return (
-      <Stage
-
-        width={props.width || 1920}
-        height={props.height || 1080}
-        style={{
-          height: '100%', left: 0, position: 'absolute', top: 0, width: '100%',
-        }}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
-            // onDblClick={handleKonvasDblClick}
-        id={props.windowId}
-      >
-        <ParentComponent
-
-          shapes={shapes}
-          onShapeClick={onShapeClick}
-          activeTool={props.activeTool}
-          selectedShapeId={currentShape?.id}
-
-        />
-
-   
-      </Stage>
-    );
-  };
+  const drawKonvas = () => (
+    <Stage
+      width={props.width || 1920}
+      height={props.height || 1080}
+      style={{
+        height: '100%', left: 0, position: 'absolute', top: 0, width: '100%',
+      }}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseMove={handleMouseMove}
+      id={props.windowId}
+    >
+      <ParentComponent
+        shapes={shapes}
+        onShapeClick={onShapeClick}
+        activeTool={props.activeTool}
+        selectedShapeId={currentShape?.id}
+      />
+    </Stage>
+  );
 
   const osdref = OSDReferences.get(props.windowId);
   const videoref = VideosReferences.get(props.windowId);
@@ -452,9 +335,9 @@ function AnnotationDrawing(props) {
 
 AnnotationDrawing.propTypes = {
   activeTool: PropTypes.string,
-  selectedShapeId: PropTypes.string,
   closed: PropTypes.bool,
   fillColor: PropTypes.string,
+  selectedShapeId: PropTypes.string,
   strokeColor: PropTypes.string,
   strokeWidth: PropTypes.number,
   svg: PropTypes.func.isRequired,
@@ -464,9 +347,9 @@ AnnotationDrawing.propTypes = {
 
 AnnotationDrawing.defaultProps = {
   activeTool: null,
-  selectedShapeId: null,
   closed: true,
   fillColor: null,
+  selectedShapeId: null,
   strokeColor: '#00BFFF',
   strokeWidth: 1,
   svg: null,
