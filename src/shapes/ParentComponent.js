@@ -9,6 +9,7 @@ import TextNode from './TextNode';
 import LineNode from './LineNode';
 import ArrowNode from './ArrowNode';
 import Polygon from './Polygon';
+import Freehand from './Freehand';
 
 /** Loads Konva and display in function of their type */
 
@@ -74,7 +75,7 @@ function ParentComponent({
             );
           case 'freehand':
             return (
-              <FreeHand
+              <Freehand
                 {...{
                   ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
                 }}
