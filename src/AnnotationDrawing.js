@@ -80,10 +80,19 @@ function AnnotationDrawing(props) {
 
   /** */
   const onShapeClick = async (shape) => {
+
+    
+
     setSelectedShapeId(shape.id);
     // find shape by id
     setCurrentShape(shapes.find((s) => s.id === shape.id));
     props.setShapeProperties(shape);
+
+    // place shape on top
+
+     const newShapes = shapes.filter((s) => s.id !== shape.id); // remove shape from the list
+      newShapes.push(shape); // add shape to the end of the list
+
   };
 
   /** */
