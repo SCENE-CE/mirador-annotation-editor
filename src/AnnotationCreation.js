@@ -534,7 +534,6 @@ function AnnotationCreation(props) {
           </Grid>
         </div>
         <Grid>
-          <Typography>TODO:METTRE CE CHAMPS TEXTE EN ONGLET</Typography>
           <TextEditor
             key={textEditorStateBustingKey}
             annoHtml={textBody}
