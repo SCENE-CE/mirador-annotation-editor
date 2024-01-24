@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Layer } from 'react-konva';
 
-import FreeHand from './FreeHand';
+
 import Rectangle from './Rectangle';
 import EllipseNode from './EllipseNode';
 import TextNode from './TextNode';
 import LineNode from './LineNode';
 import ArrowNode from './ArrowNode';
+import Polygon from './Polygon';
 
 /** Loads Konva and display in function of their type */
 
@@ -80,9 +81,9 @@ function ParentComponent({
                 key={i}
               />
             );
-          case 'line':
+          case 'polygon':
             return (
-              <LineNode
+              <Polygon
                 {...{
                   ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
                 }}

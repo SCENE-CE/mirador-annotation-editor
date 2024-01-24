@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Transformer, Shape, Line} from 'react-konva';
 
 /** FreeHand shape displaying */
-function FreeHand({
+function Polygon({
   activeTool, fill, height, onShapeClick, points, isSelected, shape, stroke, strokeWidth, width, x, y,
 }) {
   // TODO check if selectedShapeId is needed
@@ -25,12 +25,13 @@ function FreeHand({
   };
 
   return (
+  
     <>
       <Line
           ref={shapeRef}
           id={shape.id}
-          points={shape.lines}
-          stroke="#df4b26"
+          points={shape.points}
+          stroke={shape.stroke || 'black'}
           strokeWidth={5}
           tension={0.5}
           lineCap="round"
@@ -38,6 +39,7 @@ function FreeHand({
           closed={false}
           onClick={handleClick}
           fill={fill || 'red'}
+          draggable={activeTool === 'cursor' || activeTool === 'edit'}
           globalCompositeOperation="source-over"
       />
 
@@ -49,7 +51,7 @@ function FreeHand({
   );
 }
 
-FreeHand.propTypes = {
+Polygon.propTypes = {
   activeTool: PropTypes.string.isRequired,
   fill: PropTypes.string,
   height: PropTypes.number,
@@ -61,7 +63,7 @@ FreeHand.propTypes = {
   width: PropTypes.number,
 };
 
-FreeHand.defaultProps = {
+Polygon.defaultProps = {
   fill: 'red',
   height: 1080,
   points: [0, 0, 100, 0, 100, 100],
@@ -70,4 +72,4 @@ FreeHand.defaultProps = {
   width: 1920,
 };
 
-export default FreeHand;
+export default Polygon;
