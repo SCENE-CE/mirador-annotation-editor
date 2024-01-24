@@ -496,8 +496,8 @@ function AnnotationCreation(props) {
     valueTime[0] = tstart;
     valueTime[1] = tend;
   }
-  const isVideoDataLoaded = mediaVideo && mediaVideo.video && !isNaN(mediaVideo.video.duration) && mediaVideo.video.duration > 0;
-
+  const myVideo = VideosReferences.get(windowId)
+  const videoDuration = myVideo.props.canvas.__jsonld.duration
   return (
     <CompanionWindow
       title={title ? title.value : 'New Annotation'}
@@ -551,17 +551,16 @@ function AnnotationCreation(props) {
                 <Typography id="range-slider" variant="overline">
                   Display period
                 </Typography>
-                {isVideoDataLoaded ? (
                   <div>
                     <Typography>
-                      {state.mediaVideo.video.duration}
+                      {videoDuration}
                     </Typography>
                     <Slider
                       value={valueTime}
                       onChange={handleChangeTime}
                       valueLabelDisplay="auto"
                       aria-labelledby="range-slider"
-                      max={Math.round(state.mediaVideo.video.duration)}
+                      max={Math.round(videoDuration)}
                       color="secondary"
                       windowid={windowId}
                       sx={{
@@ -569,10 +568,6 @@ function AnnotationCreation(props) {
                       }}
                     />
                   </div>
-                ) : (
-                  <Typography>Loading video data...</Typography>
-                )}
-
               </Grid>
               <div style={{
                 alignContent: 'center',
