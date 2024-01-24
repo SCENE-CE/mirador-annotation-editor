@@ -115,6 +115,38 @@ function AnnotationDrawing(props) {
     props.setShapeProperties(shape);
   };
 
+  const onTransformEnd = (evt) => {
+
+
+    const modifiedshape= evt.currentTarget.attrs;
+    const shape=shapes.find((s) => s.id === modifiedshape.id);
+    shape.x = modifiedshape.x;
+    shape.y = modifiedshape.y;
+    shape.width = modifiedshape.width;
+    shape.height = modifiedshape.height;
+    shape.rotation = modifiedshape.rotation;
+    shape.scaleX = modifiedshape.scaleX;
+    shape.scaleY = modifiedshape.scaleY;
+
+    setCurrentShape({...shape});
+    updateCurrentShapeInShapes();
+
+
+  }
+
+
+
+  const handleDragEnd = (evt) => {
+    const modifiedshape= evt.currentTarget.attrs;
+    const shape=shapes.find((s) => s.id === modifiedshape.id);
+    shape.x = modifiedshape.x;
+    shape.y = modifiedshape.y;
+
+    setCurrentShape({...shape});
+    updateCurrentShapeInShapes();
+
+  }
+
   /** */
   const handleKeyPress = (e) => {
     e.stopPropagation();
@@ -202,6 +234,11 @@ function AnnotationDrawing(props) {
             height: 1,
             x: pos.x,
             y: pos.y,
+         
+            scaleX: 1,
+            scaleY: 1,
+            rotation: 0,
+           
           }
           setIsDrawing(true);
 
@@ -221,6 +258,10 @@ function AnnotationDrawing(props) {
             type: 'text',
             x: pos.x,
             y: pos.y,
+            scaleX: 1,
+            scaleY: 1,
+            rotation: 0,
+         
           };
 
 
@@ -254,6 +295,9 @@ function AnnotationDrawing(props) {
 
             x: 0,
             y: 0,
+            scaleX: 1,
+            scaleY: 1,
+            rotation: 0,
       
          
           };
@@ -278,6 +322,9 @@ function AnnotationDrawing(props) {
 
             x: 0,
             y: 0,
+            scaleX: 1,
+            scaleY: 1,
+            rotation: 0,
           };
           // shape = {
           //   fill: props.fillColor,
@@ -309,7 +356,10 @@ function AnnotationDrawing(props) {
             pointerWidth: 20,
             id: uuidv4(),
             points: [pos.x, pos.y, pos.x, pos.y],
-            type: 'arrow'
+            type: 'arrow',
+            scaleX: 1,
+            scaleY: 1,
+            rotation: 0,
 
 
           };
@@ -506,6 +556,8 @@ function AnnotationDrawing(props) {
           scale={props.scale}
           width={props.originalWidth}
           height={props.originalHeight}
+          onTransformEnd={onTransformEnd}
+          handleDragEnd={handleDragEnd}
 
         />
 

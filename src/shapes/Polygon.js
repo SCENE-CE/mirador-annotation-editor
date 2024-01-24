@@ -5,6 +5,7 @@ import {Transformer, Shape, Line} from 'react-konva';
 /** FreeHand shape displaying */
 function Polygon({
   activeTool, fill, height, onShapeClick, points, isSelected, shape, stroke, strokeWidth, width, x, y,
+  onTransformEnd, handleDragEnd
 }) {
   // TODO check if selectedShapeId is needed
   const shapeRef = useRef();
@@ -41,6 +42,14 @@ function Polygon({
           fill={fill || 'red'}
           draggable={activeTool === 'cursor' || activeTool === 'edit'}
           globalCompositeOperation="source-over"
+          onTransformEnd={onTransformEnd}
+          scaleX={shape.scaleX}
+          scaleY={shape.scaleY}
+          rotation={shape.rotation}
+          x={shape.x}
+          y={shape.y}
+          onDragEnd={ handleDragEnd}
+      
       />
 
       <Transformer

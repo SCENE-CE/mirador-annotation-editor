@@ -7,7 +7,7 @@ import {
 
 /** FreeHand shape displaying */
 function Freehand({
-    activeTool, fill, height, onShapeClick, points, isSelected, shape, stroke, strokeWidth, width, x, y,
+    activeTool, fill, height, onShapeClick, points, isSelected, shape, stroke, strokeWidth, width, x, y,onTransformEnd, handleDragEnd
 }) {
     // TODO check if selectedShapeId is needed
     const shapeRef = useRef();
@@ -37,6 +37,14 @@ function Freehand({
                 // x={ 0}
                 // y={ 0}
                 onClick={handleClick}
+                onTransformEnd={onTransformEnd}
+                scaleX={shape.scaleX}
+                scaleY={shape.scaleY}
+                rotation={shape.rotation}
+                x={shape.x}
+                y={shape.y}
+                onDragEnd={ handleDragEnd}
+            
             >
                 {shape.lines.map((line, i) => (
                    

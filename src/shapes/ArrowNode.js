@@ -10,7 +10,7 @@ import { Shape } from 'paper/dist/paper-core';
 function ArrowNode({
   onShapeClick, shape, activeTool, isSelected, x, y, width, height, fill, stroke, strokeWidth,
   pointerLength, pointerWidth,
-  points,
+  points,onTransformEnd, handleDragEnd
 
 
 }) {
@@ -28,6 +28,9 @@ function ArrowNode({
     onShapeClick(shape);
   };
 
+  const ondragend = (e) => {
+    handleDragEnd(e);
+  }
  
   return (
     <>
@@ -35,6 +38,11 @@ function ArrowNode({
         ref={shapeRef}
        
         fill={shape.stroke}
+        scaleX={shape.scaleX}
+        scaleY={shape.scaleY}
+        rotation={shape.rotation}
+        x={shape.x}
+        y={shape.y}
     
         stroke={shape.stroke}
         points={shape.points}
@@ -44,7 +52,8 @@ function ArrowNode({
         onClick={handleClick}
         pointerLength={shape.pointerLength}
         pointerWidth={shape.pointerWidth}
-        
+        onTransformEnd={onTransformEnd}
+        onDragEnd={ondragend}
       />
 
       <Transformer

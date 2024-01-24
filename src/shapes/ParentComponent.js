@@ -15,7 +15,7 @@ import Freehand from './Freehand';
 
 function ParentComponent({
   shapes, onShapeClick, selectedShapeId, activeTool,
-  scale, width, height,
+  scale, width, height,onTransformEnd,handleDragEnd
 }) {
   // TODO Simplify these state
   const [selectedShape, setSelectedShape] = useState(null);
@@ -58,6 +58,7 @@ function ParentComponent({
               <Rectangle
                 {...{
                   ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                  onTransformEnd,handleDragEnd
                 }}
                 key={i}
               />
@@ -67,6 +68,7 @@ function ParentComponent({
               <TextNode
                 {...{
                   ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                  onTransformEnd,handleDragEnd
                 }}
                 key={i}
               />
@@ -76,6 +78,7 @@ function ParentComponent({
               <EllipseNode
                 {...{
                   ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                  onTransformEnd,handleDragEnd
                 }}
                 key={i}
               />
@@ -85,6 +88,7 @@ function ParentComponent({
               <Freehand
                 {...{
                   ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                  onTransformEnd,handleDragEnd
                 }}
                 key={i}
               />
@@ -94,6 +98,7 @@ function ParentComponent({
               <Polygon
                 {...{
                   ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                  onTransformEnd,handleDragEnd
                 }}
                 key={i}
               />
@@ -107,7 +112,8 @@ function ParentComponent({
                      activeTool, 
                      isSelected, 
                      onShapeClick: handleShapeClick,
-                     shape
+                     shape,
+                     onTransformEnd,handleDragEnd
 
                   }}
                   key={i}

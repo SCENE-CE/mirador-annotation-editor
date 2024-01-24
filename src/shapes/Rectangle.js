@@ -4,6 +4,7 @@ import { Rect, Transformer } from 'react-konva';
 
 function Rectangle({
   shape, onShapeClick, activeTool, x, y, width, height, fill, stroke, strokeWidth, isSelected,
+  onTransformEnd, handleDragEnd
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -25,6 +26,9 @@ function Rectangle({
         ref={shapeRef}
         x={x || 100}
         y={y || 100}
+        scaleX={shape.scaleX}
+        scaleY={shape.scaleY}
+        rotation={shape.rotation}
         width={width || 100}
         height={height || 100}
         fill={fill || 'red'}
@@ -33,6 +37,8 @@ function Rectangle({
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
+        onTransformEnd={onTransformEnd}
+        onDragEnd={ handleDragEnd}
       />
 
       <Transformer
