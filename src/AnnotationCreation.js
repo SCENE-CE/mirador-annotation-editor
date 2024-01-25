@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, {Component, useEffect, useLayoutEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {
   Button, Paper, Grid, Popover, Divider,
@@ -38,6 +38,8 @@ import CursorIcon from './icons/Cursor';
 import HMSInput from './HMSInput';
 import ImageFormField from './ImageFormField';
 import { secondsToHMS } from './utils';
+import { set } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
 
 /** Extract time information from annotation target */
 function timeFromAnnoTarget(annotarget) {
@@ -134,6 +136,7 @@ function AnnotationCreation(props) {
       currentColorType: false,
       fillColor: null,
       image: { id: null },
+      imageEvent: null,
       lineWeightPopoverOpen: false,
       mediaVideo: null,
       popoverAnchorEl: null,
@@ -143,8 +146,24 @@ function AnnotationCreation(props) {
       ...annoState,
       valuetextTime: '',
       valueTime: [0, 1],
+      imageEvent: null,
     };
   });
+  const [scale, setScale] = useState(1);
+
+  console.log('AnnotationCreation', props.windowId);
+  let { height, width } = VideosReferences.get(props.windowId).ref.current;
+
+  useEffect(() => {
+    console.log('ResizeAC');
+  }, [{ height, width }]);
+
+  useLayoutEffect(() => {
+    console.log('Layout ResizeAC');
+  }, [{ height, width }]);
+
+
+
 
   // You can use useEffect for componentDidMount, componentDidUpdate, and componentWillUnmount
   useEffect(() => {
@@ -331,7 +350,8 @@ function AnnotationCreation(props) {
         ...prevState,
         activeTool: 'cursor',
       }));
-      submitForm(e);
+
+
       return;
     }
 
@@ -432,6 +452,32 @@ function AnnotationCreation(props) {
     }));
   };
 
+
+
+  /**  */
+
+  const addImage = (evt) => {
+    // toggle a modal to add an image
+    //
+
+
+
+    console.log('addImage');
+
+    const uuid=uuidv4();
+    const data={
+      uuid:uuid,
+      id:image?.id,
+    }
+
+    setState((prevState) => ({
+      ...prevState,
+      imageEvent: data,
+    }));
+
+
+  }
+
   /** */
   const setShapeProperties = (options) => new Promise(() => {
     if (options.fill) {
@@ -496,15 +542,65 @@ function AnnotationCreation(props) {
     valueTime[0] = tstart;
     valueTime[1] = tend;
   }
+
   const myVideo = VideosReferences.get(windowId)
   const videoDuration = myVideo.props.canvas.__jsonld.duration
+  const isVideoDataLoaded = mediaVideo && mediaVideo.video && !isNaN(mediaVideo.video.duration) && mediaVideo.video.duration > 0;
+
+
+  const videoref = VideosReferences.get(windowId);
+  const osdref = OSDReferences.get(windowId);
+  let overlay = null;
+  if (videoref) {
+    // console.log('videoref',videoref);
+    overlay = videoref.canvasOverlay
+  }
+  if (osdref) {
+    console.log('osdref', osdref);
+
+  }
+
+  const updateScale = (scale) => {
+    setScale( overlay.containerWidth / overlay.canvasWidth);
+  }
+
+
+
+
+
+  useEffect(() => {
+    console.log('scale',scale);
+
+  }, [overlay.containerWidth,overlay.canvasWidth]);
+
+
+
+  // stage.width(sceneWidth * scale);
+  // stage.height(sceneHeight * scale);
+  // stage.scale({ x: scale, y: scale });
+
+
   return (
+
+
+    // we need to get the width and height of the image to pass it to the annotation drawing component
+
+
     <CompanionWindow
       title={title ? title.value : 'New Annotation'}
       windowId={windowId}
       id={id}
     >
       <AnnotationDrawing
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: 'auto',
+
+          }}
+        scale={scale}
         activeTool={activeTool}
         annotation={annotation}
         fillColor={fillColor}
@@ -515,9 +611,13 @@ function AnnotationCreation(props) {
         windowId={windowId}
         player={mediaIsVideo ? VideosReferences.get(windowId) : OSDReferences.get(windowId)}
         /// we need to pass the width and height of the image to the annotation drawing component
-        width={1920}
-        height={1080}
+        width={overlay ? overlay.containerWidth : 1920}
+        height={overlay ? overlay.containerHeight : 1080}
+        orignalWidth={overlay ? overlay.canvasWidth : 1920}
+        orignalHeight={overlay ? overlay.canvasHeight : 1080}
         setShapeProperties={setShapeProperties}
+        updateScale={updateScale}
+        imageEvent={state.imageEvent}
         // TODO Ajouter du style pour que le Konva et la vidéo se superpose
       />
       <StyledForm
@@ -667,6 +767,9 @@ function AnnotationCreation(props) {
         </div>
         <div>
           <Grid container>
+            <Button onClick={addImage}>
+              Add Image
+            </Button>
             <Grid item xs={12}>
               <Typography variant="overline">
                 Image Content

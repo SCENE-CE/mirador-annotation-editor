@@ -9,11 +9,14 @@ import TextNode from './TextNode';
 import LineNode from './LineNode';
 import ArrowNode from './ArrowNode';
 import Polygon from './Polygon';
+import Freehand from './Freehand';
+import ImageShape from './Image';
 
 /** Loads Konva and display in function of their type */
 
 function ParentComponent({
   shapes, onShapeClick, selectedShapeId, activeTool,
+  scale, width, height,onTransformEnd,handleDragEnd
 }) {
   // TODO Simplify these state
   const [selectedShape, setSelectedShape] = useState(null);
@@ -40,7 +43,13 @@ function ParentComponent({
   };
 
   return (
-    <Layer>
+    <Layer
+    width={width}
+    height={height}
+    scaleX={scale}
+    scaleY={scale}
+    
+    >
       {shapes.map((shape, i) => {
      
         const isSelected = selectedShapeId === shape.id;
@@ -50,6 +59,7 @@ function ParentComponent({
               <Rectangle
                 {...{
                   ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                  onTransformEnd,handleDragEnd
                 }}
                 key={i}
               />
@@ -59,6 +69,7 @@ function ParentComponent({
               <TextNode
                 {...{
                   ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                  onTransformEnd,handleDragEnd
                 }}
                 key={i}
               />
@@ -68,15 +79,17 @@ function ParentComponent({
               <EllipseNode
                 {...{
                   ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                  onTransformEnd,handleDragEnd
                 }}
                 key={i}
               />
             );
           case 'freehand':
             return (
-              <FreeHand
+              <Freehand
                 {...{
                   ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                  onTransformEnd,handleDragEnd
                 }}
                 key={i}
               />
@@ -86,6 +99,7 @@ function ParentComponent({
               <Polygon
                 {...{
                   ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                  onTransformEnd,handleDragEnd
                 }}
                 key={i}
               />
@@ -99,12 +113,25 @@ function ParentComponent({
                      activeTool, 
                      isSelected, 
                      onShapeClick: handleShapeClick,
-                     shape
+                     shape,
+                     onTransformEnd,handleDragEnd
 
                   }}
                   key={i}
                 />
               );
+             
+          case 'image':
+            return (
+              <ImageShape
+                {...{
+                  ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                  onTransformEnd,handleDragEnd,
+                  src: shape.src,
+                }}
+                key={i}
+              />
+            );
           default:
             return null;
         }

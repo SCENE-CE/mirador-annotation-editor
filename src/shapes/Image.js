@@ -1,13 +1,14 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Rect, Transformer } from 'react-konva';
+import { Image, Transformer } from 'react-konva';
+import useImage from 'use-image';
 
-function Rectangle({
-  shape, onShapeClick, activeTool, x, y, width, height, fill, stroke, strokeWidth, isSelected,
-  onTransformEnd, handleDragEnd
+function ImageShape({
+  onShapeClick, shape, activeTool, isSelected, onTransformEnd, handleDragEnd
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
+  const [image] = useImage(shape.url);
 
   useEffect(() => {
     if (trRef.current) {
@@ -22,23 +23,19 @@ function Rectangle({
 
   return (
     <>
-      <Rect
+      <Image
         ref={shapeRef}
-        x={x || 100}
-        y={y || 100}
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
         rotation={shape.rotation}
-        width={width || 100}
-        height={height || 100}
-        fill={fill || 'red'}
-        stroke={stroke || 'black'}
-        strokeWidth={strokeWidth || 1}
+        x={shape.x}
+        y={shape.y}
+        image={image}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
         onTransformEnd={onTransformEnd}
-        onDragEnd={ handleDragEnd}
+        onDragEnd={handleDragEnd}
       />
 
       <Transformer
@@ -49,29 +46,21 @@ function Rectangle({
   );
 }
 
-Rectangle.propTypes = {
-  shape: PropTypes.object.isRequired,
+ImageShape.propTypes = {
   onShapeClick: PropTypes.func.isRequired,
+  shape: PropTypes.object.isRequired,
   activeTool: PropTypes.string.isRequired,
-  selectedShapeId: PropTypes.string,
+  isSelected: PropTypes.bool.isRequired,
   x: PropTypes.number,
   y: PropTypes.number,
-  width: PropTypes.number,
-  height: PropTypes.number,
-  fill: PropTypes.string,
-  stroke: PropTypes.string,
-  strokeWidth: PropTypes.number,
+ // src: PropTypes.string.isRequired,
+  onTransformEnd: PropTypes.func.isRequired,
+  handleDragEnd: PropTypes.func.isRequired,
 };
 
-Rectangle.defaultProps = {
-  selectedShapeId: null,
+ImageShape.defaultProps = {
   x: 100,
   y: 100,
-  width: 100,
-  height: 100,
-  fill: 'red',
-  stroke: 'black',
-  strokeWidth: 1,
 };
 
-export default Rectangle;
+export default ImageShape;
