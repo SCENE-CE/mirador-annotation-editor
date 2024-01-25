@@ -28,9 +28,7 @@ function ArrowNode({
     onShapeClick(shape);
   };
 
-  const ondragend = (e) => {
-    handleDragEnd(e);
-  }
+ 
  
   return (
     <>
@@ -53,7 +51,7 @@ function ArrowNode({
         pointerLength={shape.pointerLength}
         pointerWidth={shape.pointerWidth}
         onTransformEnd={onTransformEnd}
-        onDragEnd={ondragend}
+        onDragEnd={ handleDragEnd}
       />
 
       <Transformer
