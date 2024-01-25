@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, {Component, useEffect, useLayoutEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {
   Button, Paper, Grid, Popover, Divider,
@@ -145,6 +145,18 @@ function AnnotationCreation(props) {
       valueTime: [0, 1],
     };
   });
+  const [scale, setScale] = useState(1);
+
+  console.log('AnnotationCreation', props.windowId);
+  let { height, width } = VideosReferences.get(props.windowId).ref.current;
+
+  useEffect(() => {
+    console.log('ResizeAC');
+  }, [{ height, width }]);
+
+  useLayoutEffect(() => {
+    console.log('Layout ResizeAC');
+  }, [{ height, width }]);
 
   // You can use useEffect for componentDidMount, componentDidUpdate, and componentWillUnmount
   useEffect(() => {
@@ -331,8 +343,8 @@ function AnnotationCreation(props) {
         ...prevState,
         activeTool: 'cursor',
       }));
-    
-  
+
+
       return;
     }
 
@@ -513,11 +525,20 @@ function AnnotationCreation(props) {
 
   }
 
- 
+  const updateScale = (scale) => {
+    setScale( overlay.containerWidth / overlay.canvasWidth);
+  }
 
-  const scale = overlay.containerWidth / overlay.canvasWidth;
 
-  
+
+
+
+  useEffect(() => {
+    console.log('scale',scale);
+
+  }, [overlay.containerWidth,overlay.canvasWidth]);
+
+
 
   // stage.width(sceneWidth * scale);
   // stage.height(sceneHeight * scale);
@@ -542,9 +563,9 @@ function AnnotationCreation(props) {
           left: 0,
           width: '100%',
           height: 'auto',
-       
+
           }}
-        scale={scale}  
+        scale={scale}
         activeTool={activeTool}
         annotation={annotation}
         fillColor={fillColor}
@@ -560,6 +581,7 @@ function AnnotationCreation(props) {
         orignalWidth={overlay ? overlay.canvasWidth : 1920}
         orignalHeight={overlay ? overlay.canvasHeight : 1080}
         setShapeProperties={setShapeProperties}
+        updateScale={updateScale}
         // TODO Ajouter du style pour que le Konva et la vidéo se superpose
       />
       <StyledForm
