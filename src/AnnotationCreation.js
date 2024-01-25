@@ -221,7 +221,7 @@ function AnnotationCreation(props) {
     const timeEnd = newValueTime[1];
     updateTstart(timeStart);
     updateTend(timeEnd);
-    seekToTstart();
+    // seekToTstart();
     setValueTime(newValueTime);
   };
 
@@ -230,6 +230,8 @@ function AnnotationCreation(props) {
     setState((prevState) => ({
       ...prevState,
       tstart: value,
+      ...props.setSeekTo(value),
+      ...props.setCurrentTime(value)
     }));
   };
 
@@ -260,6 +262,7 @@ function AnnotationCreation(props) {
 
   // eslint-disable-next-line require-jsdoc
   const seekToTstart = () => {
+console.log('tstart : ',tstart)
     setState((prevState) => ({
       ...prevState,
       ...props.setSeekTo(prevState.tstart),
