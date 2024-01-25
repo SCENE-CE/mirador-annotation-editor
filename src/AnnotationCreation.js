@@ -1,4 +1,6 @@
-import React, {Component, useEffect, useLayoutEffect, useState} from 'react';
+import React, {
+  Component, useEffect, useLayoutEffect, useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import {
   Button, Paper, Grid, Popover, Divider,
@@ -23,7 +25,7 @@ import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 import TitleIcon from '@mui/icons-material/Title';
 import { SketchPicker } from 'react-color';
 import { styled } from '@mui/material/styles';
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid, v4 as uuidv4 } from 'uuid';
 import Slider from '@mui/material/Slider';
 import TextField from '@mui/material/TextField';
 import { exportStageSVG } from 'react-konva-to-svg';
@@ -31,6 +33,7 @@ import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import { set } from 'lodash';
 import AnnotationDrawing from './AnnotationDrawing';
 import TextEditor from './TextEditor';
 import WebAnnotation from './WebAnnotation';
@@ -38,8 +41,6 @@ import CursorIcon from './icons/Cursor';
 import HMSInput from './HMSInput';
 import ImageFormField from './ImageFormField';
 import { secondsToHMS } from './utils';
-import { set } from 'lodash';
-import { v4 as uuidv4 } from 'uuid';
 
 /** Extract time information from annotation target */
 function timeFromAnnoTarget(annotarget) {
@@ -142,28 +143,21 @@ function AnnotationCreation(props) {
       popoverAnchorEl: null,
       popoverLineWeightAnchorEl: null,
       textBody: '',
-      textEditorStateBustingKey: 0,
       ...annoState,
-      valuetextTime: '',
+      textEditorStateBustingKey: 0,
       valueTime: [0, 1],
-      imageEvent: null,
+      valuetextTime: '',
     };
   });
   const [scale, setScale] = useState(1);
 
-  console.log('AnnotationCreation', props.windowId);
-  let { height, width } = VideosReferences.get(props.windowId).ref.current;
+  const { height, width } = VideosReferences.get(props.windowId).ref.current;
 
   useEffect(() => {
-    console.log('ResizeAC');
   }, [{ height, width }]);
 
   useLayoutEffect(() => {
-    console.log('Layout ResizeAC');
   }, [{ height, width }]);
-
-
-
 
   // You can use useEffect for componentDidMount, componentDidUpdate, and componentWillUnmount
   useEffect(() => {
@@ -176,7 +170,6 @@ function AnnotationCreation(props) {
       // cleanup logic here
     };
   }, []); // Empty array means this effect runs once, similar to componentDidMount
-  // listen on window id ?
 
   /** */
   const handleImgChange = (newUrl, imgRef) => {
@@ -287,9 +280,6 @@ function AnnotationCreation(props) {
     }));
   };
 
-  // eslint-disable-next-line require-jsdoc
-  const valuetextTime = () => state.valueTime;
-
   /** */
   const openChooseColor = (e) => {
     setState((prevState) => ({
@@ -332,7 +322,7 @@ function AnnotationCreation(props) {
    * This image will be put in overlay of the iiif media
    */
   const getSvg = async () => {
-    const stage = window.Konva.stages.find((stage) => stage.attrs.id === props.windowId);
+    const stage = window.Konva.stages.find((s) => s.attrs.id === props.windowId);
     const svg = await exportStageSVG(stage); // TODO clean
     return svg;
   };
@@ -350,8 +340,6 @@ function AnnotationCreation(props) {
         ...prevState,
         activeTool: 'cursor',
       }));
-
-
       return;
     }
 
@@ -373,12 +361,9 @@ function AnnotationCreation(props) {
       textEditorStateBustingKey,
     } = state;
 
-    console.log('submitting form', state);
-
     // TODO rename variable for better comprenhension
     const svg = await getSvg();
 
-    console.log('svg', svg);
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
 
@@ -386,7 +371,6 @@ function AnnotationCreation(props) {
     canvases.forEach(async (canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
       const anno = new WebAnnotation({
-        title,
         body,
         canvasId: canvas.id,
         fragsel: {
@@ -398,9 +382,8 @@ function AnnotationCreation(props) {
         manifestId: canvas.options.resource.id,
         svg,
         tags,
+        title,
       }).toJson();
-
-      console.log(anno);
 
       if (annotation) {
         storageAdapter.update(anno)
@@ -417,12 +400,12 @@ function AnnotationCreation(props) {
 
     // TODO check if we need other thing in state
     setState({
-      title: '',
       image: { id: null },
       svg: null,
       tend: 0,
       textBody: '',
       textEditorStateBustingKey: textEditorStateBustingKey + 1,
+      title: '',
       tstart: 0,
       xywh: null,
     });
@@ -452,31 +435,20 @@ function AnnotationCreation(props) {
     }));
   };
 
-
-
-  /**  */
-
-  const addImage = (evt) => {
-    // toggle a modal to add an image
-    //
-
-
-
-    console.log('addImage');
-
-    const uuid=uuidv4();
-    const data={
-      uuid:uuid,
-      id:image?.id,
-    }
+  /**
+  *
+  */
+  const addImage = () => {
+    const data = {
+      uuid: uuidv4(),
+      id: image?.id,
+    };
 
     setState((prevState) => ({
       ...prevState,
       imageEvent: data,
     }));
-
-
-  }
+  };
 
   /** */
   const setShapeProperties = (options) => new Promise(() => {
@@ -543,48 +515,34 @@ function AnnotationCreation(props) {
     valueTime[1] = tend;
   }
 
-  const myVideo = VideosReferences.get(windowId)
-  const videoDuration = myVideo.props.canvas.__jsonld.duration
-  const isVideoDataLoaded = mediaVideo && mediaVideo.video && !isNaN(mediaVideo.video.duration) && mediaVideo.video.duration > 0;
-
+  const myVideo = VideosReferences.get(windowId);
+  const videoDuration = myVideo.props.canvas.__jsonld.duration;
 
   const videoref = VideosReferences.get(windowId);
   const osdref = OSDReferences.get(windowId);
   let overlay = null;
   if (videoref) {
-    // console.log('videoref',videoref);
-    overlay = videoref.canvasOverlay
+    overlay = videoref.canvasOverlay;
   }
   if (osdref) {
     console.log('osdref', osdref);
-
   }
 
   const updateScale = (scale) => {
-    setScale( overlay.containerWidth / overlay.canvasWidth);
-  }
-
-
-
-
+    setScale(overlay.containerWidth / overlay.canvasWidth);
+  };
 
   useEffect(() => {
-    console.log('scale',scale);
-
-  }, [overlay.containerWidth,overlay.canvasWidth]);
-
-
+    console.log('scale', scale);
+  }, [overlay.containerWidth, overlay.canvasWidth]);
 
   // stage.width(sceneWidth * scale);
   // stage.height(sceneHeight * scale);
   // stage.scale({ x: scale, y: scale });
 
-
   return (
 
-
-    // we need to get the width and height of the image to pass it to the annotation drawing component
-
+  // we need to get the width and height of the image to pass it to the annotation drawing component
 
     <CompanionWindow
       title={title ? title.value : 'New Annotation'}
@@ -599,7 +557,7 @@ function AnnotationCreation(props) {
           width: '100%',
           height: 'auto',
 
-          }}
+        }}
         scale={scale}
         activeTool={activeTool}
         annotation={annotation}
@@ -651,23 +609,23 @@ function AnnotationCreation(props) {
                 <Typography id="range-slider" variant="overline">
                   Display period
                 </Typography>
-                  <div>
-                    <Typography>
-                      {videoDuration}
-                    </Typography>
-                    <Slider
-                      value={valueTime}
-                      onChange={handleChangeTime}
-                      valueLabelDisplay="auto"
-                      aria-labelledby="range-slider"
-                      max={Math.round(videoDuration)}
-                      color="secondary"
-                      windowid={windowId}
-                      sx={{
-                        color: 'rgba(1, 0, 0, 0.38)',
-                      }}
-                    />
-                  </div>
+                <div>
+                  <Typography>
+                    {videoDuration}
+                  </Typography>
+                  <Slider
+                    value={valueTime}
+                    onChange={handleChangeTime}
+                    valueLabelDisplay="auto"
+                    aria-labelledby="range-slider"
+                    max={Math.round(videoDuration)}
+                    color="secondary"
+                    windowid={windowId}
+                    sx={{
+                      color: 'rgba(1, 0, 0, 0.38)',
+                    }}
+                  />
+                </div>
               </Grid>
               <div style={{
                 alignContent: 'center',
