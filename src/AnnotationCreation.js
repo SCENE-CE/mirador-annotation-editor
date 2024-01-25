@@ -143,6 +143,7 @@ function AnnotationCreation(props) {
       ...annoState,
       valuetextTime: '',
       valueTime: [0, 1],
+      videoDuration: 0,
     };
   });
 
@@ -150,9 +151,8 @@ function AnnotationCreation(props) {
   useEffect(() => {
     // componentDidMount logic
     const mediaVideo = VideosReferences.get(props.windowId);
-    setState((prevState) => ({ ...prevState, mediaVideo }));
-
-    // componentWillUnmount logic (if needed)
+    const videoDuration = mediaVideo.props.canvas.__jsonld.duration
+    setState((prevState) => ({ ...prevState, mediaVideo, videoDuration, tend: videoDuration}));
     return () => {
       // cleanup logic here
     };
@@ -486,8 +486,8 @@ function AnnotationCreation(props) {
     textEditorStateBustingKey,
     image,
     valueTime,
-    mediaVideo,
     title,
+      videoDuration,
   } = state;
 
   // TODO : Vérifier ce code, c'est étrange de comprarer un typeof à une chaine de caractère.
@@ -496,8 +496,6 @@ function AnnotationCreation(props) {
     valueTime[0] = tstart;
     valueTime[1] = tend;
   }
-  const myVideo = VideosReferences.get(windowId)
-  const videoDuration = myVideo.props.canvas.__jsonld.duration
   return (
     <CompanionWindow
       title={title ? title.value : 'New Annotation'}
