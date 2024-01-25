@@ -222,7 +222,6 @@ function AnnotationCreation(props) {
     updateTstart(timeStart);
     updateTend(timeEnd);
     seekToTstart();
-    seekToTend();
     setValueTime(newValueTime);
   };
 
@@ -487,7 +486,7 @@ function AnnotationCreation(props) {
     image,
     valueTime,
     title,
-      videoDuration,
+    videoDuration,
   } = state;
 
   // TODO : Vérifier ce code, c'est étrange de comprarer un typeof à une chaine de caractère.
@@ -551,9 +550,6 @@ function AnnotationCreation(props) {
                   Display period
                 </Typography>
                   <div>
-                    <Typography>
-                      {videoDuration}
-                    </Typography>
                     <Slider
                       value={valueTime}
                       onChange={handleChangeTime}
@@ -590,33 +586,33 @@ function AnnotationCreation(props) {
                     flexDirection: 'column',
                   }}
                   >
-                    <div>
+                    <ToggleButton
+                        value="true"
+                        title="Set current time"
+                        size="small"
+                        onClick={setTstartNow}
+                        style={{
+                          border: 'none',
+                          height: '30px',
+                          margin: 'auto',
+                          marginLeft: '0',
+                          marginRight: '0',
+                          letterSpacing: 'none',
+                          lineHeight: '0',
+                          padding: '0',
+                        }}
+                    >
                       <p style={{
-                        fontSize: '15px',
+                        fontSize: '8px',
                         margin: 0,
                         minWidth: '40px',
                       }}
                       >
                         Start
                       </p>
-                    </div>
-                    <ToggleButton
-                      value="true"
-                      title="Set current time"
-                      size="small"
-                      onClick={setTstartNow}
-                      style={{
-                        border: 'none',
-                        height: '30px',
-                        margin: 'auto',
-                        marginLeft: '0',
-                        marginRight: '5px',
-                      }}
-                    >
-                      <Alarm fontSize="small" />
                     </ToggleButton>
                   </div>
-                  <HMSInput seconds={tstart} onChange={updateTstart} />
+                  <HMSInput seconds={tstart} onChange={updateTstart}/>
                 </div>
                 <div style={{
                   border: '1px solid rgba(0, 0, 0, 0.12)',
@@ -632,33 +628,33 @@ function AnnotationCreation(props) {
                     flexDirection: 'column',
                   }}
                   >
-                    <div>
+                    <ToggleButton
+                        value="true"
+                        title="Set current time"
+                        size="small"
+                        onClick={setTendNow}
+                        style={{
+                          border: 'none',
+                          height: '30px',
+                          margin: 'auto',
+                          marginLeft: '0',
+                          marginRight: '0',
+                          letterSpacing: 'none',
+                          lineHeight: '0',
+                          padding: '0',
+                        }}
+                    >
                       <p style={{
-                        fontSize: '15px',
+                        fontSize: '8px',
                         margin: 0,
                         minWidth: '40px',
                       }}
                       >
                         End
                       </p>
-                    </div>
-                    <ToggleButton
-                      value="true"
-                      title="Set current time"
-                      size="small"
-                      onClick={setTendNow}
-                      style={{
-                        border: 'none',
-                        height: '30px',
-                        margin: 'auto',
-                        marginLeft: '0',
-                        marginRight: '5px',
-                      }}
-                    >
-                      <Alarm fontSize="small" />
                     </ToggleButton>
                   </div>
-                  <HMSInput seconds={tend} onChange={updateTend} />
+                  <HMSInput seconds={tend} onChange={updateTend}/>
                 </div>
               </div>
             </>
@@ -667,7 +663,7 @@ function AnnotationCreation(props) {
         <div>
           <Grid container>
             <Grid item xs={12}>
-              <Typography variant="overline">
+            <Typography variant="overline">
                 Image Content
               </Typography>
             </Grid>
