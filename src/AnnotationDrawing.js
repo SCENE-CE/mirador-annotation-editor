@@ -34,6 +34,29 @@ function AnnotationDrawing(props) {
     props.updateScale( overlay.containerWidth / overlay.canvasWidth);
   }, [{ height, width }]);
 
+
+  useEffect(() => {
+    console.log('props.imageEvent', props.imageEvent);
+
+    if(!props.imageEvent) return;
+    if(!props.imageEvent.id) return;
+    const shape = {
+      url: props.imageEvent.id,
+      id: uuidv4(),
+      type: 'image',
+      x: 0,
+      y: 0,
+      scaleX: 1,
+      scaleY: 1,
+      rotation: 0,
+    };
+
+    setShapes([...shapes, shape]);
+    setCurrentShape(shape);
+
+
+  }, [props.imageEvent]);
+
   // useEffect(() => {
   //   if (containerRef.current) {
   //     setDimensions({

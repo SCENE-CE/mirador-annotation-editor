@@ -40,6 +40,7 @@ import HMSInput from './HMSInput';
 import ImageFormField from './ImageFormField';
 import { secondsToHMS } from './utils';
 import { set } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
 
 /** Extract time information from annotation target */
 function timeFromAnnoTarget(annotarget) {
@@ -146,6 +147,7 @@ function AnnotationCreation(props) {
       ...annoState,
       valuetextTime: '',
       valueTime: [0, 1],
+      imageEvent: null,
     };
   });
   const [scale, setScale] = useState(1);
@@ -463,10 +465,15 @@ function AnnotationCreation(props) {
 
     console.log('addImage');
     
+    const uuid=uuidv4();
+    const data={
+      uuid:uuid,
+      id:image?.id,
+    }
 
     setState((prevState) => ({
       ...prevState,
-      imageEvent: image,
+      imageEvent: data,
     }));
 
 
@@ -608,6 +615,7 @@ function AnnotationCreation(props) {
         orignalHeight={overlay ? overlay.canvasHeight : 1080}
         setShapeProperties={setShapeProperties}
         updateScale={updateScale}
+        imageEvent={state.imageEvent}
         // TODO Ajouter du style pour que le Konva et la vidéo se superpose
       />
       <StyledForm

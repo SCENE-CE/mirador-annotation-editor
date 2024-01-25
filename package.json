@@ -35,7 +35,8 @@
     "react-color": "^2.18.1",
     "react-konva": ">=17.0.1-3 <18.0.0",
     "react-konva-to-svg": "^1.0.2",
-    "react-resize-observer": "^1.1.1"
+    "react-resize-observer": "^1.1.1",
+    "use-image": "^1.1.1"
   },
   "peerDependencies": {
     "lodash": "^4.17.11",

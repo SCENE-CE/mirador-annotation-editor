@@ -4,11 +4,11 @@ import { Image, Transformer } from 'react-konva';
 import useImage from 'use-image';
 
 function ImageShape({
-  onShapeClick, shape, activeTool, isSelected, x, y, src, onTransformEnd, handleDragEnd
+  onShapeClick, shape, activeTool, isSelected, onTransformEnd, handleDragEnd
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
-  const [image] = useImage(src);
+  const [image] = useImage(shape.url);
 
   useEffect(() => {
     if (trRef.current) {
@@ -53,7 +53,7 @@ ImageShape.propTypes = {
   isSelected: PropTypes.bool.isRequired,
   x: PropTypes.number,
   y: PropTypes.number,
-  src: PropTypes.string.isRequired,
+ // src: PropTypes.string.isRequired,
   onTransformEnd: PropTypes.func.isRequired,
   handleDragEnd: PropTypes.func.isRequired,
 };

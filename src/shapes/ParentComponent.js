@@ -10,6 +10,7 @@ import LineNode from './LineNode';
 import ArrowNode from './ArrowNode';
 import Polygon from './Polygon';
 import Freehand from './Freehand';
+import ImageShape from './Image';
 
 /** Loads Konva and display in function of their type */
 
@@ -119,6 +120,18 @@ function ParentComponent({
                   key={i}
                 />
               );
+             
+          case 'image':
+            return (
+              <ImageShape
+                {...{
+                  ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
+                  onTransformEnd,handleDragEnd,
+                  src: shape.src,
+                }}
+                key={i}
+              />
+            );
           default:
             return null;
         }
