@@ -225,12 +225,9 @@ function AnnotationDrawing(props) {
             width: 1,
             x: pos.x,
             y: pos.y,
-          };
-
             scaleX: 1,
             scaleY: 1,
             rotation: 0,
-
           };
           setIsDrawing(true);
 
