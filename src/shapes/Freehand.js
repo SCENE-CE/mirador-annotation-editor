@@ -26,14 +26,14 @@ function Freehand({
    
         onShapeClick(shape);
     };
-
+    
+   
     return (
 
         <>
             <Group
                 ref={shapeRef}
-                // width={ 1920}
-                // height={1080}
+             
                 // x={ 0}
                 // y={ 0}
                 onClick={handleClick}
@@ -43,6 +43,8 @@ function Freehand({
                 rotation={shape.rotation}
                 x={shape.x}
                 y={shape.y}
+                width={shape.width || 1920}
+                height={shape.height || 1080}
                 onDragEnd={ handleDragEnd}
             
             >

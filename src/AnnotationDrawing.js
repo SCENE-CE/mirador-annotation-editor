@@ -421,10 +421,10 @@ function AnnotationDrawing(props) {
 
           const shape = { ...currentShape };
 
-          const lastpoints = shape.lines[shape.lines.length - 1].points;
+      
 
           shape.lines.push({
-            points: [lastpoints[2].x, lastpoints[2].y, pos.x, pos.y],
+            points: [pos.x, pos.y, pos.x, pos.y],
             stroke: props.strokeColor,
             strokeWidth: props.strokeWidth,
           });
