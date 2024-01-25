@@ -1,10 +1,11 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button, Paper, Grid, Popover, Divider,
   MenuList, MenuItem, ClickAwayListener,
 } from '@mui/material';
 import { Alarm, LastPage } from '@mui/icons-material';
+
 import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -38,6 +39,7 @@ import CursorIcon from './icons/Cursor';
 import HMSInput from './HMSInput';
 import ImageFormField from './ImageFormField';
 import { secondsToHMS } from './utils';
+import { set } from 'lodash';
 
 /** Extract time information from annotation target */
 function timeFromAnnoTarget(annotarget) {
@@ -134,6 +136,7 @@ function AnnotationCreation(props) {
       currentColorType: false,
       fillColor: null,
       image: { id: null },
+      imageEvent: null,
       lineWeightPopoverOpen: false,
       mediaVideo: null,
       popoverAnchorEl: null,
@@ -145,6 +148,9 @@ function AnnotationCreation(props) {
       valueTime: [0, 1],
     };
   });
+
+
+
 
   // You can use useEffect for componentDidMount, componentDidUpdate, and componentWillUnmount
   useEffect(() => {
@@ -331,8 +337,8 @@ function AnnotationCreation(props) {
         ...prevState,
         activeTool: 'cursor',
       }));
-    
-  
+
+
       return;
     }
 
@@ -433,6 +439,27 @@ function AnnotationCreation(props) {
     }));
   };
 
+
+
+  /**  */
+
+  const addImage = (evt) => {
+    // toggle a modal to add an image
+    //
+
+
+
+    console.log('addImage');
+    
+
+    setState((prevState) => ({
+      ...prevState,
+      imageEvent: image,
+    }));
+
+
+  }
+
   /** */
   const setShapeProperties = (options) => new Promise(() => {
     if (options.fill) {
@@ -499,25 +526,24 @@ function AnnotationCreation(props) {
   }
   const isVideoDataLoaded = mediaVideo && mediaVideo.video && !isNaN(mediaVideo.video.duration) && mediaVideo.video.duration > 0;
 
-  console.log('VideosReferences.get(windowId)', VideosReferences.get(windowId));
 
-  const videoref=VideosReferences.get(windowId);
-  const osdref=OSDReferences.get(windowId);
-  let overlay= null;
-  if(videoref){
-   // console.log('videoref',videoref);
-    overlay=videoref.canvasOverlay
+  const videoref = VideosReferences.get(windowId);
+  const osdref = OSDReferences.get(windowId);
+  let overlay = null;
+  if (videoref) {
+    // console.log('videoref',videoref);
+    overlay = videoref.canvasOverlay
   }
-  if(osdref){
-    console.log('osdref',osdref);
+  if (osdref) {
+    console.log('osdref', osdref);
 
   }
 
- 
+
 
   const scale = overlay.containerWidth / overlay.canvasWidth;
 
-  
+
 
   // stage.width(sceneWidth * scale);
   // stage.height(sceneHeight * scale);
@@ -542,9 +568,9 @@ function AnnotationCreation(props) {
           left: 0,
           width: '100%',
           height: 'auto',
-       
-          }}
-        scale={scale}  
+
+        }}
+        scale={scale}
         activeTool={activeTool}
         annotation={annotation}
         fillColor={fillColor}
@@ -560,7 +586,8 @@ function AnnotationCreation(props) {
         orignalWidth={overlay ? overlay.canvasWidth : 1920}
         orignalHeight={overlay ? overlay.canvasHeight : 1080}
         setShapeProperties={setShapeProperties}
-        // TODO Ajouter du style pour que le Konva et la vidéo se superpose
+        imageEvent={state.imageEvent}
+      // TODO Ajouter du style pour que le Konva et la vidéo se superpose
       />
       <StyledForm
         onSubmit={submitForm}
@@ -715,6 +742,9 @@ function AnnotationCreation(props) {
         </div>
         <div>
           <Grid container>
+            <Button onClick={addImage}>
+              Add Image
+            </Button>
             <Grid item xs={12}>
               <Typography variant="overline">
                 Image Content

@@ -1,14 +1,14 @@
-/* eslint-disable require-jsdoc */
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Ellipse, Transformer } from 'react-konva';
+import { Image, Transformer } from 'react-konva';
+import useImage from 'use-image';
 
-function EllipseNode({
-  onShapeClick, shape, activeTool, isSelected, x, y, width, height, fill, stroke, strokeWidth,
-  onTransformEnd, handleDragEnd
+function ImageShape({
+  onShapeClick, shape, activeTool, isSelected, x, y, src, onTransformEnd, handleDragEnd
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
+  const [image] = useImage(src);
 
   useEffect(() => {
     if (trRef.current) {
@@ -23,24 +23,19 @@ function EllipseNode({
 
   return (
     <>
-      <Ellipse
+      <Image
         ref={shapeRef}
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
         rotation={shape.rotation}
         x={shape.x}
         y={shape.y}
-        width={shape.width}
-        height={shape.height}
-    
-        fill={fill || 'red'}
-        stroke={stroke || 'black'}
-        strokeWidth={strokeWidth || 1}
+        image={image}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
         onTransformEnd={onTransformEnd}
-        onDragEnd={ handleDragEnd}
+        onDragEnd={handleDragEnd}
       />
 
       <Transformer
@@ -51,29 +46,21 @@ function EllipseNode({
   );
 }
 
-EllipseNode.propTypes = {
+ImageShape.propTypes = {
   onShapeClick: PropTypes.func.isRequired,
   shape: PropTypes.object.isRequired,
   activeTool: PropTypes.string.isRequired,
-  selectedShapeId: PropTypes.string,
+  isSelected: PropTypes.bool.isRequired,
   x: PropTypes.number,
   y: PropTypes.number,
-  width: PropTypes.number,
-  height: PropTypes.number,
-  fill: PropTypes.string,
-  stroke: PropTypes.string,
-  strokeWidth: PropTypes.number,
+  src: PropTypes.string.isRequired,
+  onTransformEnd: PropTypes.func.isRequired,
+  handleDragEnd: PropTypes.func.isRequired,
 };
 
-EllipseNode.defaultProps = {
-  selectedShapeId: null,
+ImageShape.defaultProps = {
   x: 100,
   y: 100,
-  width: 100,
-  height: 100,
-  fill: 'red',
-  stroke: 'black',
-  strokeWidth: 1,
 };
 
-export default EllipseNode;
+export default ImageShape;

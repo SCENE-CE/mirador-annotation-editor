@@ -37,6 +37,14 @@ function AnnotationDrawing(props) {
   const { fillColor, strokeColor, strokeWidth } = props;
 
 
+  useEffect(() => {
+    console.log('props.imageEvent', props.imageEvent);
+
+    
+
+  }, [props.imageEvent]);
+
+
   /** Debug function facility */
   const debug = (command) => {
     // if(config.debugMode) {
