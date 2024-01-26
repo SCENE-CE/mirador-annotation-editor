@@ -30,7 +30,7 @@ class CanvasAnnotationsWrapper extends Component {
   render() {
     const {
       addCompanionWindow, annotationsOnCanvases, canvases, config, receiveAnnotation,
-      switchToSingleCanvasView, TargetComponent, targetProps, windowViewType, containerRef,
+      switchToSingleCanvasView, TargetComponent, targetProps, windowViewType, containerRef,closeCompanionWindow
     } = this.props;
     const { singleCanvasDialogOpen } = this.state;
 
@@ -51,6 +51,7 @@ class CanvasAnnotationsWrapper extends Component {
           toggleSingleCanvasDialogOpen: this.toggleSingleCanvasDialogOpen,
           windowId: targetProps.windowId,
           windowViewType,
+          closeCompanionWindow
         }}
       >
         <TargetComponent
@@ -92,6 +93,8 @@ CanvasAnnotationsWrapper.propTypes = {
   ]).isRequired,
   targetProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   windowViewType: PropTypes.string.isRequired,
+  closeCompanionWindow: PropTypes.func.isRequired,
+
 };
 
 CanvasAnnotationsWrapper.defaultProps = {
@@ -117,6 +120,7 @@ function mapStateToProps(state, { targetProps: { windowId } }) {
     config: state.config,
     windowViewType: getWindowViewType(state, { windowId }),
   };
+
 }
 
 /** */
@@ -130,6 +134,9 @@ const mapDispatchToProps = (dispatch, props) => ({
   switchToSingleCanvasView: () => dispatch(
     actions.setWindowViewType(props.targetProps.windowId, 'single'),
   ),
+  closeCompanionWindow: (id) => dispatch(
+      actions.removeCompanionWindow(props.targetProps.windowId, id),
+  )
 });
 
 export default {

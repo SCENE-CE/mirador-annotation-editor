@@ -6,6 +6,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import flatten from 'lodash/flatten';
 import AnnotationActionsContext from './AnnotationActionsContext';
+import * as actions from "mirador/dist/es/src/state/actions";
 
 /** */
 class CanvasListItem extends Component {
@@ -15,6 +16,9 @@ class CanvasListItem extends Component {
 
     this.state = {
       isHovering: false,
+      isEditAnnotationPanelOpen: false,
+      id: "",
+      payload:{}
     };
 
     this.handleMouseHover = this.handleMouseHover.bind(this);
@@ -37,7 +41,7 @@ class CanvasListItem extends Component {
   /** */
   handleEdit() {
     const {
-      addCompanionWindow, canvases, annotationsOnCanvases,
+      addCompanionWindow, canvases, annotationsOnCanvases,closeCompanionWindow
     } = this.context;
     const { annotationid } = this.props;
     let annotation;
@@ -51,10 +55,28 @@ class CanvasListItem extends Component {
       }
       return (annotation);
     });
-    addCompanionWindow('annotationCreation', {
+    console.log('closeCompanionWindow',closeCompanionWindow)
+    console.log('this props', this.props)
+    console.log('this context', this.context)
+    if(!this.state.isEditAnnotationPanelOpen){
+    const myAnnotationPannel = addCompanionWindow('annotationCreation', {
       annotationid,
       position: 'right',
     });
+    this.setState({isEditAnnotationPanelOpen:true})
+    this.setState({id: myAnnotationPannel.id})
+    this.setState({payload: myAnnotationPannel.payload})
+    }else{
+      closeCompanionWindow(this.state.id)
+      this.setState({creationAnnotationIsOpen: false})
+      const myAnnotationPannel = addCompanionWindow('annotationCreation', {
+        annotationid,
+        position: 'right',
+      });
+      this.setState({isEditAnnotationPanelOpen:true})
+      this.setState({id: myAnnotationPannel.id})
+      this.setState({payload: myAnnotationPannel.payload})
+    }
   }
 
   /** */
@@ -137,7 +159,9 @@ CanvasListItem.propTypes = {
     PropTypes.func,
     PropTypes.node,
   ]).isRequired,
+  closeCompanionWindow: PropTypes.func.isRequired,
 };
+
 
 CanvasListItem.contextType = AnnotationActionsContext;
 
