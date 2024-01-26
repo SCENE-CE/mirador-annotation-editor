@@ -4,18 +4,15 @@ import React, {
 } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import {
-  Stage, Layer, Rect, Ellipse, Arrow, Text, Transformer, Group,
-} from 'react-konva';
+import { Stage } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
-import ParentComponent from './AnnotationForm/KonvaDrawing/shapes/ParentComponent';
+import ParentComponent from './KonvaDrawing/shapes/ParentComponent';
 
 /** All the stuff to draw on the canvas */
-
 function AnnotationDrawing(props) {
   // console.log('AnnotationDrawing props', props);
   const [shapes, setShapes] = useState([]);

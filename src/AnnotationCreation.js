@@ -9,33 +9,12 @@ import { exportStageSVG } from 'react-konva-to-svg';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
-import AnnotationDrawing from './AnnotationDrawing';
+import AnnotationDrawing from './annotationForm/AnnotationDrawing';
 import WebAnnotation from './WebAnnotation';
 import { secondsToHMS } from './utils';
-import AnnotationFormContent from './AnnotationForm/AnnotationFormContent';
-import AnnotationFormTime from './AnnotationForm/AnnotationFormTime';
-import AnnotationFormDrawing from './AnnotationForm/AnnotationFormDrawing';
-
-/** Extract time information from annotation target */
-function timeFromAnnoTarget(annotarget) {
-  console.info('TODO proper time extraction from: ', annotarget);
-  // TODO w3c media fragments: t=,10 t=5,
-  const r = /t=([0-9.]+),([0-9.]+)/.exec(annotarget);
-  if (!r || r.length !== 3) {
-    return [0, 0];
-  }
-  return [Number(r[1]), Number(r[2])];
-}
-
-/** Extract xywh from annotation target */
-function geomFromAnnoTarget(annotarget) {
-  console.info('TODO proper xywh extraction from: ', annotarget);
-  const r = /xywh=((-?[0-9]+,?)+)/.exec(annotarget);
-  if (!r || r.length !== 3) {
-    return '';
-  }
-  return r[1];
-}
+import AnnotationFormContent from './annotationForm/AnnotationFormContent';
+import AnnotationFormTime from './annotationForm/AnnotationFormTime';
+import AnnotationFormDrawing from './annotationForm/AnnotationFormDrawing';
 
 /** Component for creating annotations.
  * Display in companion window when a manifest is open and an annoation created or edited */
@@ -485,7 +464,6 @@ function AnnotationCreation(props) {
           </Button>
         </div>
       </StyledForm>
-
     </CompanionWindow>
   );
 }
