@@ -114,13 +114,14 @@ function AnnotationCreation(props) {
       }
     }
 
+    // TODO add default values from config
     const toolState = {
       activeTool: 'cursor',
       closedMode: 'closed',
       colorPopoverOpen: false,
       currentColorType: false,
-      fillColor: null,
-      strokeColor: '#00BFFF',
+      fillColor: 'black',
+      strokeColor: 'green',
       strokeWidth: 3,
       ...(props.config.annotation.defaults || {}),
     };
@@ -135,7 +136,6 @@ function AnnotationCreation(props) {
       activeTool: 'cursor',
       closedMode: 'closed',
       currentColorType: false,
-      fillColor: null,
       image: { id: null },
       imageEvent: null,
       lineWeightPopoverOpen: false,
@@ -145,8 +145,8 @@ function AnnotationCreation(props) {
       textBody: '',
       ...annoState,
       textEditorStateBustingKey: 0,
-      valueTime: [0, 1],
       valuetextTime: '',
+      valueTime: [0, 1],
     };
   });
   const [scale, setScale] = useState(1);

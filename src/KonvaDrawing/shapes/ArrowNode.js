@@ -32,6 +32,7 @@ function ArrowNode({
         x={shape.x}
         y={shape.y}
         stroke={shape.stroke}
+        strokeWidth={shape.strokeWidth}
         points={shape.points}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}

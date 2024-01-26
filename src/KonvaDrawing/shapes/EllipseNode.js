@@ -32,7 +32,6 @@ function EllipseNode({
         y={shape.y}
         width={shape.width}
         height={shape.height}
-    
         fill={fill || 'red'}
         stroke={stroke || 'black'}
         strokeWidth={strokeWidth || 1}

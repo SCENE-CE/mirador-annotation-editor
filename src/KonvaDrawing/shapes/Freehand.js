@@ -40,10 +40,10 @@ function Freehand({
         {shape.lines.map((line, i) => (
           <Line
             key={i}
-            fill={shape.fill || 'black'}
+            fill={shape.fill}
             points={line.points}
-            stroke={shape.stroke || 'black'}
-            strokeWidth={15}
+            stroke={shape.stroke}
+            strokeWidth={shape.strokeWidth}
             tension={0.5}
             lineCap="round"
             lineJoin="round"

@@ -358,8 +358,9 @@ function AnnotationDrawing(props) {
           arrowShape.pointerWidth = currentShape.pointerWidth;
           arrowShape.x = currentShape.x;
           arrowShape.y = currentShape.y;
-          arrowShape.fill = props.fillColor || 'red';
-          arrowShape.stroke = props.fillColor || 'red';
+          arrowShape.fill = props.fillColor;
+          arrowShape.stroke = props.strokeColor;
+          arrowShape.strokeWidth = props.strokeWidth;
           setCurrentShape(arrowShape);
           updateCurrentShapeInShapes();
           break;
