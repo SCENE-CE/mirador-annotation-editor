@@ -480,8 +480,8 @@ function AnnotationCreation(props) {
         />
         )}
         <AnnotationFormDrawing
-          {...toolState}
-          setToolState={setToolState}
+          toolState={toolState}
+          updateToolState={setToolState}
           handleImgChange={handleImgChange}
         />
         <div>

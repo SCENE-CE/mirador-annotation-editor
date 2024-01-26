@@ -42,7 +42,7 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
 }));
 
-function AnnotationFormDrawing({ activeTool, closedMode, image, handleImgChange, lineWeightPopoverOpen, popoverLineWeightAnchorEl, stroke, strokeWidth, colorPopoverOpen, popoverAnchorEl, currentColorType, ...props }) {
+function AnnotationFormDrawing( { updateToolState, toolState, handleImgChange }) {
  /* const [state, setState] = useState({
     activeTool: 'cursor',
     closedMode: 'closed',
@@ -56,73 +56,73 @@ function AnnotationFormDrawing({ activeTool, closedMode, image, handleImgChange,
 
   /** */
   const openChooseLineWeight = (e) => {
-    setState((prevState) => ({
-      ...prevState,
+    updateToolState({
+      ...toolState,
       lineWeightPopoverOpen: true,
       popoverLineWeightAnchorEl: e.currentTarget,
-    }));
+    });
   };
 
 
 
   /** Close color popover window */
   const closeChooseColor = (e) => {
-    setState((prevState) => ({
-      ...prevState,
+    updateToolState({
+      ...toolState,
       colorPopoverOpen: false,
       currentColorType: null,
       popoverAnchorEl: null,
-    }));
+    });
   };
 
   /** Update strokecolor */
   const updateStrokeColor = (color) => {
-    setState((prevState) => ({
-      ...prevState,
-      [prevState.currentColorType]: color.hex,
-    }));
+    updateToolState({
+      ...toolState,
+      currentColorType: color.hex,
+    });
   };
   /** */
   const openChooseColor = (e) => {
-    setState((prevState) => ({
-      ...prevState,
+    updateToolState({
+      ...toolState,
       colorPopoverOpen: true,
       currentColorType: e.currentTarget.value,
       popoverAnchorEl: e.currentTarget,
-    }));
+    });
   };
 
   /** */
   const handleCloseLineWeight = (e) => {
-    setState((prevState) => ({
-      ...prevState,
+    updateToolState({
+      ...toolState,
       lineWeightPopoverOpen: false,
       popoverLineWeightAnchorEl: null,
-    }));
+    });
   };
 
   /** */
   const handleLineWeightSelect = (e) => {
-    setState((prevState) => ({
-      ...prevState,
+    updateToolState({
+      ...toolState,
       lineWeightPopoverOpen: false,
       popoverLineWeightAnchorEl: null,
       strokeWidth: e.currentTarget.value,
-    }));
+    });
   };
 
   const changeTool = (e, tool) => {
-    setState((prevState) => ({
-      ...prevState,
+    updateToolState({
+      ...toolState,
       activeTool: tool,
-    }));
+    });
   };
 
   const changeClosedMode = (e) => {
-    setState((prevState) => ({
-      ...prevState,
+    updateToolState({
+      ...toolState,
       closedMode: e.currentTarget.value,
-    }));
+    });
   };
 
   /**
@@ -134,11 +134,24 @@ function AnnotationFormDrawing({ activeTool, closedMode, image, handleImgChange,
       id: image?.id,
     };
 
-    setState((prevState) => ({
-      ...prevState,
+    updateToolState({
+      ...toolState,
       imageEvent: data,
-    }));
+    });
   };
+
+  const {
+    activeTool,
+    closedMode,
+    image,
+    lineWeightPopoverOpen,
+    popoverLineWeightAnchorEl,
+    fillColor,
+    strokeColor,
+    strokeWidth,
+    colorPopoverOpen,
+    popoverAnchorEl,
+    currentColorType } = toolState;
 
   return (
     <div>
@@ -182,9 +195,9 @@ function AnnotationFormDrawing({ activeTool, closedMode, image, handleImgChange,
                 orientation="vertical"
               />
               <StyledToggleButtonGroup
-                value={props.value}
+                value={activeTool} // State or props ?
                 exclusive
-                onChange={props.onChange}
+                onChange={changeTool}
                 aria-label="tool selection"
                 size="small"
               >
@@ -225,7 +238,7 @@ function AnnotationFormDrawing({ activeTool, closedMode, image, handleImgChange,
                 aria-label="select color"
                 onClick={openChooseColor}
               >
-                <StrokeColorIcon style={{ fill: props.fill }} />
+                <StrokeColorIcon style={{ fill: strokeColor }} />
                 <ArrowDropDownIcon />
               </ToggleButton>
               <ToggleButton
@@ -241,14 +254,14 @@ function AnnotationFormDrawing({ activeTool, closedMode, image, handleImgChange,
                 aria-label="select color"
                 onClick={openChooseColor}
               >
-                <FormatColorFillIcon style={{ fill: props.fill }} />
+                <FormatColorFillIcon style={{ fill: fillColor }} />
                 <ArrowDropDownIcon />
               </ToggleButton>
             </ToggleButtonGroup>
 
             <StyledDivider flexItem orientation="vertical" />
             { /* close / open polygon mode only for freehand drawing mode. */
-          props.activeTool === 'freehand'
+          activeTool === 'freehand'
             ? (
               <ToggleButtonGroup
                 size="small"
