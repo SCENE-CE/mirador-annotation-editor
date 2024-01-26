@@ -390,7 +390,7 @@ function AnnotationCreation(props) {
     strokeWidth,
     closedMode,
     image,
-} = toolState;
+  } = toolState;
 
   // TODO : Vérifier ce code, c'est étrange de comprarer un typeof à une chaine de caractère.
   const mediaIsVideo = typeof VideosReferences.get(windowId) !== 'undefined';
@@ -446,7 +446,7 @@ function AnnotationCreation(props) {
         updateGeometry={updateGeometry}
         windowId={windowId}
         player={mediaIsVideo ? VideosReferences.get(windowId) : OSDReferences.get(windowId)}
-                /// we need to pass the width and height of the image to the annotation drawing component
+          // we need to pass the width and height of the image to the annotation drawing component
         width={overlay ? overlay.containerWidth : 1920}
         height={overlay ? overlay.containerHeight : 1080}
         orignalWidth={overlay ? overlay.canvasWidth : 1920}
@@ -480,11 +480,8 @@ function AnnotationCreation(props) {
         />
         )}
         <AnnotationFormDrawing
-          activeTool={activeTool}
-          stroke={strokeColor}
-          fill={fillColor}
-          closedMode={closedMode}
-          image={image}
+          {...toolState}
+          setToolState={setToolState}
           handleImgChange={handleImgChange}
         />
         <div>

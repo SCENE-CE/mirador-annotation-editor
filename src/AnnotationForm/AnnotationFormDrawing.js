@@ -42,7 +42,7 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
 }));
 
-function AnnotationFormDrawing({ activeTool, closedMode, ...props }) {
+function AnnotationFormDrawing({ activeTool, closedMode, image, handleImgChange, lineWeightPopoverOpen, popoverLineWeightAnchorEl, stroke, strokeWidth, colorPopoverOpen, popoverAnchorEl, currentColorType, ...props }) {
  /* const [state, setState] = useState({
     activeTool: 'cursor',
     closedMode: 'closed',
@@ -139,8 +139,6 @@ function AnnotationFormDrawing({ activeTool, closedMode, ...props }) {
       imageEvent: data,
     }));
   };
-
-
 
   return (
     <div>
