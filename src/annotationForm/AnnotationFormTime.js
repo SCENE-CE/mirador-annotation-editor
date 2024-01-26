@@ -20,9 +20,6 @@ function AnnotationFormTime({
           Display period
         </Typography>
         <div>
-          <Typography>
-            {videoDuration}
-          </Typography>
           <Slider
             value={value}
             onChange={handleChangeTime}

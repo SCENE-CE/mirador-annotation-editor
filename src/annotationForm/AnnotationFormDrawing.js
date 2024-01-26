@@ -42,8 +42,8 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
 }));
 
-function AnnotationFormDrawing( { updateToolState, toolState, handleImgChange }) {
-
+/** All the stuff to manage to choose the drawing tool */
+function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) {
   /** */
   const openChooseLineWeight = (e) => {
     updateToolState({
@@ -52,8 +52,6 @@ function AnnotationFormDrawing( { updateToolState, toolState, handleImgChange })
       popoverLineWeightAnchorEl: e.currentTarget,
     });
   };
-
-
 
   /** Close color popover window */
   const closeChooseColor = (e) => {
@@ -67,7 +65,6 @@ function AnnotationFormDrawing( { updateToolState, toolState, handleImgChange })
 
   /** Update color : fillColor or strokeColor */
   const updateStrokeColor = (color) => {
-    console.log(color);
     updateToolState({
       ...toolState,
       [toolState.currentColorType]: color.hex,
@@ -127,7 +124,7 @@ function AnnotationFormDrawing( { updateToolState, toolState, handleImgChange })
 
     updateToolState({
       ...toolState,
-      image: {id: null},
+      image: { id: null },
       imageEvent: data,
     });
   };
@@ -143,7 +140,8 @@ function AnnotationFormDrawing( { updateToolState, toolState, handleImgChange })
     strokeWidth,
     colorPopoverOpen,
     popoverAnchorEl,
-    currentColorType } = toolState;
+    currentColorType,
+  } = toolState;
 
   return (
     <div>
@@ -321,16 +319,9 @@ function AnnotationFormDrawing( { updateToolState, toolState, handleImgChange })
 }
 
 AnnotationFormDrawing.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  onClick: PropTypes.func,
-  fill: PropTypes.string,
-  stroke: PropTypes.string,
-  onClick1: PropTypes.func,
-  activeTool: PropTypes.string,
-  value1: PropTypes.shape({ id: PropTypes.any }),
-  onChange1: PropTypes.func,
-  onClick2: PropTypes.func,
+  handleImgChange: PropTypes.func,
+  toolState: PropTypes.object,
+  updateToolState: PropTypes.func,
 };
 
 export default AnnotationFormDrawing;

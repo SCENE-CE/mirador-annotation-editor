@@ -21,12 +21,11 @@ function Polygon({
 
   /** */
   const handleClick = () => {
-    console.log("FreeHand handleClick shape id", shape.id);
     onShapeClick(shape);
   };
 
   return (
-  
+
     <>
       <Line
           ref={shapeRef}
@@ -49,7 +48,7 @@ function Polygon({
           x={shape.x}
           y={shape.y}
           onDragEnd={ handleDragEnd}
-      
+
       />
 
       <Transformer

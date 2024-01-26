@@ -14,7 +14,6 @@ import ParentComponent from './KonvaDrawing/shapes/ParentComponent';
 
 /** All the stuff to draw on the canvas */
 function AnnotationDrawing(props) {
-  // console.log('AnnotationDrawing props', props);
   const [shapes, setShapes] = useState([]);
   const [currentShape, setCurrentShape] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -22,7 +21,6 @@ function AnnotationDrawing(props) {
   const { height, width } = VideosReferences.get(props.windowId).ref.current;
 
   useEffect(() => {
-    console.log('ResizeAD');
     const overlay = VideosReferences.get(props.windowId).ref.current;
     props.updateScale(overlay.containerWidth / overlay.canvasWidth);
   }, [{ height, width }]);

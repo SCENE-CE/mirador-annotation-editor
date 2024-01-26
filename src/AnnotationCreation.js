@@ -15,6 +15,7 @@ import { secondsToHMS } from './utils';
 import AnnotationFormContent from './annotationForm/AnnotationFormContent';
 import AnnotationFormTime from './annotationForm/AnnotationFormTime';
 import AnnotationFormDrawing from './annotationForm/AnnotationFormDrawing';
+import { geomFromAnnoTarget, timeFromAnnoTarget } from './AnnotationCreationUtils';
 
 /** Component for creating annotations.
  * Display in companion window when a manifest is open and an annoation created or edited */
@@ -91,7 +92,6 @@ function AnnotationCreation(props) {
       ...timeState,
       mediaVideo: null,
       ...annoState,
-      textBody: '',
       textEditorStateBustingKey: 0,
       valuetextTime: '',
       valueTime: [0, 1],
@@ -431,7 +431,7 @@ function AnnotationCreation(props) {
       >
         <AnnotationFormContent
           onChange={updateTitle}
-          textBody={textBody}
+          textBody={state.textBody}
           textEditorStateBustingKey={textEditorStateBustingKey}
           updateTextBody={updateTextBody}
         />
