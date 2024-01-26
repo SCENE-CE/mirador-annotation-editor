@@ -43,16 +43,6 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
 }));
 
 function AnnotationFormDrawing( { updateToolState, toolState, handleImgChange }) {
- /* const [state, setState] = useState({
-    activeTool: 'cursor',
-    closedMode: 'closed',
-    colorPopoverOpen: false,
-    currentColorType: false,
-    fillColor: 'black',
-    strokeColor: 'green',
-    strokeWidth: 3,
-    ...(props.config.annotation.defaults || {}),
-  };*/
 
   /** */
   const openChooseLineWeight = (e) => {
@@ -75,11 +65,12 @@ function AnnotationFormDrawing( { updateToolState, toolState, handleImgChange })
     });
   };
 
-  /** Update strokecolor */
+  /** Update color : fillColor or strokeColor */
   const updateStrokeColor = (color) => {
+    console.log(color);
     updateToolState({
       ...toolState,
-      currentColorType: color.hex,
+      [toolState.currentColorType]: color.hex,
     });
   };
   /** */
@@ -130,12 +121,13 @@ function AnnotationFormDrawing( { updateToolState, toolState, handleImgChange })
    */
   const addImage = () => {
     const data = {
-      uuid: uuidv4(),
       id: image?.id,
+      uuid: uuidv4(),
     };
 
     updateToolState({
       ...toolState,
+      image: {id: null},
       imageEvent: data,
     });
   };
@@ -320,8 +312,7 @@ function AnnotationFormDrawing( { updateToolState, toolState, handleImgChange })
         onClose={closeChooseColor}
       >
         <SketchPicker
-            // eslint-disable-next-line react/destructuring-assignment
-          color={currentColorType}
+          color={toolState[currentColorType]}
           onChangeComplete={updateStrokeColor}
         />
       </Popover>

@@ -50,7 +50,6 @@ function AnnotationCreation(props) {
     imageEvent: null,
     lineWeightPopoverOpen: false,
     popoverAnchorEl: null,
-    // ...(props.config.annotation.defaults || {}),
     popoverLineWeightAnchorEl: null,
     strokeColor: 'green',
     strokeWidth: 3,
@@ -374,22 +373,16 @@ function AnnotationCreation(props) {
     tend,
     textEditorStateBustingKey,
     valueTime,
-    mediaVideo,
     title,
   } = state;
 
   const {
     activeTool,
-    colorPopoverOpen,
-    currentColorType,
     fillColor,
-    popoverAnchorEl,
     strokeColor,
-    popoverLineWeightAnchorEl,
-    lineWeightPopoverOpen,
     strokeWidth,
     closedMode,
-    image,
+    imageEvent,
   } = toolState;
 
   // TODO : Vérifier ce code, c'est étrange de comprarer un typeof à une chaine de caractère.
@@ -409,15 +402,14 @@ function AnnotationCreation(props) {
     overlay = videoref.canvasOverlay;
   }
   if (osdref) {
-    console.log('osdref', osdref);
+    console.debug('osdref', osdref);
   }
 
-  const updateScale = (scale) => {
+  const updateScale = () => {
     setScale(overlay.containerWidth / overlay.canvasWidth);
   };
 
   useEffect(() => {
-    console.log('scale', scale);
   }, [overlay.containerWidth, overlay.canvasWidth]);
 
   return (
@@ -453,7 +445,7 @@ function AnnotationCreation(props) {
         orignalHeight={overlay ? overlay.canvasHeight : 1080}
         setShapeProperties={setShapeProperties}
         updateScale={updateScale}
-        imageEvent={state.imageEvent}
+        imageEvent={imageEvent}
       />
       <StyledForm
         onSubmit={submitForm}
