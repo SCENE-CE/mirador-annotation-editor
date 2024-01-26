@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Layer } from 'react-konva';
 
-
 import Rectangle from './Rectangle';
 import EllipseNode from './EllipseNode';
 import TextNode from './TextNode';
@@ -48,10 +47,10 @@ function ParentComponent({
     height={height}
     scaleX={scale}
     scaleY={scale}
-    
+
     >
       {shapes.map((shape, i) => {
-     
+
         const isSelected = selectedShapeId === shape.id;
         switch (shape.type) {
           case 'rectangle':
@@ -110,8 +109,8 @@ function ParentComponent({
                 <ArrowNode
                   {...{
                     ...shape,
-                     activeTool, 
-                     isSelected, 
+                     activeTool,
+                     isSelected,
                      onShapeClick: handleShapeClick,
                      shape,
                      onTransformEnd,handleDragEnd
@@ -120,7 +119,7 @@ function ParentComponent({
                   key={i}
                 />
               );
-             
+
           case 'image':
             return (
               <ImageShape
