@@ -1,4 +1,4 @@
-import * as actions from "mirador/dist/es/src/state/actions";
+import * as actions from 'mirador/dist/es/src/state/actions';
 import { getCompanionWindow } from 'mirador/dist/es/src/state/selectors/companionWindows';
 import { getWindowCurrentTime, getWindowPausedStatus } from 'mirador/dist/es/src/state/selectors/window'
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';

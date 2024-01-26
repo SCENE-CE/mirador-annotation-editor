@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import {Transformer, Shape, Line} from 'react-konva';
+import { Transformer, Line, Group } from 'react-konva';
 
 /** FreeHand shape displaying */
-function FreeHand({
-  activeTool, fill, height, onShapeClick, points, isSelected, shape, stroke, strokeWidth, width, x, y,
+function Freehand({
+  activeTool, fill, height, onShapeClick, points, isSelected, shape, stroke, strokeWidth, width, x, y, onTransformEnd, handleDragEnd,
 }) {
   // TODO check if selectedShapeId is needed
   const shapeRef = useRef();
@@ -17,30 +17,39 @@ function FreeHand({
     }
   }, [isSelected, shape]);
 
-
   /** */
   const handleClick = () => {
-    console.log("FreeHand handleClick shape id", shape.id);
     onShapeClick(shape);
   };
 
   return (
     <>
-      <Line
-          ref={shapeRef}
-          id={shape.id}
-          points={shape.lines}
-          stroke="#df4b26"
-          strokeWidth={5}
-          tension={0.5}
-          lineCap="round"
-          lineJoin="round"
-          closed={false}
-          onClick={handleClick}
-          fill={fill || 'red'}
-          globalCompositeOperation="source-over"
-      />
-
+      <Group
+        ref={shapeRef}
+        onClick={handleClick}
+        onTransformEnd={onTransformEnd}
+        scaleX={shape.scaleX}
+        scaleY={shape.scaleY}
+        rotation={shape.rotation}
+        x={shape.x}
+        y={shape.y}
+        width={shape.width || 1920}
+        height={shape.height || 1080}
+        onDragEnd={handleDragEnd}
+      >
+        {shape.lines.map((line, i) => (
+          <Line
+            key={i}
+            fill={shape.fill}
+            points={line.points}
+            stroke={shape.stroke}
+            strokeWidth={shape.strokeWidth}
+            tension={0.5}
+            lineCap="round"
+            lineJoin="round"
+          />
+        ))}
+      </Group>
       <Transformer
         ref={trRef}
         visible={activeTool === 'edit' && isSelected}
@@ -49,7 +58,7 @@ function FreeHand({
   );
 }
 
-FreeHand.propTypes = {
+Freehand.propTypes = {
   activeTool: PropTypes.string.isRequired,
   fill: PropTypes.string,
   height: PropTypes.number,
@@ -61,7 +70,7 @@ FreeHand.propTypes = {
   width: PropTypes.number,
 };
 
-FreeHand.defaultProps = {
+Freehand.defaultProps = {
   fill: 'red',
   height: 1080,
   points: [0, 0, 100, 0, 100, 100],
@@ -70,4 +79,4 @@ FreeHand.defaultProps = {
   width: 1920,
 };
 
-export default FreeHand;
+export default Freehand;

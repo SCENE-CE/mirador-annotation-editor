@@ -1,18 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Arrow, Transformer } from 'react-konva';
-import { Shape } from 'paper/dist/paper-core';
+import { Rect, Transformer } from 'react-konva';
 
-
-
-
-//**  */
-function ArrowNode({
-  onShapeClick, shape, activeTool, isSelected, x, y, width, height, fill, stroke, strokeWidth,
-  pointerLength, pointerWidth,
-  points,
-
-
+function Rectangle({
+  shape, onShapeClick, activeTool, x, y, width, height, fill, stroke, strokeWidth, isSelected,
+  onTransformEnd, handleDragEnd
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -28,23 +20,25 @@ function ArrowNode({
     onShapeClick(shape);
   };
 
- 
   return (
     <>
-      <Arrow
+      <Rect
         ref={shapeRef}
-       
-        fill={shape.stroke}
-    
-        stroke={shape.stroke}
-        points={shape.points}
-      
+        x={x || 100}
+        y={y || 100}
+        scaleX={shape.scaleX}
+        scaleY={shape.scaleY}
+        rotation={shape.rotation}
+        width={width || 100}
+        height={height || 100}
+        fill={fill || 'red'}
+        stroke={stroke || 'black'}
+        strokeWidth={strokeWidth || 1}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
-        pointerLength={shape.pointerLength}
-        pointerWidth={shape.pointerWidth}
-        
+        onTransformEnd={onTransformEnd}
+        onDragEnd={ handleDragEnd}
       />
 
       <Transformer
@@ -55,9 +49,9 @@ function ArrowNode({
   );
 }
 
-ArrowNode.propTypes = {
-  onShapeClick: PropTypes.func.isRequired,
+Rectangle.propTypes = {
   shape: PropTypes.object.isRequired,
+  onShapeClick: PropTypes.func.isRequired,
   activeTool: PropTypes.string.isRequired,
   selectedShapeId: PropTypes.string,
   x: PropTypes.number,
@@ -69,7 +63,7 @@ ArrowNode.propTypes = {
   strokeWidth: PropTypes.number,
 };
 
-ArrowNode.defaultProps = {
+Rectangle.defaultProps = {
   selectedShapeId: null,
   x: 100,
   y: 100,
@@ -80,4 +74,4 @@ ArrowNode.defaultProps = {
   strokeWidth: 1,
 };
 
-export default ArrowNode;
+export default Rectangle;

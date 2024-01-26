@@ -1,13 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Editor, EditorState, RichUtils } from 'draft-js';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import BoldIcon from '@mui/icons-material/FormatBold';
-import ItalicIcon from '@mui/icons-material/FormatItalic';
-import { stateToHTML } from 'draft-js-export-html';
-import { stateFromHTML } from 'draft-js-import-html';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // include styles
 import { styled } from '@mui/system';
+
+
 
 const EditorRoot = styled('div')(({ theme }) => ({
   borderColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.23)' : 'rgba(255, 255, 255, 0.23)',
@@ -20,64 +17,23 @@ const EditorRoot = styled('div')(({ theme }) => ({
 }));
 
 function TextEditor({ annoHtml, updateAnnotationBody }) {
-  const [editorState, setEditorState] = useState(EditorState.createWithContent(stateFromHTML(annoHtml)));
-  const editorRef = useRef(null);
+  const [editorHtml, setEditorHtml] = useState(annoHtml);
 
-  useEffect(() => {
-    // Any effect that might be needed on component mount/update
-  }, [/* dependencies */]);
-
-  const handleFocus = () => {
-    editorRef.current?.focus();
-  };
-
-  const handleFormating = (e, newFormat) => {
-    setEditorState(RichUtils.toggleInlineStyle(editorState, newFormat));
-  };
-
-  const handleKeyCommand = (command, state) => {
-    const newState = RichUtils.handleKeyCommand(state, command);
-    if (newState) {
-      setEditorState(newState);
-      return 'handled';
-    }
-    return 'not-handled';
-  };
-
-  const onChange = (state) => {
-    setEditorState(state);
+  const handleChange = (html) => {
+    setEditorHtml(html);
     if (updateAnnotationBody) {
-      const options = {
-        inlineStyles: {
-          BOLD: { element: 'b' },
-          ITALIC: { element: 'i' },
-        },
-      };
-      updateAnnotationBody(stateToHTML(state.getCurrentContent(), options).toString());
+      updateAnnotationBody(html);
     }
   };
-
-  const currentStyle = editorState.getCurrentInlineStyle();
 
   return (
-    <div>
-      <EditorRoot onClick={handleFocus}>
-        <Editor
-          editorState={editorState}
-          handleKeyCommand={handleKeyCommand}
-          onChange={onChange}
-          ref={editorRef}
+      <EditorRoot>
+        <ReactQuill
+            value={editorHtml}
+            onChange={handleChange}
+            // You can also pass other props to customize the toolbar, etc.
         />
       </EditorRoot>
-      <ToggleButtonGroup size="small" value={currentStyle.toArray()}>
-        <ToggleButton onClick={handleFormating} value="BOLD">
-          <BoldIcon />
-        </ToggleButton>
-        <ToggleButton onClick={handleFormating} value="ITALIC">
-          <ItalicIcon />
-        </ToggleButton>
-      </ToggleButtonGroup>
-    </div>
   );
 }
 

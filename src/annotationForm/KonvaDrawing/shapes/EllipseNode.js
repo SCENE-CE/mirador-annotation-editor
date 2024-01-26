@@ -5,6 +5,7 @@ import { Ellipse, Transformer } from 'react-konva';
 
 function EllipseNode({
   onShapeClick, shape, activeTool, isSelected, x, y, width, height, fill, stroke, strokeWidth,
+  onTransformEnd, handleDragEnd
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -24,16 +25,21 @@ function EllipseNode({
     <>
       <Ellipse
         ref={shapeRef}
-        x={x || 100}
-        y={y || 100}
-        width={width || 100}
-        height={height || 100}
+        scaleX={shape.scaleX}
+        scaleY={shape.scaleY}
+        rotation={shape.rotation}
+        x={shape.x}
+        y={shape.y}
+        width={shape.width}
+        height={shape.height}
         fill={fill || 'red'}
         stroke={stroke || 'black'}
         strokeWidth={strokeWidth || 1}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
+        onTransformEnd={onTransformEnd}
+        onDragEnd={ handleDragEnd}
       />
 
       <Transformer
