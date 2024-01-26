@@ -18,21 +18,37 @@ class MiradorAnnotation extends Component {
     this.state = {
       annotationExportDialogOpen: false,
       singleCanvasDialogOpen: false,
+      creationAnnotationIsOpen: false,
+      id: "",
+      payload:{}
     };
-    this.openCreateAnnotationCompanionWindow = this.openCreateAnnotationCompanionWindow.bind(this);
+    this.handleAnnotationCompanionWindow = this.handleAnnotationCompanionWindow.bind(this);
     this.toggleCanvasExportDialog = this.toggleCanvasExportDialog.bind(this);
     this.toggleSingleCanvasDialogOpen = this.toggleSingleCanvasDialogOpen.bind(this);
   }
 
   /** */
-  openCreateAnnotationCompanionWindow(e) {
+  handleAnnotationCompanionWindow(e) {
     const {
       addCompanionWindow,
+      closeCompanionWindow,
+        targetProps
     } = this.props;
+    if(!this.state.creationAnnotationIsOpen){
 
-    addCompanionWindow('annotationCreation', {
+
+    const myAnnotationPannel = addCompanionWindow('annotationCreation', {
       position: 'right',
     });
+
+    this.setState({creationAnnotationIsOpen: true});
+    this.setState({id: myAnnotationPannel.id})
+    this.setState({payload: myAnnotationPannel.payload})
+
+    }else{
+      closeCompanionWindow(this.state.id)
+      this.setState({creationAnnotationIsOpen: false})
+    }
   }
 
   /** */
@@ -73,7 +89,7 @@ class MiradorAnnotation extends Component {
         />
         <MiradorMenuButton
           aria-label="Create new annotation"
-          onClick={windowViewType === 'single' ? this.openCreateAnnotationCompanionWindow : this.toggleSingleCanvasDialogOpen}
+          onClick={windowViewType === 'single' ? this.handleAnnotationCompanionWindow : this.toggleSingleCanvasDialogOpen}
           size="small"
         >
           <AddBoxIcon />
@@ -125,6 +141,7 @@ MiradorAnnotation.propTypes = {
   ]).isRequired,
   targetProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   windowViewType: PropTypes.string.isRequired,
+  closeCompanionWindow: PropTypes.func.isRequired,
 };
 
 /** */
@@ -135,6 +152,9 @@ const mapDispatchToProps = (dispatch, props) => ({
   switchToSingleCanvasView: () => dispatch(
     actions.setWindowViewType(props.targetProps.windowId, 'single'),
   ),
+  closeCompanionWindow: (id) => dispatch(
+    actions.removeCompanionWindow(props.targetProps.windowId, id),
+  )
 });
 
 /** */
