@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import GetAppIcon from '@mui/icons-material/GetApp';
-import { getWindowViewType } from 'mirador/dist/es/src/state/selectors';
+import {getCompanionWindowsForContent, getWindowViewType} from 'mirador/dist/es/src/state/selectors';
 import * as actions from 'mirador/dist/es/src/state/actions';
 import { MiradorMenuButton } from 'mirador/dist/es/src/components/MiradorMenuButton';
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
@@ -77,6 +77,7 @@ class MiradorAnnotation extends Component {
       TargetComponent,
       targetProps,
       windowViewType,
+      createAnnotation
     } = this.props;
     const { annotationExportDialogOpen, singleCanvasDialogOpen } = this.state;
     const storageAdapter = config.annotation && config.annotation.adapter('poke');
@@ -91,6 +92,7 @@ class MiradorAnnotation extends Component {
           aria-label="Create new annotation"
           onClick={windowViewType === 'single' ? this.handleAnnotationCompanionWindow : this.toggleSingleCanvasDialogOpen}
           size="small"
+          disabled={!createAnnotation}
         >
           <AddBoxIcon />
         </MiradorMenuButton>
@@ -142,6 +144,7 @@ MiradorAnnotation.propTypes = {
   targetProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   windowViewType: PropTypes.string.isRequired,
   closeCompanionWindow: PropTypes.func.isRequired,
+  createAnnotation: PropTypes.bool.isRequired,
 };
 
 /** */
@@ -158,12 +161,20 @@ const mapDispatchToProps = (dispatch, props) => ({
 });
 
 /** */
-const mapStateToProps = (state, { targetProps: { windowId } }) => ({
-  canvases: getVisibleCanvases(state, { windowId }),
-  config: state.config,
-  windowViewType: getWindowViewType(state, { windowId }),
-});
+function mapStateToProps(state, { targetProps: { windowId } }) {
+  const annotationCreationCompanionWindows = getCompanionWindowsForContent(state, { content: 'annotationCreation', windowId });
+  let annotationEdit = true;
+  if (Object.keys(annotationCreationCompanionWindows).length !== 0) {
+    annotationEdit = false;
+  }
 
+  return {
+    canvases: getVisibleCanvases(state, { windowId }),
+    config: state.config,
+    createAnnotation: annotationEdit,
+    windowViewType: getWindowViewType(state, { windowId }),
+  }
+}
 export default {
   component: MiradorAnnotation,
   mapDispatchToProps,
