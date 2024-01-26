@@ -1,4 +1,6 @@
-import {Button, ClickAwayListener, Divider, Grid, MenuItem, MenuList, Paper, Popover} from '@mui/material';
+import {
+  Button, ClickAwayListener, Divider, Grid, MenuItem, MenuList, Paper, Popover,
+} from '@mui/material';
 import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import TitleIcon from '@mui/icons-material/Title';
@@ -9,7 +11,7 @@ import RectangleIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
 import PolygonIcon from '@mui/icons-material/Timeline';
 import GestureIcon from '@mui/icons-material/Gesture';
-import React from 'react';
+import React, { useState } from 'react';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import StrokeColorIcon from '@mui/icons-material/BorderColor';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -19,14 +21,13 @@ import ClosedPolygonIcon from '@mui/icons-material/ChangeHistory';
 import OpenPolygonIcon from '@mui/icons-material/ShowChart';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
+import { SketchPicker } from 'react-color';
+import { v4 as uuidv4 } from 'uuid';
+import CursorIcon from '../icons/Cursor';
 import ImageFormField from './ImageFormField';
-import CursorIcon from "../icons/Cursor";
-import {styled} from "@mui/material/styles";
-import {SketchPicker} from "react-color";
 
-
-
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({theme}) => ({
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
     borderRadius: theme.shape.borderRadius,
   },
@@ -37,11 +38,110 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({theme}) => ({
   margin: theme.spacing(0.5),
 }));
 
-const StyledDivider = styled(Divider)(({theme}) => ({
+const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
 }));
 
-function AnnotationFormDrawing(props) {
+function AnnotationFormDrawing({ activeTool, closedMode, ...props }) {
+ /* const [state, setState] = useState({
+    activeTool: 'cursor',
+    closedMode: 'closed',
+    colorPopoverOpen: false,
+    currentColorType: false,
+    fillColor: 'black',
+    strokeColor: 'green',
+    strokeWidth: 3,
+    ...(props.config.annotation.defaults || {}),
+  };*/
+
+  /** */
+  const openChooseLineWeight = (e) => {
+    setState((prevState) => ({
+      ...prevState,
+      lineWeightPopoverOpen: true,
+      popoverLineWeightAnchorEl: e.currentTarget,
+    }));
+  };
+
+
+
+  /** Close color popover window */
+  const closeChooseColor = (e) => {
+    setState((prevState) => ({
+      ...prevState,
+      colorPopoverOpen: false,
+      currentColorType: null,
+      popoverAnchorEl: null,
+    }));
+  };
+
+  /** Update strokecolor */
+  const updateStrokeColor = (color) => {
+    setState((prevState) => ({
+      ...prevState,
+      [prevState.currentColorType]: color.hex,
+    }));
+  };
+  /** */
+  const openChooseColor = (e) => {
+    setState((prevState) => ({
+      ...prevState,
+      colorPopoverOpen: true,
+      currentColorType: e.currentTarget.value,
+      popoverAnchorEl: e.currentTarget,
+    }));
+  };
+
+  /** */
+  const handleCloseLineWeight = (e) => {
+    setState((prevState) => ({
+      ...prevState,
+      lineWeightPopoverOpen: false,
+      popoverLineWeightAnchorEl: null,
+    }));
+  };
+
+  /** */
+  const handleLineWeightSelect = (e) => {
+    setState((prevState) => ({
+      ...prevState,
+      lineWeightPopoverOpen: false,
+      popoverLineWeightAnchorEl: null,
+      strokeWidth: e.currentTarget.value,
+    }));
+  };
+
+  const changeTool = (e, tool) => {
+    setState((prevState) => ({
+      ...prevState,
+      activeTool: tool,
+    }));
+  };
+
+  const changeClosedMode = (e) => {
+    setState((prevState) => ({
+      ...prevState,
+      closedMode: e.currentTarget.value,
+    }));
+  };
+
+  /**
+   *
+   */
+  const addImage = () => {
+    const data = {
+      uuid: uuidv4(),
+      id: image?.id,
+    };
+
+    setState((prevState) => ({
+      ...prevState,
+      imageEvent: data,
+    }));
+  };
+
+
+
   return (
     <div>
       <div>
@@ -60,13 +160,12 @@ function AnnotationFormDrawing(props) {
               }}
             >
               <StyledToggleButtonGroup
-                value={props.value}
+                value={activeTool} // State or props ?
                 exclusive
-                onChange={props.onChange}
+                onChange={changeTool}
                 aria-label="tool selection"
                 size="small"
               >
-
                 <ToggleButton value="text" aria-label="select text">
                   <TitleIcon />
                 </ToggleButton>
@@ -126,7 +225,7 @@ function AnnotationFormDrawing(props) {
               <ToggleButton
                 value="strokeColor"
                 aria-label="select color"
-                onClick={props.onClick}
+                onClick={openChooseColor}
               >
                 <StrokeColorIcon style={{ fill: props.fill }} />
                 <ArrowDropDownIcon />
@@ -134,7 +233,7 @@ function AnnotationFormDrawing(props) {
               <ToggleButton
                 value="strokeColor"
                 aria-label="select line weight"
-                onClick={props.onClick1}
+                onClick={openChooseLineWeight}
               >
                 <LineWeightIcon />
                 <ArrowDropDownIcon />
@@ -142,9 +241,9 @@ function AnnotationFormDrawing(props) {
               <ToggleButton
                 value="fillColor"
                 aria-label="select color"
-                onClick={props.onClick}
+                onClick={openChooseColor}
               >
-                <FormatColorFillIcon style={{ fill: props.fill1 }} />
+                <FormatColorFillIcon style={{ fill: props.fill }} />
                 <ArrowDropDownIcon />
               </ToggleButton>
             </ToggleButtonGroup>
@@ -155,8 +254,8 @@ function AnnotationFormDrawing(props) {
             ? (
               <ToggleButtonGroup
                 size="small"
-                value={props.value}
-                onChange={props.onChange}
+                value={closedMode}
+                onChange={changeClosedMode}
               >
                 <ToggleButton value="closed">
                   <ClosedPolygonIcon />
@@ -172,47 +271,47 @@ function AnnotationFormDrawing(props) {
         </Grid>
         <Grid container>
           <Grid item xs={8} style={{ marginBottom: 10 }}>
-            <ImageFormField xs={8} value={props.value1} onChange={props.onChange1} />
+            <ImageFormField xs={8} value={image} onChange={handleImgChange} />
           </Grid>
           <Grid item xs={4} style={{ marginBottom: 10 }}>
-            <Button variant="contained" onClick={props.onClick2}>
+            <Button variant="contained" onClick={addImage}>
               <AddPhotoAlternateIcon />
             </Button>
           </Grid>
         </Grid>
       </div>
       <Popover
-          open={lineWeightPopoverOpen}
-          anchorEl={popoverLineWeightAnchorEl}
+        open={lineWeightPopoverOpen}
+        anchorEl={popoverLineWeightAnchorEl}
       >
         <Paper>
           <ClickAwayListener onClickAway={handleCloseLineWeight}>
             <MenuList autoFocus role="listbox">
               {[1, 3, 5, 10, 50].map((option, index) => (
-                  <MenuItem
-                      key={option}
-                      onClick={handleLineWeightSelect}
-                      value={option}
-                      selected={option == strokeWidth}
-                      role="option"
-                      aria-selected={option == strokeWidth}
-                  >
-                    {option}
-                  </MenuItem>
+                <MenuItem
+                  key={option}
+                  onClick={handleLineWeightSelect}
+                  value={option}
+                  selected={option == strokeWidth}
+                  role="option"
+                  aria-selected={option == strokeWidth}
+                >
+                  {option}
+                </MenuItem>
               ))}
             </MenuList>
           </ClickAwayListener>
         </Paper>
       </Popover>
       <Popover
-          open={colorPopoverOpen}
-          anchorEl={popoverAnchorEl}
-          onClose={closeChooseColor}
+        open={colorPopoverOpen}
+        anchorEl={popoverAnchorEl}
+        onClose={closeChooseColor}
       >
         <SketchPicker
             // eslint-disable-next-line react/destructuring-assignment
-            color={state[currentColorType] || {}}
-            onChangeComplete={updateStrokeColor}
+          color={currentColorType}
+          onChangeComplete={updateStrokeColor}
         />
       </Popover>
     </div>
@@ -224,11 +323,9 @@ AnnotationFormDrawing.propTypes = {
   onChange: PropTypes.func,
   onClick: PropTypes.func,
   fill: PropTypes.string,
+  stroke: PropTypes.string,
   onClick1: PropTypes.func,
-  fill1: PropTypes.string,
   activeTool: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
   value1: PropTypes.shape({ id: PropTypes.any }),
   onChange1: PropTypes.func,
   onClick2: PropTypes.func,
