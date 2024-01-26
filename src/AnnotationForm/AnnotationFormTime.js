@@ -130,6 +130,7 @@ function AnnotationFormTime({
           <HMSInput seconds={tend} onChange={updateTend} />
         </div>
       </div>
+
     </>
   );
 }

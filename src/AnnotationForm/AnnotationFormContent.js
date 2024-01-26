@@ -10,7 +10,7 @@ function AnnotationFormContent({
   return (
     <div>
       <Typography variant="overline">
-        Annotation content
+        Content
       </Typography>
       <Grid item xs={12}>
         <TextField
