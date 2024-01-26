@@ -15,7 +15,7 @@ import ImageShape from './Image';
 
 function ParentComponent({
   shapes, onShapeClick, selectedShapeId, activeTool,
-  scale, width, height,onTransformEnd,handleDragEnd
+  scale, width, height, onTransformEnd, handleDragEnd,
 }) {
   // TODO Simplify these state
   const [selectedShape, setSelectedShape] = useState(null);
@@ -37,28 +37,29 @@ function ParentComponent({
   const handleShapeClick = (shape) => {
     onShapeClick(shape);
     setSelectedShape(shape);
-
-
   };
 
   return (
     <Layer
-    width={width}
-    height={height}
-    scaleX={scale}
-    scaleY={scale}
-
+      width={width}
+      height={height}
+      scaleX={scale}
+      scaleY={scale}
     >
       {shapes.map((shape, i) => {
-
         const isSelected = selectedShapeId === shape.id;
         switch (shape.type) {
           case 'rectangle':
             return (
               <Rectangle
                 {...{
-                  ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
-                  onTransformEnd,handleDragEnd
+                  ...shape,
+                  activeTool,
+                  isSelected,
+                  onShapeClick: handleShapeClick,
+                  shape,
+                  onTransformEnd,
+                  handleDragEnd,
                 }}
                 key={i}
               />
@@ -67,8 +68,13 @@ function ParentComponent({
             return (
               <TextNode
                 {...{
-                  ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
-                  onTransformEnd,handleDragEnd
+                  ...shape,
+                  activeTool,
+                  isSelected,
+                  onShapeClick: handleShapeClick,
+                  shape,
+                  onTransformEnd,
+                  handleDragEnd,
                 }}
                 key={i}
               />
@@ -77,8 +83,13 @@ function ParentComponent({
             return (
               <EllipseNode
                 {...{
-                  ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
-                  onTransformEnd,handleDragEnd
+                  ...shape,
+                  activeTool,
+                  isSelected,
+                  onShapeClick: handleShapeClick,
+                  shape,
+                  onTransformEnd,
+                  handleDragEnd,
                 }}
                 key={i}
               />
@@ -87,8 +98,13 @@ function ParentComponent({
             return (
               <Freehand
                 {...{
-                  ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
-                  onTransformEnd,handleDragEnd
+                  ...shape,
+                  activeTool,
+                  isSelected,
+                  onShapeClick: handleShapeClick,
+                  shape,
+                  onTransformEnd,
+                  handleDragEnd,
                 }}
                 key={i}
               />
@@ -97,35 +113,43 @@ function ParentComponent({
             return (
               <Polygon
                 {...{
-                  ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
-                  onTransformEnd,handleDragEnd
+                  ...shape,
+                  activeTool,
+                  isSelected,
+                  onShapeClick: handleShapeClick,
+                  shape,
+                  onTransformEnd,
+                  handleDragEnd,
                 }}
                 key={i}
               />
             );
-
-            case 'arrow':
-              return (
-                <ArrowNode
-                  {...{
-                    ...shape,
-                     activeTool,
-                     isSelected,
-                     onShapeClick: handleShapeClick,
-                     shape,
-                     onTransformEnd,handleDragEnd
-
-                  }}
-                  key={i}
-                />
-              );
-
+          case 'arrow':
+            return (
+              <ArrowNode
+                {...{
+                  ...shape,
+                  activeTool,
+                  isSelected,
+                  onShapeClick: handleShapeClick,
+                  shape,
+                  onTransformEnd,
+                  handleDragEnd,
+                }}
+                key={i}
+              />
+            );
           case 'image':
             return (
               <ImageShape
                 {...{
-                  ...shape, activeTool, isSelected, onShapeClick: handleShapeClick, shape,
-                  onTransformEnd,handleDragEnd,
+                  ...shape,
+                  activeTool,
+                  isSelected,
+                  onShapeClick: handleShapeClick,
+                  shape,
+                  onTransformEnd,
+                  handleDragEnd,
                   src: shape.src,
                 }}
                 key={i}

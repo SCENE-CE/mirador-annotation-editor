@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
-import ParentComponent from './shapes/ParentComponent';
+import ParentComponent from './KonvaDrawing/shapes/ParentComponent';
 
 /** All the stuff to draw on the canvas */
 
@@ -225,10 +225,8 @@ function AnnotationDrawing(props) {
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
           break;
-
         case 'freehand':
           // Not totally functionnal
-          // TODO Not sure for this one
           setIsDrawing(true);
           shape = {
             fill: props.fillColor,
@@ -245,6 +243,8 @@ function AnnotationDrawing(props) {
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
+            stroke: props.strokeColor,
+            strokeWidth: props.strokeWidth,
             type: 'freehand',
             x: 0,
             y: 0,
@@ -272,7 +272,7 @@ function AnnotationDrawing(props) {
         case 'arrow':
           setIsDrawing(true);
           shape = {
-            fill: props.fillColor || 'red',
+            fill: props.fillColor,
             id: uuidv4(),
             pointerLength: 20,
             pointerWidth: 20,
@@ -280,10 +280,9 @@ function AnnotationDrawing(props) {
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            stroke: props.fillColor || 'red',
+            stroke: props.strokeColor,
             type: 'arrow',
           };
-
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
         case 'debug':
@@ -459,7 +458,7 @@ AnnotationDrawing.propTypes = {
 AnnotationDrawing.defaultProps = {
   activeTool: null,
   closed: true,
-  fillColor: null,
+  fillColor: 'red',
   selectedShapeId: null,
   strokeColor: '#00BFFF',
   strokeWidth: 1,
