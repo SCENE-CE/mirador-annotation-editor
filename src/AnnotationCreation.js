@@ -1,18 +1,15 @@
-import React, {
-  Component, useEffect, useLayoutEffect, useState,
-} from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button, Paper, Grid, Popover, Divider,
-  MenuList, MenuItem, ClickAwayListener,
+  Button, ClickAwayListener, Divider, Grid, MenuItem, MenuList, Paper, Popover,
 } from '@mui/material';
-import { Alarm, LastPage } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import RectangleIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
 import PolygonIcon from '@mui/icons-material/Timeline';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import GestureIcon from '@mui/icons-material/Gesture';
 import ClosedPolygonIcon from '@mui/icons-material/ChangeHistory';
 import OpenPolygonIcon from '@mui/icons-material/ShowChart';
@@ -26,21 +23,18 @@ import TitleIcon from '@mui/icons-material/Title';
 import { SketchPicker } from 'react-color';
 import { styled } from '@mui/material/styles';
 import { v4 as uuid, v4 as uuidv4 } from 'uuid';
-import Slider from '@mui/material/Slider';
-import TextField from '@mui/material/TextField';
 import { exportStageSVG } from 'react-konva-to-svg';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
-import { set } from 'lodash';
 import AnnotationDrawing from './AnnotationDrawing';
-import TextEditor from './TextEditor';
 import WebAnnotation from './WebAnnotation';
 import CursorIcon from './icons/Cursor';
-import HMSInput from './HMSInput';
 import ImageFormField from './ImageFormField';
 import { secondsToHMS } from './utils';
+import AnnotationFormContent from './AnnotationForm/AnnotationFormContent';
+import AnnotationFormTime from './AnnotationForm/AnnotationFormTime';
 
 /** Extract time information from annotation target */
 function timeFromAnnoTarget(annotarget) {
@@ -568,7 +562,7 @@ function AnnotationCreation(props) {
         updateGeometry={updateGeometry}
         windowId={windowId}
         player={mediaIsVideo ? VideosReferences.get(windowId) : OSDReferences.get(windowId)}
-        /// we need to pass the width and height of the image to the annotation drawing component
+          /// we need to pass the width and height of the image to the annotation drawing component
         width={overlay ? overlay.containerWidth : 1920}
         height={overlay ? overlay.containerHeight : 1080}
         orignalWidth={overlay ? overlay.canvasWidth : 1920}
@@ -576,165 +570,45 @@ function AnnotationCreation(props) {
         setShapeProperties={setShapeProperties}
         updateScale={updateScale}
         imageEvent={state.imageEvent}
-        // TODO Ajouter du style pour que le Konva et la vidéo se superpose
+          // TODO Ajouter du style pour que le Konva et la vidéo se superpose
       />
       <StyledForm
         onSubmit={submitForm}
       >
-        <div>
-          <Grid item xs={12}>
-            <TextField
-              id="outlined-basic"
-              label="Title"
-              variant="outlined"
-              onChange={updateTitle}
-            />
-          </Grid>
-        </div>
-        <Grid>
-          <TextEditor
-            key={textEditorStateBustingKey}
-            annoHtml={textBody}
-            updateAnnotationBody={updateTextBody}
-          />
-        </Grid>
-        <div>
-
-          {mediaIsVideo && (
-            <>
-              <Grid
-                item
-                xs={12}
-              >
-                <Typography id="range-slider" variant="overline">
-                  Display period
-                </Typography>
-                <div>
-                  <Typography>
-                    {videoDuration}
-                  </Typography>
-                  <Slider
-                    value={valueTime}
-                    onChange={handleChangeTime}
-                    valueLabelDisplay="auto"
-                    aria-labelledby="range-slider"
-                    max={Math.round(videoDuration)}
-                    color="secondary"
-                    windowid={windowId}
-                    sx={{
-                      color: 'rgba(1, 0, 0, 0.38)',
-                    }}
-                  />
-                </div>
-              </Grid>
-              <div style={{
-                alignContent: 'center',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '5px',
-                padding: '5px',
-              }}
-              >
-                <div style={{
-                  border: '1px solid rgba(0, 0, 0, 0.12)',
-                  borderRadius: '4px',
-                  display: 'flex',
-                  flexWrap: 'nowrap',
-                  justifyContent: 'center',
-                  padding: '5px',
-                }}
-                >
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                  >
-                    <div>
-                      <p style={{
-                        fontSize: '15px',
-                        margin: 0,
-                        minWidth: '40px',
-                      }}
-                      >
-                        Start
-                      </p>
-                    </div>
-                    <ToggleButton
-                      value="true"
-                      title="Set current time"
-                      size="small"
-                      onClick={setTstartNow}
-                      style={{
-                        border: 'none',
-                        height: '30px',
-                        margin: 'auto',
-                        marginLeft: '0',
-                        marginRight: '5px',
-                      }}
-                    >
-                      <Alarm fontSize="small" />
-                    </ToggleButton>
-                  </div>
-                  <HMSInput seconds={tstart} onChange={updateTstart} />
-                </div>
-                <div style={{
-                  border: '1px solid rgba(0, 0, 0, 0.12)',
-                  borderRadius: '4px',
-                  display: 'flex',
-                  flexWrap: 'nowrap',
-                  justifyContent: 'center',
-                  padding: '5px',
-                }}
-                >
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                  >
-                    <div>
-                      <p style={{
-                        fontSize: '15px',
-                        margin: 0,
-                        minWidth: '40px',
-                      }}
-                      >
-                        End
-                      </p>
-                    </div>
-                    <ToggleButton
-                      value="true"
-                      title="Set current time"
-                      size="small"
-                      onClick={setTendNow}
-                      style={{
-                        border: 'none',
-                        height: '30px',
-                        margin: 'auto',
-                        marginLeft: '0',
-                        marginRight: '5px',
-                      }}
-                    >
-                      <Alarm fontSize="small" />
-                    </ToggleButton>
-                  </div>
-                  <HMSInput seconds={tend} onChange={updateTend} />
-                </div>
-              </div>
-            </>
-          )}
-        </div>
+        <AnnotationFormContent
+          onChange={updateTitle}
+          textBody={textBody}
+          textEditorStateBustingKey={textEditorStateBustingKey}
+          updateTextBody={updateTextBody}
+        />
+        { mediaIsVideo && (
+          <AnnotationFormTime
+            mediaIsVideo={mediaIsVideo}
+            videoDuration={videoDuration}
+            value={valueTime}
+            handleChangeTime={handleChangeTime}
+            windowid={windowId}
+            setTstartNow={setTstartNow}
+            tstart={tstart}
+            updateTstart={updateTstart}
+            setTendNow={setTendNow}
+            tend={tend}
+            updateTend={updateTend}
+          />)}
         <div>
           <Grid container>
-            <Button onClick={addImage}>
-              Add Image
-            </Button>
             <Grid item xs={12}>
               <Typography variant="overline">
                 Image Content
               </Typography>
             </Grid>
-            <Grid item xs={12} style={{ marginBottom: 10 }}>
-              <ImageFormField value={image} onChange={handleImgChange} />
+            <Grid item xs={8} style={{ marginBottom: 10 }}>
+              <ImageFormField xs={8} value={image} onChange={handleImgChange} />
+            </Grid>
+            <Grid item xs={4} style={{ marginBottom: 10 }}>
+              <Button variant="contained" onClick={addImage}>
+                <AddPhotoAlternateIcon />
+              </Button>
             </Grid>
           </Grid>
         </div>
@@ -903,7 +777,7 @@ function AnnotationCreation(props) {
         onClose={closeChooseColor}
       >
         <SketchPicker
-          // eslint-disable-next-line react/destructuring-assignment
+            // eslint-disable-next-line react/destructuring-assignment
           color={state[currentColorType] || {}}
           onChangeComplete={updateStrokeColor}
         />

@@ -348,9 +348,9 @@ function AnnotationDrawing(props) {
           updateCurrentShapeInShapes();
           break;
         case 'arrow':
-          // update points
           // TODO improve
           const arrowShape = {};
+          // update points
           arrowShape.points = [currentShape.points[0], currentShape.points[1], pos.x, pos.y];
           arrowShape.id = currentShape.id;
           arrowShape.type = currentShape.type;
