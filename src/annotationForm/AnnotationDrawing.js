@@ -98,7 +98,13 @@ function AnnotationDrawing(props) {
     setShapes(newShapes); // update shapes list
     // find shape by id
     setCurrentShape(shapes.find((s) => s.id === shape.id));
-    props.setShapeProperties(shape);
+    props.setShapeProperties(shape); // TODO Check that code ?
+    props.setColorToolFromCurrentShape(
+        {
+          fillColor: shape.fill,
+          strokeColor: shape.stroke,
+          strokeWidth: shape.strokeWidth,
+        })
   };
 
   const onTransformEnd = (evt) => {

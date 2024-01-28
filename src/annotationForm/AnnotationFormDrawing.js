@@ -11,7 +11,7 @@ import RectangleIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
 import PolygonIcon from '@mui/icons-material/Timeline';
 import GestureIcon from '@mui/icons-material/Gesture';
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import StrokeColorIcon from '@mui/icons-material/BorderColor';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -44,6 +44,11 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
 
 /** All the stuff to manage to choose the drawing tool */
 function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) {
+
+  useEffect(() => {
+
+  }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
+
   /** */
   const openChooseLineWeight = (e) => {
     updateToolState({

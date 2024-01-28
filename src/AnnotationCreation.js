@@ -105,6 +105,10 @@ function AnnotationCreation(props) {
   useEffect(() => {
   }, [{ height, width }]);
 
+  useEffect(() => {
+    console.log('Color change', toolState);
+  }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
+
   useLayoutEffect(() => {
   }, [{ height, width }]);
 
@@ -253,6 +257,14 @@ function AnnotationCreation(props) {
     const svg = await exportStageSVG(stage); // TODO clean
     return svg;
   };
+
+  /** Set color tool from current shape */
+  const setColorToolFromCurrentShape = (colorState) => {
+    setToolState((prevState) => ({
+      ...prevState,
+      ...colorState,
+    }));
+  }
 
   /**
      * Validate form and save annotation
@@ -425,6 +437,7 @@ function AnnotationCreation(props) {
         setShapeProperties={setShapeProperties}
         updateScale={updateScale}
         imageEvent={imageEvent}
+        setColorToolFromCurrentShape={setColorToolFromCurrentShape}
       />
       <StyledForm
         onSubmit={submitForm}
