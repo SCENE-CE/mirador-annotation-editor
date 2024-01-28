@@ -36,6 +36,7 @@ function Freehand({
         width={shape.width || 1920}
         height={shape.height || 1080}
         onDragEnd={handleDragEnd}
+        id={shape.id}
       >
         {shape.lines.map((line, i) => (
           <Line

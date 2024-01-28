@@ -38,7 +38,7 @@ function Rectangle({
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
         onTransformEnd={onTransformEnd}
-        onDragEnd={ handleDragEnd}
+        onDragEnd={handleDragEnd}
       />
 
       <Transformer
@@ -50,17 +50,17 @@ function Rectangle({
 }
 
 Rectangle.propTypes = {
-  shape: PropTypes.object.isRequired,
-  onShapeClick: PropTypes.func.isRequired,
   activeTool: PropTypes.string.isRequired,
-  selectedShapeId: PropTypes.string,
-  x: PropTypes.number,
-  y: PropTypes.number,
-  width: PropTypes.number,
-  height: PropTypes.number,
   fill: PropTypes.string,
+  height: PropTypes.number,
+  onShapeClick: PropTypes.func.isRequired,
+  selectedShapeId: PropTypes.string,
+  shape: PropTypes.object.isRequired,
   stroke: PropTypes.string,
   strokeWidth: PropTypes.number,
+  width: PropTypes.number,
+  x: PropTypes.number,
+  y: PropTypes.number,
 };
 
 Rectangle.defaultProps = {
