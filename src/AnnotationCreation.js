@@ -164,7 +164,6 @@ function AnnotationCreation(props) {
     updateTstart(timeStart);
     updateTend(timeEnd);
     seekToTstart();
-    seekToTend();
     setValueTime(newValueTime);
   };
 
@@ -173,6 +172,9 @@ function AnnotationCreation(props) {
     setState((prevState) => ({
       ...prevState,
       tstart: value,
+      ...props.setSeekTo(value),
+      ...props.setCurrentTime(value)
+
     }));
   };
 
