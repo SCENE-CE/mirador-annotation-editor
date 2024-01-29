@@ -112,7 +112,8 @@ function AnnotationCreation(props) {
   useEffect(() => {
     // componentDidMount logic
     const mediaVideo = VideosReferences.get(props.windowId);
-    setState((prevState) => ({ ...prevState, mediaVideo }));
+    const videoDuration = mediaVideo.props.canvas.__jsonld.duration
+    setState((prevState) => ({ ...prevState, mediaVideo, tend: videoDuration }));
 
     // componentWillUnmount logic (if needed)
     return () => {
