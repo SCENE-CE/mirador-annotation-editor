@@ -20,13 +20,11 @@ function MiradorAnnotation({ targetProps, TargetComponent, annotationEdit}) {
   const dispatch = useDispatch();
   /** Open the companion window for annotation */
   const addCompanionWindow = (content, additionalProps) => {
-    console.log(targetProps.windowId);
     setCurrentCompanionWindowId(targetProps.windowId);
     dispatch(actions.addCompanionWindow(targetProps.windowId, { content, ...additionalProps }));
   };
 
   useEffect(() => {
-    console.log('useEffectTriger', annotationEdit)
   }, [annotationEdit]);
   /** */
   const switchToSingleCanvasView = () => {
@@ -38,14 +36,12 @@ function MiradorAnnotation({ targetProps, TargetComponent, annotationEdit}) {
   const config = useSelector((state) => state.config);
 
   const openCreateAnnotationCompanionWindow = useCallback((e) => {
-    console.log('CREATE ANNOTATION',annotationEdit)
     addCompanionWindow('annotationCreation', {
       position: 'right',
     });
   }, [targetProps.windowId]);
 
   const toggleSingleCanvasDialogOpen = useCallback(() => {
-    console.log('CREATE ANNOTATION',annotationEdit)
 
     setSingleCanvasDialogOpen(!singleCanvasDialogOpen);
   }, [singleCanvasDialogOpen]);

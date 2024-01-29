@@ -12,8 +12,6 @@ function mapStateToProps(state, { targetProps: { windowId } }) {
     if (Object.keys(annotationCreationCompanionWindows).length !== 0) {
         annotationEdit = false;
     }
-    console.log(Object.keys(annotationCreationCompanionWindows).length)
-    console.log('annotationEdit', annotationEdit)
     return {
         canvases: getVisibleCanvases(state, { windowId }),
         config: state.config,
