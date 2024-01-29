@@ -394,7 +394,7 @@ function AnnotationCreation(props) {
   return (
   // we need to get the width and height of the image to pass it to the annotation drawing component
     <CompanionWindow
-      title={title ? title.value : 'New Annotation'}
+      title={annotation ? 'Edit annotation' : 'New annotation'}
       windowId={windowId}
       id={id}
     >
