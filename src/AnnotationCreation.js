@@ -1,8 +1,9 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button, ClickAwayListener, Divider, Grid, MenuItem, MenuList, Paper, Popover,
+  Button
 } from '@mui/material';
+import ToolTabs from './Tabs'
 import { styled } from '@mui/material/styles';
 import { v4 as uuid, v4 as uuidv4 } from 'uuid';
 import { exportStageSVG } from 'react-konva-to-svg';
@@ -99,7 +100,6 @@ function AnnotationCreation(props) {
   });
 
   const [scale, setScale] = useState(1);
-
   const { height, width } = VideosReferences.get(props.windowId).ref.current;
 
   useEffect(() => {
@@ -337,7 +337,6 @@ function AnnotationCreation(props) {
       xywh: null,
     });
   };
-
   /** */
   const {
     annotation,
@@ -398,6 +397,7 @@ function AnnotationCreation(props) {
       windowId={windowId}
       id={id}
     >
+      <ToolTabs/>
       <AnnotationDrawing
         style={{
           position: 'absolute',
