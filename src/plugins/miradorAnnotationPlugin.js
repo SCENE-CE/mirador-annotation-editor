@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import GetAppIcon from '@mui/icons-material/GetApp';
@@ -12,7 +12,7 @@ import AnnotationExportDialog from '../AnnotationExportDialog';
 import LocalStorageAdapter from '../LocalStorageAdapter';
 
 /** */
-function MiradorAnnotation({ targetProps, TargetComponent }) {
+function MiradorAnnotation({ targetProps, TargetComponent, annotationEdit}) {
   const [annotationExportDialogOpen, setAnnotationExportDialogOpen] = useState(false);
   const [singleCanvasDialogOpen, setSingleCanvasDialogOpen] = useState(false);
   const [currentCompanionWindowId, setCurrentCompanionWindowId] = useState(null);
@@ -25,6 +25,9 @@ function MiradorAnnotation({ targetProps, TargetComponent }) {
     dispatch(actions.addCompanionWindow(targetProps.windowId, { content, ...additionalProps }));
   };
 
+  useEffect(() => {
+    console.log('useEffectTriger', annotationEdit)
+  }, [annotationEdit]);
   /** */
   const switchToSingleCanvasView = () => {
     dispatch(actions.setWindowViewType(targetProps.windowId, 'single'));
@@ -35,12 +38,15 @@ function MiradorAnnotation({ targetProps, TargetComponent }) {
   const config = useSelector((state) => state.config);
 
   const openCreateAnnotationCompanionWindow = useCallback((e) => {
+    console.log('CREATE ANNOTATION',annotationEdit)
     addCompanionWindow('annotationCreation', {
       position: 'right',
     });
   }, [targetProps.windowId]);
 
   const toggleSingleCanvasDialogOpen = useCallback(() => {
+    console.log('CREATE ANNOTATION',annotationEdit)
+
     setSingleCanvasDialogOpen(!singleCanvasDialogOpen);
   }, [singleCanvasDialogOpen]);
 
@@ -59,6 +65,7 @@ function MiradorAnnotation({ targetProps, TargetComponent }) {
         aria-label="Create new annotation"
         onClick={windowViewType === 'single' ? openCreateAnnotationCompanionWindow : toggleSingleCanvasDialogOpen}
         size="small"
+        disabled={!annotationEdit}
       >
         <AddBoxIcon />
       </MiradorMenuButton>
