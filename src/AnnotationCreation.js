@@ -102,6 +102,7 @@ function AnnotationCreation(props) {
 
   const { height, width } = VideosReferences.get(props.windowId).ref.current;
 
+  // TODO remve one of the useEffect
   useEffect(() => {
   }, [{ height, width }]);
 
