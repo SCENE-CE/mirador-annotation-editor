@@ -1,21 +1,6 @@
 # mirador-annotations
 
-## Install (local)
 
-```
-nvm use
-git clone gitlab@gitlab.tetras-libre.fr:iiif/mirador/mirador-annotations.git
-cd mirador-annotations/
-git checkout mui5/React17
-git clone gitlab@gitlab.tetras-libre.fr:iiif/mirador/mirador-video.git
-rm -r mirador
-mv mirador-video/ mirador
-cd mirador/
-git checkout 3def696e
-npm install
-cd ..
-npm install
-```
 
 [![Travis][build-badge]][build]
 [![npm package][npm-badge]][npm]
@@ -25,6 +10,29 @@ npm install
 
 ![annotation creation panel](https://user-images.githubusercontent.com/5402927/86628717-23c3ae80-bf7f-11ea-8f0b-389c39eb4398.png)
 
+TODO Explain the evolution proposed by Tétras Libre fork
+
+## Install (local)
+
+This method requires `nvm`, `npm`.
+
+```
+git clone gitlab@gitlab.tetras-libre.fr:iiif/mirador/mirador-annotations.git
+cd mirador-annotations
+nvm use
+npm install
+```
+NPM Install throw two errors  (https://gitlab.tetras-libre.fr/iiif/mirador/mirador-annotations/-/issues/12). To fix run : 
+
+```
+./cli post_install
+```
+
+Run mirador and the plugin :
+
+```
+npm start
+```
 
 ## Install using docker
 
