@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Text, Transformer } from 'react-konva';
 
 function TextNode({
-  shape, selectedShapeId, x, y, fontSize, fill, text, onShapeClick, activeTool, isSelected,
+  shape, onShapeClick, activeTool, isSelected,
   onTransformEnd, handleDragEnd
 }) {
   const shapeRef = useRef();
@@ -32,10 +32,10 @@ function TextNode({
         x={shape.x}
         y={shape.y}
     
-        fontSize={fontSize}
+        fontSize={shape.fontSize}
 
-        fill={fill}
-        text={text}
+        fill={shape.fill}
+        text={shape.text}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}

@@ -53,7 +53,6 @@ function ParentComponent({
             return (
               <Rectangle
                 {...{
-                  ...shape,
                   activeTool,
                   isSelected,
                   onShapeClick: handleShapeClick,
@@ -68,7 +67,6 @@ function ParentComponent({
             return (
               <TextNode
                 {...{
-                  ...shape,
                   activeTool,
                   isSelected,
                   onShapeClick: handleShapeClick,
@@ -83,7 +81,6 @@ function ParentComponent({
             return (
               <EllipseNode
                 {...{
-                  ...shape,
                   activeTool,
                   isSelected,
                   onShapeClick: handleShapeClick,
@@ -98,7 +95,6 @@ function ParentComponent({
             return (
               <Freehand
                 {...{
-                  ...shape,
                   activeTool,
                   isSelected,
                   onShapeClick: handleShapeClick,
@@ -113,7 +109,6 @@ function ParentComponent({
             return (
               <Polygon
                 {...{
-                  ...shape,
                   activeTool,
                   isSelected,
                   onShapeClick: handleShapeClick,
@@ -128,7 +123,6 @@ function ParentComponent({
             return (
               <ArrowNode
                 {...{
-                  ...shape,
                   activeTool,
                   isSelected,
                   onShapeClick: handleShapeClick,
@@ -143,7 +137,6 @@ function ParentComponent({
             return (
               <ImageShape
                 {...{
-                  ...shape,
                   activeTool,
                   isSelected,
                   onShapeClick: handleShapeClick,

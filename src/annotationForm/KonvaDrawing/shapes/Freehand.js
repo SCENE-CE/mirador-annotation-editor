@@ -4,7 +4,7 @@ import { Transformer, Line, Group } from 'react-konva';
 
 /** FreeHand shape displaying */
 function Freehand({
-  activeTool, fill, height, onShapeClick, points, isSelected, shape, stroke, strokeWidth, width, x, y, onTransformEnd, handleDragEnd,
+  activeTool,  onShapeClick,  isSelected, shape, onTransformEnd, handleDragEnd,
 }) {
   // TODO check if selectedShapeId is needed
   const shapeRef = useRef();

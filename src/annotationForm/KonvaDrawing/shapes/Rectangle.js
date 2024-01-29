@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Rect, Transformer } from 'react-konva';
 
 function Rectangle({
-  shape, onShapeClick, activeTool, x, y, width, height, fill, stroke, strokeWidth, isSelected,
+  shape, onShapeClick, activeTool, isSelected,
   onTransformEnd, handleDragEnd
 }) {
   const shapeRef = useRef();
@@ -24,16 +24,16 @@ function Rectangle({
     <>
       <Rect
         ref={shapeRef}
-        x={x || 100}
-        y={y || 100}
+        x={shape.x || 100}
+        y={shape.y || 100}
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
         rotation={shape.rotation}
-        width={width || 100}
-        height={height || 100}
-        fill={fill || 'red'}
-        stroke={stroke || 'black'}
-        strokeWidth={strokeWidth || 1}
+        width={shape.width || 100}
+        height={shape.height || 100}
+        fill={shape.fill || 'red'}
+        stroke={shape.stroke || 'black'}
+        strokeWidth={shape.strokeWidth || 1}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}

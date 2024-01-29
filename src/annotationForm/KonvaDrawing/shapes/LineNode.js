@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Line, Transformer } from 'react-konva';
 
 function LineNode({
-  onShapeClick, shape, activeTool, selectedShapeId, x, y, points, fill, strokeWidth,
+  onShapeClick, shape, activeTool, selectedShapeId, 
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -24,12 +24,12 @@ function LineNode({
     <>
       <Line
         ref={shapeRef}
-        x={x || 0}
-        y={y || 0}
-        points={points || [0, 0, 0, 0, 100, 100]}
-        fill={fill}
-        stroke={fill}
-        strokeWidth={strokeWidth || 1}
+        x={shape.x || 0}
+        y={shape.y || 0}
+        points={shape.points }
+        fill={shape.fill}
+        stroke={shape.fill}
+        strokeWidth={shape.strokeWidth || 1}
         id={shape.id}
         closed={false}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}

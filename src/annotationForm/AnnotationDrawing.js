@@ -109,15 +109,19 @@ function AnnotationDrawing(props) {
 
   const onTransformEnd = (evt) => {
     const modifiedshape = evt.currentTarget.attrs;
+
+    console.log('modifiedshape', modifiedshape);
+
     const shape = shapes.find((s) => s.id === modifiedshape.id);
     // TODO improve
-    shape.x = modifiedshape.x;
-    shape.y = modifiedshape.y;
-    shape.width = modifiedshape.width;
-    shape.height = modifiedshape.height;
-    shape.rotation = modifiedshape.rotation;
-    shape.scaleX = modifiedshape.scaleX;
-    shape.scaleY = modifiedshape.scaleY;
+    shape.x = modifiedshape.x || shape.x;
+    shape.y = modifiedshape.y || shape.y;
+    shape.rotation = modifiedshape.rotation || shape.rotation;
+    shape.width = modifiedshape.width || shape.width;
+    shape.height = modifiedshape.height || shape.height;
+    shape.scaleX = modifiedshape.scaleX || shape.scaleX;
+    shape.scaleY = modifiedshape.scaleY || shape.scaleY;
+    console.log('shape', shape);
     setCurrentShape({ ...shape });
     updateCurrentShapeInShapes();
   };
