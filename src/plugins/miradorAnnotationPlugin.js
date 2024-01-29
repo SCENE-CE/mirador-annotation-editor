@@ -18,7 +18,6 @@ function MiradorAnnotation({ targetProps, TargetComponent }) {
   const [currentCompanionWindowId, setCurrentCompanionWindowId] = useState(null);
 
   const dispatch = useDispatch();
-
   /** Open the companion window for annotation */
   const addCompanionWindow = (content, additionalProps) => {
     console.log(targetProps.windowId);
@@ -107,10 +106,7 @@ MiradorAnnotation.propTypes = {
   ]).isRequired,
   targetProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   windowViewType: PropTypes.string.isRequired,
+  createAnnotation: PropTypes.bool.isRequired,
 };
 
-export default {
-  component: MiradorAnnotation,
-  mode: 'wrap',
-  target: 'AnnotationSettings',
-};
+export default MiradorAnnotation;
