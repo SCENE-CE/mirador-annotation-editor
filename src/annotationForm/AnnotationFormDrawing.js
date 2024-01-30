@@ -45,12 +45,11 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
 }));
 
 
-const rgbaToObj = (rgba) => {
+const rgbaToObj = (rgba='rgba(255,255,255,0.5)') => {
 
 
-  if(!rgba) return { r: 0, g: 0, b: 0, a: 1 };
+ 
 
-  if(typeof rgba === 'object') return rgba;
 
   const rgbaArray = rgba.split(',');
   const r = Number(rgbaArray[0].split('(')[1]);
@@ -60,7 +59,7 @@ const rgbaToObj = (rgba) => {
   return { r, g, b, a };
 }
 
-const objToRgba = (obj) => {
+const objToRgba = (obj={r:255,g:255,b:255,a:0.5}) => {
   return `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
 }
 

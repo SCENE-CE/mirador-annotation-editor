@@ -249,6 +249,7 @@ function AnnotationCreation(props) {
 
   /** */
   const setShapeProperties = (options) => new Promise(() => {
+    console.log('setShapeProperties', options);
     if (options.fill) {
       state.fillColor = options.fill;
     }
