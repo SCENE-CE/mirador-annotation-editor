@@ -6,6 +6,7 @@ import { getWindowViewType } from 'mirador/dist/es/src/state/selectors';
 import CanvasListItem from '../CanvasListItem';
 import AnnotationActionsContext from '../AnnotationActionsContext';
 import SingleCanvasDialog from '../SingleCanvasDialog';
+import {getCompanionWindowsForContent} from "mirador/dist/es/src/state/selectors/companionWindows";
 
 /** */
 class CanvasAnnotationsWrapper extends Component {
@@ -26,19 +27,19 @@ class CanvasAnnotationsWrapper extends Component {
     });
   }
 
+
+
   /** */
   render() {
     const {
       addCompanionWindow, annotationsOnCanvases, canvases, config, receiveAnnotation,
-      switchToSingleCanvasView, TargetComponent, targetProps, windowViewType, containerRef,
+      switchToSingleCanvasView, TargetComponent, targetProps, windowViewType, containerRef,annotationEdit
     } = this.props;
     const { singleCanvasDialogOpen } = this.state;
-
     const props = {
       ...targetProps,
       listContainerComponent: CanvasListItem,
     };
-
     return (
       <AnnotationActionsContext.Provider
         value={{
@@ -51,6 +52,7 @@ class CanvasAnnotationsWrapper extends Component {
           toggleSingleCanvasDialogOpen: this.toggleSingleCanvasDialogOpen,
           windowId: targetProps.windowId,
           windowViewType,
+          annotationEdit
         }}
       >
         <TargetComponent
@@ -104,6 +106,12 @@ CanvasAnnotationsWrapper.defaultProps = {
 function mapStateToProps(state, { targetProps: { windowId } }) {
   const canvases = getVisibleCanvases(state, { windowId });
   const annotationsOnCanvases = {};
+  const annotationCreationCompanionWindows = getCompanionWindowsForContent(state, { content: 'annotationCreation', windowId });
+  let annotationEdit = true;
+
+  if (Object.keys(annotationCreationCompanionWindows).length !== 0) {
+    annotationEdit = false;
+  }
 
   canvases.forEach((canvas) => {
     const anno = state.annotations[canvas.id];
@@ -113,6 +121,7 @@ function mapStateToProps(state, { targetProps: { windowId } }) {
   });
   return {
     annotationsOnCanvases,
+    annotationEdit: annotationEdit,
     canvases,
     config: state.config,
     windowViewType: getWindowViewType(state, { windowId }),
@@ -120,7 +129,7 @@ function mapStateToProps(state, { targetProps: { windowId } }) {
 }
 
 /** */
-const mapDispatchToProps = (dispatch, props) => ({
+const mapDispatchToProps = (dispatch, props, annotationEdit) => ({
   addCompanionWindow: (content, additionalProps) => dispatch(
     actions.addCompanionWindow(props.targetProps.windowId, { content, ...additionalProps }),
   ),
