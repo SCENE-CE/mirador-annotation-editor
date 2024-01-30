@@ -16,23 +16,24 @@ const StyledRoot = styled('div')({
   display: 'flex',
 });
 
+/** Hours minutes seconds form inputs */
 function HMSInput({ seconds, onChange }) {
   const [hms, setHms] = useState(secondsToHMSarray(seconds));
 
   useEffect(() => {
-      if(seconds != null) {
-    setHms(secondsToHMSarray(Number(seconds)));
-      }
+    if (seconds != null) {
+      setHms(secondsToHMSarray(Number(seconds)));
+    }
   }, [seconds]);
 
+  /** Handle change on one form */
   const someChange = (ev) => {
-      if(!ev.target.value){
-          return
-      }
-      hms[ev.target.name] = Number(ev.target.value)
-      setHms(hms)
-      onChange(hms.hours * 3600 + hms.minutes * 60 + hms.seconds);
-
+    if (!ev.target.value) {
+      return;
+    }
+    hms[ev.target.name] = Number(ev.target.value);
+    setHms(hms);
+    onChange(hms.hours * 3600 + hms.minutes * 60 + hms.seconds);
   };
 
   return (
@@ -48,7 +49,7 @@ function HMSInput({ seconds, onChange }) {
         inputProps={{ style: { width: '35px' } }}
 
       />
-      <StyledHMSLabel style={{"margin": '2px',}}>h</StyledHMSLabel>
+      <StyledHMSLabel style={{ margin: '2px' }}>h</StyledHMSLabel>
       <StyledInput
         type="number"
         min="0"
@@ -59,7 +60,7 @@ function HMSInput({ seconds, onChange }) {
         dir="rtl"
         inputProps={{ style: { width: '35px' } }}
       />
-      <StyledHMSLabel style={{"margin": '2px',}}>m</StyledHMSLabel>
+      <StyledHMSLabel style={{ margin: '2px' }}>m</StyledHMSLabel>
       <StyledInput
         type="number"
         min="0"
@@ -70,14 +71,14 @@ function HMSInput({ seconds, onChange }) {
         dir="rtl"
         inputProps={{ style: { width: '35px' } }}
       />
-      <StyledHMSLabel style={{"margin": '2px',}}>s</StyledHMSLabel>
+      <StyledHMSLabel style={{ margin: '2px' }}>s</StyledHMSLabel>
     </StyledRoot>
   );
 }
 
 HMSInput.propTypes = {
   onChange: PropTypes.func.isRequired,
-  seconds: PropTypes.number,
+  seconds: PropTypes.number.isRequired,
 };
 
 export default HMSInput;
