@@ -35,6 +35,7 @@ function Freehand({
         y={shape.y}
         width={shape.width || 1920}
         height={shape.height || 1080}
+        draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onDragEnd={handleDragEnd}
         id={shape.id}
       >
@@ -60,7 +61,7 @@ function Freehand({
 }
 
 Freehand.propTypes = {
-  activeTool: PropTypes.string.isRequired,
+
   fill: PropTypes.string,
   height: PropTypes.number,
   onShapeClick: PropTypes.func.isRequired,

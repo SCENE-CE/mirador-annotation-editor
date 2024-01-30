@@ -3,7 +3,7 @@ import React, {
   useEffect, useState, useLayoutEffect,
 } from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
+import PropTypes, { object } from 'prop-types';
 import { Stage } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -115,13 +115,9 @@ function AnnotationDrawing(props) {
 
     const shape = shapes.find((s) => s.id === modifiedshape.id);
     // TODO improve
-    shape.x = modifiedshape.x || shape.x;
-    shape.y = modifiedshape.y || shape.y;
-    shape.rotation = modifiedshape.rotation || shape.rotation;
-    shape.width = modifiedshape.width || shape.width;
-    shape.height = modifiedshape.height || shape.height;
-    shape.scaleX = modifiedshape.scaleX || shape.scaleX;
-    shape.scaleY = modifiedshape.scaleY || shape.scaleY;
+   
+    // shape.scaleY = modifiedshape.scaleY || shape.scaleY;
+    Object.assign(shape, modifiedshape);
    
     setCurrentShape({ ...shape });
     updateCurrentShapeInShapes();
@@ -289,6 +285,7 @@ function AnnotationDrawing(props) {
             scaleX: 1,
             scaleY: 1,
             stroke: props.strokeColor,
+            strokeWidth: props.strokeWidth,
             type: 'polygon',
             x: 0,
             y: 0,
