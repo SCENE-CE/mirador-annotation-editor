@@ -25,23 +25,13 @@ function AnnotationCreation(props) {
     closedMode: 'closed',
     colorPopoverOpen: false,
     currentColorType: false,
-    fillColor: {
-      r: 255,
-      g: 255,
-      b: 255,
-      a: 0.2,
-    },
+    fillColor: 'rgba(255, 0, 0, 0.5)',
     image: { id: null },
     imageEvent: null,
     lineWeightPopoverOpen: false,
     popoverAnchorEl: null,
     popoverLineWeightAnchorEl: null,
-    strokeColor: {
-      r: 255,
-      g: 0,
-      b: 0,
-      a: 1,
-    },
+    strokeColor: 'rgba(255, 0, 0, 1)',
     strokeWidth: 3,
   });
 
@@ -112,9 +102,32 @@ function AnnotationCreation(props) {
 
   const { height, width } = VideosReferences.get(props.windowId).ref.current;
 
-  // TODO remve one of the useEffect
+  // Add a state to trigger redraw
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  // Listen to window resize event
   useEffect(() => {
-  }, [{ height, width }]);
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+
+   
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []); 
+
+
+  useEffect(() => {
+  }, [windowSize]);
 
   useEffect(() => {
     console.log('Color change', toolState);
