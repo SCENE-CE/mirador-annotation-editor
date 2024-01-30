@@ -17,6 +17,14 @@ import AnnotationFormContent from './annotationForm/AnnotationFormContent';
 import AnnotationFormTime from './annotationForm/AnnotationFormTime';
 import AnnotationFormDrawing from './annotationForm/AnnotationFormDrawing';
 import { geomFromAnnoTarget, timeFromAnnoTarget } from './AnnotationCreationUtils';
+import Tab from "@mui/material/Tab";
+import HighlightAltIcon from "@mui/icons-material/HighlightAlt";
+import LayersIcon from "@mui/icons-material/Layers";
+import CategoryIcon from "@mui/icons-material/Category";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import HubIcon from "@mui/icons-material/Hub";
+import Tabs from "@mui/material/Tabs";
+import {TabContext, TabList, TabPanel} from "@mui/lab";
 
 /** Component for creating annotations.
  * Display in companion window when a manifest is open and an annoation created or edited */
@@ -101,6 +109,7 @@ function AnnotationCreation(props) {
 
   const [scale, setScale] = useState(1);
   const { height, width } = VideosReferences.get(props.windowId).ref.current;
+  const [value, setValue] = useState("1");
 
   useEffect(() => {
   }, [{ height, width }]);
@@ -153,7 +162,9 @@ function AnnotationCreation(props) {
       valueTime: newValueTime,
     }));
   };
-
+  const tabHandler = (event, TabIndex) => {
+    setValue(TabIndex);
+  };
   /**
      * @param {Event} event
      * @param {number} newValueTime
@@ -397,7 +408,6 @@ function AnnotationCreation(props) {
       windowId={windowId}
       id={id}
     >
-      <ToolTabs/>
       <AnnotationDrawing
         style={{
           position: 'absolute',
@@ -429,32 +439,123 @@ function AnnotationCreation(props) {
       <StyledForm
         onSubmit={submitForm}
       >
-        <AnnotationFormContent
-          onChange={updateTitle}
-          textBody={state.textBody}
-          textEditorStateBustingKey={textEditorStateBustingKey}
-          updateTextBody={updateTextBody}
-        />
-        {mediaIsVideo && (
-        <AnnotationFormTime
-          mediaIsVideo={mediaIsVideo}
-          videoDuration={videoDuration}
-          value={valueTime}
-          handleChangeTime={handleChangeTime}
-          windowid={windowId}
-          setTstartNow={setTstartNow}
-          tstart={tstart}
-          updateTstart={updateTstart}
-          setTendNow={setTendNow}
-          tend={tend}
-          updateTend={updateTend}
-        />
-        )}
-        <AnnotationFormDrawing
-          toolState={toolState}
-          updateToolState={setToolState}
-          handleImgChange={handleImgChange}
-        />
+        <TabContext value={value}>
+          <TabList value={value} onChange={tabHandler} aria-label="icon tabs">
+            <Tab
+                icon={<HighlightAltIcon/>}
+                aria-label="TargetSelector"
+                style={
+                  {
+                    minWidth:"0px",
+                    padding: "12px 8px",
+                  }}
+                value="1"
+            >
+            </Tab>
+            <Tab
+                icon={<LayersIcon/>}
+                aria-label="TargetSelector"
+                style={
+                  {
+                    minWidth:"0px",
+                    padding: "12px 8px",
+                  }}
+                value="2"
+            >
+            </Tab>
+            <Tab
+                icon={<CategoryIcon/>}
+                aria-label="TargetSelector"
+                style={
+                  {
+                    minWidth:"0px",
+                    padding: "12px 8px",
+                  }}
+                value="3"
+            >
+            </Tab>
+            <Tab
+                icon={<LocalOfferIcon/>}
+                aria-label="TargetSelector"
+                style={
+                  {
+                    minWidth:"0px",
+                    padding: "12px 8px",
+                  }}
+                value="4"
+            >
+            </Tab>
+            <Tab
+                icon={<HubIcon/>}
+                aria-label="TargetSelector"
+                style={
+                  {
+                    minWidth:"0px",
+                    padding: "12px 8px",
+                  }}
+                value="5"
+            >
+            </Tab>
+          </TabList>
+          <TabPanel
+              value="1"
+              style={
+            {
+              padding:"0",
+            }
+          }>
+            {mediaIsVideo && (
+              <AnnotationFormTime
+                  mediaIsVideo={mediaIsVideo}
+                  videoDuration={videoDuration}
+                  value={valueTime}
+                  handleChangeTime={handleChangeTime}
+                  windowid={windowId}
+                  setTstartNow={setTstartNow}
+                  tstart={tstart}
+                  updateTstart={updateTstart}
+                  setTendNow={setTendNow}
+                  tend={tend}
+                  updateTend={updateTend}
+              />
+          )}
+          </TabPanel>
+          <TabPanel
+              value="2"
+              style={
+                  {
+                    padding:"0",
+                  }}
+          ></TabPanel>
+          <TabPanel
+              value="3"
+              style={
+                {
+                  padding:"0",
+                }}
+          >
+            <AnnotationFormDrawing
+                toolState={toolState}
+                updateToolState={setToolState}
+                handleImgChange={handleImgChange}
+            />
+          </TabPanel>
+          <TabPanel
+              value="4"
+              style={
+                {
+                  padding:"0",
+                }}
+          ></TabPanel>
+          <TabPanel
+              value="5"
+              style={
+                {
+                  padding:"0",
+                }}
+          ></TabPanel>
+        </TabContext>
+
         <div>
           <Button onClick={closeCompanionWindow}>
             Cancel

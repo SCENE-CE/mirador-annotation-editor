@@ -15,39 +15,56 @@ export default function ToolTabs(){
         setValue(newValue);
     };
 
-    const tabStyle = {
-    }
-
     return(
         <Tabs value={value} onChange={tabHandler} aria-label="icon tabs">
             <Tab
                 icon={<HighlightAltIcon/>}
                 aria-label="TargetSelector"
-                style={{minWidth:"0px"}}
+                style={
+                    {
+                        minWidth:"0px",
+                        padding: "12px 10px",
+                    }}
             >
             </Tab>
             <Tab
                 icon={<LayersIcon/>}
                 aria-label="TargetSelector"
-                style={{minWidth:"0px"}}
+                style={
+                    {
+                        minWidth:"0px",
+                        padding: "12px 10px",
+                    }}
             >
             </Tab>
             <Tab
                 icon={<CategoryIcon/>}
                 aria-label="TargetSelector"
-                style={{minWidth:"0px"}}
+                style={
+                    {
+                        minWidth:"0px",
+                        padding: "12px 10px",
+                    }}
             >
             </Tab>
             <Tab
                 icon={<LocalOfferIcon/>}
                 aria-label="TargetSelector"
-                style={{minWidth:"0px"}}
+                style={
+                    {
+                        minWidth:"0px",
+                        padding: "12px 10px",
+                    }}
             >
             </Tab>
             <Tab
                 icon={<HubIcon/>}
                 aria-label="TargetSelector"
-                style={{minWidth:"0px"}}
+                style={
+                    {
+                        minWidth:"0px",
+                        padding: "12px 10px",
+                    }}
             >
             </Tab>
         </Tabs>
