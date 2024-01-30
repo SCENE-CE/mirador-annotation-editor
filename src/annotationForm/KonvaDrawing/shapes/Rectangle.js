@@ -24,15 +24,15 @@ function Rectangle({
     <>
       <Rect
         ref={shapeRef}
-        x={shape.x || 100}
-        y={shape.y || 100}
+        x={shape.x || 0}
+        y={shape.y || 0}
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
         rotation={shape.rotation}
-        width={shape.width || 100}
-        height={shape.height || 100}
-        fill={shape.fill || 'red'}
-        stroke={shape.stroke || 'black'}
+        width={shape.width || 1}
+        height={shape.height || 1}
+        fill={`rgba(${shape.fill.r},${shape.fill.g},${shape.fill.b},${shape.fill.a})`}
+        stroke={`rgba(${shape.stroke.r},${shape.stroke.g},${shape.stroke.b},${shape.stroke.a})`}
         strokeWidth={shape.strokeWidth || 1}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}

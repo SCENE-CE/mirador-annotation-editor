@@ -10,6 +10,7 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import RectangleIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
 import PolygonIcon from '@mui/icons-material/Timeline';
+import DeleteIcon from '@mui/icons-material/Delete';
 import GestureIcon from '@mui/icons-material/Gesture';
 import React, {useEffect, useState} from 'react';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -26,6 +27,7 @@ import { SketchPicker } from 'react-color';
 import { v4 as uuidv4 } from 'uuid';
 import CursorIcon from '../icons/Cursor';
 import ImageFormField from './ImageFormField';
+import { fill } from 'lodash';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
@@ -70,13 +72,16 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
 
   /** Update color : fillColor or strokeColor */
   const updateStrokeColor = (color) => {
+  
     updateToolState({
       ...toolState,
-      [toolState.currentColorType]: color.hex,
+      [toolState.currentColorType]: color.rgb,
     });
+
   };
   /** */
   const openChooseColor = (e) => {
+
     updateToolState({
       ...toolState,
       colorPopoverOpen: true,
@@ -148,6 +153,8 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
     currentColorType,
   } = toolState;
 
+
+
   return (
     <div>
       <div>
@@ -211,6 +218,9 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
                 <ToggleButton value="freehand" aria-label="free hand polygon">
                   <GestureIcon />
                 </ToggleButton>
+                <ToggleButton value="delete" aria-label="delete a shape">
+                  <DeleteIcon />
+                </ToggleButton>
               </StyledToggleButtonGroup>
             </Paper>
           </Grid>
@@ -233,7 +243,7 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
                 aria-label="select color"
                 onClick={openChooseColor}
               >
-                <StrokeColorIcon style={{ fill: strokeColor }} />
+                <StrokeColorIcon style={{ fill: `rgba(${strokeColor.r},${strokeColor.g},${strokeColor.b},${strokeColor.a})` }} />
                 <ArrowDropDownIcon />
               </ToggleButton>
               <ToggleButton
@@ -247,9 +257,10 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
               <ToggleButton
                 value="fillColor"
                 aria-label="select color"
+
                 onClick={openChooseColor}
               >
-                <FormatColorFillIcon style={{ fill: fillColor }} />
+                <FormatColorFillIcon style={{ fill: `rgba(${fillColor.r},${fillColor.g},${fillColor.b},${fillColor.a})` }} />
                 <ArrowDropDownIcon />
               </ToggleButton>
             </ToggleButtonGroup>
@@ -315,6 +326,7 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
         onClose={closeChooseColor}
       >
         <SketchPicker
+          disableAlpha={false}
           color={toolState[currentColorType]}
           onChangeComplete={updateStrokeColor}
         />

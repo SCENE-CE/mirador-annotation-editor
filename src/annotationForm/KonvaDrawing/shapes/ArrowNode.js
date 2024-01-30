@@ -25,13 +25,13 @@ function ArrowNode({
     <>
       <Arrow
         ref={shapeRef}
-        fill={shape.fill}
+        fill={`rgba(${shape.fill.r},${shape.fill.g},${shape.fill.b},${shape.fill.a})`}
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
         rotation={shape.rotation}
         x={shape.x}
         y={shape.y}
-        stroke={shape.stroke}
+        stroke={`rgba(${shape.stroke.r},${shape.stroke.g},${shape.stroke.b},${shape.stroke.a})`}
         strokeWidth={shape.strokeWidth}
         points={shape.points}
         id={shape.id}

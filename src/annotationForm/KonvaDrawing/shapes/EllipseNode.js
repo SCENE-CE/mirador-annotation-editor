@@ -32,8 +32,8 @@ function EllipseNode({
         y={shape.y}
         width={shape.width}
         height={shape.height}
-        fill={shape.fill || 'red'}
-        stroke={shape.stroke || 'black'}
+        fill={`rgba(${shape.fill.r},${shape.fill.g},${shape.fill.b},${shape.fill.a})`}
+        stroke={`rgba(${shape.stroke.r},${shape.stroke.g},${shape.stroke.b},${shape.stroke.a})`}
         strokeWidth={shape.strokeWidth || 1}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}

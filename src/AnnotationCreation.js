@@ -25,13 +25,23 @@ function AnnotationCreation(props) {
     closedMode: 'closed',
     colorPopoverOpen: false,
     currentColorType: false,
-    fillColor: 'black',
+    fillColor: {
+      r: 255,
+      g: 255,
+      b: 255,
+      a: 0.2,
+    },
     image: { id: null },
     imageEvent: null,
     lineWeightPopoverOpen: false,
     popoverAnchorEl: null,
     popoverLineWeightAnchorEl: null,
-    strokeColor: 'green',
+    strokeColor: {
+      r: 255,
+      g: 0,
+      b: 0,
+      a: 1,
+    },
     strokeWidth: 3,
   });
 

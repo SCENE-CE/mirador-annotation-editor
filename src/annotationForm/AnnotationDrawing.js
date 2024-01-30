@@ -102,6 +102,16 @@ function AnnotationDrawing(props) {
 
   /** */
   const onShapeClick = async (shape) => {
+
+
+    if(props.activeTool === 'delete') {
+
+      const newShapes = shapes.filter((s) => s.id !== shape.id);
+      setShapes(newShapes);
+      return;
+    }
+
+
     const newShapes = shapes.filter((s) => s.id !== shape.id); // remove shape from the list
     newShapes.push(shape); // add shape to the end of the list
     setShapes(newShapes); // update shapes list
