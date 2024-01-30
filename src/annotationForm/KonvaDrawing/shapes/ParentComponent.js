@@ -160,7 +160,12 @@ ParentComponent.propTypes = {
   shapes: PropTypes.arrayOf(PropTypes.object).isRequired,
   onShapeClick: PropTypes.func.isRequired,
   selectedShapeIdProp: PropTypes.string,
-  activeTool: PropTypes.string.isRequired,
+  activeTool: PropTypes.string,
+  scale: PropTypes.number,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  onTransform: PropTypes.func,
+  handleDragEnd: PropTypes.func,
 };
 
 ParentComponent.defaultProps = {

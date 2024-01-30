@@ -22,6 +22,7 @@ function Freehand({
     onShapeClick(shape);
   };
 
+
   return (
     <>
       <Group
@@ -40,11 +41,12 @@ function Freehand({
         id={shape.id}
       >
         {shape.lines.map((line, i) => (
+         
           <Line
             key={i}
-            fill={shape.fill}
+            fill={`rgba(${line.stroke.r},${line.stroke.g},${line.stroke.b},${line.stroke.a})`}
             points={line.points}
-            stroke={shape.stroke}
+            stroke={`rgba(${line.stroke.r},${line.stroke.g},${line.stroke.b},${line.stroke.a})`}
             strokeWidth={shape.strokeWidth}
             tension={0.5}
             lineCap="round"

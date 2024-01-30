@@ -49,7 +49,7 @@ function ImageShape({
 ImageShape.propTypes = {
   onShapeClick: PropTypes.func.isRequired,
   shape: PropTypes.object.isRequired,
-  activeTool: PropTypes.string.isRequired,
+  activeTool: PropTypes.string,
   isSelected: PropTypes.bool.isRequired,
   x: PropTypes.number,
   y: PropTypes.number,

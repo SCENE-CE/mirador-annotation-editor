@@ -50,7 +50,7 @@ function Rectangle({
 }
 
 Rectangle.propTypes = {
-  activeTool: PropTypes.string.isRequired,
+  activeTool: PropTypes.string,
   fill: PropTypes.string,
   height: PropTypes.number,
   onShapeClick: PropTypes.func.isRequired,

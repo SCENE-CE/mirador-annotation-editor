@@ -45,7 +45,7 @@ function LineNode({
 }
 
 LineNode.propTypes = {
-  activeTool: PropTypes.string.isRequired,
+  activeTool: PropTypes.string,
   fill: PropTypes.string, // assuming shape is an object, adjust as necessary
   onShapeClick: PropTypes.func.isRequired,
   points: PropTypes.arrayOf(PropTypes.number),

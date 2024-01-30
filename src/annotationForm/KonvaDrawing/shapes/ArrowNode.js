@@ -51,7 +51,7 @@ function ArrowNode({
 }
 
 ArrowNode.propTypes = {
-  activeTool: PropTypes.string.isRequired,
+  activeTool: PropTypes.string,
   handleDragEnd: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
