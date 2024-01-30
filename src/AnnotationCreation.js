@@ -1,10 +1,10 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button, ClickAwayListener, Divider, Grid, MenuItem, MenuList, Paper, Popover,
+  Button,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { v4 as uuid, v4 as uuidv4 } from 'uuid';
+import { v4 as uuid } from 'uuid';
 import { exportStageSVG } from 'react-konva-to-svg';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
@@ -112,12 +112,12 @@ function AnnotationCreation(props) {
   useEffect(() => {
     // componentDidMount logic
     const mediaVideo = VideosReferences.get(props.windowId);
-    const videoDuration = mediaVideo.props.canvas.__jsonld.duration
-    console.log(tend)
-if (tend === null){
-  setState((prevState)=>({...prevState, tend:videoDuration}))
-}
-setState((prevState) => ({ ...prevState, mediaVideo }));
+    const videoDuration = mediaVideo.props.canvas.__jsonld.duration;
+    if (tend === null) {
+      setState((prevState) => ({ ...prevState, tend: videoDuration }));
+    } else {
+      setState((prevState) => ({ ...prevState, mediaVideo }));
+    }
 
     // componentWillUnmount logic (if needed)
     return () => {
@@ -178,7 +178,7 @@ setState((prevState) => ({ ...prevState, mediaVideo }));
       ...prevState,
       tstart: value,
       ...props.setSeekTo(value),
-      ...props.setCurrentTime(value)
+      ...props.setCurrentTime(value),
 
     }));
   };
@@ -391,6 +391,7 @@ setState((prevState) => ({ ...prevState, mediaVideo }));
     console.debug('osdref', osdref);
   }
 
+  /** Change scale from container / canva */
   const updateScale = () => {
     setScale(overlay.containerWidth / overlay.canvasWidth);
   };
@@ -407,11 +408,11 @@ setState((prevState) => ({ ...prevState, mediaVideo }));
     >
       <AnnotationDrawing
         style={{
+          height: 'auto',
+          left: 0,
           position: 'absolute',
           top: 0,
-          left: 0,
           width: '100%',
-          height: 'auto',
 
         }}
         scale={scale}
@@ -520,7 +521,6 @@ AnnotationCreation.defaultProps = {
   closeCompanionWindow: () => {
   },
   currentTime: null,
-  paused: true,
   setCurrentTime: () => {
   },
   setSeekTo: () => {
