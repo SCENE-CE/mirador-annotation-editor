@@ -42,6 +42,10 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
 }));
 
+const StyledGridImageURL = styled(Grid)(({ theme }) => ({
+  display:'flex',
+}));
+
 /** All the stuff to manage to choose the drawing tool */
 function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) {
   /** */
@@ -149,17 +153,10 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
         <Grid container>
           <Grid item xs={12}>
             <Typography variant="overline">
-              Drawing
+              Overlay
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Paper
-              elevation={0}
-              sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
-              }}
-            >
               <StyledToggleButtonGroup
                 value={activeTool} // State or props ?
                 exclusive
@@ -180,10 +177,6 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
                   <AccessibilityNewIcon />
                 </ToggleButton>
               </StyledToggleButtonGroup>
-              <StyledDivider
-                flexItem
-                orientation="vertical"
-              />
               <StyledToggleButtonGroup
                 value={activeTool} // State or props ?
                 exclusive
@@ -207,7 +200,6 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
                   <GestureIcon />
                 </ToggleButton>
               </StyledToggleButtonGroup>
-            </Paper>
           </Grid>
         </Grid>
       </div>
@@ -271,14 +263,12 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
           </Grid>
         </Grid>
         <Grid container>
-          <Grid item xs={8} style={{ marginBottom: 10 }}>
-            <ImageFormField xs={8} value={image} onChange={handleImgChange} />
-          </Grid>
-          <Grid item xs={4} style={{ marginBottom: 10 }}>
+          <StyledGridImageURL item xs={8}>
+            <ImageFormField xs={8} value={image} onChange={handleImgChange}/>
             <Button variant="contained" onClick={addImage}>
               <AddPhotoAlternateIcon />
             </Button>
-          </Grid>
+          </StyledGridImageURL>
         </Grid>
       </div>
       <Popover

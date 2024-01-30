@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
   Button
 } from '@mui/material';
-import ToolTabs from './Tabs'
 import { styled } from '@mui/material/styles';
 import { v4 as uuid, v4 as uuidv4 } from 'uuid';
 import { exportStageSVG } from 'react-konva-to-svg';
@@ -23,7 +22,6 @@ import LayersIcon from "@mui/icons-material/Layers";
 import CategoryIcon from "@mui/icons-material/Category";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import HubIcon from "@mui/icons-material/Hub";
-import Tabs from "@mui/material/Tabs";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
 
 /** Component for creating annotations.
@@ -408,15 +406,7 @@ function AnnotationCreation(props) {
       windowId={windowId}
       id={id}
     >
-      <AnnotationDrawing
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: 'auto',
-
-        }}
+      <StyledAnnotationDrawing
         scale={scale}
         activeTool={activeTool}
         annotation={annotation}
@@ -441,69 +431,40 @@ function AnnotationCreation(props) {
       >
         <TabContext value={value}>
           <TabList value={value} onChange={tabHandler} aria-label="icon tabs">
-            <Tab
+            <StyledTab
                 icon={<HighlightAltIcon/>}
                 aria-label="TargetSelector"
-                style={
-                  {
-                    minWidth:"0px",
-                    padding: "12px 8px",
-                  }}
                 value="1"
             >
-            </Tab>
-            <Tab
+            </StyledTab>
+            <StyledTab
                 icon={<LayersIcon/>}
                 aria-label="TargetSelector"
-                style={
-                  {
-                    minWidth:"0px",
-                    padding: "12px 8px",
-                  }}
                 value="2"
             >
-            </Tab>
-            <Tab
+            </StyledTab>
+            <StyledTab
                 icon={<CategoryIcon/>}
                 aria-label="TargetSelector"
-                style={
-                  {
-                    minWidth:"0px",
-                    padding: "12px 8px",
-                  }}
                 value="3"
             >
-            </Tab>
-            <Tab
+            </StyledTab>
+            <StyledTab
                 icon={<LocalOfferIcon/>}
                 aria-label="TargetSelector"
-                style={
-                  {
-                    minWidth:"0px",
-                    padding: "12px 8px",
-                  }}
                 value="4"
             >
-            </Tab>
-            <Tab
+            </StyledTab>
+            <StyledTab
                 icon={<HubIcon/>}
                 aria-label="TargetSelector"
-                style={
-                  {
-                    minWidth:"0px",
-                    padding: "12px 8px",
-                  }}
                 value="5"
             >
-            </Tab>
+            </StyledTab>
           </TabList>
-          <TabPanel
+          <StyledTabPanel
               value="1"
-              style={
-            {
-              padding:"0",
-            }
-          }>
+          >
             {mediaIsVideo && (
               <AnnotationFormTime
                   mediaIsVideo={mediaIsVideo}
@@ -519,43 +480,28 @@ function AnnotationCreation(props) {
                   updateTend={updateTend}
               />
           )}
-          </TabPanel>
-          <TabPanel
+          </StyledTabPanel>
+          <StyledTabPanel
               value="2"
-              style={
-                  {
-                    padding:"0",
-                  }}
-          ></TabPanel>
-          <TabPanel
+          ></StyledTabPanel>
+          <StyledTabPanel
               value="3"
-              style={
-                {
-                  padding:"0",
-                }}
           >
             <AnnotationFormDrawing
                 toolState={toolState}
                 updateToolState={setToolState}
                 handleImgChange={handleImgChange}
             />
-          </TabPanel>
-          <TabPanel
+          </StyledTabPanel>
+          <StyledTabPanel
               value="4"
-              style={
-                {
-                  padding:"0",
-                }}
-          ></TabPanel>
-          <TabPanel
+          >
+            <AnnotationFormContent></AnnotationFormContent>
+          </StyledTabPanel>
+          <StyledTabPanel
               value="5"
-              style={
-                {
-                  padding:"0",
-                }}
-          ></TabPanel>
+          ></StyledTabPanel>
         </TabContext>
-
         <div>
           <Button onClick={closeCompanionWindow}>
             Cancel
@@ -578,6 +524,24 @@ const StyledForm = styled('form')(({ theme }) => ({
   paddingRight: theme.spacing(1),
   paddingTop: theme.spacing(2),
 }));
+
+const StyledTab = styled(Tab)(({ theme }) => ({
+  minWidth:"0px",
+  padding: "12px 8px",
+}));
+
+const StyledTabPanel = styled(TabPanel)(({ theme }) => ({
+  padding:"0",
+}));
+
+const StyledAnnotationDrawing = styled(AnnotationDrawing)(({ theme }) => ({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: 'auto',}));
+
+
 
 AnnotationCreation.propTypes = {
   // TODO proper web annotation type ?
