@@ -4,7 +4,7 @@ import { Text, Transformer } from 'react-konva';
 
 function TextNode({
   shape, onShapeClick, activeTool, isSelected,
-  onTransformEnd, handleDragEnd
+  onTransform, handleDragEnd
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -39,7 +39,7 @@ function TextNode({
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
-        onTransformEnd={onTransformEnd}
+        onTransform={onTransform}
         onDragEnd={ handleDragEnd}
       />
       <Transformer

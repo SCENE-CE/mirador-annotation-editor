@@ -4,7 +4,7 @@ import { Arrow, Transformer } from 'react-konva';
 
 /**  */
 function ArrowNode({
-  onShapeClick, shape, activeTool, isSelected, onTransformEnd, handleDragEnd,
+  onShapeClick, shape, activeTool, isSelected, onTransform, handleDragEnd,
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -39,7 +39,7 @@ function ArrowNode({
         onClick={handleClick}
         pointerLength={shape.pointerLength}
         pointerWidth={shape.pointerWidth}
-        onTransformEnd={onTransformEnd}
+        onTransform={onTransform}
         onDragEnd={handleDragEnd}
       />
       <Transformer
@@ -55,7 +55,7 @@ ArrowNode.propTypes = {
   handleDragEnd: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
-  onTransformEnd: PropTypes.func.isRequired,
+  onTransform: PropTypes.func.isRequired,
   shape: PropTypes.object.isRequired,
 };
 

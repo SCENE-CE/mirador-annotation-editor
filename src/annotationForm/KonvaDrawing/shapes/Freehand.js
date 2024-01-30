@@ -4,7 +4,7 @@ import { Transformer, Line, Group } from 'react-konva';
 
 /** FreeHand shape displaying */
 function Freehand({
-  activeTool,  onShapeClick,  isSelected, shape, onTransformEnd, handleDragEnd,
+  activeTool,  onShapeClick,  isSelected, shape, onTransform, handleDragEnd,
 }) {
   // TODO check if selectedShapeId is needed
   const shapeRef = useRef();
@@ -27,7 +27,7 @@ function Freehand({
       <Group
         ref={shapeRef}
         onClick={handleClick}
-        onTransformEnd={onTransformEnd}
+        onTransform={onTransform}
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
         rotation={shape.rotation}

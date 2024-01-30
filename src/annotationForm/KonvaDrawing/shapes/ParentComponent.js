@@ -15,7 +15,7 @@ import ImageShape from './Image';
 
 function ParentComponent({
   shapes, onShapeClick, selectedShapeId, activeTool,
-  scale, width, height, onTransformEnd, handleDragEnd,
+  scale, width, height, onTransform, handleDragEnd,
 }) {
   // TODO Simplify these state
   const [selectedShape, setSelectedShape] = useState(null);
@@ -57,7 +57,7 @@ function ParentComponent({
                   isSelected,
                   onShapeClick: handleShapeClick,
                   shape,
-                  onTransformEnd,
+                  onTransform,
                   handleDragEnd,
                 }}
                 key={i}
@@ -71,7 +71,7 @@ function ParentComponent({
                   isSelected,
                   onShapeClick: handleShapeClick,
                   shape,
-                  onTransformEnd,
+                  onTransform,
                   handleDragEnd,
                 }}
                 key={i}
@@ -85,7 +85,7 @@ function ParentComponent({
                   isSelected,
                   onShapeClick: handleShapeClick,
                   shape,
-                  onTransformEnd,
+                  onTransform,
                   handleDragEnd,
                 }}
                 key={i}
@@ -99,7 +99,7 @@ function ParentComponent({
                   isSelected,
                   onShapeClick: handleShapeClick,
                   shape,
-                  onTransformEnd,
+                  onTransform,
                   handleDragEnd,
                 }}
                 key={i}
@@ -113,7 +113,7 @@ function ParentComponent({
                   isSelected,
                   onShapeClick: handleShapeClick,
                   shape,
-                  onTransformEnd,
+                  onTransform,
                   handleDragEnd,
                 }}
                 key={i}
@@ -127,7 +127,7 @@ function ParentComponent({
                   isSelected,
                   onShapeClick: handleShapeClick,
                   shape,
-                  onTransformEnd,
+                  onTransform,
                   handleDragEnd,
                 }}
                 key={i}
@@ -141,7 +141,7 @@ function ParentComponent({
                   isSelected,
                   onShapeClick: handleShapeClick,
                   shape,
-                  onTransformEnd,
+                  onTransform,
                   handleDragEnd,
                   src: shape.src,
                 }}

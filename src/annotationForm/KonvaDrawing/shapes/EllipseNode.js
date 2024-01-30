@@ -5,7 +5,7 @@ import { Ellipse, Transformer } from 'react-konva';
 
 function EllipseNode({
   onShapeClick, shape, activeTool, isSelected,
-  onTransformEnd, handleDragEnd
+  onTransform, handleDragEnd
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -38,7 +38,7 @@ function EllipseNode({
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
-        onTransformEnd={onTransformEnd}
+        onTransform={onTransform}
         onDragEnd={handleDragEnd}
       />
 
@@ -51,7 +51,7 @@ function EllipseNode({
 }
 
 EllipseNode.propTypes = {
-  activeTool: PropTypes.string.isRequired,
+  
   fill: PropTypes.string,
   height: PropTypes.number,
   onShapeClick: PropTypes.func.isRequired,

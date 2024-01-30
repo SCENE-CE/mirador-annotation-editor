@@ -5,7 +5,7 @@ import {Transformer, Shape, Line} from 'react-konva';
 /** FreeHand shape displaying */
 function Polygon({
   activeTool,  onShapeClick, isSelected, shape, 
-  onTransformEnd, handleDragEnd
+  onTransform, handleDragEnd
 }) {
   // TODO check if selectedShapeId is needed
   const shapeRef = useRef();
@@ -32,7 +32,7 @@ function Polygon({
           id={shape.id}
           points={shape.points}
           stroke={shape.stroke || 'black'}
-          strokeWidth={5}
+          strokeWidth={shape.strokeWidth || 5}
           tension={0.5}
           lineCap="round"
           lineJoin="round"
@@ -41,7 +41,7 @@ function Polygon({
           fill={shape.fill || 'red'}
           draggable={activeTool === 'cursor' || activeTool === 'edit'}
           globalCompositeOperation="source-over"
-          onTransformEnd={onTransformEnd}
+          onTransform={onTransform}
           scaleX={shape.scaleX}
           scaleY={shape.scaleY}
           rotation={shape.rotation}

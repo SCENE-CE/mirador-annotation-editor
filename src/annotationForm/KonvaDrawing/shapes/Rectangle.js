@@ -4,7 +4,7 @@ import { Rect, Transformer } from 'react-konva';
 
 function Rectangle({
   shape, onShapeClick, activeTool, isSelected,
-  onTransformEnd, handleDragEnd
+  onTransform, handleDragEnd
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -37,7 +37,7 @@ function Rectangle({
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
-        onTransformEnd={onTransformEnd}
+        onTransform={onTransform}
         onDragEnd={handleDragEnd}
       />
 

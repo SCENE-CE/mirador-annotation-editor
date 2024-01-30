@@ -107,10 +107,11 @@ function AnnotationDrawing(props) {
         })
   };
 
-  const onTransformEnd = (evt) => {
+  const onTransform = (evt) => {
+ 
     const modifiedshape = evt.currentTarget.attrs;
 
-    console.log('modifiedshape', modifiedshape);
+
 
     const shape = shapes.find((s) => s.id === modifiedshape.id);
     // TODO improve
@@ -121,12 +122,13 @@ function AnnotationDrawing(props) {
     shape.height = modifiedshape.height || shape.height;
     shape.scaleX = modifiedshape.scaleX || shape.scaleX;
     shape.scaleY = modifiedshape.scaleY || shape.scaleY;
-    console.log('shape', shape);
+   
     setCurrentShape({ ...shape });
     updateCurrentShapeInShapes();
   };
 
   const handleDragEnd = (evt) => {
+  
     const modifiedshape = evt.currentTarget.attrs;
     const shape = shapes.find((s) => s.id === modifiedshape.id);
     shape.x = modifiedshape.x;
@@ -194,7 +196,6 @@ function AnnotationDrawing(props) {
       let shape = null;
       switch (props.activeTool) {
         case 'rectangle':
-        case 'ellipse':
           shape = {
             fill: props.fillColor,
             height: 1,
@@ -212,6 +213,27 @@ function AnnotationDrawing(props) {
           setIsDrawing(true);
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
+        case 'ellipse':
+          shape = {
+            fill: props.fillColor,
+            height: 1,
+            id: uuidv4(),
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            stroke: props.strokeColor,
+            strokeWidth: props.strokeWidth,
+            radiusX: 1,
+            radiusY: 1,
+            type: props.activeTool,
+            width: 1,
+            x: pos.x,
+            y: pos.y,
+          };
+          setIsDrawing(true);
+          setShapes([...shapes, shape]);
+          setCurrentShape(shape);
+     
           break;
         case 'text':
           shape = {
@@ -317,23 +339,33 @@ function AnnotationDrawing(props) {
 
       switch (props.activeTool) {
         case 'rectangle':
+
+        setCurrentShape({
+          ...currentShape,
+          height: pos.y - currentShape.y,
+          width: pos.x - currentShape.x,
+        });
+        updateCurrentShapeInShapes();
         case 'ellipse':
           // prevent negative radius for ellipse
-          if (currentShape.type === 'ellipse') {
+         
             if (pos.x < currentShape.x) {
               pos.x = currentShape.x;
             }
             if (pos.y < currentShape.y) {
               pos.y = currentShape.y;
             }
-          }
+          
 
           setCurrentShape({
             ...currentShape,
             height: pos.y - currentShape.y,
-            width: pos.x - currentShape.x,
+            radiusX: (pos.x - currentShape.x) / 2,
+             width: pos.x - currentShape.x,
+            radiusY: (pos.y - currentShape.y) / 2,
           });
           updateCurrentShapeInShapes();
+
           break;
         case 'freehand':
           const shape = { ...currentShape };
@@ -431,7 +463,7 @@ function AnnotationDrawing(props) {
         scale={props.scale}
         width={props.originalWidth}
         height={props.originalHeight}
-        onTransformEnd={onTransformEnd}
+        onTransform={onTransform}
         handleDragEnd={handleDragEnd}
       />
     </Stage>
