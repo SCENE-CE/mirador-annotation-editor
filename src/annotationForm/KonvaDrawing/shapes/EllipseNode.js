@@ -32,7 +32,7 @@ function EllipseNode({
         y={shape.y}
         width={shape.width}
         height={shape.height}
-        fill={`rgba(${shape.fill.r},${shape.fill.g},${shape.fill.b},${shape.fill.a})`}
+        fill={shape.fill}
         stroke={`rgba(${shape.stroke.r},${shape.stroke.g},${shape.stroke.b},${shape.stroke.a})`}
         strokeWidth={shape.strokeWidth || 1}
         id={shape.id}

@@ -31,14 +31,14 @@ function Polygon({
           ref={shapeRef}
           id={shape.id}
           points={shape.points}
-          stroke={`rgba(${shape.stroke.r},${shape.stroke.g},${shape.stroke.b},${shape.stroke.a})`}
+          stroke={shape.stroke}
           strokeWidth={shape.strokeWidth || 5}
           tension={0.5}
           lineCap="round"
           lineJoin="round"
           closed={false}
           onClick={handleClick}
-          fill={`rgba(${shape.stroke.r},${shape.stroke.g},${shape.stroke.b},${shape.stroke.a})`}
+          fill={shape.fill}
           draggable={activeTool === 'cursor' || activeTool === 'edit'}
           globalCompositeOperation="source-over"
           onTransform={onTransform}
@@ -60,7 +60,7 @@ function Polygon({
 }
 
 Polygon.propTypes = {
-  activeTool: PropTypes.string.isRequired,
+  activeTool: PropTypes.string,
   fill: PropTypes.string,
   height: PropTypes.number,
   onShapeClick: PropTypes.func.isRequired,

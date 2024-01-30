@@ -34,7 +34,7 @@ function TextNode({
     
         fontSize={shape.fontSize}
 
-        fill={`rgba(${shape.fill.r},${shape.fill.g},${shape.fill.b},${shape.fill.a})`}
+        fill={shape.fill}
         text={shape.text}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}

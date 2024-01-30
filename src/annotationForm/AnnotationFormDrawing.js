@@ -44,6 +44,26 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
 }));
 
+
+const rgbaToObj = (rgba) => {
+
+
+  if(!rgba) return { r: 0, g: 0, b: 0, a: 1 };
+
+  if(typeof rgba === 'object') return rgba;
+
+  const rgbaArray = rgba.split(',');
+  const r = Number(rgbaArray[0].split('(')[1]);
+  const g = Number(rgbaArray[1]);
+  const b = Number(rgbaArray[2]);
+  const a = Number(rgbaArray[3].split(')')[0]);
+  return { r, g, b, a };
+}
+
+const objToRgba = (obj) => {
+  return `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
+}
+
 /** All the stuff to manage to choose the drawing tool */
 function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) {
 
@@ -75,7 +95,7 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
   
     updateToolState({
       ...toolState,
-      [toolState.currentColorType]: color.rgb,
+      [toolState.currentColorType]: objToRgba(color.rgb),
     });
 
   };
@@ -243,7 +263,7 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
                 aria-label="select color"
                 onClick={openChooseColor}
               >
-                <StrokeColorIcon style={{ fill: `rgba(${strokeColor.r},${strokeColor.g},${strokeColor.b},${strokeColor.a})` }} />
+                <StrokeColorIcon style={{ fill: strokeColor }} />
                 <ArrowDropDownIcon />
               </ToggleButton>
               <ToggleButton
@@ -260,7 +280,7 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
 
                 onClick={openChooseColor}
               >
-                <FormatColorFillIcon style={{ fill: `rgba(${fillColor.r},${fillColor.g},${fillColor.b},${fillColor.a})` }} />
+                <FormatColorFillIcon style={{ fill: fillColor }} />
                 <ArrowDropDownIcon />
               </ToggleButton>
             </ToggleButtonGroup>
@@ -327,7 +347,7 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
       >
         <SketchPicker
           disableAlpha={false}
-          color={toolState[currentColorType]}
+          color={rgbaToObj(toolState[currentColorType])}
           onChangeComplete={updateStrokeColor}
         />
       </Popover>

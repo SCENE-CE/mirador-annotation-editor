@@ -44,9 +44,9 @@ function Freehand({
          
           <Line
             key={i}
-            fill={`rgba(${line.stroke.r},${line.stroke.g},${line.stroke.b},${line.stroke.a})`}
+            fill={shape.stroke}
             points={line.points}
-            stroke={`rgba(${line.stroke.r},${line.stroke.g},${line.stroke.b},${line.stroke.a})`}
+            stroke={shape.stroke}
             strokeWidth={shape.strokeWidth}
             tension={0.5}
             lineCap="round"

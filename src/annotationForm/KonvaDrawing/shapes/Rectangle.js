@@ -31,8 +31,8 @@ function Rectangle({
         rotation={shape.rotation}
         width={shape.width || 1}
         height={shape.height || 1}
-        fill={`rgba(${shape.fill.r},${shape.fill.g},${shape.fill.b},${shape.fill.a})`}
-        stroke={`rgba(${shape.stroke.r},${shape.stroke.g},${shape.stroke.b},${shape.stroke.a})`}
+        fill={shape.fill}
+        stroke={shape.stroke}
         strokeWidth={shape.strokeWidth || 1}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}

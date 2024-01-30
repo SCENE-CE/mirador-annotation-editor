@@ -100,17 +100,6 @@ function AnnotationDrawing(props) {
     }
   }, [currentShape]);
 
-  const rgbaToObj = (rgba) => {
-
-    if(typeof rgba === 'object') return rgba;
-
-    const rgbaArray = rgba.split(',');
-    const r = Number(rgbaArray[0].split('(')[1]);
-    const g = Number(rgbaArray[1]);
-    const b = Number(rgbaArray[2]);
-    const a = Number(rgbaArray[3].split(')')[0]);
-    return { r, g, b, a };
-  }
 
 
 
@@ -118,8 +107,7 @@ function AnnotationDrawing(props) {
   /** */
   const onShapeClick = async (shape) => {
 
-    shape.fill= rgbaToObj(shape.fill);
-    shape.stroke= rgbaToObj(shape.stroke);
+ 
     if(props.activeTool === 'delete') {
 
       const newShapes = shapes.filter((s) => s.id !== shape.id);
@@ -134,7 +122,7 @@ function AnnotationDrawing(props) {
     // find shape by id
     setCurrentShape(shapes.find((s) => s.id === shape.id));
     props.setShapeProperties(shape); // TODO Check that code ?
-    console.log('shape', shape);
+
     props.setColorToolFromCurrentShape(
         {
           fillColor: shape.fill,
@@ -144,13 +132,13 @@ function AnnotationDrawing(props) {
   };
 
   const onTransform = (evt) => {
-    const modifiedshape = evt.currentTarget.attrs;
 
-    modifiedshape.fill = rgbaToObj(modifiedshape.fill);
-    modifiedshape.stroke = rgbaToObj(modifiedshape.stroke);
+
+    const modifiedshape = evt.target.attrs;
+
     console.log('modifiedshape', modifiedshape);
     const shape = shapes.find((s) => s.id === modifiedshape.id);
-    console.log('shape', shape);
+
 
     Object.assign(shape, modifiedshape);
     setCurrentShape({ ...shape });
