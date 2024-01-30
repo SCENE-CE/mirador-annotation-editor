@@ -85,6 +85,15 @@ function AnnotationDrawing(props) {
   useLayoutEffect(() => {
     if (shapes.find((s) => s.id === currentShape?.id)) {
       window.addEventListener('keydown', handleKeyPress);
+
+      props.setShapeProperties(currentShape); // TODO Check that code ?
+      props.setColorToolFromCurrentShape(
+          {
+            fillColor: currentShape.fill,
+            strokeColor: currentShape.stroke,
+            strokeWidth: currentShape.strokeWidth,
+          })
+
       return () => {
         window.removeEventListener('keydown', handleKeyPress);
       };
@@ -108,17 +117,9 @@ function AnnotationDrawing(props) {
   };
 
   const onTransform = (evt) => {
- 
     const modifiedshape = evt.currentTarget.attrs;
-
-
-
     const shape = shapes.find((s) => s.id === modifiedshape.id);
-    // TODO improve
-   
-    // shape.scaleY = modifiedshape.scaleY || shape.scaleY;
     Object.assign(shape, modifiedshape);
-   
     setCurrentShape({ ...shape });
     updateCurrentShapeInShapes();
   };
