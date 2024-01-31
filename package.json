@@ -38,6 +38,8 @@
     "react-quill": "^2.0.0",
     "react-redux": "8.1.3",
     "react-resize-observer": "^1.1.1",
+    "react-sortablejs": "^6.1.4",
+    "sortablejs": "^1.15.2",
     "use-image": "^1.1.1"
   },
   "peerDependencies": {

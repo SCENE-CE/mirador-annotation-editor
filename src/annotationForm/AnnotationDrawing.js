@@ -67,6 +67,7 @@ function AnnotationDrawing(props) {
         setCurrentShape(newCurrentShape);
       }
     }
+    props.updateShapes([...shapes]);
   }, [shapes]);
 
   useEffect(() => {
@@ -88,11 +89,11 @@ function AnnotationDrawing(props) {
 
       props.setShapeProperties(currentShape); // TODO Check that code ?
       props.setColorToolFromCurrentShape(
-          {
-            fillColor: currentShape.fill,
-            strokeColor: currentShape.stroke,
-            strokeWidth: currentShape.strokeWidth,
-          })
+        {
+          fillColor: currentShape.fill,
+          strokeColor: currentShape.stroke,
+          strokeWidth: currentShape.strokeWidth,
+        })
 
       return () => {
         window.removeEventListener('keydown', handleKeyPress);
@@ -101,14 +102,24 @@ function AnnotationDrawing(props) {
   }, [currentShape]);
 
 
+  useEffect(() => {
+//compare shapes and props.shapes p, if different, update shapes
+
+    if (props.shapes.length !== shapes.length) {/// nul a revoir
+      setShapes(props.shapes);
+    }
+   
+
+
+  }, [props.shapes]);
 
 
 
   /** */
   const onShapeClick = async (shape) => {
 
- 
-    if(props.activeTool === 'delete') {
+
+    if (props.activeTool === 'delete') {
 
       const newShapes = shapes.filter((s) => s.id !== shape.id);
       setShapes(newShapes);
@@ -124,11 +135,11 @@ function AnnotationDrawing(props) {
     props.setShapeProperties(shape); // TODO Check that code ?
 
     props.setColorToolFromCurrentShape(
-        {
-          fillColor: shape.fill,
-          strokeColor: shape.stroke,
-          strokeWidth: shape.strokeWidth,
-        })
+      {
+        fillColor: shape.fill,
+        strokeColor: shape.stroke,
+        strokeWidth: shape.strokeWidth,
+      })
   };
 
   const onTransform = (evt) => {
@@ -146,7 +157,7 @@ function AnnotationDrawing(props) {
   };
 
   const handleDragEnd = (evt) => {
-  
+
     const modifiedshape = evt.currentTarget.attrs;
     const shape = shapes.find((s) => s.id === modifiedshape.id);
     shape.x = modifiedshape.x;
@@ -194,6 +205,8 @@ function AnnotationDrawing(props) {
     }
   };
 
+
+  /** */
   const updateCurrentShapeInShapes = () => {
     const index = shapes.findIndex((s) => s.id === currentShape.id);
 
@@ -251,7 +264,7 @@ function AnnotationDrawing(props) {
           setIsDrawing(true);
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
-     
+
           break;
         case 'text':
           shape = {
@@ -359,28 +372,28 @@ function AnnotationDrawing(props) {
       switch (props.activeTool) {
         case 'rectangle':
 
-        setCurrentShape({
-          ...currentShape,
-          height: pos.y - currentShape.y,
-          width: pos.x - currentShape.x,
-        });
-        updateCurrentShapeInShapes();
+          setCurrentShape({
+            ...currentShape,
+            height: pos.y - currentShape.y,
+            width: pos.x - currentShape.x,
+          });
+          updateCurrentShapeInShapes();
         case 'ellipse':
           // prevent negative radius for ellipse
-         
-            if (pos.x < currentShape.x) {
-              pos.x = currentShape.x;
-            }
-            if (pos.y < currentShape.y) {
-              pos.y = currentShape.y;
-            }
-          
+
+          if (pos.x < currentShape.x) {
+            pos.x = currentShape.x;
+          }
+          if (pos.y < currentShape.y) {
+            pos.y = currentShape.y;
+          }
+
 
           setCurrentShape({
             ...currentShape,
             height: pos.y - currentShape.y,
             radiusX: (pos.x - currentShape.x) / 2,
-             width: pos.x - currentShape.x,
+            width: pos.x - currentShape.x,
             radiusY: (pos.y - currentShape.y) / 2,
           });
           updateCurrentShapeInShapes();

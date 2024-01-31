@@ -17,6 +17,7 @@ import AnnotationFormTime from './annotationForm/AnnotationFormTime';
 import AnnotationFormDrawing from './annotationForm/AnnotationFormDrawing';
 import { geomFromAnnoTarget, timeFromAnnoTarget } from './AnnotationCreationUtils';
 
+
 /** Component for creating annotations.
  * Display in companion window when a manifest is open and an annoation created or edited */
 function AnnotationCreation(props) {
@@ -98,6 +99,7 @@ function AnnotationCreation(props) {
     };
   });
 
+  const [shapes, setShapes] = useState([]);
   const [scale, setScale] = useState(1);
 
   const { height, width } = VideosReferences.get(props.windowId).ref.current;
@@ -119,18 +121,17 @@ function AnnotationCreation(props) {
 
     window.addEventListener('resize', handleResize);
 
-   
+
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []); 
+  }, []);
+
+
 
 
   useEffect(() => {
-  }, [windowSize]);
 
-  useEffect(() => {
-    console.log('Color change', toolState);
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
 
   useLayoutEffect(() => {
@@ -291,6 +292,22 @@ function AnnotationCreation(props) {
     }));
   }
 
+
+  /** update shapes with shapes from annotationDrawing */
+
+  const updateShapes = (newShapes) => {
+   
+    setShapes(newShapes);
+  }
+
+  /** delete shape */
+
+  const deleteShape = (shapeId) => {
+
+    const newShapes = shapes.filter((shape) => shape.id !== shapeId);
+    setShapes(newShapes);
+  }
+
   /**
      * Validate form and save annotation
      */
@@ -428,8 +445,10 @@ function AnnotationCreation(props) {
   useEffect(() => {
   }, [overlay.containerWidth, overlay.canvasWidth]);
 
+
+
   return (
-  // we need to get the width and height of the image to pass it to the annotation drawing component
+    // we need to get the width and height of the image to pass it to the annotation drawing component
     <CompanionWindow
       title={title ? title.value : 'New Annotation'}
       windowId={windowId}
@@ -454,7 +473,7 @@ function AnnotationCreation(props) {
         updateGeometry={updateGeometry}
         windowId={windowId}
         player={mediaIsVideo ? VideosReferences.get(windowId) : OSDReferences.get(windowId)}
-          // we need to pass the width and height of the image to the annotation drawing component
+        // we need to pass the width and height of the image to the annotation drawing component
         width={overlay ? overlay.containerWidth : 1920}
         height={overlay ? overlay.containerHeight : 1080}
         orignalWidth={overlay ? overlay.canvasWidth : 1920}
@@ -463,6 +482,8 @@ function AnnotationCreation(props) {
         updateScale={updateScale}
         imageEvent={imageEvent}
         setColorToolFromCurrentShape={setColorToolFromCurrentShape}
+        updateShapes={updateShapes}
+        shapes={shapes}
       />
       <StyledForm
         onSubmit={submitForm}
@@ -474,25 +495,34 @@ function AnnotationCreation(props) {
           updateTextBody={updateTextBody}
         />
         {mediaIsVideo && (
-        <AnnotationFormTime
-          mediaIsVideo={mediaIsVideo}
-          videoDuration={videoDuration}
-          value={valueTime}
-          handleChangeTime={handleChangeTime}
-          windowid={windowId}
-          setTstartNow={setTstartNow}
-          tstart={tstart}
-          updateTstart={updateTstart}
-          setTendNow={setTendNow}
-          tend={tend}
-          updateTend={updateTend}
-        />
+          <AnnotationFormTime
+            mediaIsVideo={mediaIsVideo}
+            videoDuration={videoDuration}
+            value={valueTime}
+            handleChangeTime={handleChangeTime}
+            windowid={windowId}
+            setTstartNow={setTstartNow}
+            tstart={tstart}
+            updateTstart={updateTstart}
+            setTendNow={setTendNow}
+            tend={tend}
+            updateTend={updateTend}
+          />
         )}
         <AnnotationFormDrawing
           toolState={toolState}
           updateToolState={setToolState}
           handleImgChange={handleImgChange}
         />
+         <ul id='layerlist'>
+          {Array.isArray(shapes) && shapes.length > 0 && shapes.map((shape) => (
+            <li key={shape.id}>
+              {shape.id}
+              <button onClick={() => deleteShape(shape.id)}>Delete</button>
+            </li>
+          ))}
+        </ul>
+
         <div>
           <Button onClick={closeCompanionWindow}>
             Cancel
@@ -500,6 +530,7 @@ function AnnotationCreation(props) {
           <Button variant="contained" color="primary" type="submit">
             Save
           </Button>
+        
         </div>
       </StyledForm>
     </CompanionWindow>
