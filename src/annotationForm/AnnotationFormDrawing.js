@@ -70,6 +70,7 @@ const objToRgba = (obj = {
   r: 255, g: 255, b: 255, a: 0.5,
 }) => `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
 
+/** Check if we are using an overlay tool or selecting the overlay view */
 function isShapeTool(activeTool) {
   switch (activeTool) {
     case 'rectangle':
@@ -77,6 +78,7 @@ function isShapeTool(activeTool) {
     case 'arrow':
     case 'polygon':
     case 'freehand':
+    case 'shapes':
       return true;
       break;
     default:
@@ -85,7 +87,7 @@ function isShapeTool(activeTool) {
 }
 
 /** All the stuff to manage to choose the drawing tool */
-function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) {
+function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange, shapes }) {
   useEffect(() => {
 
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
@@ -206,7 +208,6 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
               aria-label="tool selection"
               size="small"
             >
-
               <ToggleButton value="edit" aria-label="select cursor">
                 <CursorIcon />
               </ToggleButton>
@@ -225,9 +226,19 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
             </StyledToggleButtonGroup>
             {
               activeTool === 'edit' && (
+              <>
                 <Typography>
                   Liste des shapes pour Sam
                 </Typography>
+                <ul>
+                  {shapes && shapes.map((shape) => (
+                    <li key={shape.id}>
+                      {shape.id}
+                      {/*<button onClick={() => deleteShape(shape.id)}>Delete</button>*/}
+                    </li>
+                  ))}
+                </ul>
+              </>
               )
             }
             {
