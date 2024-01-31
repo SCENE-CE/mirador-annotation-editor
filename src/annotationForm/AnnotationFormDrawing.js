@@ -70,6 +70,20 @@ const objToRgba = (obj = {
   r: 255, g: 255, b: 255, a: 0.5,
 }) => `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
 
+function isShapeTool(activeTool) {
+  switch (activeTool) {
+    case 'rectangle':
+    case 'ellipse':
+    case 'arrow':
+    case 'polygon':
+    case 'freehand':
+      return true;
+      break;
+    default:
+      return false;
+  }
+}
+
 /** All the stuff to manage to choose the drawing tool */
 function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) {
   useEffect(() => {
@@ -217,7 +231,7 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
               )
             }
             {
-              activeTool === 'shapes' ? (
+              isShapeTool(activeTool) && (
                 <>
                   <StyledToggleButtonGroup
                     value={activeTool} // State or props ?
@@ -240,9 +254,6 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
                     </ToggleButton>
                     <ToggleButton value="freehand" aria-label="free hand polygon">
                       <GestureIcon />
-                    </ToggleButton>
-                    <ToggleButton value="delete" aria-label="delete a shape">
-                      <DeleteIcon />
                     </ToggleButton>
                   </StyledToggleButtonGroup>
                   <div>
@@ -306,7 +317,7 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
                     </Grid>
                   </div>
                 </>
-              ) : (<></>)
+              )
             }
             {
               activeTool === 'images' ? (
