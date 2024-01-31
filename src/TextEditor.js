@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // include styles
+import 'react-quill/dist/quill.snow.css';
+import {styled} from "@mui/material/styles";
+import {Paper} from "@mui/material"; // include styles
 
-
+const StyledReactQuill = styled(ReactQuill)(({ theme }) => ({
+  ".ql-editor":{
+  minHeight:'150px'
+}
+}));
 function TextEditor({ annoHtml, updateAnnotationBody }) {
   const [editorHtml, setEditorHtml] = useState(annoHtml);
 
@@ -16,7 +22,7 @@ function TextEditor({ annoHtml, updateAnnotationBody }) {
 
   return (
       <div>
-        <ReactQuill
+        <StyledReactQuill
             value={editorHtml}
             onChange={handleChange}
             // You can also pass other props to customize the toolbar, etc.

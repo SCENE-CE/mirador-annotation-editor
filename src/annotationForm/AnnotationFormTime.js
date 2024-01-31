@@ -14,7 +14,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   display:"flex",
   flexDirection:"column",
   gap:"10px",
-  padding:"30px 5px 30px 5px"
+  padding:"30px 10px 30px 10px"
 }));
 
 const StyledSlider = styled(Slider)(({ theme }) => ({
@@ -26,7 +26,6 @@ const StyledDivFormTimeContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: '5px',
-  padding: '5px',
 }));
 const StyledDivTimeSelector = styled('div')(({ theme }) => ({
   border: '1px solid rgba(0, 0, 0, 0.12)',
