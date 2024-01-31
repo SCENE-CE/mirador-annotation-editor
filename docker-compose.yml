@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  front:
+    build:
+      context: "docker/"
+    volumes:
+      - ${PWD}:/app
+    environment:
+      ENV:

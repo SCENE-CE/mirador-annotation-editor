@@ -1,4 +1,5 @@
-import miradorAnnotationPlugin from './plugins/miradorAnnotationPlugin';
+// import miradorAnnotationPlugin from './plugins/miradorAnnotationPlugin';
+import miradorAnnotationPlugin from './containers/miradorAnnotationPlugin';
 import externalStorageAnnotationPlugin from './plugins/externalStorageAnnotationPlugin';
 import canvasAnnotationsPlugin from './plugins/canvasAnnotationsPlugin';
 import annotationCreationCompanionWindow from './plugins/annotationCreationCompanionWindow';
@@ -11,7 +12,10 @@ export {
 };
 
 export default [
-  miradorAnnotationPlugin,
+  {component:miradorAnnotationPlugin,
+    mode: 'wrap',
+    target: 'AnnotationSettings',
+  },
   externalStorageAnnotationPlugin,
   canvasAnnotationsPlugin,
   annotationCreationCompanionWindow,

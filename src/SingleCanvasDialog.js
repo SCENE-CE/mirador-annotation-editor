@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 /**
  * Dialog to enforce single view for annotation creation / editing
  */
-class SingleCanvasDialog extends Component {
+class   SingleCanvasDialog extends Component {
   /** */
   constructor(props) {
     super(props);

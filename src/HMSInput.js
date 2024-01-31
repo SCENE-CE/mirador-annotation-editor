@@ -5,14 +5,6 @@ import { secondsToHMSarray } from './utils';
 
 const StyledInput = styled(Input)(({ theme }) => ({
   height: 'fit-content',
-  margin: '2px',
-  '& input[type=number]': {
-    'MozAppearance': 'textfield',
-  },
-  '& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button': {
-    'WebkitAppearance': 'none',
-    margin: 0,
-  },
 }));
 
 const StyledHMSLabel = styled('span')({
@@ -24,19 +16,24 @@ const StyledRoot = styled('div')({
   display: 'flex',
 });
 
+/** Hours minutes seconds form inputs */
 function HMSInput({ seconds, onChange }) {
-  const [hms, setHms] = useState(secondsToHMSarray(0));
+  const [hms, setHms] = useState(secondsToHMSarray(seconds));
 
   useEffect(() => {
-      if(seconds != null) {
-    setHms(secondsToHMSarray(seconds));
-      }
+    if (seconds != null) {
+      setHms(secondsToHMSarray(Number(seconds)));
+    }
   }, [seconds]);
 
+  /** Handle change on one form */
   const someChange = (ev) => {
-    const newState = secondsToHMSarray(Number(ev.target.value));
-    setHms(newState);
-    onChange(newState.hours * 3600 + newState.minutes * 60 + newState.seconds);
+    if (!ev.target.value) {
+      return;
+    }
+    hms[ev.target.name] = Number(ev.target.value);
+    setHms(hms);
+    onChange(hms.hours * 3600 + hms.minutes * 60 + hms.seconds);
   };
 
   return (
@@ -48,9 +45,11 @@ function HMSInput({ seconds, onChange }) {
         name="hours"
         value={hms.hours}
         onChange={someChange}
-        inputProps={{ style: { textAlign: 'center' } }}
+        dir="rtl"
+        inputProps={{ style: { width: '35px' } }}
+
       />
-      <StyledHMSLabel>h</StyledHMSLabel>
+      <StyledHMSLabel style={{ margin: '2px' }}>h</StyledHMSLabel>
       <StyledInput
         type="number"
         min="0"
@@ -58,9 +57,10 @@ function HMSInput({ seconds, onChange }) {
         name="minutes"
         value={hms.minutes}
         onChange={someChange}
-        inputProps={{ style: { textAlign: 'center' } }}
+        dir="rtl"
+        inputProps={{ style: { width: '35px' } }}
       />
-      <StyledHMSLabel>m</StyledHMSLabel>
+      <StyledHMSLabel style={{ margin: '2px' }}>m</StyledHMSLabel>
       <StyledInput
         type="number"
         min="0"
@@ -68,16 +68,17 @@ function HMSInput({ seconds, onChange }) {
         name="seconds"
         value={hms.seconds}
         onChange={someChange}
-        inputProps={{ style: { textAlign: 'center' } }}
+        dir="rtl"
+        inputProps={{ style: { width: '35px' } }}
       />
-      <StyledHMSLabel>s</StyledHMSLabel>
+      <StyledHMSLabel style={{ margin: '2px' }}>s</StyledHMSLabel>
     </StyledRoot>
   );
 }
 
 HMSInput.propTypes = {
   onChange: PropTypes.func.isRequired,
-  seconds: PropTypes.number,
+  seconds: PropTypes.number.isRequired,
 };
 
 export default HMSInput;

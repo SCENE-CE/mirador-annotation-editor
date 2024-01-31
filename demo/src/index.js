@@ -27,7 +27,6 @@ const config = {
     sideBarOpenByDefault: true,
   },
   windows: [
-    { manifestId: 'https://dzkimgs.l.u-tokyo.ac.jp/videos/iiif_in_japan_2017/manifest.json' },
   ],
 };
 
