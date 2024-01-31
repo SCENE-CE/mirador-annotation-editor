@@ -7,8 +7,8 @@ import { styled } from '@mui/material/styles';
 import { v4 as uuid } from 'uuid';
 import { exportStageSVG } from 'react-konva-to-svg';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
+import { VideosReferences } from "mirador/dist/es/src/plugins/VideosReferences";
 import Tab from '@mui/material/Tab';
 import HighlightAltIcon from '@mui/icons-material/HighlightAlt';
 import LayersIcon from '@mui/icons-material/Layers';
@@ -32,10 +32,6 @@ const MANIFEST_LINK_VIEW = 'link';
 /** Component for creating annotations.
  * Display in companion window when a manifest is open and an annoation created or edited */
 function AnnotationCreation(props) {
-
-
-
-
   const [toolState, setToolState] = useState({
     activeTool: 'cursor',
     closedMode: 'closed',
@@ -101,37 +97,37 @@ function AnnotationCreation(props) {
       }
     }
 
-    // If we dont have tstart setted, we are creating a new annotation.
+    // If we don't have tstart setted, we are creating a new annotation.
+    // If we don't have tend setted, we set it at the end of the video.
     // So Tstart is current time and Tend the end of the video
     if (!tstart) {
       tstart = props.currentTime ? Math.floor(props.currentTime) : 0;
-      tend = tstart + 30;
+      tend = props.mediaVideo ? props.mediaVideo.props.canvas.__jsonld.duration : 0;
     }
 
     return {
       ...toolState,
-      mediaVideo: null,
+      mediaVideo: props.mediaVideo,
       ...annoState,
       tend,
       textEditorStateBustingKey: 0,
       tstart,
       valueTime: [0, 1],
       valuetextTime: '',
-      valueTime: [0, 1],
     };
   });
 
   const [shapes, setShapes] = useState([]);
   const [scale, setScale] = useState(1);
 
-  const { height, width } = VideosReferences.get(props.windowId).ref.current;
-  const [value, setValue] = useState('layer');
+  const [value, setValue] = useState(TARGET_VIEW);
+  const { height, width } = props.mediaVideo ? props.mediaVideo : 0;
 
   // TODO Check the effect to keep and remove the other
   // Add a state to trigger redraw
   const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
     height: window.innerHeight,
+    width: window.innerWidth,
   });
 
   // Listen to window resize event
@@ -144,7 +140,6 @@ function AnnotationCreation(props) {
     };
 
     window.addEventListener('resize', handleResize);
-
 
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -253,7 +248,6 @@ function AnnotationCreation(props) {
 
   /** */
   const setShapeProperties = (options) => new Promise(() => {
-
     if (options.fill) {
       state.fillColor = options.fill;
     }
@@ -422,15 +416,15 @@ function AnnotationCreation(props) {
   } = toolState;
 
   // TODO : Vérifier ce code, c'est étrange de comprarer un typeof à une chaine de caractère.
-  const mediaIsVideo = typeof VideosReferences.get(windowId) !== 'undefined';
+  const mediaIsVideo = props.mediaVideo !== 'undefined';
   if (mediaIsVideo) {
     valueTime[0] = tstart;
     valueTime[1] = tend;
   }
 
-  const myVideo = VideosReferences.get(windowId);
-  const videoDuration = myVideo.props.canvas.__jsonld.duration;
-
+  const videoDuration = props.mediaVideo ? props.mediaVideo.props.canvas.__jsonld.duration : 0;
+  // TODO: L'erreur de "Ref" sur l'ouverture d'une image vient d'ici et plus particulièrement
+  //  du useEffect qui prend en dépedance [overlay.containerWidth, overlay.canvasWidth]
   const videoref = VideosReferences.get(windowId);
   const osdref = OSDReferences.get(windowId);
   let overlay = null;
@@ -466,8 +460,8 @@ function AnnotationCreation(props) {
         closed={closedMode === 'closed'}
         updateGeometry={updateGeometry}
         windowId={windowId}
-        player={mediaIsVideo ? VideosReferences.get(windowId) : OSDReferences.get(windowId)}
-        // we need to pass the width and height of the image to the annotation drawing component
+        player={mediaIsVideo ? props.mediaVideo : OSDReferences.get(windowId)}
+          // we need to pass the width and height of the image to the annotation drawing component
         width={overlay ? overlay.containerWidth : 1920}
         height={overlay ? overlay.containerHeight : 1080}
         orignalWidth={overlay ? overlay.canvasWidth : 1920}
@@ -478,6 +472,7 @@ function AnnotationCreation(props) {
         setColorToolFromCurrentShape={setColorToolFromCurrentShape}
         updateShapes={updateShapes}
         shapes={shapes}
+        mediaVideo={props.mediaVideo}
       />
       <StyledForm
         onSubmit={submitForm}
@@ -619,6 +614,7 @@ AnnotationCreation.propTypes = {
   setCurrentTime: PropTypes.func,
   setSeekTo: PropTypes.func,
   windowId: PropTypes.string.isRequired,
+  mediaVideo: PropTypes.object.isRequired,
 };
 
 AnnotationCreation.defaultProps = {
