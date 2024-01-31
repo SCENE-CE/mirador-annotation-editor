@@ -12,7 +12,7 @@ import AnnotationExportDialog from '../AnnotationExportDialog';
 import LocalStorageAdapter from '../LocalStorageAdapter';
 
 /** Mirador annotation plugin component. Get all the stuff and info to manage annotation functionnality */
-function MiradorAnnotation({ targetProps, TargetComponent, annonationEditCompanionWindowIsOpened}) {
+function MiradorAnnotation({ targetProps, TargetComponent, annotationEditCompanionWindowIsOpened}) {
   const [annotationExportDialogOpen, setAnnotationExportDialogOpen] = useState(false);
   const [singleCanvasDialogOpen, setSingleCanvasDialogOpen] = useState(false);
   const [currentCompanionWindowId, setCurrentCompanionWindowId] = useState(null);
@@ -25,7 +25,7 @@ function MiradorAnnotation({ targetProps, TargetComponent, annonationEditCompani
   };
 
   useEffect(() => {
-  }, [annonationEditCompanionWindowIsOpened]);
+  }, [annotationEditCompanionWindowIsOpened]);
   /** */
   const switchToSingleCanvasView = () => {
     dispatch(actions.setWindowViewType(targetProps.windowId, 'single'));
@@ -61,7 +61,7 @@ function MiradorAnnotation({ targetProps, TargetComponent, annonationEditCompani
         aria-label="Create new annotation"
         onClick={windowViewType === 'single' ? openCreateAnnotationCompanionWindow : toggleSingleCanvasDialogOpen}
         size="small"
-        disabled={!annonationEditCompanionWindowIsOpened}
+        disabled={!annotationEditCompanionWindowIsOpened}
       >
         <AddBoxIcon />
       </MiradorMenuButton>
@@ -94,23 +94,23 @@ function MiradorAnnotation({ targetProps, TargetComponent, annonationEditCompani
 }
 
 MiradorAnnotation.propTypes = {
+  TargetComponent: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.node,
+  ]).isRequired,
+  annotationEditCompanionWindowIsOpened: PropTypes.bool.isRequired,
   canvases: PropTypes.arrayOf(
-    PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
+    PropTypes.shape({id: PropTypes.string, index: PropTypes.number}),
   ).isRequired,
   config: PropTypes.shape({
     annotation: PropTypes.shape({
       adapter: PropTypes.func,
       exportLocalStorageAnnotations: PropTypes.bool,
     }),
-  }).isRequired,
-  TargetComponent: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.node,
-  ]).isRequired,
-  targetProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  windowViewType: PropTypes.string.isRequired,
+  }).isRequired, // eslint-disable-line react/forbid-prop-types
   createAnnotation: PropTypes.bool.isRequired,
-  annonationEditCompanionWindowIsOpened: PropTypes.bool.isRequired,
+  targetProps: PropTypes.object.isRequired,
+  windowViewType: PropTypes.string.isRequired,
 };
 
 export default MiradorAnnotation;

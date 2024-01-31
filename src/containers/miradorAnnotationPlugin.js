@@ -9,12 +9,12 @@ import MiradorAnnotation from '../plugins/miradorAnnotationPlugin';
 function mapStateToProps(state, { targetProps: { windowId } }) {
   // Annotation edit companion window ou annotation creation companion window is the same thing
   const annotationCreationCompanionWindows = getCompanionWindowsForContent(state, { content: 'annotationCreation', windowId });
-  let annonationEditCompanionWindowIsOpened = true;
+  let annotationEditCompanionWindowIsOpened = true;
   if (Object.keys(annotationCreationCompanionWindows).length !== 0) {
-    annonationEditCompanionWindowIsOpened = false;
+    annotationEditCompanionWindowIsOpened = false;
   }
   return {
-    annonationEditCompanionWindowIsOpened,
+    annotationEditCompanionWindowIsOpened,
     canvases: getVisibleCanvases(state, { windowId }),
     config: state.config,
     windowViewType: getWindowViewType(state, { windowId }),

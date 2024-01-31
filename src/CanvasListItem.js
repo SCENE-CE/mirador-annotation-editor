@@ -86,7 +86,7 @@ const CanvasListItem = forwardRef((props, ref) => {
             aria-label="annotation tools"
             size="small"
             style={{ position: 'absolute', right: 0 }}
-            disabled={!context.annonationEditCompanionWindowIsOpened}
+            disabled={!context.annotationEditCompanionWindowIsOpened}
           >
             <ToggleButton
               aria-label="Edit"
@@ -113,13 +113,12 @@ const CanvasListItem = forwardRef((props, ref) => {
 });
 
 CanvasListItem.propTypes = {
+  annotationEditCompanionWindowIsOpened: PropTypes.bool.isRequired,
   annotationid: PropTypes.string.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.node,
   ]).isRequired,
-  annotationEdit: PropTypes.bool.isRequired,
-
 };
 
 export default CanvasListItem;
