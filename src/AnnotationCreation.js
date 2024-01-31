@@ -9,6 +9,12 @@ import { exportStageSVG } from 'react-konva-to-svg';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
+import Tab from '@mui/material/Tab';
+import HighlightAltIcon from '@mui/icons-material/HighlightAlt';
+import LayersIcon from '@mui/icons-material/Layers';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import HubIcon from '@mui/icons-material/Hub';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import AnnotationDrawing from './annotationForm/AnnotationDrawing';
 import WebAnnotation from './WebAnnotation';
 import { secondsToHMS } from './utils';
@@ -17,9 +23,19 @@ import AnnotationFormTime from './annotationForm/AnnotationFormTime';
 import AnnotationFormDrawing from './annotationForm/AnnotationFormDrawing';
 import { geomFromAnnoTarget, timeFromAnnoTarget } from './AnnotationCreationUtils';
 
+const TARGET_VIEW = 'target';
+const OVERLAY_VIEW = 'layer';
+const TAG_VIEW = 'tag';
+const MANIFEST_LINK_VIEW = 'link';
+
+
 /** Component for creating annotations.
  * Display in companion window when a manifest is open and an annoation created or edited */
 function AnnotationCreation(props) {
+
+
+
+
   const [toolState, setToolState] = useState({
     activeTool: 'cursor',
     closedMode: 'closed',
@@ -89,7 +105,7 @@ function AnnotationCreation(props) {
     // So Tstart is current time and Tend the end of the video
     if (!tstart) {
       tstart = props.currentTime ? Math.floor(props.currentTime) : 0;
-      tend=tstart+30;
+      tend = tstart + 30;
     }
 
     return {
@@ -101,36 +117,21 @@ function AnnotationCreation(props) {
       tstart,
       valueTime: [0, 1],
       valuetextTime: '',
+      valueTime: [0, 1],
     };
   });
 
   const [scale, setScale] = useState(1);
 
   const { height, width } = VideosReferences.get(props.windowId).ref.current;
+  const [value, setValue] = useState('layer');
 
+  // TODO Check the effect to keep and remove the other
   useEffect(() => {
   }, [{ height, width }]);
 
   useLayoutEffect(() => {
   }, [{ height, width }]);
-
-  // You can use useEffect for componentDidMount, componentDidUpdate, and componentWillUnmount
-  useEffect(() => {
-    // componentDidMount logic
-    // TODO Improve this code logic. It will be better to have this in state creation
-    // const mediaVideo = VideosReferences.get(props.windowId);
-    // const videoDuration = mediaVideo.props.canvas.__jsonld.duration;
-    // if (tend === null || state.mediaVideo === null) {
-    //   setState((prevState) => ({ ...prevState, tend: videoDuration }));
-    // } else {
-    //   setState((prevState) => ({ ...prevState, mediaVideo }));
-    // }
-
-    // componentWillUnmount logic (if needed)
-    return () => {
-      // cleanup logic here
-    };
-  }, []); // Empty array means this effect runs once, similar to componentDidMount
 
   /** */
   const handleImgChange = (newUrl, imgRef) => {
@@ -165,7 +166,9 @@ function AnnotationCreation(props) {
       valueTime: newValueTime,
     }));
   };
-
+  const tabHandler = (event, TabIndex) => {
+    setValue(TabIndex);
+  };
   /**
    * Change from slider
    * @param {Event} event
@@ -199,23 +202,6 @@ function AnnotationCreation(props) {
     setState((prevState) => ({
       ...prevState,
       tend: value,
-    }));
-  };
-
-  /** update annotation title */
-  const updateTitle = (e) => {
-    setState((prevState) => ({
-      ...prevState,
-      title: e.target.value,
-    }));
-  };
-
-  /** seekTo/goto annotation end time */
-  const seekToTend = () => {
-    setState((prevState) => ({
-      ...prevState,
-      ...props.setSeekTo(prevState.tend),
-      ...props.setCurrentTime(prevState.tend),
     }));
   };
 
@@ -271,6 +257,7 @@ function AnnotationCreation(props) {
     const svg = await exportStageSVG(stage); // TODO clean
     return svg;
   };
+
 
   /**
      * Validate form and save annotation
@@ -370,7 +357,6 @@ function AnnotationCreation(props) {
     tend,
     textEditorStateBustingKey,
     valueTime,
-    title,
   } = state;
 
   const {
@@ -417,15 +403,7 @@ function AnnotationCreation(props) {
       windowId={windowId}
       id={id}
     >
-      <AnnotationDrawing
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: 'auto',
-
-        }}
+      <StyledAnnotationDrawing
         scale={scale}
         activeTool={activeTool}
         annotation={annotation}
@@ -448,44 +426,87 @@ function AnnotationCreation(props) {
       <StyledForm
         onSubmit={submitForm}
       >
-        <AnnotationFormContent
-          onChange={updateTitle}
-          textBody={state.textBody}
-          textEditorStateBustingKey={textEditorStateBustingKey}
-          updateTextBody={updateTextBody}
-        />
-        {mediaIsVideo && (
-        <AnnotationFormTime
-          mediaIsVideo={mediaIsVideo}
-          videoDuration={videoDuration}
-          value={valueTime}
-          handleChangeTime={handleChangeTime}
-          windowid={windowId}
-          setTstartNow={setTstartNow}
-          tstart={tstart}
-          updateTstart={updateTstart}
-          setTendNow={setTendNow}
-          tend={tend}
-          updateTend={updateTend}
-        />
-        )}
-        <AnnotationFormDrawing
-          toolState={toolState}
-          updateToolState={setToolState}
-          handleImgChange={handleImgChange}
-        />
-        <div>
+        <TabContext value={value}>
+          <TabList value={value} onChange={tabHandler} aria-label="icon tabs">
+            <StyledTab
+              icon={<HighlightAltIcon />}
+              aria-label="TargetSelector"
+              value={TARGET_VIEW}
+            />
+            <StyledTab
+              icon={<LayersIcon />}
+              aria-label="TargetSelector"
+              value={OVERLAY_VIEW}
+            />
+            <StyledTab
+              icon={<LocalOfferIcon />}
+              aria-label="TargetSelector"
+              value={TAG_VIEW}
+            />
+            <StyledTab
+              icon={<HubIcon />}
+              aria-label="TargetSelector"
+              value={MANIFEST_LINK_VIEW}
+            />
+          </TabList>
+          <StyledTabPanel
+            value={TARGET_VIEW}
+          >
+            {mediaIsVideo && (
+              <AnnotationFormTime
+                mediaIsVideo={mediaIsVideo}
+                videoDuration={videoDuration}
+                value={valueTime}
+                handleChangeTime={handleChangeTime}
+                windowid={windowId}
+                setTstartNow={setTstartNow}
+                tstart={tstart}
+                updateTstart={updateTstart}
+                setTendNow={setTendNow}
+                tend={tend}
+                updateTend={updateTend}
+              />
+            )}
+          </StyledTabPanel>
+          <StyledTabPanel
+            value={OVERLAY_VIEW}
+          >
+            <AnnotationFormDrawing
+              toolState={toolState}
+              updateToolState={setToolState}
+              handleImgChange={handleImgChange}
+            />
+          </StyledTabPanel>
+          <StyledTabPanel
+            value={TAG_VIEW}
+          >
+            <AnnotationFormContent
+              textBody={textBody}
+              updateTextBody={updateTextBody}
+              textEditorStateBustingKey={textEditorStateBustingKey}
+            />
+          </StyledTabPanel>
+          <StyledTabPanel
+            value={MANIFEST_LINK_VIEW}
+          />
+        </TabContext>
+        <StyledButtonDivSaveOrCancel>
           <Button onClick={closeCompanionWindow}>
             Cancel
           </Button>
           <Button variant="contained" color="primary" type="submit">
             Save
           </Button>
-        </div>
+        </StyledButtonDivSaveOrCancel>
       </StyledForm>
     </CompanionWindow>
   );
 }
+
+const StyledButtonDivSaveOrCancel = styled('div')(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'flex-end',
+}));
 
 const StyledForm = styled('form')(({ theme }) => ({
   display: 'flex',
@@ -495,6 +516,23 @@ const StyledForm = styled('form')(({ theme }) => ({
   paddingLeft: theme.spacing(2),
   paddingRight: theme.spacing(1),
   paddingTop: theme.spacing(2),
+}));
+
+const StyledTab = styled(Tab)(({ theme }) => ({
+  minWidth: '0px',
+  padding: '12px 8px',
+}));
+
+const StyledTabPanel = styled(TabPanel)(({ theme }) => ({
+  padding: '0',
+}));
+
+const StyledAnnotationDrawing = styled(AnnotationDrawing)(({ theme }) => ({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: 'auto',
 }));
 
 AnnotationCreation.propTypes = {

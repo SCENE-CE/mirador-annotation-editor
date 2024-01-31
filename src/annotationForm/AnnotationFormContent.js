@@ -1,33 +1,25 @@
 import React from 'react';
-import { Grid, TextField, Typography } from '@mui/material';
+import {Grid, Paper, Typography} from '@mui/material';
 import PropTypes from 'prop-types';
 import TextEditor from '../TextEditor';
 
 /** Form part for edit annotation content and body */
-function AnnotationFormContent({
-  onChange, textBody, updateTextBody, textEditorStateBustingKey,
+function AnnotationFormContent({textBody, updateTextBody, textEditorStateBustingKey,
 }) {
   return (
-    <div>
+    <Paper style={{padding:"5px"}}>
       <Typography variant="overline">
-        Content
+        metadata
       </Typography>
-      <Grid item xs={12}>
-        <TextField
-          id="outlined-basic"
-          label="Title"
-          variant="outlined"
-          onChange={onChange}
-        />
-      </Grid>
-      <Grid>
+      <Grid
+      >
         <TextEditor
           key={textEditorStateBustingKey}
           annoHtml={textBody}
           updateAnnotationBody={updateTextBody}
         />
       </Grid>
-    </div>
+    </Paper>
   );
 }
 
