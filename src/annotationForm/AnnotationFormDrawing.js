@@ -24,9 +24,9 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { SketchPicker } from 'react-color';
 import { v4 as uuidv4 } from 'uuid';
+import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../icons/Cursor';
 import ImageFormField from './ImageFormField';
-import CategoryIcon from "@mui/icons-material/Category";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
@@ -44,13 +44,13 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
 }));
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  padding:"5px"
+  padding: '5px',
 }));
 
 const StyledDivButtonImage = styled('div')(({ theme }) => ({
   display: 'flex',
-  justifyContent:"flex-end",
-  marginTop:'5px'
+  justifyContent: 'flex-end',
+  marginTop: '5px',
 }));
 
 /** All the stuff to manage to choose the drawing tool */
@@ -164,63 +164,63 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
             </Typography>
           </Grid>
           <Grid item xs={12}>
-              <StyledToggleButtonGroup
-                value={activeTool} // State or props ?
-                exclusive
-                onChange={changeTool}
-                aria-label="tool selection"
-                size="small"
-              >
+            <StyledToggleButtonGroup
+              value={activeTool} // State or props ?
+              exclusive
+              onChange={changeTool}
+              aria-label="tool selection"
+              size="small"
+            >
 
-                <ToggleButton value="edit" aria-label="select cursor">
-                  <CursorIcon />
-                </ToggleButton>
-                <ToggleButton value="shapes" aria-label="select cursor">
-                  <CategoryIcon />
-                </ToggleButton>
-                <ToggleButton value="images" aria-label="select cursor">
-                  <ImageIcon />
-                </ToggleButton>
-                <ToggleButton value="text" aria-label="select text">
-                  <TitleIcon />
-                </ToggleButton>
-                <ToggleButton value="delete" aria-label="select cursor">
-                  <DeleteIcon />
-                </ToggleButton>
-              </StyledToggleButtonGroup>
+              <ToggleButton value="edit" aria-label="select cursor">
+                <CursorIcon />
+              </ToggleButton>
+              <ToggleButton value="shapes" aria-label="select cursor">
+                <CategoryIcon />
+              </ToggleButton>
+              <ToggleButton value="images" aria-label="select cursor">
+                <ImageIcon />
+              </ToggleButton>
+              <ToggleButton value="text" aria-label="select text">
+                <TitleIcon />
+              </ToggleButton>
+              <ToggleButton value="delete" aria-label="select cursor">
+                <DeleteIcon />
+              </ToggleButton>
+            </StyledToggleButtonGroup>
             {
-              activeTool === 'edit'  && (
+              activeTool === 'edit' && (
                 <Typography>
                   Liste des shapes pour Sam
                 </Typography>
-                  )
+              )
             }
             {
               activeTool === 'shapes' ? (
-                  <>
-                      <StyledToggleButtonGroup
-                          value={activeTool} // State or props ?
-                          exclusive
-                          onChange={changeTool}
-                          aria-label="tool selection"
-                          size="small"
-                      >
-                        <ToggleButton value="rectangle" aria-label="add a rectangle">
-                          <RectangleIcon/>
-                        </ToggleButton>
-                        <ToggleButton value="ellipse" aria-label="add a circle">
-                          <CircleIcon/>
-                        </ToggleButton>
-                        <ToggleButton value="arrow" aria-label="add an arrow">
-                          <ArrowOutwardIcon/>
-                        </ToggleButton>
-                        <ToggleButton value="polygon" aria-label="add a polygon">
-                          <PolygonIcon/>
-                        </ToggleButton>
-                        <ToggleButton value="freehand" aria-label="free hand polygon">
-                          <GestureIcon/>
-                        </ToggleButton>
-                      </StyledToggleButtonGroup>
+                <>
+                  <StyledToggleButtonGroup
+                    value={activeTool} // State or props ?
+                    exclusive
+                    onChange={changeTool}
+                    aria-label="tool selection"
+                    size="small"
+                  >
+                    <ToggleButton value="rectangle" aria-label="add a rectangle">
+                      <RectangleIcon />
+                    </ToggleButton>
+                    <ToggleButton value="ellipse" aria-label="add a circle">
+                      <CircleIcon />
+                    </ToggleButton>
+                    <ToggleButton value="arrow" aria-label="add an arrow">
+                      <ArrowOutwardIcon />
+                    </ToggleButton>
+                    <ToggleButton value="polygon" aria-label="add a polygon">
+                      <PolygonIcon />
+                    </ToggleButton>
+                    <ToggleButton value="freehand" aria-label="free hand polygon">
+                      <GestureIcon />
+                    </ToggleButton>
+                  </StyledToggleButtonGroup>
                   <div>
                     <Grid container>
                       <Grid item xs={12}>
@@ -230,79 +230,79 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
                       </Grid>
                       <Grid item xs={12}>
                         <ToggleButtonGroup
-                            aria-label="style selection"
-                            size="small"
+                          aria-label="style selection"
+                          size="small"
                         >
                           <ToggleButton
-                              value="strokeColor"
-                              aria-label="select color"
-                              onClick={openChooseColor}
+                            value="strokeColor"
+                            aria-label="select color"
+                            onClick={openChooseColor}
                           >
-                            <StrokeColorIcon style={{fill: strokeColor}}/>
-                            <ArrowDropDownIcon/>
+                            <StrokeColorIcon style={{ fill: strokeColor }} />
+                            <ArrowDropDownIcon />
                           </ToggleButton>
                           <ToggleButton
-                              value="strokeColor"
-                              aria-label="select line weight"
-                              onClick={openChooseLineWeight}
+                            value="strokeColor"
+                            aria-label="select line weight"
+                            onClick={openChooseLineWeight}
                           >
-                            <LineWeightIcon/>
-                            <ArrowDropDownIcon/>
+                            <LineWeightIcon />
+                            <ArrowDropDownIcon />
                           </ToggleButton>
                           <ToggleButton
-                              value="fillColor"
-                              aria-label="select color"
-                              onClick={openChooseColor}
+                            value="fillColor"
+                            aria-label="select color"
+                            onClick={openChooseColor}
                           >
-                            <FormatColorFillIcon style={{fill: fillColor}}/>
-                            <ArrowDropDownIcon/>
+                            <FormatColorFillIcon style={{ fill: fillColor }} />
+                            <ArrowDropDownIcon />
                           </ToggleButton>
                         </ToggleButtonGroup>
 
-                        <StyledDivider flexItem orientation="vertical"/>
+                        <StyledDivider flexItem orientation="vertical" />
                         { /* close / open polygon mode only for freehand drawing mode. */
                           activeTool === 'freehand'
-                              ? (
-                                  <ToggleButtonGroup
-                                      size="small"
-                                      value={closedMode}
-                                      onChange={changeClosedMode}
-                                  >
-                                  <ToggleButton value="closed">
-                                      <ClosedPolygonIcon />
-                                    </ToggleButton>
-                                    <ToggleButton value="open">
-                                      <OpenPolygonIcon />
-                                    </ToggleButton>
-                                  </ToggleButtonGroup>
-                              )
-                              : null
+                            ? (
+                              <ToggleButtonGroup
+                                size="small"
+                                value={closedMode}
+                                onChange={changeClosedMode}
+                              >
+                                <ToggleButton value="closed">
+                                  <ClosedPolygonIcon />
+                                </ToggleButton>
+                                <ToggleButton value="open">
+                                  <OpenPolygonIcon />
+                                </ToggleButton>
+                              </ToggleButtonGroup>
+                            )
+                            : null
                         }
                       </Grid>
                     </Grid>
                   </div>
-                  </>
-              ):(<></>)
+                </>
+              ) : (<></>)
             }
             {
               activeTool === 'images' ? (
-                  <>
+                <>
                   <Grid container>
-                    <ImageFormField xs={8} value={image} onChange={handleImgChange}/>
+                    <ImageFormField xs={8} value={image} onChange={handleImgChange} />
                   </Grid>
                   <StyledDivButtonImage>
                     <Button variant="contained" onClick={addImage}>
                       <AddPhotoAlternateIcon />
                     </Button>
                   </StyledDivButtonImage>
-                  </>
-              ):(<></>)
+                </>
+              ) : (<></>)
             }
             {
-                activeTool === 'text'  && (
-                    <Typography>
-                      Ajouter un input text
-                    </Typography>
+                activeTool === 'text' && (
+                <Typography>
+                  Ajouter un input text
+                </Typography>
                 )
             }
           </Grid>
