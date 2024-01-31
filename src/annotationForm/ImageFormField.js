@@ -9,6 +9,11 @@ const StyledRoot = styled('div')(({ theme }) => ({
   justifyContent: 'center',
 }));
 
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  marginTop:"0",
+  marginBottom:"0",
+}));
+
 function ImageFormField({ value: image, onChange }) {
   const inputRef = useRef(null);
   const [imgIsValid, setImgIsValid] = useState(false);
@@ -25,7 +30,7 @@ function ImageFormField({ value: image, onChange }) {
 
   return (
     <StyledRoot>
-      <TextField
+      <StyledTextField
         value={imgUrl}
         onChange={(ev) => onChange(ev.target.value)}
         error={imgUrl !== '' && !imgIsValid}
