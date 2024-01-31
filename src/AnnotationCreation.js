@@ -122,6 +122,7 @@ function AnnotationCreation(props) {
   });
 
   const [shapes, setShapes] = useState([]);
+  const [isMouseOverSave, setIsMouseOverSave] = useState(false);
   const [scale, setScale] = useState(1);
 
   const { height, width } = VideosReferences.get(props.windowId).ref.current;
@@ -478,6 +479,7 @@ function AnnotationCreation(props) {
         setColorToolFromCurrentShape={setColorToolFromCurrentShape}
         updateShapes={updateShapes}
         shapes={shapes}
+        isMouseOverSave={isMouseOverSave}
       />
       <StyledForm
         onSubmit={submitForm}
@@ -532,6 +534,7 @@ function AnnotationCreation(props) {
               updateToolState={setToolState}
               handleImgChange={handleImgChange}
               shapes={shapes}
+         
             />
           </StyledTabPanel>
           <StyledTabPanel
@@ -551,7 +554,13 @@ function AnnotationCreation(props) {
           <Button onClick={closeCompanionWindow}>
             Cancel
           </Button>
-          <Button variant="contained" color="primary" type="submit">
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            onMouseOver={() => setIsMouseOverSave(true)}
+            onMouseOut={() => setIsMouseOverSave(false)}
+          >
             Save
           </Button>
         </StyledButtonDivSaveOrCancel>

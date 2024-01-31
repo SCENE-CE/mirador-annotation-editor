@@ -497,6 +497,7 @@ function AnnotationDrawing(props) {
         height={props.originalHeight}
         onTransform={onTransform}
         handleDragEnd={handleDragEnd}
+        isMouseOverSave={props.isMouseOverSave}
       />
     </Stage>
   );

@@ -16,6 +16,7 @@ import ImageShape from './Image';
 function ParentComponent({
   shapes, onShapeClick, selectedShapeId, activeTool,
   scale, width, height, onTransform, handleDragEnd,
+  isMouseOverSave
 }) {
   // TODO Simplify these state
   const [selectedShape, setSelectedShape] = useState(null);
@@ -47,7 +48,7 @@ function ParentComponent({
       scaleY={scale}
     >
       {shapes.map((shape, i) => {
-        const isSelected = selectedShapeId === shape.id;
+        const isSelected = selectedShapeId === shape.id && isMouseOverSave === false;
         switch (shape.type) {
           case 'rectangle':
             return (
