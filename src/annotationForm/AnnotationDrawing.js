@@ -116,9 +116,8 @@ function AnnotationDrawing(props) {
 
 
   /** */
-  const onShapeClick = async (shape) => {
-
-
+  const onShapeClick = async (shp) => {
+    const shape = shapes.find((s) => s.id === shp.id);
     if (props.activeTool === 'delete') {
 
       const newShapes = shapes.filter((s) => s.id !== shape.id);
@@ -126,14 +125,8 @@ function AnnotationDrawing(props) {
       return;
     }
 
-
-    const newShapes = shapes.filter((s) => s.id !== shape.id); // remove shape from the list
-    newShapes.push(shape); // add shape to the end of the list
-    setShapes(newShapes); // update shapes list
-    // find shape by id
-    setCurrentShape(shapes.find((s) => s.id === shape.id));
+    setCurrentShape(shape);
     props.setShapeProperties(shape); // TODO Check that code ?
-
     props.setColorToolFromCurrentShape(
       {
         fillColor: shape.fill,
