@@ -3,6 +3,7 @@ import { getCompanionWindow } from 'mirador/dist/es/src/state/selectors/companio
 import { getWindowCurrentTime, getWindowPausedStatus } from 'mirador/dist/es/src/state/selectors/window'
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
 import { getPresentAnnotationsOnSelectedCanvases } from 'mirador/dist/es/src/state/selectors/annotations'
+import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import AnnotationCreation from '../AnnotationCreation';
 
 /** */
@@ -23,7 +24,7 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
   const cw = getCompanionWindow(state, { companionWindowId, windowId });
   const { annotationid } = cw;
   const canvases = getVisibleCanvases(state, { windowId });
-
+  const mediaVideo = VideosReferences.get(windowId);
   const annotation = getPresentAnnotationsOnSelectedCanvases(state, { windowId })
     .flatMap((annoPage) => annoPage.json.items || [])
     .find((annot) => annot.id === annotationid);
@@ -33,6 +34,7 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
     canvases,
     config: state.config,
     currentTime,
+    mediaVideo,
     paused: getWindowPausedStatus(state, { windowId }),
   };
 }

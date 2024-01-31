@@ -122,17 +122,17 @@ function AnnotationFormTime({
 }
 
 AnnotationFormTime.propTypes = {
-  handleChangeTime: PropTypes.func,
-  mediaIsVideo: PropTypes.bool,
-  setTendNow: PropTypes.func,
-  setTstartNow: PropTypes.func,
-  tend: PropTypes.any,
-  tstart: PropTypes.number,
-  updateTend: PropTypes.func,
-  updateTstart: PropTypes.func,
-  value: PropTypes.arrayOf(PropTypes.number),
-  videoDuration: PropTypes.any,
-  windowid: PropTypes.any,
+  handleChangeTime: PropTypes.func.isRequired,
+  mediaIsVideo: PropTypes.bool.isRequired,
+  setTendNow: PropTypes.func.isRequired,
+  setTstartNow: PropTypes.func.isRequired,
+  tend: PropTypes.any.isRequired,
+  tstart: PropTypes.number.isRequired,
+  updateTend: PropTypes.func.isRequired,
+  updateTstart: PropTypes.func.isRequired,
+  value: PropTypes.arrayOf(PropTypes.number).isRequired,
+  videoDuration: PropTypes.any.isRequired,
+  windowid: PropTypes.any.isRequired,
 };
 
 export default AnnotationFormTime;
