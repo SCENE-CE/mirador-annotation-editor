@@ -1,10 +1,10 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button
+  Button,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { v4 as uuid, v4 as uuidv4 } from 'uuid';
+import { v4 as uuid } from 'uuid';
 import { exportStageSVG } from 'react-konva-to-svg';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
@@ -44,6 +44,8 @@ function AnnotationCreation(props) {
 
   // Initial state setup
   const [state, setState] = useState(() => {
+    let tstart;
+    let tend;
     const annoState = {};
     if (props.annotation) {
       // annotation body
@@ -77,7 +79,7 @@ function AnnotationCreation(props) {
             } else if (selector.type === 'FragmentSelector') {
               // TODO proper fragment selector extraction
               annoState.xywh = geomFromAnnoTarget(selector.value);
-              [annoState.tstart, annoState.tend] = timeFromAnnoTarget(selector.value);
+              [tstart, tend] = timeFromAnnoTarget(selector.value);
             }
           });
         } else {
@@ -86,26 +88,33 @@ function AnnotationCreation(props) {
         }
       } else if (typeof props.annotation.target === 'string') {
         annoState.xywh = geomFromAnnoTarget(props.annotation.target);
-        [annoState.tstart, annoState.tend] = timeFromAnnoTarget(props.annotation.target);
+        [tstart, tend] = timeFromAnnoTarget(props.annotation.target);
       }
     }
 
-    const timeState = props.currentTime !== null
-      ? { tend: Math.floor(props.currentTime) + 10, tstart: Math.floor(props.currentTime) }
-      : { tend: null, tstart: null };
+    // If we dont have tstart setted, we are creating a new annotation.
+    // So Tstart is current time and Tend the end of the video
+    if (!tstart) {
+      tstart = props.currentTime ? Math.floor(props.currentTime) : 0;
+      tend=tstart+30;
+    }
 
     return {
       ...toolState,
       ...timeState,
       mediaVideo: null,
       ...annoState,
+      tend,
       textEditorStateBustingKey: 0,
+      tstart,
+      valueTime: [0, 1],
       valuetextTime: '',
       valueTime: [0, 1],
     };
   });
 
   const [scale, setScale] = useState(1);
+
   const { height, width } = VideosReferences.get(props.windowId).ref.current;
   const [value, setValue] = useState("1");
 
@@ -118,8 +127,14 @@ function AnnotationCreation(props) {
   // You can use useEffect for componentDidMount, componentDidUpdate, and componentWillUnmount
   useEffect(() => {
     // componentDidMount logic
-    const mediaVideo = VideosReferences.get(props.windowId);
-    setState((prevState) => ({ ...prevState, mediaVideo }));
+    // TODO Improve this code logic. It will be better to have this in state creation
+    // const mediaVideo = VideosReferences.get(props.windowId);
+    // const videoDuration = mediaVideo.props.canvas.__jsonld.duration;
+    // if (tend === null || state.mediaVideo === null) {
+    //   setState((prevState) => ({ ...prevState, tend: videoDuration }));
+    // } else {
+    //   setState((prevState) => ({ ...prevState, mediaVideo }));
+    // }
 
     // componentWillUnmount logic (if needed)
     return () => {
@@ -164,24 +179,30 @@ function AnnotationCreation(props) {
     setValue(TabIndex);
   };
   /**
-     * @param {Event} event
-     * @param {number} newValueTime
-     */
+   * Change from slider
+   * @param {Event} event
+   * @param {number} newValueTime
+   */
   const handleChangeTime = (event, newValueTime) => {
     const timeStart = newValueTime[0];
     const timeEnd = newValueTime[1];
     updateTstart(timeStart);
     updateTend(timeEnd);
     seekToTstart();
-    seekToTend();
     setValueTime(newValueTime);
   };
 
-  /** update annotation start time */
+  /** Change from Tstart HMS Input */
   const updateTstart = (value) => {
+    if (value > state.tend) {
+      return;
+    }
     setState((prevState) => ({
       ...prevState,
       tstart: value,
+      ...props.setSeekTo(value),
+      ...props.setCurrentTime(value),
+
     }));
   };
 
@@ -346,6 +367,7 @@ function AnnotationCreation(props) {
       xywh: null,
     });
   };
+
   /** */
   const {
     annotation,
@@ -392,6 +414,7 @@ function AnnotationCreation(props) {
     console.debug('osdref', osdref);
   }
 
+  /** Change scale from container / canva */
   const updateScale = () => {
     setScale(overlay.containerWidth / overlay.canvasWidth);
   };
@@ -402,7 +425,7 @@ function AnnotationCreation(props) {
   return (
   // we need to get the width and height of the image to pass it to the annotation drawing component
     <CompanionWindow
-      title={title ? title.value : 'New Annotation'}
+      title={annotation ? 'Edit annotation' : 'New annotation'}
       windowId={windowId}
       id={id}
     >

@@ -55,6 +55,7 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   marginRight: '5px',
 }));
 
+/** Form part with time mangement, dual slider + double input. Mange Tstart and Tend value */
 function AnnotationFormTime({
   videoDuration, value, handleChangeTime, windowid, setTstartNow, tstart, updateTstart, setTendNow, tend, updateTend, ...props
 }) {
