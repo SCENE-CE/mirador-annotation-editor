@@ -10,9 +10,8 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import RectangleIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
 import PolygonIcon from '@mui/icons-material/Timeline';
-import DeleteIcon from '@mui/icons-material/Delete';
 import GestureIcon from '@mui/icons-material/Gesture';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect } from 'react';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import StrokeColorIcon from '@mui/icons-material/BorderColor';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -28,7 +27,6 @@ import { v4 as uuidv4 } from 'uuid';
 import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../icons/Cursor';
 import ImageFormField from './ImageFormField';
-import { fill } from 'lodash';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
@@ -55,28 +53,25 @@ const StyledDivButtonImage = styled('div')(({ theme }) => ({
   marginTop: '5px',
 }));
 
-
-const rgbaToObj = (rgba='rgba(255,255,255,0.5)') => {
-
-
-
-
-
+const rgbaToObj = (rgba = 'rgba(255,255,255,0.5)') => {
   const rgbaArray = rgba.split(',');
   const r = Number(rgbaArray[0].split('(')[1]);
   const g = Number(rgbaArray[1]);
   const b = Number(rgbaArray[2]);
   const a = Number(rgbaArray[3].split(')')[0]);
-  return { r, g, b, a };
-}
+  return {
+    // eslint-disable-next-line sort-keys
+    r, g, b, a,
+  };
+};
 
-const objToRgba = (obj={r:255,g:255,b:255,a:0.5}) => {
-  return `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
-}
+const objToRgba = (obj = {
+  // eslint-disable-next-line sort-keys
+  r: 255, g: 255, b: 255, a: 0.5,
+}) => `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
 
 /** All the stuff to manage to choose the drawing tool */
 function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) {
-
   useEffect(() => {
 
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
