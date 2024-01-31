@@ -444,21 +444,15 @@ function AnnotationCreation(props) {
             >
             </StyledTab>
             <StyledTab
-                icon={<CategoryIcon/>}
+                icon={<LocalOfferIcon/>}
                 aria-label="TargetSelector"
                 value="3"
             >
             </StyledTab>
             <StyledTab
-                icon={<LocalOfferIcon/>}
-                aria-label="TargetSelector"
-                value="4"
-            >
-            </StyledTab>
-            <StyledTab
                 icon={<HubIcon/>}
                 aria-label="TargetSelector"
-                value="5"
+                value="4"
             >
             </StyledTab>
           </TabList>
@@ -483,9 +477,6 @@ function AnnotationCreation(props) {
           </StyledTabPanel>
           <StyledTabPanel
               value="2"
-          ></StyledTabPanel>
-          <StyledTabPanel
-              value="3"
           >
             <AnnotationFormDrawing
                 toolState={toolState}
@@ -494,12 +485,12 @@ function AnnotationCreation(props) {
             />
           </StyledTabPanel>
           <StyledTabPanel
-              value="4"
+              value="3"
           >
             <AnnotationFormContent></AnnotationFormContent>
           </StyledTabPanel>
           <StyledTabPanel
-              value="5"
+              value="4"
           ></StyledTabPanel>
         </TabContext>
         <StyledButtonDivSaveOrCancel>
