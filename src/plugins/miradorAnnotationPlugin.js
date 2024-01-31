@@ -11,8 +11,8 @@ import SingleCanvasDialog from '../SingleCanvasDialog';
 import AnnotationExportDialog from '../AnnotationExportDialog';
 import LocalStorageAdapter from '../LocalStorageAdapter';
 
-/** */
-function MiradorAnnotation({ targetProps, TargetComponent, annotationEdit}) {
+/** Mirador annotation plugin component. Get all the stuff and info to manage annotation functionnality */
+function MiradorAnnotation({ targetProps, TargetComponent, annonationEditCompanionWindowIsOpened}) {
   const [annotationExportDialogOpen, setAnnotationExportDialogOpen] = useState(false);
   const [singleCanvasDialogOpen, setSingleCanvasDialogOpen] = useState(false);
   const [currentCompanionWindowId, setCurrentCompanionWindowId] = useState(null);
@@ -25,7 +25,7 @@ function MiradorAnnotation({ targetProps, TargetComponent, annotationEdit}) {
   };
 
   useEffect(() => {
-  }, [annotationEdit]);
+  }, [annonationEditCompanionWindowIsOpened]);
   /** */
   const switchToSingleCanvasView = () => {
     dispatch(actions.setWindowViewType(targetProps.windowId, 'single'));
@@ -61,7 +61,7 @@ function MiradorAnnotation({ targetProps, TargetComponent, annotationEdit}) {
         aria-label="Create new annotation"
         onClick={windowViewType === 'single' ? openCreateAnnotationCompanionWindow : toggleSingleCanvasDialogOpen}
         size="small"
-        disabled={!annotationEdit}
+        disabled={!annonationEditCompanionWindowIsOpened}
       >
         <AddBoxIcon />
       </MiradorMenuButton>
@@ -110,6 +110,7 @@ MiradorAnnotation.propTypes = {
   targetProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   windowViewType: PropTypes.string.isRequired,
   createAnnotation: PropTypes.bool.isRequired,
+  annonationEditCompanionWindowIsOpened: PropTypes.bool.isRequired,
 };
 
 export default MiradorAnnotation;

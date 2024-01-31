@@ -1,4 +1,6 @@
-import React, {useState, useContext, forwardRef, useEffect} from 'react';
+import React, {
+  useState, useContext, forwardRef, useEffect,
+} from 'react';
 import PropTypes from 'prop-types';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
@@ -66,48 +68,47 @@ const CanvasListItem = forwardRef((props, ref) => {
   };
 
   return (
-      <div
-          onMouseEnter={handleMouseHover}
-          onMouseLeave={handleMouseHover}
-          className="mirador-annotation-list-item"
-          ref={ref}
-      >
-        {isHovering && editable() && (
-            <div
-                style={{
-                  position: 'relative',
-                  top: -20,
-                  zIndex: 10000,
-                }}
+    <div
+      onMouseEnter={handleMouseHover}
+      onMouseLeave={handleMouseHover}
+      className="mirador-annotation-list-item"
+      ref={ref}
+    >
+      {isHovering && editable() && (
+        <div
+          style={{
+            position: 'relative',
+            top: -20,
+            zIndex: 10000,
+          }}
+        >
+          <ToggleButtonGroup
+            aria-label="annotation tools"
+            size="small"
+            style={{ position: 'absolute', right: 0 }}
+            disabled={!context.annotationEdit}
+          >
+            <ToggleButton
+              aria-label="Edit"
+              onClick={context.windowViewType === 'single' ? handleEdit : context.toggleSingleCanvasDialogOpen}
+              value="edit"
             >
-              <ToggleButtonGroup
-                  aria-label="annotation tools"
-                  size="small"
-                  style={{ position: 'absolute', right: 0 }}
-              >
-                <ToggleButton
-                    aria-label="Edit"
-                    onClick={context.windowViewType === 'single' ? handleEdit : context.toggleSingleCanvasDialogOpen}
-                    value="edit"
-                    disabled={!context.annotationEdit}
-                >
-                  <EditIcon />
-                </ToggleButton>
-                <ToggleButton
-                    aria-label="Delete"
-                    onClick={handleDelete}
-                    value="delete"
-                    disabled={!context.annotationEdit}
-                >
-                  <DeleteIcon />
-                </ToggleButton>
-              </ToggleButtonGroup>
-            </div>
-        )}
-        <li {...props}>
-          {props.children}
-        </li>
-      </div>
+              <EditIcon />
+            </ToggleButton>
+            <ToggleButton
+              aria-label="Delete"
+              onClick={handleDelete}
+              value="delete"
+            >
+              <DeleteIcon />
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </div>
+      )}
+      <li {...props}>
+        {props.children}
+      </li>
+    </div>
   );
 });
 
@@ -117,7 +118,7 @@ CanvasListItem.propTypes = {
     PropTypes.func,
     PropTypes.node,
   ]).isRequired,
-  annotationEdit: PropTypes.bool.isRequired
+  annotationEdit: PropTypes.bool.isRequired,
 
 };
 
