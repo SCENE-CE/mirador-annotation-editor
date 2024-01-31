@@ -42,8 +42,14 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
 }));
 
-const StyledGridImageURL = styled(Grid)(({ theme }) => ({
-  display:'flex',
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding:"5px"
+}));
+
+const StyledDivButtonImage = styled('div')(({ theme }) => ({
+  display: 'flex',
+  justifyContent:"flex-end",
+  marginTop:'5px'
 }));
 
 /** All the stuff to manage to choose the drawing tool */
@@ -148,7 +154,7 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
   } = toolState;
 
   return (
-    <div>
+    <StyledPaper>
       <div>
         <Grid container>
           <Grid item xs={12}>
@@ -263,13 +269,13 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
           </Grid>
         </Grid>
         <Grid container>
-          <StyledGridImageURL item xs={8}>
             <ImageFormField xs={8} value={image} onChange={handleImgChange}/>
+        </Grid>
+        <StyledDivButtonImage>
             <Button variant="contained" onClick={addImage}>
               <AddPhotoAlternateIcon />
             </Button>
-          </StyledGridImageURL>
-        </Grid>
+        </StyledDivButtonImage>
       </div>
       <Popover
         open={lineWeightPopoverOpen}
@@ -304,7 +310,7 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
           onChangeComplete={updateStrokeColor}
         />
       </Popover>
-    </div>
+    </StyledPaper>
   );
 }
 

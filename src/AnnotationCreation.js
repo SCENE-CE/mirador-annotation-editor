@@ -502,18 +502,23 @@ function AnnotationCreation(props) {
               value="5"
           ></StyledTabPanel>
         </TabContext>
-        <div>
+        <StyledButtonDivSaveOrCancel>
           <Button onClick={closeCompanionWindow}>
             Cancel
           </Button>
           <Button variant="contained" color="primary" type="submit">
             Save
           </Button>
-        </div>
+        </StyledButtonDivSaveOrCancel>
       </StyledForm>
     </CompanionWindow>
   );
 }
+
+const StyledButtonDivSaveOrCancel = styled('div')(({ theme}) =>({
+  display:'flex',
+  justifyContent: 'flex-end',
+}))
 
 const StyledForm = styled('form')(({ theme }) => ({
   display: 'flex',

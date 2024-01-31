@@ -11,7 +11,10 @@ import {styled} from "@mui/material/styles";
 
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  padding:"5px"
+  display:"flex",
+  flexDirection:"column",
+  gap:"10px",
+  padding:"30px 5px 30px 5px"
 }));
 
 const StyledSlider = styled(Slider)(({ theme }) => ({

@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import TextEditor from '../TextEditor';
 
 /** Form part for edit annotation content and body */
-function AnnotationFormContent({
-  onChange, textBody, updateTextBody, textEditorStateBustingKey,
+function AnnotationFormContent({textBody, updateTextBody, textEditorStateBustingKey,
 }) {
   return (
     <Paper style={{padding:"5px"}}>
