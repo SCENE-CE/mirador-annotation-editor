@@ -7,6 +7,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import HMSInput from '../HMSInput';
 
+/** Form part with time mangement, dual slider + double input. Mange Tstart and Tend value */
 function AnnotationFormTime({
   videoDuration, value, handleChangeTime, windowid, setTstartNow, tstart, updateTstart, setTendNow, tend, updateTend, ...props
 }) {
