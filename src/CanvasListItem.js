@@ -86,7 +86,7 @@ const CanvasListItem = forwardRef((props, ref) => {
             aria-label="annotation tools"
             size="small"
             style={{ position: 'absolute', right: 0 }}
-            disabled={!context.annotationEdit}
+            disabled={!context.annonationEditCompanionWindowIsOpened}
           >
             <ToggleButton
               aria-label="Edit"

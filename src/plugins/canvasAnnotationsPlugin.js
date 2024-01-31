@@ -102,15 +102,15 @@ CanvasAnnotationsWrapper.defaultProps = {
   containerRef: null,
 };
 
-/** */
+/** TODO this logic is duplicated*/
 function mapStateToProps(state, { targetProps: { windowId } }) {
   const canvases = getVisibleCanvases(state, { windowId });
   const annotationsOnCanvases = {};
   const annotationCreationCompanionWindows = getCompanionWindowsForContent(state, { content: 'annotationCreation', windowId });
-  let annotationEdit = true;
+  let annonationEditCompanionWindowIsOpened = true;
 
   if (Object.keys(annotationCreationCompanionWindows).length !== 0) {
-    annotationEdit = false;
+    annonationEditCompanionWindowIsOpened = false;
   }
 
   canvases.forEach((canvas) => {
@@ -120,11 +120,11 @@ function mapStateToProps(state, { targetProps: { windowId } }) {
     }
   });
   return {
+    annonationEditCompanionWindowIsOpened,
     annotationsOnCanvases,
-    annotationEdit: annotationEdit,
     canvases,
     config: state.config,
-    windowViewType: getWindowViewType(state, { windowId }),
+    windowViewType: getWindowViewType(state, {windowId}),
   };
 }
 
