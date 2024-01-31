@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  front:
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.${NAME}.rule=Host(${HOST})"
+      - "traefik.http.routers.${NAME}.tls.certresolver=myresolver"
+      - "traefik.http.routers.${NAME}.entrypoints=web,websecure"
+      - "traefik.http.routers.${NAME}.middlewares=hardening@docker"
+
+
+networks:
+  traefik:
+    external: true
+
