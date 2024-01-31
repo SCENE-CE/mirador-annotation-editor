@@ -189,6 +189,13 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
                 </ToggleButton>
               </StyledToggleButtonGroup>
             {
+              activeTool === 'edit'  && (
+                <Typography>
+                  Liste des shapes pour Sam
+                </Typography>
+                  )
+            }
+            {
               activeTool === 'shapes' ? (
                   <>
                       <StyledToggleButtonGroup
@@ -290,6 +297,13 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange }) 
                   </StyledDivButtonImage>
                   </>
               ):(<></>)
+            }
+            {
+                activeTool === 'text'  && (
+                    <Typography>
+                      Ajouter un input text
+                    </Typography>
+                )
             }
           </Grid>
         </Grid>

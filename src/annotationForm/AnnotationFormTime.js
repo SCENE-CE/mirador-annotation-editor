@@ -1,20 +1,18 @@
-import {Divider, Grid, Paper} from '@mui/material';
+import { Divider, Grid, Paper } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 import ToggleButton from '@mui/material/ToggleButton';
 import { Alarm } from '@mui/icons-material';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
 import HMSInput from '../HMSInput';
-import {styled} from "@mui/material/styles";
-
-
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  display:"flex",
-  flexDirection:"column",
-  gap:"10px",
-  padding:"30px 10px 30px 10px"
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
+  padding: '5px',
 }));
 
 const StyledSlider = styled(Slider)(({ theme }) => ({
@@ -60,8 +58,7 @@ function AnnotationFormTime({
   videoDuration, value, handleChangeTime, windowid, setTstartNow, tstart, updateTstart, setTendNow, tend, updateTend, ...props
 }) {
   return (
-    <>
-      <StyledPaper>
+    <StyledPaper>
       <Grid
         item
         xs={12}
@@ -82,8 +79,7 @@ function AnnotationFormTime({
           />
         </div>
       </Grid>
-      <StyledDivFormTimeContainer
-      >
+      <StyledDivFormTimeContainer>
         <StyledDivTimeSelector>
           <StyledDivToggleButton>
             <div>
@@ -121,8 +117,7 @@ function AnnotationFormTime({
           <HMSInput seconds={tend} onChange={updateTend} />
         </StyledDivTimeSelector>
       </StyledDivFormTimeContainer>
-      </StyledPaper>
-    </>
+    </StyledPaper>
   );
 }
 
