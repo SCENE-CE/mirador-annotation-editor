@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import GetAppIcon from '@mui/icons-material/GetApp';
@@ -11,21 +11,21 @@ import SingleCanvasDialog from '../SingleCanvasDialog';
 import AnnotationExportDialog from '../AnnotationExportDialog';
 import LocalStorageAdapter from '../LocalStorageAdapter';
 
-/** */
-function MiradorAnnotation({ targetProps, TargetComponent }) {
+/** Mirador annotation plugin component. Get all the stuff and info to manage annotation functionnality */
+function MiradorAnnotation({ targetProps, TargetComponent, annonationEditCompanionWindowIsOpened}) {
   const [annotationExportDialogOpen, setAnnotationExportDialogOpen] = useState(false);
   const [singleCanvasDialogOpen, setSingleCanvasDialogOpen] = useState(false);
   const [currentCompanionWindowId, setCurrentCompanionWindowId] = useState(null);
 
   const dispatch = useDispatch();
-
   /** Open the companion window for annotation */
   const addCompanionWindow = (content, additionalProps) => {
-    console.log(targetProps.windowId);
     setCurrentCompanionWindowId(targetProps.windowId);
     dispatch(actions.addCompanionWindow(targetProps.windowId, { content, ...additionalProps }));
   };
 
+  useEffect(() => {
+  }, [annonationEditCompanionWindowIsOpened]);
   /** */
   const switchToSingleCanvasView = () => {
     dispatch(actions.setWindowViewType(targetProps.windowId, 'single'));
@@ -42,6 +42,7 @@ function MiradorAnnotation({ targetProps, TargetComponent }) {
   }, [targetProps.windowId]);
 
   const toggleSingleCanvasDialogOpen = useCallback(() => {
+
     setSingleCanvasDialogOpen(!singleCanvasDialogOpen);
   }, [singleCanvasDialogOpen]);
 
@@ -60,6 +61,7 @@ function MiradorAnnotation({ targetProps, TargetComponent }) {
         aria-label="Create new annotation"
         onClick={windowViewType === 'single' ? openCreateAnnotationCompanionWindow : toggleSingleCanvasDialogOpen}
         size="small"
+        disabled={!annonationEditCompanionWindowIsOpened}
       >
         <AddBoxIcon />
       </MiradorMenuButton>
@@ -107,10 +109,8 @@ MiradorAnnotation.propTypes = {
   ]).isRequired,
   targetProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   windowViewType: PropTypes.string.isRequired,
+  createAnnotation: PropTypes.bool.isRequired,
+  annonationEditCompanionWindowIsOpened: PropTypes.bool.isRequired,
 };
 
-export default {
-  component: MiradorAnnotation,
-  mode: 'wrap',
-  target: 'AnnotationSettings',
-};
+export default MiradorAnnotation;
