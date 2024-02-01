@@ -8,7 +8,7 @@ import { v4 as uuid } from 'uuid';
 import { exportStageSVG } from 'react-konva-to-svg';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
-import { VideosReferences } from "mirador/dist/es/src/plugins/VideosReferences";
+import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import Tab from '@mui/material/Tab';
 import HighlightAltIcon from '@mui/icons-material/HighlightAlt';
 import LayersIcon from '@mui/icons-material/Layers';
@@ -27,7 +27,6 @@ const TARGET_VIEW = 'target';
 const OVERLAY_VIEW = 'layer';
 const TAG_VIEW = 'tag';
 const MANIFEST_LINK_VIEW = 'link';
-
 
 /** Component for creating annotations.
  * Display in companion window when a manifest is open and an annoation created or edited */
@@ -147,8 +146,6 @@ function AnnotationCreation(props) {
     };
   }, []);
 
-
-
   useEffect(() => {
 
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
@@ -248,7 +245,6 @@ function AnnotationCreation(props) {
 
   /** */
   const setShapeProperties = (options) => new Promise(() => {
-
     if (options.fill) {
       state.fillColor = options.fill;
     }
@@ -282,30 +278,26 @@ function AnnotationCreation(props) {
     return svg;
   };
 
-
   /** Set color tool from current shape */
   const setColorToolFromCurrentShape = (colorState) => {
     setToolState((prevState) => ({
       ...prevState,
       ...colorState,
     }));
-  }
-
+  };
 
   /** update shapes with shapes from annotationDrawing */
 
   const updateShapes = (newShapes) => {
-
     setShapes(newShapes);
-  }
+  };
 
   /** delete shape */
 
   const deleteShape = (shapeId) => {
-
     const newShapes = shapes.filter((shape) => shape.id !== shapeId);
     setShapes(newShapes);
-  }
+  };
 
   /**
      * Validate form and save annotation
@@ -529,7 +521,7 @@ function AnnotationCreation(props) {
               updateToolState={setToolState}
               handleImgChange={handleImgChange}
               shapes={shapes}
-              deleteShape = {deleteShape}
+              deleteShape={deleteShape}
             />
           </StyledTabPanel>
           <StyledTabPanel

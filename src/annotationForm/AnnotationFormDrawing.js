@@ -13,12 +13,6 @@ import PolygonIcon from '@mui/icons-material/Timeline';
 import GestureIcon from '@mui/icons-material/Gesture';
 import React, { useEffect } from 'react';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import StrokeColorIcon from '@mui/icons-material/BorderColor';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import LineWeightIcon from '@mui/icons-material/LineWeight';
-import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
-import ClosedPolygonIcon from '@mui/icons-material/ChangeHistory';
-import OpenPolygonIcon from '@mui/icons-material/ShowChart';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
@@ -27,6 +21,8 @@ import { v4 as uuidv4 } from 'uuid';
 import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../icons/Cursor';
 import ImageFormField from './ImageFormField';
+import AnnotationFormOverlayToolOptions
+  from './KonvaDrawing/AnnotationFormOverlayToolOptions/AnnotationFormOverlayToolOptions';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
@@ -39,22 +35,17 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
-const StyledDivider = styled(Divider)(({ theme }) => ({
-  margin: theme.spacing(1, 0.5),
-}));
-
 const StyledLi = styled('li')(({ theme }) => ({
-  display:'flex',
+  display: 'flex',
   wordBreak: 'break-word',
 }));
 
 const StyledUl = styled('ul')(({ theme }) => ({
-  display:'flex',
+  display: 'flex',
   flexDirection: 'column',
   gap: '5px',
   listStyle: 'none',
   paddingLeft: '0',
-
 }));
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -101,7 +92,9 @@ function isShapeTool(activeTool) {
 }
 
 /** All the stuff to manage to choose the drawing tool */
-function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange, shapes,deleteShape }) {
+function AnnotationFormDrawing({
+  updateToolState, toolState, handleImgChange, shapes, deleteShape,
+}) {
   useEffect(() => {
 
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
@@ -278,66 +271,15 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange, sh
                       <GestureIcon />
                     </ToggleButton>
                   </StyledToggleButtonGroup>
-                  <div>
-                    <Grid container>
-                      <Grid item xs={12}>
-                        <Typography variant="overline">
-                          Style
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <ToggleButtonGroup
-                          aria-label="style selection"
-                          size="small"
-                        >
-                          <ToggleButton
-                            value="strokeColor"
-                            aria-label="select color"
-                            onClick={openChooseColor}
-                          >
-                            <StrokeColorIcon style={{ fill: strokeColor }} />
-                            <ArrowDropDownIcon />
-                          </ToggleButton>
-                          <ToggleButton
-                            value="strokeColor"
-                            aria-label="select line weight"
-                            onClick={openChooseLineWeight}
-                          >
-                            <LineWeightIcon />
-                            <ArrowDropDownIcon />
-                          </ToggleButton>
-                          <ToggleButton
-                            value="fillColor"
-                            aria-label="select color"
-                            onClick={openChooseColor}
-                          >
-                            <FormatColorFillIcon style={{ fill: fillColor }} />
-                            <ArrowDropDownIcon />
-                          </ToggleButton>
-                        </ToggleButtonGroup>
-
-                        <StyledDivider flexItem orientation="vertical" />
-                        { /* close / open polygon mode only for freehand drawing mode. */
-                          activeTool === 'freehand'
-                            ? (
-                              <ToggleButtonGroup
-                                size="small"
-                                value={closedMode}
-                                onChange={changeClosedMode}
-                              >
-                                <ToggleButton value="closed">
-                                  <ClosedPolygonIcon />
-                                </ToggleButton>
-                                <ToggleButton value="open">
-                                  <OpenPolygonIcon />
-                                </ToggleButton>
-                              </ToggleButtonGroup>
-                            )
-                            : null
-                        }
-                      </Grid>
-                    </Grid>
-                  </div>
+                  <AnnotationFormOverlayToolOptions
+                    openChooseColor={openChooseColor}
+                    strokeColor={strokeColor}
+                    openChooseLineWeight={openChooseLineWeight}
+                    fillColor={fillColor}
+                    activeTool={activeTool}
+                    closedMode={closedMode}
+                    changeClosedMode={changeClosedMode}
+                  />
                 </>
               )
             }
