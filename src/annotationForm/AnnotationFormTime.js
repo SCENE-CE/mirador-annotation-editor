@@ -17,6 +17,8 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 
 const StyledSlider = styled(Slider)(({ theme }) => ({
   color: 'rgba(1, 0, 0, 0.38)',
+  paddingLeft: '10px',
+  paddingRight: '10px',
 }));
 
 const StyledDivFormTimeContainer = styled('div')(({ theme }) => ({
