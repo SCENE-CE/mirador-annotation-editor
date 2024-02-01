@@ -19,19 +19,22 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
 }));
 
-/** Utils functions */
+/** Utils functions to convert string to object */
 const rgbaToObj = (rgba = 'rgba(255,255,255,0.5)') => {
   const rgbaArray = rgba.split(',');
-  const r = Number(rgbaArray[0].split('(')[1]);
-  const g = Number(rgbaArray[1]);
-  const b = Number(rgbaArray[2]);
-  const a = Number(rgbaArray[3].split(')')[0]);
   return {
     // eslint-disable-next-line sort-keys
-    r, g, b, a,
+    r: Number(rgbaArray[0].split('(')[1]),
+    // eslint-disable-next-line sort-keys
+    g: Number(rgbaArray[1]),
+    // eslint-disable-next-line sort-keys
+    b: Number(rgbaArray[2]),
+    // eslint-disable-next-line sort-keys
+    a: Number(rgbaArray[3].split(')')[0]),
   };
 };
 
+/** Convert color object to rgba string */
 const objToRgba = (obj = {
   // eslint-disable-next-line sort-keys
   r: 255, g: 255, b: 255, a: 0.5,
@@ -102,10 +105,9 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
       lineWeightPopoverOpen: false,
       popoverLineWeightAnchorEl: null,
     });
-
   };
 
-  // Update ToolState value
+  /**  closed mode change */
   const changeClosedMode = (e) => {
     updateToolState({
       ...toolState,
@@ -191,9 +193,9 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
                     key={option}
                     onClick={handleLineWeightSelect}
                     value={option}
-                    selected={option == toolState.strokeWidth}
+                    selected={option === toolState.strokeWidth}
                     role="option"
-                    aria-selected={option == toolState.strokeWidth}
+                    aria-selected={option === toolState.strokeWidth}
                   >
                     {option}
                   </MenuItem>
@@ -219,7 +221,6 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
 }
 
 AnnotationFormOverlayToolOptions.propTypes = {
-  updateToolState: PropTypes.func.isRequired,
   toolState: PropTypes.shape({
     activeTool: PropTypes.string.isRequired,
     closedMode: PropTypes.bool.isRequired,
@@ -228,6 +229,7 @@ AnnotationFormOverlayToolOptions.propTypes = {
     strokeWidth: PropTypes.number.isRequired,
     updateColor: PropTypes.func.isRequired,
   }).isRequired,
+  updateToolState: PropTypes.func.isRequired,
 };
 
 export default AnnotationFormOverlayToolOptions;

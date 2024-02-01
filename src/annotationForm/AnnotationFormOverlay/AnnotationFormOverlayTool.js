@@ -22,8 +22,19 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
+export const OVERLAY_TOOL = {
+  ARROW: 'arrow',
+  ELLIPSE: 'ellipse',
+  FREEHAND: 'freehand',
+  POLYGON: 'polygon',
+  RECTANGLE: 'rectangle',
+  TEXT: 'text',
+  IMAGE: 'image',
+};
+
 /** All the form part for the overlay view */
 function AnnotationFormOverlayTool({ toolState, updateToolState }) {
+  /** Change the active overlay tool */
   const changeTool = (e, tool) => {
     updateToolState({
       ...toolState,
@@ -40,19 +51,19 @@ function AnnotationFormOverlayTool({ toolState, updateToolState }) {
         aria-label="tool selection"
         size="small"
       >
-        <ToggleButton value="rectangle" aria-label="add a rectangle">
+        <ToggleButton value={OVERLAY_TOOL.RECTANGLE} aria-label="add a rectangle">
           <RectangleIcon />
         </ToggleButton>
-        <ToggleButton value="ellipse" aria-label="add a circle">
+        <ToggleButton value={OVERLAY_TOOL.ELLIPSE} aria-label="add a circle">
           <CircleIcon />
         </ToggleButton>
-        <ToggleButton value="arrow" aria-label="add an arrow">
+        <ToggleButton value={OVERLAY_TOOL.ARROW} aria-label="add an arrow">
           <ArrowOutwardIcon />
         </ToggleButton>
-        <ToggleButton value="polygon" aria-label="add a polygon">
+        <ToggleButton value={OVERLAY_TOOL.POLYGON} aria-label="add a polygon">
           <PolygonIcon />
         </ToggleButton>
-        <ToggleButton value="freehand" aria-label="free hand polygon">
+        <ToggleButton value={OVERLAY_TOOL.FREEHAND} aria-label="free hand polygon">
           <GestureIcon />
         </ToggleButton>
       </StyledToggleButtonGroup>

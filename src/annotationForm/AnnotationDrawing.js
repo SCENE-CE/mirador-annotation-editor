@@ -10,7 +10,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
-import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent.js';
+import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
+import { OVERLAY_TOOL } from './AnnotationFormOverlay/AnnotationFormOverlayTool';
 
 /** All the stuff to draw on the canvas */
 function AnnotationDrawing(props) {
@@ -48,18 +49,6 @@ function AnnotationDrawing(props) {
 
   const { fillColor, strokeColor, strokeWidth } = props;
 
-  /** Debug function facility */
-  const debug = (command) => {
-    console.debug('***************************');
-    console.debug(command);
-    console.debug('shapes', shapes);
-    console.debug('shapes taille', shapes.length);
-    console.debug('currentShape', currentShape);
-    console.debug('isDrawing', isDrawing);
-    console.debug('props.activeTool', props.activeTool);
-    console.debug('-----------------------------');
-  };
-
   /** */
   useEffect(() => {
     if (!isDrawing) {
@@ -95,7 +84,8 @@ function AnnotationDrawing(props) {
           fillColor: currentShape.fill,
           strokeColor: currentShape.stroke,
           strokeWidth: currentShape.strokeWidth,
-        })
+        },
+      );
 
       return () => {
         window.removeEventListener('keydown', handleKeyPress);
@@ -103,25 +93,18 @@ function AnnotationDrawing(props) {
     }
   }, [currentShape]);
 
-
   useEffect(() => {
-//compare shapes and props.shapes p, if different, update shapes
+    // compare shapes and props.shapes p, if different, update shapes
 
-    if (props.shapes.length !== shapes.length) {/// nul a revoir
+    if (props.shapes.length !== shapes.length) { /// nul a revoir
       setShapes(props.shapes);
     }
-
-
-
   }, [props.shapes]);
-
-
 
   /** */
   const onShapeClick = async (shp) => {
     const shape = shapes.find((s) => s.id === shp.id);
     if (props.activeTool === 'delete') {
-
       const newShapes = shapes.filter((s) => s.id !== shape.id);
       setShapes(newShapes);
       return;
@@ -134,17 +117,15 @@ function AnnotationDrawing(props) {
         fillColor: shape.fill,
         strokeColor: shape.stroke,
         strokeWidth: shape.strokeWidth,
-      })
+      },
+    );
   };
 
   const onTransform = (evt) => {
-
-
     const modifiedshape = evt.target.attrs;
 
     console.log('modifiedshape', modifiedshape);
     const shape = shapes.find((s) => s.id === modifiedshape.id);
-
 
     Object.assign(shape, modifiedshape);
     setCurrentShape({ ...shape });
@@ -152,7 +133,6 @@ function AnnotationDrawing(props) {
   };
 
   const handleDragEnd = (evt) => {
-
     const modifiedshape = evt.currentTarget.attrs;
     const shape = shapes.find((s) => s.id === modifiedshape.id);
     shape.x = modifiedshape.x;
@@ -200,7 +180,6 @@ function AnnotationDrawing(props) {
     }
   };
 
-
   /** */
   const updateCurrentShapeInShapes = () => {
     const index = shapes.findIndex((s) => s.id === currentShape.id);
@@ -221,7 +200,7 @@ function AnnotationDrawing(props) {
       pos.y /= props.scale;
       let shape = null;
       switch (props.activeTool) {
-        case 'rectangle':
+        case OVERLAY_TOOL.RECTANGLE:
           shape = {
             fill: props.fillColor,
             height: 1,
@@ -239,18 +218,19 @@ function AnnotationDrawing(props) {
           setIsDrawing(true);
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
-        case 'ellipse':
+          break;
+        case OVERLAY_TOOL.ELLIPSE:
           shape = {
             fill: props.fillColor,
             height: 1,
             id: uuidv4(),
+            radiusX: 1,
+            radiusY: 1,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
             stroke: props.strokeColor,
             strokeWidth: props.strokeWidth,
-            radiusX: 1,
-            radiusY: 1,
             type: props.activeTool,
             width: 1,
             x: pos.x,
@@ -261,7 +241,7 @@ function AnnotationDrawing(props) {
           setCurrentShape(shape);
 
           break;
-        case 'text':
+        case OVERLAY_TOOL.TEXT:
           shape = {
             fill: props.fillColor,
             fontSize: 20,
@@ -270,7 +250,7 @@ function AnnotationDrawing(props) {
             scaleX: 1,
             scaleY: 1,
             text: 'text',
-            type: 'text',
+            type: OVERLAY_TOOL.TEXT,
             x: pos.x,
             y: pos.y,
           };
@@ -278,7 +258,7 @@ function AnnotationDrawing(props) {
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
           break;
-        case 'freehand':
+        case OVERLAY_TOOL.FREEHAND:
           // Not totally functionnal
           setIsDrawing(true);
           shape = {
@@ -298,14 +278,14 @@ function AnnotationDrawing(props) {
             scaleY: 1,
             stroke: props.strokeColor,
             strokeWidth: props.strokeWidth,
-            type: 'freehand',
+            type: OVERLAY_TOOL.FREEHAND,
             x: 0,
             y: 0,
           };
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
           break;
-        case 'polygon':
+        case OVERLAY_TOOL.POLYGON:
           setIsDrawing(true);
           shape = {
             fill: props.fillColor,
@@ -316,14 +296,14 @@ function AnnotationDrawing(props) {
             scaleY: 1,
             stroke: props.strokeColor,
             strokeWidth: props.strokeWidth,
-            type: 'polygon',
+            type: OVERLAY_TOOL.POLYGON,
             x: 0,
             y: 0,
           };
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
           break;
-        case 'arrow':
+        case OVERLAY_TOOL.ARROW:
           setIsDrawing(true);
           shape = {
             fill: props.fillColor,
@@ -335,12 +315,10 @@ function AnnotationDrawing(props) {
             scaleX: 1,
             scaleY: 1,
             stroke: props.strokeColor,
-            type: 'arrow',
+            type: OVERLAY_TOOL.ARROW,
           };
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
-        case 'debug':
-          debug('debug');
           break;
         default:
           // Handle other cases if any
@@ -365,7 +343,7 @@ function AnnotationDrawing(props) {
       pos.y /= props.scale;
 
       switch (props.activeTool) {
-        case 'rectangle':
+        case OVERLAY_TOOL.RECTANGLE:
 
           setCurrentShape({
             ...currentShape,
@@ -373,7 +351,8 @@ function AnnotationDrawing(props) {
             width: pos.x - currentShape.x,
           });
           updateCurrentShapeInShapes();
-        case 'ellipse':
+          break;
+        case OVERLAY_TOOL.ELLIPSE:
           // prevent negative radius for ellipse
 
           if (pos.x < currentShape.x) {
@@ -382,7 +361,6 @@ function AnnotationDrawing(props) {
           if (pos.y < currentShape.y) {
             pos.y = currentShape.y;
           }
-
 
           setCurrentShape({
             ...currentShape,
@@ -394,7 +372,7 @@ function AnnotationDrawing(props) {
           updateCurrentShapeInShapes();
 
           break;
-        case 'freehand':
+        case OVERLAY_TOOL.FREEHAND:
           const shape = { ...currentShape };
           shape.lines.push({
             points: [pos.x, pos.y, pos.x, pos.y],
@@ -404,14 +382,14 @@ function AnnotationDrawing(props) {
           setCurrentShape(shape);
           updateCurrentShapeInShapes();
           break;
-        case 'polygon':
+        case OVERLAY_TOOL.POLYGON:
           const polygonShape = { ...currentShape };
           polygonShape.points[2] = pos.x;
           polygonShape.points[3] = pos.y;
           setCurrentShape(polygonShape);
           updateCurrentShapeInShapes();
           break;
-        case 'arrow':
+        case OVERLAY_TOOL.ARROW:
           // TODO improve
           const arrowShape = {};
           // update points
