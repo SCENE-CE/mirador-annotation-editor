@@ -43,6 +43,20 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
 }));
 
+const StyledLi = styled('li')(({ theme }) => ({
+  display:'flex',
+  wordBreak: 'break-word',
+}));
+
+const StyledUl = styled('ul')(({ theme }) => ({
+  display:'flex',
+  flexDirection: 'column',
+  gap: '5px',
+  listStyle: 'none',
+  paddingLeft: '0',
+
+}));
+
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: '5px',
 }));
@@ -87,7 +101,7 @@ function isShapeTool(activeTool) {
 }
 
 /** All the stuff to manage to choose the drawing tool */
-function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange, shapes }) {
+function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange, shapes,deleteShape }) {
   useEffect(() => {
 
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
@@ -226,19 +240,16 @@ function AnnotationFormDrawing({ updateToolState, toolState, handleImgChange, sh
             </StyledToggleButtonGroup>
             {
               activeTool === 'edit' && (
-              <>
-                <Typography>
-                  Liste des shapes pour Sam
-                </Typography>
-                <ul>
+                <StyledUl>
                   {shapes && shapes.map((shape) => (
-                    <li key={shape.id}>
+                    <StyledLi key={shape.id}>
                       {shape.id}
-                      {/*<button onClick={() => deleteShape(shape.id)}>Delete</button>*/}
-                    </li>
+                      <Button onClick={() => deleteShape(shape.id)}>
+                        <DeleteIcon />
+                      </Button>
+                    </StyledLi>
                   ))}
-                </ul>
-              </>
+                </StyledUl>
               )
             }
             {
@@ -396,6 +407,8 @@ AnnotationFormDrawing.propTypes = {
   handleImgChange: PropTypes.func,
   toolState: PropTypes.object,
   updateToolState: PropTypes.func,
+  shapes: PropTypes.object,
+  deleteShape: PropTypes.func,
 };
 
 export default AnnotationFormDrawing;
