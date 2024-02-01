@@ -148,7 +148,6 @@ function AnnotationCreation(props) {
 
 
 
-
   useEffect(() => {
 
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
