@@ -18,11 +18,13 @@ function AnnotationDrawing(props) {
   const [currentShape, setCurrentShape] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
 
-  const { height, width } = VideosReferences.get(props.windowId).ref.current;
+  const { height, width } = props.mediaVideo ? props.mediaVideo.ref.current : 0;
 
   useEffect(() => {
-    const overlay = VideosReferences.get(props.windowId).ref.current;
-    props.updateScale(overlay.containerWidth / overlay.canvasWidth);
+    const overlay = props.mediaVideo ? props.mediaVideo.ref.current : null;
+    if (overlay) {
+      props.updateScale(overlay.containerWidth / overlay.canvasWidth);
+    }
   }, [{ height, width }]);
 
   useEffect(() => {
