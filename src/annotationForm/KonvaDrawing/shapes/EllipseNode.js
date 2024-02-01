@@ -38,8 +38,9 @@ function EllipseNode({
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
+        onMousedown={handleClick}
         onTransform={onTransform}
-        onDragEnd={handleDragEnd}
+        onDrag={handleDragEnd}
       />
 
       <Transformer

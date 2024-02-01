@@ -264,7 +264,7 @@ function AnnotationDrawing(props) {
         case 'text':
           shape = {
             fill: props.fillColor,
-            fontSize: 20,
+            fontSize: 50,
             id: uuidv4(),
             rotation: 0,
             scaleX: 1,

@@ -38,6 +38,7 @@ function Polygon({
           lineJoin="round"
           closed={false}
           onClick={handleClick}
+          onMousedown={handleClick}
           fill={shape.fill}
           draggable={activeTool === 'cursor' || activeTool === 'edit'}
           globalCompositeOperation="source-over"
@@ -47,7 +48,7 @@ function Polygon({
           rotation={shape.rotation}
           x={shape.x}
           y={shape.y}
-          onDragEnd={ handleDragEnd}
+          onDrag={ handleDragEnd}
 
       />
 
