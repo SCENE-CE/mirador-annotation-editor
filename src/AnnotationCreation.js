@@ -8,7 +8,7 @@ import { v4 as uuid } from 'uuid';
 import { exportStageSVG } from 'react-konva-to-svg';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
-import { VideosReferences } from "mirador/dist/es/src/plugins/VideosReferences";
+import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import Tab from '@mui/material/Tab';
 import HighlightAltIcon from '@mui/icons-material/HighlightAlt';
 import LayersIcon from '@mui/icons-material/Layers';
@@ -202,7 +202,6 @@ function AnnotationCreation(props) {
     const timeEnd = newValueTime[1];
     updateTstart(timeStart);
     updateTend(timeEnd);
-    seekToTstart();
     setValueTime(newValueTime);
   };
 
@@ -214,7 +213,6 @@ function AnnotationCreation(props) {
     setState((prevState) => ({
       ...prevState,
       tstart: value,
-      ...props.setSeekTo(value),
       ...props.setCurrentTime(value),
 
     }));
