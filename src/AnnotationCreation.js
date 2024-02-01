@@ -527,6 +527,7 @@ function AnnotationCreation(props) {
               updateToolState={setToolState}
               handleImgChange={handleImgChange}
               shapes={shapes}
+              deleteShape = {deleteShape}
             />
           </StyledTabPanel>
           <StyledTabPanel
