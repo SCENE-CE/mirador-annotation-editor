@@ -329,24 +329,51 @@ function AnnotationCreation(props) {
       receiveAnnotation,
       config,
     } = props;
+    const svg = <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle fill="red" cx="50" cy="50" r="50"/></svg>
+    console.log('svg', svg)
 
-    const {
-      title,
-      textBody,
-      image,
-      tags,
-      xywh,
-      tstart,
-      tend,
-      textEditorStateBustingKey,
-    } = state;
-
+    const dummyAnnot = {
+      title: 'dummyTitle',
+      textBody:'dummyTextBody',
+      image:{
+        id: null,
+        svg: svg
+      },
+      tags: null,
+      xywh:"220,470,450,50",
+      tstart: 1880,
+      tend:1905,
+      textEditorStateBustingKey:0,
+      konvaThing: ['SOME KONVA THING', 'AND ANOTHER KONVA THING', {thirdKonvaThing:'Third Konva thing here'}]
+    }
+    const title = dummyAnnot.title
+    const textBody = dummyAnnot.textBody
+    const image = dummyAnnot.image;
+    const tags = dummyAnnot.tags;
+    const xywh = dummyAnnot.xywh;
+    const tstart = dummyAnnot.tstart;
+    const tend = dummyAnnot.tend;
+    const textEditorStateBustingKey = dummyAnnot.textEditorStateBustingKey;
+    const konvaThing = dummyAnnot.konvaThing;
+    // const {
+    //   title,
+    //   textBody,
+    //   image,
+    //   tags,
+    //   xywh,
+    //   tstart,
+    //   tend,
+    //   textEditorStateBustingKey,
+    // } = state;
+    console.log('state',state);
+    console.log('props', props)
     // TODO rename variable for better comprenhension
-    const svg = await getSvg();
+    // const svg = await getSvg();
 
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
-
+console.log('t',t)
+console.log('body',body)
     // TODO promises not handled. Use promiseAll ?
     canvases.forEach(async (canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
@@ -363,8 +390,9 @@ function AnnotationCreation(props) {
         svg,
         tags,
         title,
+        konvaThing
       }).toJson();
-
+      console.log('anno',anno)
       if (annotation) {
         storageAdapter.update(anno)
           .then((annoPage) => {
@@ -416,8 +444,7 @@ function AnnotationCreation(props) {
     imageEvent,
   } = toolState;
 
-  // TODO : Vérifier ce code, c'est étrange de comprarer un typeof à une chaine de caractère.
-  const mediaIsVideo = props.mediaVideo !== 'undefined';
+  const mediaIsVideo = props.mediaVideo !== null;
   if (mediaIsVideo) {
     valueTime[0] = tstart;
     valueTime[1] = tend;

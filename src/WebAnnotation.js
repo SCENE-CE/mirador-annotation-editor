@@ -2,7 +2,7 @@
 export default class WebAnnotation {
   /** */
   constructor({
-    canvasId, id, fragsel, image, body, tags, svg, manifestId, title
+    canvasId, id, fragsel, image, body, tags, svg, manifestId, title, konvaThing
   }) {
     this.title = title,
     this.id = id;
@@ -13,6 +13,7 @@ export default class WebAnnotation {
     this.svg = svg;
     this.image = image;
     this.manifestId = manifestId;
+    this.konvaThing = konvaThing;
   }
 
   /** */
@@ -51,6 +52,14 @@ export default class WebAnnotation {
         value: this.title,
       }
       bodies.push(title)
+    }
+
+    if(this.konvaThing){
+      const konvaThing={
+        type: 'AnnotationkonvaThing',
+        value: this.konvaThing,
+      }
+      bodies.push(konvaThing)
     }
 
     if (this.tags) {
