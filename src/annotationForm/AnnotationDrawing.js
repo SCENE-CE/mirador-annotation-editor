@@ -1,26 +1,40 @@
 /* eslint-disable require-jsdoc */
 import React, {
   useEffect, useState, useLayoutEffect,
+  useRef,
 } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes, { object } from 'prop-types';
-import { Stage } from 'react-konva';
+import { Stage,Layer,Rect,Transformer } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './KonvaDrawing/shapes/ParentComponent';
+import Surface from './KonvaDrawing/Surface';
+import { act } from '@psychobolt/react-paperjs/dist/index.dev';
 
 /** All the stuff to draw on the canvas */
 function AnnotationDrawing(props) {
   const [shapes, setShapes] = useState([]);
   const [currentShape, setCurrentShape] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
-
+  const [surfacedata, setSurfaceData] = useState({
+    x: 100,
+    y: 100,
+    width: 200,
+    height: 200,
+    scaleX: props.scale,
+    scaleY: props.scale,
+  });
   const { height, width } = props.mediaVideo ? props.mediaVideo.ref.current : 0;
 
+
+
+
   useEffect(() => {
+
     const overlay = props.mediaVideo ? props.mediaVideo.ref.current : null;
     if (overlay) {
       props.updateScale(overlay.containerWidth / overlay.canvasWidth);
@@ -161,6 +175,23 @@ function AnnotationDrawing(props) {
     setCurrentShape({ ...shape });
     updateCurrentShapeInShapes();
   };
+
+
+  const onSurfaceTransform = (evt) => {
+    const modifiedshape = evt.target.attrs;
+    const shape = surfacedata;
+    Object.assign(shape, modifiedshape);
+    setSurfaceData({ ...shape }); 
+  }
+
+  const handleSurfaceDrag = (evt) => {
+    const modifiedshape = evt.currentTarget.attrs;
+    console.log('modifiedshape', modifiedshape);
+    const shape = {...surfacedata};
+    shape.x = modifiedshape.x;
+    shape.y = modifiedshape.y;
+    setSurfaceData({ ...shape }); 
+  }
 
   /** */
   const handleKeyPress = (e) => {
@@ -472,6 +503,18 @@ function AnnotationDrawing(props) {
       onMouseMove={handleMouseMove}
       id={props.windowId}
     >
+
+{props.tabView != 'target' && (
+
+<Surface
+shape={surfacedata}
+onTransform={onSurfaceTransform}
+handleDrag={handleSurfaceDrag}
+trview={false}
+
+/>
+  )}
+
       <ParentComponent
         shapes={shapes}
         onShapeClick={onShapeClick}
@@ -493,7 +536,25 @@ function AnnotationDrawing(props) {
         onTransform={onTransform}
         handleDragEnd={handleDragEnd}
         isMouseOverSave={props.isMouseOverSave}
+        trview={props.tabView != 'target'}
       />
+
+ 
+ {props.tabView === 'target' && (
+
+<Surface
+shape={surfacedata}
+onTransform={onSurfaceTransform}
+handleDrag={handleSurfaceDrag}
+trview={true}
+width={props.originalWidth}
+height={props.originalHeight}
+scale={props.scale}
+
+
+/>
+  )}
+
     </Stage>
   );
   const osdref = OSDReferences.get(props.windowId);

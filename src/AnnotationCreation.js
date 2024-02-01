@@ -474,6 +474,7 @@ function AnnotationCreation(props) {
         updateShapes={updateShapes}
         shapes={shapes}
         isMouseOverSave={isMouseOverSave}
+        tabView={value}
         mediaVideo={props.mediaVideo}
       />
       <StyledForm
@@ -485,6 +486,8 @@ function AnnotationCreation(props) {
               icon={<HighlightAltIcon />}
               aria-label="TargetSelector"
               value={TARGET_VIEW}
+
+             
             />
             <StyledTab
               icon={<LayersIcon />}
