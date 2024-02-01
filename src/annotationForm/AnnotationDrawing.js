@@ -511,6 +511,9 @@ shape={surfacedata}
 onTransform={onSurfaceTransform}
 handleDrag={handleSurfaceDrag}
 trview={false}
+width={props.originalWidth}
+height={props.originalHeight}
+scale={props.scale}
 
 />
   )}
