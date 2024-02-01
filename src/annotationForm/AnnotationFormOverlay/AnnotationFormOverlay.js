@@ -6,18 +6,16 @@ import ToggleButton from '@mui/material/ToggleButton';
 import TitleIcon from '@mui/icons-material/Title';
 import ImageIcon from '@mui/icons-material/Image';
 import DeleteIcon from '@mui/icons-material/Delete';
-
 import React, { useEffect } from 'react';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { SketchPicker } from 'react-color';
 import { v4 as uuidv4 } from 'uuid';
 import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../../icons/Cursor';
 import ImageFormField from './ImageFormField.js';
-import AnnotationFormOverlayToolOptions from './AnnotationFormOverlayToolOptions.js';
+import AnnotationFormOverlayTool from './AnnotationFormOverlayTool.js';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
@@ -52,8 +50,6 @@ const StyledDivButtonImage = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
   marginTop: '5px',
 }));
-
-
 
 /** Check if we are using an overlay tool or selecting the overlay view */
 function isOverlayTool(activeTool) {
@@ -105,12 +101,7 @@ function AnnotationFormOverlay({
 
   const {
     activeTool,
-    closedMode,
     image,
-    fillColor,
-    strokeColor,
-    strokeWidth,
-    currentColorType,
   } = toolState;
 
   return (
@@ -162,9 +153,9 @@ function AnnotationFormOverlay({
             }
             {
               isOverlayTool(activeTool) && (
-                <AnnotationFormOverlayToolOptions
+                <AnnotationFormOverlayTool
                   toolState={toolState}
-                  setToolState={updateToolState}
+                  updateToolState={updateToolState}
                 />
               )
             }

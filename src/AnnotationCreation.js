@@ -32,7 +32,7 @@ const MANIFEST_LINK_VIEW = 'link';
  * Display in companion window when a manifest is open and an annoation created or edited */
 function AnnotationCreation(props) {
   const [toolState, setToolState] = useState({
-    activeTool: 'cursor',
+    activeTool: 'edit',
     closedMode: 'closed',
     fillColor: 'rgba(255, 0, 0, 0.5)',
     image: { id: null },
