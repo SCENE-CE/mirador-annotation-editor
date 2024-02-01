@@ -8,7 +8,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import StrokeColorIcon from '@mui/icons-material/BorderColor';
 import LineWeightIcon from '@mui/icons-material/LineWeight';
 import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import ClosedPolygonIcon from '@mui/icons-material/ChangeHistory';
 import OpenPolygonIcon from '@mui/icons-material/ShowChart';
 import PropTypes from 'prop-types';
@@ -19,12 +19,26 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
 }));
 
-/** All the tools options for the overlay options */
-function AnnotationFormOverlayToolOptions({
-  changeClosedMode, closedMode, strokeColor, fillColor, activeTool,
-  updateColor, currentColor, strokeWidth,
-}) {
+/** Utils functions */
+const rgbaToObj = (rgba = 'rgba(255,255,255,0.5)') => {
+  const rgbaArray = rgba.split(',');
+  const r = Number(rgbaArray[0].split('(')[1]);
+  const g = Number(rgbaArray[1]);
+  const b = Number(rgbaArray[2]);
+  const a = Number(rgbaArray[3].split(')')[0]);
+  return {
+    // eslint-disable-next-line sort-keys
+    r, g, b, a,
+  };
+};
 
+const objToRgba = (obj = {
+  // eslint-disable-next-line sort-keys
+  r: 255, g: 255, b: 255, a: 0.5,
+}) => `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
+
+/** All the tools options for the overlay options */
+function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
   // set toolOptionsValue
   const [toolOptions, setToolOptions] = useState({
     colorPopoverOpen: false,
@@ -34,6 +48,9 @@ function AnnotationFormOverlayToolOptions({
     popoverLineWeightAnchorEl: null,
   });
 
+  let currentColor= toolOptions.currentColorType ? rgbaToObj(toolState[toolOptions.currentColorType]) : null;
+
+  // Fonction to manage option displaying
   /** */
   const openChooseLineWeight = (e) => {
     setToolOptions({
@@ -82,6 +99,22 @@ function AnnotationFormOverlayToolOptions({
     });
   };
 
+  // Update ToolState value
+  const changeClosedMode = (e) => {
+    updateToolState({
+      ...toolState,
+      closedMode: e.currentTarget.value,
+    });
+  };
+
+  /** Update color : fillColor or strokeColor */
+  const updateColor = (color) => {
+    updateToolState({
+      ...toolState,
+      [toolOptions.currentColorType]: objToRgba(color.rgb),
+    });
+  };
+
   return (
     <div>
       <Grid container>
@@ -100,7 +133,7 @@ function AnnotationFormOverlayToolOptions({
               aria-label="select color"
               onClick={openChooseColor}
             >
-              <StrokeColorIcon style={{ fill: strokeColor }} />
+              <StrokeColorIcon style={{ fill: toolState.strokeColor }} />
               <ArrowDropDownIcon />
             </ToggleButton>
             <ToggleButton
@@ -116,18 +149,18 @@ function AnnotationFormOverlayToolOptions({
               aria-label="select color"
               onClick={openChooseColor}
             >
-              <FormatColorFillIcon style={{ fill: fillColor }} />
+              <FormatColorFillIcon style={{ fill: toolState.fillColor }} />
               <ArrowDropDownIcon />
             </ToggleButton>
           </ToggleButtonGroup>
 
           <StyledDivider flexItem orientation="vertical" />
           { /* close / open polygon mode only for freehand drawing mode. */
-          activeTool === 'freehand'
+          toolState.activeTool === 'freehand'
             && (
               <ToggleButtonGroup
                 size="small"
-                value={closedMode}
+                value={toolState.closedMode}
                 onChange={changeClosedMode}
               >
                 <ToggleButton value="closed">
@@ -141,8 +174,8 @@ function AnnotationFormOverlayToolOptions({
         }
         </Grid>
         <Popover
-          open={lineWeightPopoverOpen}
-          anchorEl={popoverLineWeightAnchorEl}
+          open={toolOptions.lineWeightPopoverOpen}
+          anchorEl={toolOptions.popoverLineWeightAnchorEl}
         >
           <Paper>
             <ClickAwayListener onClickAway={handleCloseLineWeight}>
@@ -152,9 +185,9 @@ function AnnotationFormOverlayToolOptions({
                     key={option}
                     onClick={handleLineWeightSelect}
                     value={option}
-                    selected={option == strokeWidth}
+                    selected={option == toolState.strokeWidth}
                     role="option"
-                    aria-selected={option == strokeWidth}
+                    aria-selected={option == toolState.strokeWidth}
                   >
                     {option}
                   </MenuItem>
@@ -164,8 +197,8 @@ function AnnotationFormOverlayToolOptions({
           </Paper>
         </Popover>
         <Popover
-          open={colorPopoverOpen}
-          anchorEl={popoverAnchorEl}
+          open={toolOptions.colorPopoverOpen}
+          anchorEl={toolOptions.popoverAnchorEl}
           onClose={closeChooseColor}
         >
           <SketchPicker
@@ -180,23 +213,15 @@ function AnnotationFormOverlayToolOptions({
 }
 
 AnnotationFormOverlayToolOptions.propTypes = {
-  activeTool: PropTypes.string.isRequired,
-  changeClosedMode: PropTypes.func.isRequired,
-  closeChooseColor: PropTypes.func.isRequired,
-  closedMode: PropTypes.bool.isRequired,
-  colorPopoverOpen: PropTypes.bool.isRequired,
-  currentColor: PropTypes.string.isRequired,
-  fillColor: PropTypes.string.isRequired,
-  handleCloseLineWeight: PropTypes.func.isRequired,
-  handleLineWeightSelect: PropTypes.func.isRequired,
-  lineWeightPopoverOpen: PropTypes.bool.isRequired,
-  openChooseColor: PropTypes.func.isRequired,
-  openChooseLineWeight: PropTypes.func.isRequired,
-  popoverAnchorEl: PropTypes.any.isRequired,
-  popoverLineWeightAnchorEl: PropTypes.any.isRequired,
-  strokeColor: PropTypes.string.isRequired,
-  strokeWidth: PropTypes.number.isRequired,
-  updateColor: PropTypes.func.isRequired,
+  updateToolState: PropTypes.func.isRequired,
+  toolState: PropTypes.shape({
+    activeTool: PropTypes.string.isRequired,
+    closedMode: PropTypes.bool.isRequired,
+    fillColor: PropTypes.string.isRequired,
+    strokeColor: PropTypes.string.isRequired,
+    strokeWidth: PropTypes.number.isRequired,
+    updateColor: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default AnnotationFormOverlayToolOptions;

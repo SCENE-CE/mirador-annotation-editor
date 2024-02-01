@@ -53,22 +53,7 @@ const StyledDivButtonImage = styled('div')(({ theme }) => ({
   marginTop: '5px',
 }));
 
-const rgbaToObj = (rgba = 'rgba(255,255,255,0.5)') => {
-  const rgbaArray = rgba.split(',');
-  const r = Number(rgbaArray[0].split('(')[1]);
-  const g = Number(rgbaArray[1]);
-  const b = Number(rgbaArray[2]);
-  const a = Number(rgbaArray[3].split(')')[0]);
-  return {
-    // eslint-disable-next-line sort-keys
-    r, g, b, a,
-  };
-};
 
-const objToRgba = (obj = {
-  // eslint-disable-next-line sort-keys
-  r: 255, g: 255, b: 255, a: 0.5,
-}) => `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
 
 /** Check if we are using an overlay tool or selecting the overlay view */
 function isOverlayTool(activeTool) {
@@ -94,26 +79,11 @@ function AnnotationFormOverlay({
 
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
 
-  /** Update color : fillColor or strokeColor */
-  const updateColor = (color) => {
-    updateToolState({
-      ...toolState,
-      [toolState.currentColorType]: objToRgba(color.rgb),
-    });
-  };
-
 
   const changeTool = (e, tool) => {
     updateToolState({
       ...toolState,
       activeTool: tool,
-    });
-  };
-
-  const changeClosedMode = (e) => {
-    updateToolState({
-      ...toolState,
-      closedMode: e.currentTarget.value,
     });
   };
 
@@ -137,13 +107,9 @@ function AnnotationFormOverlay({
     activeTool,
     closedMode,
     image,
-    lineWeightPopoverOpen,
-    popoverLineWeightAnchorEl,
     fillColor,
     strokeColor,
     strokeWidth,
-    colorPopoverOpen,
-    popoverAnchorEl,
     currentColorType,
   } = toolState;
 
@@ -197,14 +163,8 @@ function AnnotationFormOverlay({
             {
               isOverlayTool(activeTool) && (
                 <AnnotationFormOverlayToolOptions
-                  activeTool={activeTool}
-                  strokeColor={strokeColor}
-                  fillColor={fillColor}
-                  closedMode={closedMode}
-                  changeClosedMode={changeClosedMode}
-                  currentColor={rgbaToObj(toolState[currentColorType])}
-                  updateColor={updateColor}
-                  strokeWidth={strokeWidth}
+                  toolState={toolState}
+                  setToolState={updateToolState}
                 />
               )
             }
