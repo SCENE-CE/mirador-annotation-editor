@@ -15,10 +15,13 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: '5px',
 }));
 
+const ContainerSlider = styled('div')(({ theme }) => ({
+  paddingRight: '20px',
+  paddingLeft: '20px',
+}));
+
 const StyledSlider = styled(Slider)(({ theme }) => ({
   color: 'rgba(1, 0, 0, 0.38)',
-  paddingLeft: '10px',
-  paddingRight: '10px',
 }));
 
 const StyledDivFormTimeContainer = styled('div')(({ theme }) => ({
@@ -39,9 +42,6 @@ const StyledDivTimeSelector = styled('div')(({ theme }) => ({
 const StyledDivToggleButton = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-}));
-const ContainerSlider = styled('div')(({ theme }) => ({
-  padding: '10px',
 }));
 
 const StyledLabelSelector = styled('p')(({ theme }) => ({
