@@ -330,7 +330,6 @@ function AnnotationCreation(props) {
       config,
     } = props;
     const svg = <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle fill="red" cx="50" cy="50" r="50"/></svg>
-    console.log('svg', svg)
 
     const dummyAnnot = {
       title: 'dummyTitle',
@@ -365,15 +364,11 @@ function AnnotationCreation(props) {
     //   tend,
     //   textEditorStateBustingKey,
     // } = state;
-    console.log('state',state);
-    console.log('props', props)
     // TODO rename variable for better comprenhension
     // const svg = await getSvg();
 
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
-console.log('t',t)
-console.log('body',body)
     // TODO promises not handled. Use promiseAll ?
     canvases.forEach(async (canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
@@ -390,9 +385,8 @@ console.log('body',body)
         svg,
         tags,
         title,
-        konvaThing
+        konvaThing,
       }).toJson();
-      console.log('anno',anno)
       if (annotation) {
         storageAdapter.update(anno)
           .then((annoPage) => {
@@ -405,8 +399,11 @@ console.log('body',body)
           });
       }
     });
-
-    // TODO check if we need other thing in state
+  props.closeCompanionWindow('annotationCreation',{
+    id,
+    position: 'right',
+  })
+    // TODO this create a re-render too soon for react and crash the app
     setState({
       image: { id: null },
       svg: null,
@@ -444,9 +441,9 @@ console.log('body',body)
     imageEvent,
   } = toolState;
 
-  const mediaIsVideo = props.mediaVideo !== null;
-  if (mediaIsVideo) {
-    valueTime[0] = tstart;
+  const mediaIsVideo = props.mediaVideo !== 'undefined';
+  if (mediaIsVideo && valueTime) {
+      valueTime[0] = tstart;
     valueTime[1] = tend;
   }
 
