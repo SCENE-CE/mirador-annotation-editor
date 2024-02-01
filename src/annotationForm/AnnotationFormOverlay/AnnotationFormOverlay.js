@@ -16,7 +16,7 @@ import { SketchPicker } from 'react-color';
 import { v4 as uuidv4 } from 'uuid';
 import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../../icons/Cursor';
-import ImageFormField from '../ImageFormField.js';
+import ImageFormField from './ImageFormField.js';
 import AnnotationFormOverlayToolOptions from './AnnotationFormOverlayToolOptions.js';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
