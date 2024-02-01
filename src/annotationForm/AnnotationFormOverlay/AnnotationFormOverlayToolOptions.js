@@ -62,7 +62,7 @@ function AnnotationFormOverlayToolOptions({
           <StyledDivider flexItem orientation="vertical" />
           { /* close / open polygon mode only for freehand drawing mode. */
           activeTool === 'freehand'
-            ? (
+            && (
               <ToggleButtonGroup
                 size="small"
                 value={closedMode}
@@ -76,7 +76,6 @@ function AnnotationFormOverlayToolOptions({
                 </ToggleButton>
               </ToggleButtonGroup>
             )
-            : null
         }
         </Grid>
       </Grid>
@@ -85,13 +84,13 @@ function AnnotationFormOverlayToolOptions({
 }
 
 AnnotationFormOverlayToolOptions.propTypes = {
-  activeTool: PropTypes.any,
-  changeClosedMode: PropTypes.func,
-  closedMode: PropTypes.any,
-  fillColor: PropTypes.any,
-  onClick: PropTypes.func,
-  openChooseLineWeight: PropTypes.func,
-  strokeColor: PropTypes.any,
+  activeTool: PropTypes.string.isRequired,
+  changeClosedMode: PropTypes.func.isRequired,
+  closedMode: PropTypes.bool.isRequired,
+  fillColor: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  openChooseLineWeight: PropTypes.func.isRequired,
+  strokeColor: PropTypes.string.isRequired,
 };
 
 export default AnnotationFormOverlayToolOptions;

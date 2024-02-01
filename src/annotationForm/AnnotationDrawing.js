@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
-import ParentComponent from './KonvaDrawing/shapes/ParentComponent';
+import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent.js';
 
 /** All the stuff to draw on the canvas */
 function AnnotationDrawing(props) {
@@ -110,7 +110,7 @@ function AnnotationDrawing(props) {
     if (props.shapes.length !== shapes.length) {/// nul a revoir
       setShapes(props.shapes);
     }
-   
+
 
 
   }, [props.shapes]);

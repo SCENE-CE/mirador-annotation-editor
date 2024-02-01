@@ -20,8 +20,8 @@ import WebAnnotation from './WebAnnotation';
 import { secondsToHMS } from './utils';
 import AnnotationFormContent from './annotationForm/AnnotationFormContent';
 import AnnotationFormTime from './annotationForm/AnnotationFormTime';
-import AnnotationFormDrawing from './annotationForm/AnnotationFormDrawing';
 import { geomFromAnnoTarget, timeFromAnnoTarget } from './AnnotationCreationUtils';
+import AnnotationFormOverlay from './annotationForm/AnnotationFormOverlay/AnnotationFormOverlay.js';
 
 const TARGET_VIEW = 'target';
 const OVERLAY_VIEW = 'layer';
@@ -516,7 +516,7 @@ function AnnotationCreation(props) {
           <StyledTabPanel
             value={OVERLAY_VIEW}
           >
-            <AnnotationFormDrawing
+            <AnnotationFormOverlay
               toolState={toolState}
               updateToolState={setToolState}
               handleImgChange={handleImgChange}

@@ -6,11 +6,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import TitleIcon from '@mui/icons-material/Title';
 import ImageIcon from '@mui/icons-material/Image';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
-import RectangleIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
-import PolygonIcon from '@mui/icons-material/Timeline';
-import GestureIcon from '@mui/icons-material/Gesture';
+
 import React, { useEffect } from 'react';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
@@ -19,10 +15,9 @@ import { styled } from '@mui/material/styles';
 import { SketchPicker } from 'react-color';
 import { v4 as uuidv4 } from 'uuid';
 import CategoryIcon from '@mui/icons-material/Category';
-import CursorIcon from '../icons/Cursor';
-import ImageFormField from './ImageFormField';
-import AnnotationFormOverlayToolOptions
-  from './KonvaDrawing/AnnotationFormOverlayToolOptions/AnnotationFormOverlayToolOptions';
+import CursorIcon from '../../icons/Cursor';
+import ImageFormField from '../ImageFormField.js';
+import AnnotationFormOverlayToolOptions from './AnnotationFormOverlayToolOptions.js';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
@@ -76,7 +71,7 @@ const objToRgba = (obj = {
 }) => `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
 
 /** Check if we are using an overlay tool or selecting the overlay view */
-function isShapeTool(activeTool) {
+function isOverlayTool(activeTool) {
   switch (activeTool) {
     case 'rectangle':
     case 'ellipse':
@@ -92,7 +87,7 @@ function isShapeTool(activeTool) {
 }
 
 /** All the stuff to manage to choose the drawing tool */
-function AnnotationFormDrawing({
+function AnnotationFormOverlay({
   updateToolState, toolState, handleImgChange, shapes, deleteShape,
 }) {
   useEffect(() => {
@@ -246,45 +241,21 @@ function AnnotationFormDrawing({
               )
             }
             {
-              isShapeTool(activeTool) && (
-                <>
-                  <StyledToggleButtonGroup
-                    value={activeTool} // State or props ?
-                    exclusive
-                    onChange={changeTool}
-                    aria-label="tool selection"
-                    size="small"
-                  >
-                    <ToggleButton value="rectangle" aria-label="add a rectangle">
-                      <RectangleIcon />
-                    </ToggleButton>
-                    <ToggleButton value="ellipse" aria-label="add a circle">
-                      <CircleIcon />
-                    </ToggleButton>
-                    <ToggleButton value="arrow" aria-label="add an arrow">
-                      <ArrowOutwardIcon />
-                    </ToggleButton>
-                    <ToggleButton value="polygon" aria-label="add a polygon">
-                      <PolygonIcon />
-                    </ToggleButton>
-                    <ToggleButton value="freehand" aria-label="free hand polygon">
-                      <GestureIcon />
-                    </ToggleButton>
-                  </StyledToggleButtonGroup>
-                  <AnnotationFormOverlayToolOptions
-                    openChooseColor={openChooseColor}
-                    strokeColor={strokeColor}
-                    openChooseLineWeight={openChooseLineWeight}
-                    fillColor={fillColor}
-                    activeTool={activeTool}
-                    closedMode={closedMode}
-                    changeClosedMode={changeClosedMode}
-                  />
-                </>
+              isOverlayTool(activeTool) && (
+                <AnnotationFormOverlayToolOptions
+                  activeTool={activeTool}
+                  onChange={changeTool}
+                  openChooseColor={openChooseColor}
+                  strokeColor={strokeColor}
+                  openChooseLineWeight={openChooseLineWeight}
+                  fillColor={fillColor}
+                  closedMode={closedMode}
+                  changeClosedMode={changeClosedMode}
+                />
               )
             }
             {
-              activeTool === 'images' ? (
+              activeTool === 'images' && (
                 <>
                   <Grid container>
                     <ImageFormField xs={8} value={image} onChange={handleImgChange} />
@@ -295,7 +266,7 @@ function AnnotationFormDrawing({
                     </Button>
                   </StyledDivButtonImage>
                 </>
-              ) : (<></>)
+              )
             }
             {
                 activeTool === 'text' && (
@@ -345,7 +316,7 @@ function AnnotationFormDrawing({
   );
 }
 
-AnnotationFormDrawing.propTypes = {
+AnnotationFormOverlay.propTypes = {
   handleImgChange: PropTypes.func,
   toolState: PropTypes.object,
   updateToolState: PropTypes.func,
@@ -353,4 +324,4 @@ AnnotationFormDrawing.propTypes = {
   deleteShape: PropTypes.func,
 };
 
-export default AnnotationFormDrawing;
+export default AnnotationFormOverlay;
