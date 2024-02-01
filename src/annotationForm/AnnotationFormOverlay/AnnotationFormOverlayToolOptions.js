@@ -49,7 +49,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
   });
 
   // Set unused default color to avoid error on render
-  const currentColor= toolOptions.currentColorType ? rgbaToObj(toolState[toolOptions.currentColorType]) : 'rgba(255, 0, 0, 0.5)';
+  const currentColor = toolOptions.currentColorType ? rgbaToObj(toolState[toolOptions.currentColorType]) : 'rgba(255, 0, 0, 0.5)';
 
   // Fonction to manage option displaying
   /** */
@@ -67,6 +67,9 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
       ...toolOptions,
       lineWeightPopoverOpen: false,
       popoverLineWeightAnchorEl: null,
+    });
+    updateToolState({
+      ...toolState,
       strokeWidth: e.currentTarget.value,
     });
   };
@@ -99,6 +102,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
       lineWeightPopoverOpen: false,
       popoverLineWeightAnchorEl: null,
     });
+
   };
 
   // Update ToolState value

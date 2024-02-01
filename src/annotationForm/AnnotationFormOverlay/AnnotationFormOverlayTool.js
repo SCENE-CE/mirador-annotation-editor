@@ -22,6 +22,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
+/** All the form part for the overlay view */
 function AnnotationFormOverlayTool({ toolState, updateToolState }) {
   const changeTool = (e, tool) => {
     updateToolState({
