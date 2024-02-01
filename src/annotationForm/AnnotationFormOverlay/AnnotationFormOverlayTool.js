@@ -9,6 +9,7 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import AnnotationFormOverlayToolOptions from './AnnotationFormOverlayToolOptions';
+import { isShapesTool, SHAPES_TOOL } from '../../AnnotationCreationUtils';
 
 // TODO WIP code duplicated
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
@@ -22,16 +23,6 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
-export const OVERLAY_TOOL = {
-  ARROW: 'arrow',
-  ELLIPSE: 'ellipse',
-  FREEHAND: 'freehand',
-  POLYGON: 'polygon',
-  RECTANGLE: 'rectangle',
-  TEXT: 'text',
-  IMAGE: 'image',
-};
-
 /** All the form part for the overlay view */
 function AnnotationFormOverlayTool({ toolState, updateToolState }) {
   /** Change the active overlay tool */
@@ -44,29 +35,34 @@ function AnnotationFormOverlayTool({ toolState, updateToolState }) {
 
   return (
     <>
-      <StyledToggleButtonGroup
-        value={toolState.activeTool} // State or props ?
-        exclusive
-        onChange={changeTool}
-        aria-label="tool selection"
-        size="small"
-      >
-        <ToggleButton value={OVERLAY_TOOL.RECTANGLE} aria-label="add a rectangle">
-          <RectangleIcon />
-        </ToggleButton>
-        <ToggleButton value={OVERLAY_TOOL.ELLIPSE} aria-label="add a circle">
-          <CircleIcon />
-        </ToggleButton>
-        <ToggleButton value={OVERLAY_TOOL.ARROW} aria-label="add an arrow">
-          <ArrowOutwardIcon />
-        </ToggleButton>
-        <ToggleButton value={OVERLAY_TOOL.POLYGON} aria-label="add a polygon">
-          <PolygonIcon />
-        </ToggleButton>
-        <ToggleButton value={OVERLAY_TOOL.FREEHAND} aria-label="free hand polygon">
-          <GestureIcon />
-        </ToggleButton>
-      </StyledToggleButtonGroup>
+      {
+        isShapesTool(toolState.activeTool) && (
+          <StyledToggleButtonGroup
+            value={toolState.activeTool} // State or props ?
+            exclusive
+            onChange={changeTool}
+            aria-label="tool selection"
+            size="small"
+          >
+            <ToggleButton value={SHAPES_TOOL.RECTANGLE} aria-label="add a rectangle">
+              <RectangleIcon />
+            </ToggleButton>
+            <ToggleButton value={SHAPES_TOOL.ELLIPSE} aria-label="add a circle">
+              <CircleIcon />
+            </ToggleButton>
+            <ToggleButton value={SHAPES_TOOL.ARROW} aria-label="add an arrow">
+              <ArrowOutwardIcon />
+            </ToggleButton>
+            <ToggleButton value={SHAPES_TOOL.POLYGON} aria-label="add a polygon">
+              <PolygonIcon />
+            </ToggleButton>
+            <ToggleButton value={SHAPES_TOOL.FREEHAND} aria-label="free hand polygon">
+              <GestureIcon />
+            </ToggleButton>
+          </StyledToggleButtonGroup>
+        )
+      }
+
       <AnnotationFormOverlayToolOptions
         toolState={toolState}
         updateToolState={updateToolState}

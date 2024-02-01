@@ -1,4 +1,5 @@
 import {
+  Button,
   ClickAwayListener, Divider, Grid, MenuItem, MenuList, Paper, Popover,
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -14,9 +15,19 @@ import OpenPolygonIcon from '@mui/icons-material/ShowChart';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { SketchPicker } from 'react-color';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import ImageFormField from './ImageFormField';
+import {isShapesTool, OVERLAY_TOOL} from "../../AnnotationCreationUtils";
+import {v4 as uuidv4} from "uuid";
 
 const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
+}));
+
+const StyledDivButtonImage = styled('div')(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'flex-end',
+  marginTop: '5px',
 }));
 
 /** Utils functions to convert string to object */
@@ -123,99 +134,153 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
     });
   };
 
+  const addImage = () => {
+    const data = {
+      id: toolState?.image?.id,
+      uuid: uuidv4(),
+    };
+
+    updateToolState({
+      ...toolState,
+      image: { id: null },
+      imageEvent: data,
+    });
+  };
+
+  const handleImgChange = (newUrl, imgRef) => {
+    updateToolState({
+      ...toolState,
+      image: { ...toolState.image, id: newUrl },
+    });
+  };
+
   return (
     <div>
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant="overline">
-            Style
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <ToggleButtonGroup
-            aria-label="style selection"
-            size="small"
-          >
-            <ToggleButton
-              value="strokeColor"
-              aria-label="select color"
-              onClick={openChooseColor}
-            >
-              <StrokeColorIcon style={{ fill: toolState.strokeColor }} />
-              <ArrowDropDownIcon />
-            </ToggleButton>
-            <ToggleButton
-              value="strokeColor"
-              aria-label="select line weight"
-              onClick={openChooseLineWeight}
-            >
-              <LineWeightIcon />
-              <ArrowDropDownIcon />
-            </ToggleButton>
-            <ToggleButton
-              value="fillColor"
-              aria-label="select color"
-              onClick={openChooseColor}
-            >
-              <FormatColorFillIcon style={{ fill: toolState.fillColor }} />
-              <ArrowDropDownIcon />
-            </ToggleButton>
-          </ToggleButtonGroup>
-
-          <StyledDivider flexItem orientation="vertical" />
-          { /* close / open polygon mode only for freehand drawing mode. */
-          toolState.activeTool === 'freehand'
-            && (
+      {
+        isShapesTool(toolState.activeTool) && (
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography variant="overline">
+                Style
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
               <ToggleButtonGroup
+                aria-label="style selection"
                 size="small"
-                value={toolState.closedMode}
-                onChange={changeClosedMode}
               >
-                <ToggleButton value="closed">
-                  <ClosedPolygonIcon />
+                <ToggleButton
+                  value="strokeColor"
+                  aria-label="select color"
+                  onClick={openChooseColor}
+                >
+                  <StrokeColorIcon style={{ fill: toolState.strokeColor }} />
+                  <ArrowDropDownIcon />
                 </ToggleButton>
-                <ToggleButton value="open">
-                  <OpenPolygonIcon />
+                <ToggleButton
+                  value="strokeColor"
+                  aria-label="select line weight"
+                  onClick={openChooseLineWeight}
+                >
+                  <LineWeightIcon />
+                  <ArrowDropDownIcon />
+                </ToggleButton>
+                <ToggleButton
+                  value="fillColor"
+                  aria-label="select color"
+                  onClick={openChooseColor}
+                >
+                  <FormatColorFillIcon style={{ fill: toolState.fillColor }} />
+                  <ArrowDropDownIcon />
                 </ToggleButton>
               </ToggleButtonGroup>
-            )
-        }
-        </Grid>
-        <Popover
-          open={toolOptions.lineWeightPopoverOpen}
-          anchorEl={toolOptions.popoverLineWeightAnchorEl}
-        >
-          <Paper>
-            <ClickAwayListener onClickAway={handleCloseLineWeight}>
-              <MenuList autoFocus role="listbox">
-                {[1, 3, 5, 10, 50].map((option, index) => (
-                  <MenuItem
-                    key={option}
-                    onClick={handleLineWeightSelect}
-                    value={option}
-                    selected={option === toolState.strokeWidth}
-                    role="option"
-                    aria-selected={option === toolState.strokeWidth}
+
+              <StyledDivider flexItem orientation="vertical" />
+              { /* close / open polygon mode only for freehand drawing mode. */
+              toolState.activeTool === 'freehand'
+                && (
+                  <ToggleButtonGroup
+                    size="small"
+                    value={toolState.closedMode}
+                    onChange={changeClosedMode}
                   >
-                    {option}
-                  </MenuItem>
-                ))}
-              </MenuList>
-            </ClickAwayListener>
-          </Paper>
-        </Popover>
-        <Popover
-          open={toolOptions.colorPopoverOpen}
-          anchorEl={toolOptions.popoverAnchorEl}
-          onClose={closeChooseColor}
-        >
-          <SketchPicker
-            disableAlpha={false}
-            color={currentColor}
-            onChangeComplete={updateColor}
-          />
-        </Popover>
-      </Grid>
+                    <ToggleButton value="closed">
+                      <ClosedPolygonIcon />
+                    </ToggleButton>
+                    <ToggleButton value="open">
+                      <OpenPolygonIcon />
+                    </ToggleButton>
+                  </ToggleButtonGroup>
+                )
+            }
+            </Grid>
+            <Popover
+              open={toolOptions.lineWeightPopoverOpen}
+              anchorEl={toolOptions.popoverLineWeightAnchorEl}
+            >
+              <Paper>
+                <ClickAwayListener onClickAway={handleCloseLineWeight}>
+                  <MenuList autoFocus role="listbox">
+                    {[1, 3, 5, 10, 50].map((option, index) => (
+                      <MenuItem
+                        key={option}
+                        onClick={handleLineWeightSelect}
+                        value={option}
+                        selected={option === toolState.strokeWidth}
+                        role="option"
+                        aria-selected={option === toolState.strokeWidth}
+                      >
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Popover>
+            <Popover
+              open={toolOptions.colorPopoverOpen}
+              anchorEl={toolOptions.popoverAnchorEl}
+              onClose={closeChooseColor}
+            >
+              <SketchPicker
+                disableAlpha={false}
+                color={currentColor}
+                onChangeComplete={updateColor}
+              />
+            </Popover>
+          </Grid>
+        )
+      }
+      {
+          toolState.activeTool === OVERLAY_TOOL.IMAGE && (
+          <>
+            <Grid container>
+              <ImageFormField xs={8} value={toolState.image} onChange={handleImgChange} />
+            </Grid>
+            <StyledDivButtonImage>
+              <Button variant="contained" onClick={addImage}>
+                <AddPhotoAlternateIcon />
+              </Button>
+            </StyledDivButtonImage>
+          </>
+          )
+      }
+      {
+          toolState.activeTool === 'text' && (
+              // <TextField
+              //     value={toolState.text
+              //     onChange={(ev) => onChange(ev.target.value)}
+              //     error={imgUrl !== '' && !imgIsValid}
+              //     margin="dense"
+              //     label="Image URL"
+              //     type="url"
+              //     fullWidth
+              //     inputRef={inputRef}
+              // />
+              ' TODO add input'
+
+          )
+      }
     </div>
   );
 }

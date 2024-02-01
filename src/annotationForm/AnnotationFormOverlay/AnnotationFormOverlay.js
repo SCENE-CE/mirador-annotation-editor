@@ -8,14 +8,15 @@ import ImageIcon from '@mui/icons-material/Image';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect } from 'react';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { v4 as uuidv4 } from 'uuid';
 import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../../icons/Cursor';
-import ImageFormField from './ImageFormField.js';
-import AnnotationFormOverlayTool from './AnnotationFormOverlayTool.js';
+import AnnotationFormOverlayTool from './AnnotationFormOverlayTool';
+import { OVERLAY_TOOL } from '../../AnnotationCreationUtils';
+
+
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
@@ -45,28 +46,6 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: '5px',
 }));
 
-const StyledDivButtonImage = styled('div')(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'flex-end',
-  marginTop: '5px',
-}));
-
-/** Check if we are using an overlay tool or selecting the overlay view */
-function isOverlayTool(activeTool) {
-  switch (activeTool) {
-    case 'rectangle':
-    case 'ellipse':
-    case 'arrow':
-    case 'polygon':
-    case 'freehand':
-    case 'shapes':
-      return true;
-      break;
-    default:
-      return false;
-  }
-}
-
 /** All the stuff to manage to choose the drawing tool */
 function AnnotationFormOverlay({
   updateToolState, toolState, handleImgChange, shapes, deleteShape,
@@ -74,7 +53,6 @@ function AnnotationFormOverlay({
   useEffect(() => {
 
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
-
 
   const changeTool = (e, tool) => {
     updateToolState({
@@ -86,18 +64,7 @@ function AnnotationFormOverlay({
   /**
    *
    */
-  const addImage = () => {
-    const data = {
-      id: image?.id,
-      uuid: uuidv4(),
-    };
 
-    updateToolState({
-      ...toolState,
-      image: { id: null },
-      imageEvent: data,
-    });
-  };
 
   const {
     activeTool,
@@ -121,24 +88,24 @@ function AnnotationFormOverlay({
               aria-label="tool selection"
               size="small"
             >
-              <ToggleButton value="edit" aria-label="select cursor">
+              <ToggleButton value={OVERLAY_TOOL.EDIT} aria-label="select cursor">
                 <CursorIcon />
               </ToggleButton>
-              <ToggleButton value="shapes" aria-label="select cursor">
+              <ToggleButton value={OVERLAY_TOOL.SHAPE} aria-label="select cursor">
                 <CategoryIcon />
               </ToggleButton>
-              <ToggleButton value="images" aria-label="select cursor">
+              <ToggleButton value={OVERLAY_TOOL.IMAGE} aria-label="select cursor">
                 <ImageIcon />
               </ToggleButton>
-              <ToggleButton value="text" aria-label="select text">
+              <ToggleButton value={OVERLAY_TOOL.TEXT} aria-label="select text">
                 <TitleIcon />
               </ToggleButton>
-              <ToggleButton value="delete" aria-label="select cursor">
+              <ToggleButton value={OVERLAY_TOOL.DELETE} aria-label="select cursor">
                 <DeleteIcon />
               </ToggleButton>
             </StyledToggleButtonGroup>
             {
-              activeTool === 'edit' && (
+              activeTool === OVERLAY_TOOL.EDIT && (
                 <StyledUl>
                   {shapes && shapes.map((shape) => (
                     <StyledLi key={shape.id}>
@@ -151,35 +118,10 @@ function AnnotationFormOverlay({
                 </StyledUl>
               )
             }
-            {
-              isOverlayTool(activeTool) && (
-                <AnnotationFormOverlayTool
-                  toolState={toolState}
-                  updateToolState={updateToolState}
-                />
-              )
-            }
-            {
-              activeTool === 'images' && (
-                <>
-                  <Grid container>
-                    <ImageFormField xs={8} value={image} onChange={handleImgChange} />
-                  </Grid>
-                  <StyledDivButtonImage>
-                    <Button variant="contained" onClick={addImage}>
-                      <AddPhotoAlternateIcon />
-                    </Button>
-                  </StyledDivButtonImage>
-                </>
-              )
-            }
-            {
-                activeTool === 'text' && (
-                <Typography>
-                  Ajouter un input text
-                </Typography>
-                )
-            }
+            <AnnotationFormOverlayTool
+              toolState={toolState}
+              updateToolState={updateToolState}
+            />
           </Grid>
         </Grid>
       </div>

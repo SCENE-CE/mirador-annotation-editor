@@ -11,8 +11,7 @@ import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
-import { OVERLAY_TOOL } from './AnnotationFormOverlay/AnnotationFormOverlayTool';
-
+import { SHAPES_TOOL } from '../AnnotationCreationUtils';
 /** All the stuff to draw on the canvas */
 function AnnotationDrawing(props) {
   const [shapes, setShapes] = useState([]);
@@ -200,7 +199,7 @@ function AnnotationDrawing(props) {
       pos.y /= props.scale;
       let shape = null;
       switch (props.activeTool) {
-        case OVERLAY_TOOL.RECTANGLE:
+        case SHAPES_TOOL.RECTANGLE:
           shape = {
             fill: props.fillColor,
             height: 1,
@@ -219,7 +218,7 @@ function AnnotationDrawing(props) {
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
           break;
-        case OVERLAY_TOOL.ELLIPSE:
+        case SHAPES_TOOL.ELLIPSE:
           shape = {
             fill: props.fillColor,
             height: 1,
@@ -241,7 +240,7 @@ function AnnotationDrawing(props) {
           setCurrentShape(shape);
 
           break;
-        case OVERLAY_TOOL.TEXT:
+        case SHAPES_TOOL.TEXT:
           shape = {
             fill: props.fillColor,
             fontSize: 20,
@@ -250,7 +249,7 @@ function AnnotationDrawing(props) {
             scaleX: 1,
             scaleY: 1,
             text: 'text',
-            type: OVERLAY_TOOL.TEXT,
+            type: SHAPES_TOOL.TEXT,
             x: pos.x,
             y: pos.y,
           };
@@ -258,7 +257,7 @@ function AnnotationDrawing(props) {
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
           break;
-        case OVERLAY_TOOL.FREEHAND:
+        case SHAPES_TOOL.FREEHAND:
           // Not totally functionnal
           setIsDrawing(true);
           shape = {
@@ -278,14 +277,14 @@ function AnnotationDrawing(props) {
             scaleY: 1,
             stroke: props.strokeColor,
             strokeWidth: props.strokeWidth,
-            type: OVERLAY_TOOL.FREEHAND,
+            type: SHAPES_TOOL.FREEHAND,
             x: 0,
             y: 0,
           };
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
           break;
-        case OVERLAY_TOOL.POLYGON:
+        case SHAPES_TOOL.POLYGON:
           setIsDrawing(true);
           shape = {
             fill: props.fillColor,
@@ -296,14 +295,14 @@ function AnnotationDrawing(props) {
             scaleY: 1,
             stroke: props.strokeColor,
             strokeWidth: props.strokeWidth,
-            type: OVERLAY_TOOL.POLYGON,
+            type: SHAPES_TOOL.POLYGON,
             x: 0,
             y: 0,
           };
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
           break;
-        case OVERLAY_TOOL.ARROW:
+        case SHAPES_TOOL.ARROW:
           setIsDrawing(true);
           shape = {
             fill: props.fillColor,
@@ -315,7 +314,7 @@ function AnnotationDrawing(props) {
             scaleX: 1,
             scaleY: 1,
             stroke: props.strokeColor,
-            type: OVERLAY_TOOL.ARROW,
+            type: SHAPES_TOOL.ARROW,
           };
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
@@ -343,7 +342,7 @@ function AnnotationDrawing(props) {
       pos.y /= props.scale;
 
       switch (props.activeTool) {
-        case OVERLAY_TOOL.RECTANGLE:
+        case SHAPES_TOOL.RECTANGLE:
 
           setCurrentShape({
             ...currentShape,
@@ -352,7 +351,7 @@ function AnnotationDrawing(props) {
           });
           updateCurrentShapeInShapes();
           break;
-        case OVERLAY_TOOL.ELLIPSE:
+        case SHAPES_TOOL.ELLIPSE:
           // prevent negative radius for ellipse
 
           if (pos.x < currentShape.x) {
@@ -372,7 +371,7 @@ function AnnotationDrawing(props) {
           updateCurrentShapeInShapes();
 
           break;
-        case OVERLAY_TOOL.FREEHAND:
+        case SHAPES_TOOL.FREEHAND:
           const shape = { ...currentShape };
           shape.lines.push({
             points: [pos.x, pos.y, pos.x, pos.y],
@@ -382,14 +381,14 @@ function AnnotationDrawing(props) {
           setCurrentShape(shape);
           updateCurrentShapeInShapes();
           break;
-        case OVERLAY_TOOL.POLYGON:
+        case SHAPES_TOOL.POLYGON:
           const polygonShape = { ...currentShape };
           polygonShape.points[2] = pos.x;
           polygonShape.points[3] = pos.y;
           setCurrentShape(polygonShape);
           updateCurrentShapeInShapes();
           break;
-        case OVERLAY_TOOL.ARROW:
+        case SHAPES_TOOL.ARROW:
           // TODO improve
           const arrowShape = {};
           // update points
