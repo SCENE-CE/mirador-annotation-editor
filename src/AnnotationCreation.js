@@ -34,14 +34,9 @@ function AnnotationCreation(props) {
   const [toolState, setToolState] = useState({
     activeTool: 'cursor',
     closedMode: 'closed',
-    colorPopoverOpen: false,
-    currentColorType: false,
     fillColor: 'rgba(255, 0, 0, 0.5)',
     image: { id: null },
     imageEvent: null,
-    lineWeightPopoverOpen: false,
-    popoverAnchorEl: null,
-    popoverLineWeightAnchorEl: null,
     strokeColor: 'green',
     strokeWidth: 3,
   });

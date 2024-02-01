@@ -94,60 +94,14 @@ function AnnotationFormOverlay({
 
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
 
-  /** */
-  const openChooseLineWeight = (e) => {
-    updateToolState({
-      ...toolState,
-      lineWeightPopoverOpen: true,
-      popoverLineWeightAnchorEl: e.currentTarget,
-    });
-  };
-
-  /** Close color popover window */
-  const closeChooseColor = (e) => {
-    updateToolState({
-      ...toolState,
-      colorPopoverOpen: false,
-      currentColorType: null,
-      popoverAnchorEl: null,
-    });
-  };
-
   /** Update color : fillColor or strokeColor */
-  const updateStrokeColor = (color) => {
+  const updateColor = (color) => {
     updateToolState({
       ...toolState,
       [toolState.currentColorType]: objToRgba(color.rgb),
     });
   };
-  /** */
-  const openChooseColor = (e) => {
-    updateToolState({
-      ...toolState,
-      colorPopoverOpen: true,
-      currentColorType: e.currentTarget.value,
-      popoverAnchorEl: e.currentTarget,
-    });
-  };
 
-  /** */
-  const handleCloseLineWeight = (e) => {
-    updateToolState({
-      ...toolState,
-      lineWeightPopoverOpen: false,
-      popoverLineWeightAnchorEl: null,
-    });
-  };
-
-  /** */
-  const handleLineWeightSelect = (e) => {
-    updateToolState({
-      ...toolState,
-      lineWeightPopoverOpen: false,
-      popoverLineWeightAnchorEl: null,
-      strokeWidth: e.currentTarget.value,
-    });
-  };
 
   const changeTool = (e, tool) => {
     updateToolState({
@@ -244,13 +198,13 @@ function AnnotationFormOverlay({
               isOverlayTool(activeTool) && (
                 <AnnotationFormOverlayToolOptions
                   activeTool={activeTool}
-                  onChange={changeTool}
-                  openChooseColor={openChooseColor}
                   strokeColor={strokeColor}
-                  openChooseLineWeight={openChooseLineWeight}
                   fillColor={fillColor}
                   closedMode={closedMode}
                   changeClosedMode={changeClosedMode}
+                  currentColor={rgbaToObj(toolState[currentColorType])}
+                  updateColor={updateColor}
+                  strokeWidth={strokeWidth}
                 />
               )
             }
@@ -278,40 +232,6 @@ function AnnotationFormOverlay({
           </Grid>
         </Grid>
       </div>
-      <Popover
-        open={lineWeightPopoverOpen}
-        anchorEl={popoverLineWeightAnchorEl}
-      >
-        <Paper>
-          <ClickAwayListener onClickAway={handleCloseLineWeight}>
-            <MenuList autoFocus role="listbox">
-              {[1, 3, 5, 10, 50].map((option, index) => (
-                <MenuItem
-                  key={option}
-                  onClick={handleLineWeightSelect}
-                  value={option}
-                  selected={option == strokeWidth}
-                  role="option"
-                  aria-selected={option == strokeWidth}
-                >
-                  {option}
-                </MenuItem>
-              ))}
-            </MenuList>
-          </ClickAwayListener>
-        </Paper>
-      </Popover>
-      <Popover
-        open={colorPopoverOpen}
-        anchorEl={popoverAnchorEl}
-        onClose={closeChooseColor}
-      >
-        <SketchPicker
-          disableAlpha={false}
-          color={rgbaToObj(toolState[currentColorType])}
-          onChangeComplete={updateStrokeColor}
-        />
-      </Popover>
     </StyledPaper>
   );
 }
