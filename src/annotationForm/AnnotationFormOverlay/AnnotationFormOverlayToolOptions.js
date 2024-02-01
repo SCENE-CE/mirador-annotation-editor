@@ -82,6 +82,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
 
   /** */
   const openChooseColor = (e) => {
+    console.log('openChooseColor', e.currentTarget.value);
     setToolOptions({
       ...toolOptions,
       colorPopoverOpen: true,
