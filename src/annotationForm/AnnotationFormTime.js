@@ -40,6 +40,9 @@ const StyledDivToggleButton = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
 }));
+const ContainerSlider = styled('div')(({ theme }) => ({
+  padding: '10px',
+}));
 
 const StyledLabelSelector = styled('p')(({ theme }) => ({
   fontSize: '15px',
@@ -68,7 +71,7 @@ function AnnotationFormTime({
         <Typography id="range-slider" variant="overline">
           Target
         </Typography>
-        <div>
+        <ContainerSlider>
           <StyledSlider
             size="small"
             value={value}
@@ -79,7 +82,7 @@ function AnnotationFormTime({
             color="secondary"
             windowid={windowid}
           />
-        </div>
+        </ContainerSlider>
       </Grid>
       <StyledDivFormTimeContainer>
         <StyledDivTimeSelector>
