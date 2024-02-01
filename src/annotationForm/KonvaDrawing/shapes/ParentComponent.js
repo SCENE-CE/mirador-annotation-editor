@@ -42,8 +42,7 @@ function ParentComponent({
 
   return (
     <Layer
-      width={width}
-      height={height}
+  
       scaleX={scale}
       scaleY={scale}
     >

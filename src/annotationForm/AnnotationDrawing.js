@@ -14,22 +14,24 @@ import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './KonvaDrawing/shapes/ParentComponent';
 import Surface from './KonvaDrawing/Surface';
 import { act } from '@psychobolt/react-paperjs/dist/index.dev';
+import { set } from 'lodash';
 
 /** All the stuff to draw on the canvas */
 function AnnotationDrawing(props) {
   const [shapes, setShapes] = useState([]);
   const [currentShape, setCurrentShape] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [surfacedata, setSurfaceData] = useState({
-    x: 100,
-    y: 100,
-    width: 200,
-    height: 200,
-    scaleX: props.scale,
-    scaleY: props.scale,
-  });
+
   const { height, width } = props.mediaVideo ? props.mediaVideo.ref.current : 0;
 
+  const [surfacedata, setSurfaceData] = useState({
+    x: 1,
+    y: 1,
+    width: width/props.scale,
+    height: height/props.scale,
+    scaleX: 1,
+    scaleY: 1,
+  });
 
 
 
@@ -38,6 +40,18 @@ function AnnotationDrawing(props) {
     const overlay = props.mediaVideo ? props.mediaVideo.ref.current : null;
     if (overlay) {
       props.updateScale(overlay.containerWidth / overlay.canvasWidth);
+     
+      
+      const newSurfaceData = {...surfacedata};
+      newSurfaceData.width = overlay.width  /props.scale;
+      newSurfaceData.height = overlay.height/props.scale;
+      // compare newSurfaceData and surfacedata, if different, update surfacedata
+      if (newSurfaceData.width !== surfacedata.width || newSurfaceData.height !== surfacedata.height) {
+        setSurfaceData(newSurfaceData);
+      }
+      
+
+
     }
   }, [{ height, width }]);
 
@@ -156,7 +170,7 @@ function AnnotationDrawing(props) {
 
     const modifiedshape = evt.target.attrs;
 
-    console.log('modifiedshape', modifiedshape);
+
     const shape = shapes.find((s) => s.id === modifiedshape.id);
 
 
@@ -186,7 +200,6 @@ function AnnotationDrawing(props) {
 
   const handleSurfaceDrag = (evt) => {
     const modifiedshape = evt.currentTarget.attrs;
-    console.log('modifiedshape', modifiedshape);
     const shape = {...surfacedata};
     shape.x = modifiedshape.x;
     shape.y = modifiedshape.y;
@@ -511,9 +524,10 @@ shape={surfacedata}
 onTransform={onSurfaceTransform}
 handleDrag={handleSurfaceDrag}
 trview={false}
-width={props.originalWidth}
-height={props.originalHeight}
+width={width}
+height={height}
 scale={props.scale}
+
 
 />
   )}
@@ -523,16 +537,6 @@ scale={props.scale}
         onShapeClick={onShapeClick}
         activeTool={props.activeTool}
         selectedShapeId={currentShape?.id}
-        style={{
-          height: 'auto',
-          left: 0,
-          objectFit: 'contain',
-          overflow: 'clip',
-          overflowClipMargin: 'content-box',
-          position: 'absolute',
-          top: 0,
-          width: '100%',
-        }}
         scale={props.scale}
         width={props.originalWidth}
         height={props.originalHeight}
@@ -550,8 +554,8 @@ shape={surfacedata}
 onTransform={onSurfaceTransform}
 handleDrag={handleSurfaceDrag}
 trview={true}
-width={props.originalWidth}
-height={props.originalHeight}
+width={width}
+height={height}
 scale={props.scale}
 
 

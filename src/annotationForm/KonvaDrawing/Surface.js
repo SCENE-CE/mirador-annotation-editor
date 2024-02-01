@@ -23,8 +23,7 @@ function Surface({
 
   return (
 <Layer
-    width={width}
-    height={height}
+  
     scaleX={scale}
     scaleY={scale}
 
@@ -45,7 +44,7 @@ function Surface({
 
         strokeWidth={  1}
    
-        draggable={true}
+        draggable={trview}
         onTransform={onTransform}
         onDrag={handleDrag}
         onDragEnd={handleDrag}
