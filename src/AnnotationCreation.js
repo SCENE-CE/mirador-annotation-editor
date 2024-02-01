@@ -37,7 +37,7 @@ function AnnotationCreation(props) {
     fillColor: 'rgba(255, 0, 0, 0.5)',
     image: { id: null },
     imageEvent: null,
-    strokeColor: 'green',
+    strokeColor: 'rgba(255, 0, 0, 0.5)',
     strokeWidth: 3,
   });
 

@@ -48,7 +48,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
     popoverLineWeightAnchorEl: null,
   });
 
-  let currentColor= toolOptions.currentColorType ? rgbaToObj(toolState[toolOptions.currentColorType]) : null;
+  const currentColor= toolOptions.currentColorType ? rgbaToObj(toolState[toolOptions.currentColorType]) : null;
 
   // Fonction to manage option displaying
   /** */
