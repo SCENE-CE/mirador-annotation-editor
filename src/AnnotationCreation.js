@@ -115,7 +115,7 @@ function AnnotationCreation(props) {
   const [isMouseOverSave, setIsMouseOverSave] = useState(false);
   const [scale, setScale] = useState(1);
 
-  const [value, setValue] = useState(TARGET_VIEW);
+  const [viewTool, setViewTool] = useState(TARGET_VIEW);
   const { height, width } = props.mediaVideo ? props.mediaVideo : 0;
 
   // TODO Check the effect to keep and remove the other
@@ -182,7 +182,7 @@ function AnnotationCreation(props) {
     }));
   };
   const tabHandler = (event, TabIndex) => {
-    setValue(TabIndex);
+    setViewTool(TabIndex);
   };
   /**
    * Change from slider
@@ -302,7 +302,7 @@ function AnnotationCreation(props) {
     // TODO Possibly problem of syncing
     // TODO Improve this code
     // If we are in edit mode, we have the transformer on the stage saved in the annotation
-    if (state.activeTool === 'edit') {
+    if (viewTool === OVERLAY_VIEW &&   state.activeTool === 'edit') {
       setState((prevState) => ({
         ...prevState,
         activeTool: 'cursor',
@@ -490,8 +490,8 @@ function AnnotationCreation(props) {
       <StyledForm
         onSubmit={submitForm}
       >
-        <TabContext value={value}>
-          <TabList value={value} onChange={tabHandler} aria-label="icon tabs">
+        <TabContext value={viewTool}>
+          <TabList value={viewTool} onChange={tabHandler} aria-label="icon tabs">
             <StyledTab
               icon={<HighlightAltIcon />}
               aria-label="TargetSelector"
