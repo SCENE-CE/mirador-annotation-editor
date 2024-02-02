@@ -12,8 +12,9 @@ import ImageShape from './Image';
 /** Loads Konva and display in function of their type */
 function ParentComponent({
   isMouseOverSave,
-  scale, width, height, onTransform, handleDragEnd,
+  scale,  onTransform, handleDragEnd,
   shapes, onShapeClick, selectedShapeId, activeTool,
+  trview,
 }) {
   // TODO Simplify these state
   const [selectedShape, setSelectedShape] = useState(null);
@@ -44,6 +45,9 @@ function ParentComponent({
       scaleY={scale}
     >
       {shapes.map((shape, i) => {
+
+
+
         const isSelected = selectedShapeId === shape.id && isMouseOverSave === false && trview === true;
         switch (shape.type) {
           case 'rectangle':
@@ -154,13 +158,12 @@ function ParentComponent({
 ParentComponent.propTypes = {
   activeTool: PropTypes.string.isRequired,
   handleDragEnd: PropTypes.func.isRequired,
-  height: PropTypes.number.isRequired,
   isMouseOverSave: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
   onTransform: PropTypes.func.isRequired,
   scale: PropTypes.number.isRequired,
-  selectedShapeId: PropTypes.string.isRequired,
-  shapes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  width: PropTypes.number.isRequired,
+  selectedShapeId: PropTypes.string,
+  shapes: PropTypes.arrayOf(PropTypes.object).isRequired
+
 };
 export default ParentComponent;

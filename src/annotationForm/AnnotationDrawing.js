@@ -13,6 +13,7 @@ import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
 import { SHAPES_TOOL } from '../AnnotationCreationUtils';
+import Surface from './AnnotationFormOverlay/KonvaDrawing/Surface';
 /** All the stuff to draw on the canvas */
 function AnnotationDrawing(props) {
   const [shapes, setShapes] = useState([]);
@@ -127,22 +128,35 @@ function AnnotationDrawing(props) {
 
   /** */
   const onShapeClick = async (shp) => {
+    
+// retrn if we are not in edit or cursor mode
+
+
+    if (props.activeTool !== 'edit' && props.activeTool !== 'cursor' && props.activeTool !== 'delete') {
+      return;
+    }
+   
+    console.log('shape clicked', shp);
+  
     const shape = shapes.find((s) => s.id === shp.id);
+    console.log('shape', shape);
+
     if (props.activeTool === 'delete') {
       const newShapes = shapes.filter((s) => s.id !== shape.id);
       setShapes(newShapes);
       return;
     }
 
-    setCurrentShape(shape);
+    setCurrentShape({...shape});
+    console.log('currentShape', currentShape);
     props.setShapeProperties(shape); // TODO Check that code ?
-    props.setColorToolFromCurrentShape(
-      {
-        fillColor: shape.fill,
-        strokeColor: shape.stroke,
-        strokeWidth: shape.strokeWidth,
-      },
-    );
+    // props.setColorToolFromCurrentShape(
+    //   {
+    //     fillColor: shape.fill,
+    //     strokeColor: shape.stroke,
+    //     strokeWidth: shape.strokeWidth,
+    //   },
+    // );
   };
 
   const onTransform = (evt) => {
@@ -344,6 +358,7 @@ function AnnotationDrawing(props) {
           setCurrentShape(shape);
           break;
         case SHAPES_TOOL.ARROW:
+
           setIsDrawing(true);
           shape = {
             fill: props.fillColor,
@@ -351,6 +366,8 @@ function AnnotationDrawing(props) {
             pointerLength: 20,
             pointerWidth: 20,
             points: [pos.x, pos.y, pos.x, pos.y],
+            x: 0,
+            y: 0,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
@@ -371,6 +388,7 @@ function AnnotationDrawing(props) {
 
   /** */
   const handleMouseMove = (e) => {
+   
     try {
       if (!isDrawing) {
         return;
@@ -445,6 +463,7 @@ function AnnotationDrawing(props) {
           arrowShape.strokeWidth = props.strokeWidth;
           setCurrentShape(arrowShape);
           updateCurrentShapeInShapes();
+          setIsDrawing(true);
           break;
         default:
           break;
@@ -456,18 +475,11 @@ function AnnotationDrawing(props) {
 
   /** Stop drawing */
   const handleMouseUp = (e) => {
-    const pos = e.target.getStage().getRelativePointerPosition();
-    pos.x /= props.scale;
-    pos.y /= props.scale;
-    try {
-      if (!currentShape) {
-        return;
-      }
-      // For these cases, the action is similar: stop drawing and add the shape
+  
+     
+   
       setIsDrawing(false);
-    } catch (error) {
-      console.error('error', error);
-    }
+   
   };
 
   /** */

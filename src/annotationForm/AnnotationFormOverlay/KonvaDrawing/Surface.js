@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {Layer, Rect, Transformer } from 'react-konva';
+import { Layer, Rect, Transformer } from 'react-konva';
 
 function Surface({
-  shape,  activeTool, tabView,
-  onTransform, handleDrag,trview,
-    width, height, scale,
+  shape, activeTool, tabView,
+  onTransform, handleDrag, trview,
+  width, height, scale,
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -17,49 +17,47 @@ function Surface({
     }
   }, [tabView]);
 
-//   const handleClick = () => {
-//     onShapeClick(shape);
-//   };
+
 
   return (
-<Layer
-  
-    scaleX={scale}
-    scaleY={scale}
+    <Layer
+
+      scaleX={scale}
+      scaleY={scale}
 
 
->
-    <>
-      <Rect
-        ref={shapeRef}
-        x={shape.x }
-        y={shape.y }
-        scaleX={shape.scaleX}
-        scaleY={shape.scaleY}
-      
-        width={shape.width}
-        height={shape.height }
-        fill={"transparent"}
-        stroke={"#1967d2"}
+    >
+      <>
+        <Rect
+          ref={shapeRef}
+          x={shape.x}
+          y={shape.y}
+          scaleX={shape.scaleX}
+          scaleY={shape.scaleY}
 
-        strokeWidth={  1}
-   
-        draggable={trview}
-        onTransform={onTransform}
-        onDrag={handleDrag}
-        onDragEnd={handleDrag}
-        dash={[10, 5]}
-      />
+          width={shape.width}
+          height={shape.height}
+          fill={"transparent"}
+          stroke={"#1967d2"}
 
-      <Transformer
-        ref={trRef}
-        visible={trview}
-        rotateEnabled={false}
-        borderEnabled={false}
+          strokeWidth={1}
+
+          draggable={trview}
+          onTransform={onTransform}
+          onDrag={handleDrag}
+          onDragEnd={handleDrag}
+          dash={[10, 5]}
+        />
+
+        <Transformer
+          ref={trRef}
+          visible={trview}
+          rotateEnabled={false}
+          borderEnabled={false}
 
 
-      />
-    </>
+        />
+      </>
     </Layer>
   );
 }

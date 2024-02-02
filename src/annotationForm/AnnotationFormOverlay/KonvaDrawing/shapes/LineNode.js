@@ -34,6 +34,7 @@ function LineNode({
         closed={false}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
+        onMousedown={handleClick}
       />
 
       <Transformer
