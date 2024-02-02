@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Layer } from 'react-konva';
-
 import Rectangle from './Rectangle';
 import EllipseNode from './EllipseNode';
 import TextNode from './TextNode';
-import LineNode from './LineNode';
 import ArrowNode from './ArrowNode';
 import Polygon from './Polygon';
 import Freehand from './Freehand';
 import ImageShape from './Image';
 
 /** Loads Konva and display in function of their type */
-
 function ParentComponent({
-  shapes, onShapeClick, selectedShapeId, activeTool,
+  isMouseOverSave,
   scale, width, height, onTransform, handleDragEnd,
-  isMouseOverSave,trview
+  shapes, onShapeClick, selectedShapeId, activeTool,
 }) {
   // TODO Simplify these state
   const [selectedShape, setSelectedShape] = useState(null);
@@ -54,11 +51,11 @@ function ParentComponent({
               <Rectangle
                 {...{
                   activeTool,
+                  handleDragEnd,
                   isSelected,
                   onShapeClick: handleShapeClick,
-                  shape,
                   onTransform,
-                  handleDragEnd,
+                  shape,
                 }}
                 key={i}
               />
@@ -68,11 +65,11 @@ function ParentComponent({
               <TextNode
                 {...{
                   activeTool,
+                  handleDragEnd,
                   isSelected,
                   onShapeClick: handleShapeClick,
-                  shape,
                   onTransform,
-                  handleDragEnd,
+                  shape,
                 }}
                 key={i}
               />
@@ -82,11 +79,11 @@ function ParentComponent({
               <EllipseNode
                 {...{
                   activeTool,
+                  handleDragEnd,
                   isSelected,
                   onShapeClick: handleShapeClick,
-                  shape,
                   onTransform,
-                  handleDragEnd,
+                  shape,
                 }}
                 key={i}
               />
@@ -96,11 +93,11 @@ function ParentComponent({
               <Freehand
                 {...{
                   activeTool,
+                  handleDragEnd,
                   isSelected,
                   onShapeClick: handleShapeClick,
-                  shape,
                   onTransform,
-                  handleDragEnd,
+                  shape,
                 }}
                 key={i}
               />
@@ -110,11 +107,11 @@ function ParentComponent({
               <Polygon
                 {...{
                   activeTool,
+                  handleDragEnd,
                   isSelected,
                   onShapeClick: handleShapeClick,
-                  shape,
                   onTransform,
-                  handleDragEnd,
+                  shape,
                 }}
                 key={i}
               />
@@ -124,11 +121,11 @@ function ParentComponent({
               <ArrowNode
                 {...{
                   activeTool,
+                  handleDragEnd,
                   isSelected,
                   onShapeClick: handleShapeClick,
-                  shape,
                   onTransform,
-                  handleDragEnd,
+                  shape,
                 }}
                 key={i}
               />
@@ -138,18 +135,16 @@ function ParentComponent({
               <ImageShape
                 {...{
                   activeTool,
+                  handleDragEnd,
                   isSelected,
                   onShapeClick: handleShapeClick,
-                  shape,
                   onTransform,
-                  handleDragEnd,
+                  shape,
                   src: shape.src,
                 }}
                 key={i}
               />
             );
-          default:
-            return null;
         }
       })}
     </Layer>
@@ -157,19 +152,15 @@ function ParentComponent({
 }
 
 ParentComponent.propTypes = {
-  shapes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  activeTool: PropTypes.string.isRequired,
+  handleDragEnd: PropTypes.func.isRequired,
+  height: PropTypes.number.isRequired,
+  isMouseOverSave: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
-  selectedShapeIdProp: PropTypes.string,
-  activeTool: PropTypes.string,
-  scale: PropTypes.number,
-  width: PropTypes.number,
-  height: PropTypes.number,
-  onTransform: PropTypes.func,
-  handleDragEnd: PropTypes.func,
+  onTransform: PropTypes.func.isRequired,
+  scale: PropTypes.number.isRequired,
+  selectedShapeId: PropTypes.string.isRequired,
+  shapes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  width: PropTypes.number.isRequired,
 };
-
-ParentComponent.defaultProps = {
-  selectedShapeIdProp: null,
-};
-
 export default ParentComponent;

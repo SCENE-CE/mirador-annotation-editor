@@ -10,10 +10,11 @@ const StyledRoot = styled('div')(({ theme }) => ({
 }));
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
-  marginTop:"0",
-  marginBottom:"0",
+  marginBottom: '0',
+  marginTop: '0',
 }));
 
+/** Image input field for the annotation form */
 function ImageFormField({ value: image, onChange }) {
   const inputRef = useRef(null);
   const [imgIsValid, setImgIsValid] = useState(false);
@@ -24,7 +25,7 @@ function ImageFormField({ value: image, onChange }) {
     } else {
       setImgIsValid(!!image.id);
     }
-}, [image]);
+  }, [image]);
 
   const imgUrl = image.id === null ? '' : image.id;
 
