@@ -224,7 +224,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseLineWeight}>
                   <MenuList autoFocus role="listbox">
-                    {[1, 3, 5, 10, 50].map((option, index) => (
+                    {[5, 10, 20, 50].map((option, index) => (
                       <MenuItem
                         key={option}
                         onClick={handleLineWeightSelect}

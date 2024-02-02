@@ -38,7 +38,7 @@ function AnnotationCreation(props) {
     image: { id: null },
     imageEvent: null,
     strokeColor: 'rgba(255, 0, 0, 0.5)',
-    strokeWidth: 3,
+    strokeWidth: 20,
   });
 
   // Initial state setup
@@ -317,23 +317,7 @@ function AnnotationCreation(props) {
       receiveAnnotation,
       config,
     } = props;
-    // const svg = <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle fill="red" cx="50" cy="50" r="50" /></svg>;
 
-    // const dummyAnnot = {
-    //   title: 'dummyTitle',
-    //   textBody:'dummyTextBody',
-    //   image:{
-    //     id: null,
-    //     svg: svg
-    //   },
-    //   tags: null,
-    //   xywh:"220,470,450,50",
-    //   tstart: 1880,
-    //   tend:1905,
-    //   textEditorStateBustingKey:0,
-    //   konvaThing: ['SOME KONVA THING', 'AND ANOTHER KONVA THING', {thirdKonvaThing:'Third Konva thing here'}]
-    // }
-    // const title = dummyAnnot.title
     const dumbIimage = {
       id: null,
       svg,

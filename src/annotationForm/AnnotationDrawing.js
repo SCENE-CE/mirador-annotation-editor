@@ -240,7 +240,7 @@ function AnnotationDrawing(props) {
           setCurrentShape(shape);
 
           break;
-        case SHAPES_TOOL.TEXT:
+        case 'text':
           shape = {
             fill: props.fillColor,
             fontSize: 20,
@@ -314,6 +314,7 @@ function AnnotationDrawing(props) {
             scaleX: 1,
             scaleY: 1,
             stroke: props.strokeColor,
+            strokeWidth: props.strokeWidth,
             type: SHAPES_TOOL.ARROW,
           };
           setShapes([...shapes, shape]);
