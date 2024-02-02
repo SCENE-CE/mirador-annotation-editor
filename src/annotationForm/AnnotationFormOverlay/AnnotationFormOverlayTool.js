@@ -8,8 +8,23 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { Button } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import AnnotationFormOverlayToolOptions from './AnnotationFormOverlayToolOptions';
-import { isShapesTool, SHAPES_TOOL } from '../../AnnotationCreationUtils';
+import { isShapesTool, OVERLAY_TOOL, SHAPES_TOOL } from '../../AnnotationCreationUtils';
+
+const StyledLi = styled('li')(({ theme }) => ({
+  display: 'flex',
+  wordBreak: 'break-word',
+}));
+
+const StyledUl = styled('ul')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '5px',
+  listStyle: 'none',
+  paddingLeft: '0',
+}));
 
 // TODO WIP code duplicated
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
@@ -24,7 +39,9 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 }));
 
 /** All the form part for the overlay view */
-function AnnotationFormOverlayTool({ toolState, updateToolState }) {
+function AnnotationFormOverlayTool({
+  toolState, updateToolState, shapes, deleteShape,
+}) {
   /** Change the active overlay tool */
   const changeTool = (e, tool) => {
     updateToolState({
@@ -35,6 +52,21 @@ function AnnotationFormOverlayTool({ toolState, updateToolState }) {
 
   return (
     <>
+      {toolState.activeTool}
+      {
+          toolState.activeTool === OVERLAY_TOOL.EDIT && (
+          <StyledUl>
+            {shapes && shapes.map((shape) => (
+              <StyledLi key={shape.id}>
+                {shape.id}
+                <Button onClick={() => deleteShape(shape.id)}>
+                  <DeleteIcon />
+                </Button>
+              </StyledLi>
+            ))}
+          </StyledUl>
+          )
+      }
       {
         isShapesTool(toolState.activeTool) && (
           <StyledToggleButtonGroup

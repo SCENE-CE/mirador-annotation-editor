@@ -26,18 +26,6 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
-const StyledLi = styled('li')(({ theme }) => ({
-  display: 'flex',
-  wordBreak: 'break-word',
-}));
-
-const StyledUl = styled('ul')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '5px',
-  listStyle: 'none',
-  paddingLeft: '0',
-}));
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: '5px',
@@ -95,23 +83,11 @@ function AnnotationFormOverlay({
                 <DeleteIcon />
               </ToggleButton>
             </StyledToggleButtonGroup>
-            {
-              activeTool === OVERLAY_TOOL.EDIT && (
-                <StyledUl>
-                  {shapes && shapes.map((shape) => (
-                    <StyledLi key={shape.id}>
-                      {shape.id}
-                      <Button onClick={() => deleteShape(shape.id)}>
-                        <DeleteIcon />
-                      </Button>
-                    </StyledLi>
-                  ))}
-                </StyledUl>
-              )
-            }
             <AnnotationFormOverlayTool
               toolState={toolState}
               updateToolState={updateToolState}
+              shapes={shapes}
+              deleteShape={deleteShape}
             />
           </Grid>
         </Grid>
