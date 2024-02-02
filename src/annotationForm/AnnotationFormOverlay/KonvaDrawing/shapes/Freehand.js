@@ -4,7 +4,7 @@ import { Transformer, Line, Group } from 'react-konva';
 
 /** FreeHand shape displaying */
 function Freehand({
-  activeTool,  onShapeClick,  isSelected, shape, onTransform, handleDragEnd,
+  activeTool,  onShapeClick, isSelected, shape, onTransform, handleDragEnd,handleDragStart,
 }) {
   // TODO check if selectedShapeId is needed
   const shapeRef = useRef();
@@ -38,10 +38,11 @@ function Freehand({
         height={shape.height || 1080}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onDragEnd={handleDragEnd}
+        onDragStart={handleDragStart}
         id={shape.id}
       >
         {shape.lines.map((line, i) => (
-         
+
           <Line
             key={i}
             fill={shape.stroke}
@@ -63,15 +64,13 @@ function Freehand({
 }
 
 Freehand.propTypes = {
-
-  fill: PropTypes.string,
-  height: PropTypes.number,
+  activeTool: PropTypes.string.isRequired,
+  handleDragEnd: PropTypes.func.isRequired,
+  handleDragStart: PropTypes.func.isRequired,
+  isSelected: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
-  points: PropTypes.arrayOf(PropTypes.number),
+  onTransform: PropTypes.func.isRequired,
   shape: PropTypes.object.isRequired,
-  stroke: PropTypes.string,
-  strokeWidth: PropTypes.number,
-  width: PropTypes.number,
 };
 
 Freehand.defaultProps = {

@@ -23,11 +23,15 @@ function AccordionShapes({ shapes, deleteShape, currentShapeId }) {
           <AccordionDetails>
             <ul>
               {Object.keys(shape).sort().map((key) => (
-                <li key={key}>
-                  {key}
-                  :
-                  {shape[key]}
-                </li>
+                  <>
+                    { key !== 'lines' && (
+                      <li key={key}>
+                        {key}
+                        :
+                        {shape[key]}
+                      </li>
+                    )}
+                  </>
               ))}
             </ul>
             <Button
@@ -46,6 +50,7 @@ function AccordionShapes({ shapes, deleteShape, currentShapeId }) {
 AccordionShapes.propTypes = {
   shapes: PropTypes.array.isRequired,
   deleteShape: PropTypes.func.isRequired,
+  currentShapeId: PropTypes.string.isRequired,
 };
 
 export default AccordionShapes;

@@ -41,6 +41,7 @@ function ArrowNode({
         pointerWidth={shape.pointerWidth}
         onTransform={onTransform}
         onDragEnd={handleDragEnd}
+        onDragStart={handleDragEnd}
       />
       <Transformer
         ref={trRef}
@@ -53,6 +54,7 @@ function ArrowNode({
 ArrowNode.propTypes = {
   activeTool: PropTypes.string,
   handleDragEnd: PropTypes.func.isRequired,
+  handleDragStart: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
   onTransform: PropTypes.func.isRequired,

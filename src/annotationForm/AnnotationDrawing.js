@@ -137,6 +137,15 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
     updateCurrentShapeInShapes(shape);
   };
 
+  const handleDragStart = (evt) => {
+    const modifiedshape = evt.currentTarget.attrs;
+
+   setDrawingState({
+        ...drawingState,
+     currentShape: drawingState.shapes.find((s) => s.id === modifiedshape.id),
+   });
+  };
+
   /** */
   const handleKeyPress = (e) => {
     e.stopPropagation();
@@ -359,7 +368,6 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
       pos.x /= props.scale;
       pos.y /= props.scale;
 
-      let shape;
 
       switch (props.activeTool) {
         case SHAPES_TOOL.RECTANGLE:
@@ -486,6 +494,7 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
         height={props.originalHeight}
         onTransform={onTransform}
         handleDragEnd={handleDragEnd}
+        handleDragStart={handleDragStart}
         isMouseOverSave={props.isMouseOverSave}
       />
     </Stage>

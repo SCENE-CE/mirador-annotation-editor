@@ -65,13 +65,19 @@ function AnnotationFormOverlayTool({
               </Typography>
 
               <ul>
-                {Object.keys(currentShape).sort().map((key) => (
-                  <li key={key}>
-                    {key}
-                    :
-                    {currentShape[key]}
-                  </li>
-                ))}
+                {
+                  Object.keys(currentShape).sort().map((key) => (
+                    <>
+                      { key !== 'lines' && (
+                        <li key={key}>
+                          {key}
+                          :
+                          {currentShape[key]}
+                        </li>
+                      )}
+                    </>
+                  ))
+                }
               </ul>
             </Paper>
             )

@@ -5,7 +5,7 @@ import ArrowNode from "./ArrowNode";
 
 function Rectangle({
   shape, onShapeClick, activeTool, isSelected,
-  onTransform, handleDragEnd
+  onTransform, handleDragEnd, handleDragStart
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -40,6 +40,7 @@ function Rectangle({
         onClick={handleClick}
         onTransform={onTransform}
         onDragEnd={handleDragEnd}
+        onDragStart={handleDragStart}
       />
 
       <Transformer
@@ -51,13 +52,12 @@ function Rectangle({
 }
 
 ArrowNode.propTypes = {
-  activeTool: PropTypes.string,
+  activeTool: PropTypes.string.isRequired,
   handleDragEnd: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
   onTransform: PropTypes.func.isRequired,
   shape: PropTypes.object.isRequired,
 };
-
 
 export default Rectangle;

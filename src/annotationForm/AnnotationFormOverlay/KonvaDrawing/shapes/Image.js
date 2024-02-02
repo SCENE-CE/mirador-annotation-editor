@@ -4,7 +4,7 @@ import { Image, Transformer } from 'react-konva';
 import useImage from 'use-image';
 
 function ImageShape({
-  onShapeClick, shape, activeTool, isSelected, onTransform, handleDragEnd
+  onShapeClick, shape, activeTool, isSelected, onTransform, handleDragEnd, handleDragStart,
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -36,6 +36,7 @@ function ImageShape({
         onClick={handleClick}
         onTransform={onTransform}
         onDragEnd={handleDragEnd}
+        onDragStart={handleDragStart}
       />
 
       <Transformer
@@ -53,9 +54,9 @@ ImageShape.propTypes = {
   isSelected: PropTypes.bool.isRequired,
   x: PropTypes.number,
   y: PropTypes.number,
- // src: PropTypes.string.isRequired,
   onTransform: PropTypes.func.isRequired,
   handleDragEnd: PropTypes.func.isRequired,
+  handleDragStart: PropTypes.func.isRequired,
 };
 
 ImageShape.defaultProps = {

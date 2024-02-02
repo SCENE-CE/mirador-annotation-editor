@@ -6,7 +6,7 @@ import ArrowNode from "./ArrowNode";
 
 function EllipseNode({
   onShapeClick, shape, activeTool, isSelected,
-  onTransform, handleDragEnd,
+  onTransform, handleDragEnd, handleDragStart
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -41,6 +41,7 @@ function EllipseNode({
         onClick={handleClick}
         onTransform={onTransform}
         onDragEnd={handleDragEnd}
+        onDragStart={handleDragStart}
       />
 
       <Transformer
@@ -51,9 +52,10 @@ function EllipseNode({
   );
 }
 
-ArrowNode.propTypes = {
-  activeTool: PropTypes.string,
+EllipseNode.propTypes = {
+  activeTool: PropTypes.string.isRequired,
   handleDragEnd: PropTypes.func.isRequired,
+  handleDragStart: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
   onTransform: PropTypes.func.isRequired,

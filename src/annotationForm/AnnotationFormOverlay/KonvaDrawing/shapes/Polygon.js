@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import {Transformer, Shape, Line} from 'react-konva';
+import { Transformer, Shape, Line } from 'react-konva';
 
 /** FreeHand shape displaying */
 function Polygon({
-  activeTool,  onShapeClick, isSelected, shape, 
-  onTransform, handleDragEnd
+  activeTool, onShapeClick, isSelected, shape,
+  onTransform, handleDragEnd, handleDragStart,
 }) {
   // TODO check if selectedShapeId is needed
   const shapeRef = useRef();
@@ -18,7 +18,6 @@ function Polygon({
     }
   }, [isSelected, shape]);
 
-
   /** */
   const handleClick = () => {
     onShapeClick(shape);
@@ -28,26 +27,27 @@ function Polygon({
 
     <>
       <Line
-          ref={shapeRef}
-          id={shape.id}
-          points={shape.points}
-          stroke={shape.stroke}
-          strokeWidth={shape.strokeWidth || 5}
-          tension={0.5}
-          lineCap="round"
-          lineJoin="round"
-          closed={false}
-          onClick={handleClick}
-          fill={shape.fill}
-          draggable={activeTool === 'cursor' || activeTool === 'edit'}
-          globalCompositeOperation="source-over"
-          onTransform={onTransform}
-          scaleX={shape.scaleX}
-          scaleY={shape.scaleY}
-          rotation={shape.rotation}
-          x={shape.x}
-          y={shape.y}
-          onDragEnd={ handleDragEnd}
+        ref={shapeRef}
+        id={shape.id}
+        points={shape.points}
+        stroke={shape.stroke}
+        strokeWidth={shape.strokeWidth || 5}
+        tension={0.5}
+        lineCap="round"
+        lineJoin="round"
+        closed={false}
+        onClick={handleClick}
+        fill={shape.fill}
+        draggable={activeTool === 'cursor' || activeTool === 'edit'}
+        globalCompositeOperation="source-over"
+        onTransform={onTransform}
+        scaleX={shape.scaleX}
+        scaleY={shape.scaleY}
+        rotation={shape.rotation}
+        x={shape.x}
+        y={shape.y}
+        onDragEnd={handleDragEnd}
+        onDragStart={handleDragStart}
 
       />
 
@@ -60,24 +60,15 @@ function Polygon({
 }
 
 Polygon.propTypes = {
-  activeTool: PropTypes.string,
-  fill: PropTypes.string,
-  height: PropTypes.number,
+  activeTool: PropTypes.string.isRequired,
+  handleDragEnd: PropTypes.func.isRequired,
+  handleDragStart: PropTypes.func.isRequired,
+  isSelected: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
+  onTransform: PropTypes.func.isRequired,
   points: PropTypes.arrayOf(PropTypes.number),
   shape: PropTypes.object.isRequired,
-  stroke: PropTypes.string,
-  strokeWidth: PropTypes.number,
-  width: PropTypes.number,
-};
 
-Polygon.defaultProps = {
-  fill: 'red',
-  height: 1080,
-  points: [0, 0, 100, 0, 100, 100],
-  stroke: 'black',
-  strokeWidth: 1,
-  width: 1920,
 };
 
 export default Polygon;

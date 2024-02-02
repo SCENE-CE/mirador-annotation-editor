@@ -13,7 +13,7 @@ import ImageShape from './Image';
 function ParentComponent({
   isMouseOverSave,
   scale, width, height, onTransform, handleDragEnd,
-  shapes, onShapeClick, selectedShapeId, activeTool,
+  shapes, onShapeClick, selectedShapeId, activeTool, handleDragStart
 }) {
   // TODO Simplify these state
   const [selectedShape, setSelectedShape] = useState(null);
@@ -67,6 +67,7 @@ function ParentComponent({
                 {...{
                   activeTool,
                   handleDragEnd,
+                  handleDragStart,
                   isSelected,
                   onShapeClick: handleShapeClick,
                   onTransform,
@@ -81,6 +82,7 @@ function ParentComponent({
                 {...{
                   activeTool,
                   handleDragEnd,
+                  handleDragStart,
                   isSelected,
                   onShapeClick: handleShapeClick,
                   onTransform,
@@ -95,6 +97,7 @@ function ParentComponent({
                 {...{
                   activeTool,
                   handleDragEnd,
+                  handleDragStart,
                   isSelected,
                   onShapeClick: handleShapeClick,
                   onTransform,
@@ -109,6 +112,7 @@ function ParentComponent({
                 {...{
                   activeTool,
                   handleDragEnd,
+                  handleDragStart,
                   isSelected,
                   onShapeClick: handleShapeClick,
                   onTransform,
@@ -123,6 +127,7 @@ function ParentComponent({
                 {...{
                   activeTool,
                   handleDragEnd,
+                  handleDragStart,
                   isSelected,
                   onShapeClick: handleShapeClick,
                   onTransform,
@@ -137,6 +142,7 @@ function ParentComponent({
                 {...{
                   activeTool,
                   handleDragEnd,
+                  handleDragStart,
                   isSelected,
                   onShapeClick: handleShapeClick,
                   onTransform,
