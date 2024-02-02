@@ -15,7 +15,7 @@ import { SHAPES_TOOL } from '../AnnotationCreationUtils';
 /** All the stuff to draw on the canvas */
 function AnnotationDrawing(props) {
 
-  const [shapes, setShapes] = useState([]);
+  const {shapes, setShapes} = props;
   const [currentShape, setCurrentShape] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
 
@@ -48,6 +48,10 @@ function AnnotationDrawing(props) {
   }, [props.imageEvent]);
 
   const { fillColor, strokeColor, strokeWidth } = props;
+
+  useEffect(() => {
+
+  },[shapes]);
 
   /** */
 /*  useEffect(() => {
@@ -95,7 +99,6 @@ function AnnotationDrawing(props) {
 
   useEffect(() => {
     // compare shapes and props.shapes p, if different, update shapes
-
     if (props.shapes.length !== shapes.length) { /// nul a revoir
       setShapes(props.shapes);
     }
