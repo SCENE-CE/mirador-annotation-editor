@@ -9,7 +9,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import StrokeColorIcon from '@mui/icons-material/BorderColor';
 import LineWeightIcon from '@mui/icons-material/LineWeight';
 import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import ClosedPolygonIcon from '@mui/icons-material/ChangeHistory';
 import OpenPolygonIcon from '@mui/icons-material/ShowChart';
 import PropTypes from 'prop-types';
@@ -62,9 +62,9 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
     popoverLineWeightAnchorEl: null,
   });
 
-  useEffect(()=>{
-    //TODO: This useEffect fix the bug on konva to svg but may be useless
-  },[])
+  useEffect(() => {
+    // TODO: This useEffect fix the bug on konva to svg but may be useless
+  }, []);
   // Set unused default color to avoid error on render
   const currentColor = toolOptions.currentColorType ? rgbaToObj(toolState[toolOptions.currentColorType]) : 'rgba(255, 0, 0, 0.5)';
 
@@ -200,7 +200,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
 
               <StyledDivider flexItem orientation="vertical" />
               { /* close / open polygon mode only for freehand drawing mode. */
-              toolState.activeTool === 'freehand'
+              false
                 && (
                   <ToggleButtonGroup
                     size="small"

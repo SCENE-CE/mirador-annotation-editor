@@ -52,6 +52,14 @@ function AnnotationFormOverlayTool({
     });
   };
 
+  /** Stay in edit mode when a shape is selected */
+  const customUpdateToolState = (newState) => {
+    updateToolState({
+      ...newState,
+      activeTool: OVERLAY_TOOL.EDIT,
+    });
+  };
+
   return (
     <>
       {
@@ -79,6 +87,17 @@ function AnnotationFormOverlayTool({
                   ))
                 }
               </ul>
+              <AnnotationFormOverlayToolOptions
+                toolState={{
+                  ...toolState,
+                  activeTool: currentShape.type,
+                  closedMode: currentShape.closedMode,
+                  fillColor: currentShape.fill,
+                  strokeColor: currentShape.stroke,
+                  strokeWidth: currentShape.strokeWidth,
+                }}
+                updateToolState={customUpdateToolState}
+              />
             </Paper>
             )
             }
