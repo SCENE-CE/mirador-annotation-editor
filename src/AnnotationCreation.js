@@ -115,6 +115,7 @@ function AnnotationCreation(props) {
       valueTime: [0, 1],
       valuetextTime: '',
       textBody: '',
+      xywh: annoState.xywh ? annoState.xywh: 'undefined',
     };
   });
 
@@ -124,7 +125,7 @@ function AnnotationCreation(props) {
 
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
   const { height, width } = props.mediaVideo ? props.mediaVideo : 0;
-
+  const [shape, setShape ] = useState({})
   // TODO Check the effect to keep and remove the other
   // Add a state to trigger redraw
   const [windowSize, setWindowSize] = useState({
@@ -134,6 +135,7 @@ function AnnotationCreation(props) {
 
   // Listen to window resize event
   useEffect(() => {
+    console.log(state)
     const handleResize = () => {
       setWindowSize({
         width: window.innerWidth,
@@ -304,6 +306,9 @@ function AnnotationCreation(props) {
     }
   };*/
 
+ const setMyShape = (shape) =>{
+    setShape(shape);
+  }
   /**
      * Validate form and save annotation
      */
@@ -345,6 +350,12 @@ function AnnotationCreation(props) {
       image,
       konvaThing,
     } = state;
+    console.log(shape)
+    // if(xywh === "undefined"){
+    //   setState({...state.xywh = {x: state.shape[0].x, y: state.shape[0].y, w: state.shape[0].width, h: state.shape[0].height}})
+    // }
+console.log('SUBMITFORM XYWH',state.xywh)
+    console.log('xywh',xywh)
     // TODO rename variable for better comprenhension
     const svg = await getSvg();
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
@@ -478,6 +489,7 @@ function AnnotationCreation(props) {
         isMouseOverSave={isMouseOverSave}
         mediaVideo={props.mediaVideo}
         setDrawingState={setDrawingState}
+        setMyShape={setMyShape()}
       />
       <StyledForm
         onSubmit={submitForm}

@@ -83,7 +83,12 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
           strokeWidth: drawingState.currentShape.strokeWidth,
         },
       );
-
+      let previousShapes
+      if (drawingState.shapes !== previousShapes) {
+        props.setMyShape(drawingState.shapes);
+      console.log(props.shape, 'ANNOT D')
+        previousShapes = drawingState.shapes
+      }
       return () => {
         window.removeEventListener('keydown', handleKeyPress);
       };
