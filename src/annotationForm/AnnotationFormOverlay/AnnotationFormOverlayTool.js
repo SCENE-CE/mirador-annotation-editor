@@ -76,7 +76,7 @@ function AnnotationFormOverlayTool({
                 {
                   Object.keys(currentShape).sort().map((key) => (
                     <>
-                      { key !== 'lines' && (
+                      { key !== 'lines' && key !== 'image' && (
                         <li key={key}>
                           {key}
                           :

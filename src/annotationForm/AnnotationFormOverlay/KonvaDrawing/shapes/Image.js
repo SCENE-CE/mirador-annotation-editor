@@ -36,7 +36,6 @@ function ImageShape({
         onClick={handleClick}
         onTransform={onTransform}
         onDragEnd={handleDragEnd}
-        onDragStart={handleDragStart}
       />
 
       <Transformer

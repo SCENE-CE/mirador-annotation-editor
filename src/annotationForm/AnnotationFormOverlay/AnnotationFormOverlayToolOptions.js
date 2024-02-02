@@ -1,6 +1,6 @@
 import {
   Button,
-  ClickAwayListener, Divider, Grid, MenuItem, MenuList, Paper, Popover,
+  ClickAwayListener, Divider, Grid, MenuItem, MenuList, Paper, Popover, TextField,
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -270,17 +270,10 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
       }
       {
           toolState.activeTool === 'text' && (
-          // <TextField
-          //     value={toolState.text
-          //     onChange={(ev) => onChange(ev.target.value)}
-          //     error={imgUrl !== '' && !imgIsValid}
-          //     margin="dense"
-          //     label="Image URL"
-          //     type="url"
-          //     fullWidth
-          //     inputRef={inputRef}
-          // />
-            ' TODO add input'
+          <TextField
+            value={toolState.textBody}
+            fullWidth
+          />
           )
       }
     </div>
@@ -297,6 +290,7 @@ AnnotationFormOverlayToolOptions.propTypes = {
     }).isRequired,
     strokeColor: PropTypes.string.isRequired,
     strokeWidth: PropTypes.number.isRequired,
+    textBody: PropTypes.string,
     updateColor: PropTypes.func.isRequired,
   }).isRequired,
   updateToolState: PropTypes.func.isRequired,
