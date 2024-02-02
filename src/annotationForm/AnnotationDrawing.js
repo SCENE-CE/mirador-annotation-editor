@@ -410,7 +410,7 @@ function AnnotationDrawing(props) {
       }
     } catch (error) {
       console.log('error', error);
-    }
+    }'rgba(255, 0, 0, 0.5)'
   };
 
   /** Stop drawing */

@@ -269,8 +269,10 @@ function AnnotationCreation(props) {
      * This image will be put in overlay of the iiif media
      */
   const getSvg = async () => {
+    console.log('ENTER GET SVG')
     const stage = window.Konva.stages.find((s) => s.attrs.id === props.windowId);
-    const svg = await exportStageSVG(stage); // TODO clean
+    console.log('stage', stage);
+    const svg = await exportStageSVG(stage, false); // TODO clean
     return svg;
   };
 
@@ -317,7 +319,7 @@ function AnnotationCreation(props) {
       receiveAnnotation,
       config,
     } = props;
-    const svg = <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle fill="red" cx="50" cy="50" r="50" /></svg>;
+    // const svg = <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle fill="red" cx="50" cy="50" r="50" /></svg>;
 
     // const dummyAnnot = {
     //   title: 'dummyTitle',
@@ -353,8 +355,9 @@ function AnnotationCreation(props) {
       konvaThing,
     } = state;
     // TODO rename variable for better comprenhension
-    // const svg = await getSvg();
-
+    console.log('BEFORE GET SVG')
+    const svg = await getSvg();
+    console.log('SVG',svg)
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
     // TODO promises not handled. Use promiseAll ?

@@ -9,7 +9,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import StrokeColorIcon from '@mui/icons-material/BorderColor';
 import LineWeightIcon from '@mui/icons-material/LineWeight';
 import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import ClosedPolygonIcon from '@mui/icons-material/ChangeHistory';
 import OpenPolygonIcon from '@mui/icons-material/ShowChart';
 import PropTypes from 'prop-types';
@@ -62,6 +62,12 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
     popoverLineWeightAnchorEl: null,
   });
 
+  useEffect(()=>{
+    updateToolState({
+      ...toolState,
+      [toolOptions.currentColorType]: objToRgba({r:255 ,g:0, b:0 ,a:0.5}),
+    });
+  },[])
   // Set unused default color to avoid error on render
   const currentColor = toolOptions.currentColorType ? rgbaToObj(toolState[toolOptions.currentColorType]) : 'rgba(255, 0, 0, 0.5)';
 
@@ -128,6 +134,8 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
 
   /** Update color : fillColor or strokeColor */
   const updateColor = (color) => {
+    console.log('color', color);
+    console.log('color.rgb',color.rgb)
     updateToolState({
       ...toolState,
       [toolOptions.currentColorType]: objToRgba(color.rgb),
