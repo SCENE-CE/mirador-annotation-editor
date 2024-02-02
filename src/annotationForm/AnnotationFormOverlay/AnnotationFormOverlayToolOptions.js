@@ -278,7 +278,6 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
           //     inputRef={inputRef}
           // />
             ' TODO add input'
-
           )
       }
     </div>
@@ -290,6 +289,9 @@ AnnotationFormOverlayToolOptions.propTypes = {
     activeTool: PropTypes.string.isRequired,
     closedMode: PropTypes.bool.isRequired,
     fillColor: PropTypes.string.isRequired,
+    image: PropTypes.shape({
+      id: PropTypes.string,
+    }).isRequired,
     strokeColor: PropTypes.string.isRequired,
     strokeWidth: PropTypes.number.isRequired,
     updateColor: PropTypes.func.isRequired,

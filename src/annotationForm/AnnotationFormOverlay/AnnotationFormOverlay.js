@@ -121,10 +121,20 @@ function AnnotationFormOverlay({
 }
 
 AnnotationFormOverlay.propTypes = {
-  toolState: PropTypes.object,
-  updateToolState: PropTypes.func,
-  shapes: PropTypes.object,
-  deleteShape: PropTypes.func,
+  deleteShape: PropTypes.func.isRequired,
+  shapes: PropTypes.array.isRequired,
+  toolState: PropTypes.shape({
+    activeTool: PropTypes.string.isRequired,
+    closedMode: PropTypes.bool.isRequired,
+    fillColor: PropTypes.string.isRequired,
+    image: PropTypes.shape({
+      id: PropTypes.string,
+    }).isRequired,
+    strokeColor: PropTypes.string.isRequired,
+    strokeWidth: PropTypes.number.isRequired,
+    updateColor: PropTypes.func.isRequired,
+  }).isRequired,
+  updateToolState: PropTypes.func.isRequired,
 };
 
 export default AnnotationFormOverlay;
