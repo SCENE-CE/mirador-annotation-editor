@@ -308,6 +308,7 @@ function AnnotationCreation(props) {
      * Validate form and save annotation
      */
   const submitForm = async (e) => {
+    console.log('submitForm');
     e.preventDefault();
     // TODO Possibly problem of syncing
     // TODO Improve this code
@@ -532,6 +533,7 @@ function AnnotationCreation(props) {
               updateToolState={setToolState}
               handleImgChange={handleImgChange}
               shapes={drawingState.shapes}
+              currentShape={drawingState.currentShape}
               //deleteShape={deleteShape}
             />
           </StyledTabPanel>

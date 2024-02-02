@@ -8,10 +8,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { Button } from '@mui/material';
+import { Button, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Typography from '@mui/material/Typography';
 import AnnotationFormOverlayToolOptions from './AnnotationFormOverlayToolOptions';
 import { isShapesTool, OVERLAY_TOOL, SHAPES_TOOL } from '../../AnnotationCreationUtils';
+import AccordionShapes from './Accordion';
 
 const StyledLi = styled('li')(({ theme }) => ({
   display: 'flex',
@@ -40,7 +42,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 
 /** All the form part for the overlay view */
 function AnnotationFormOverlayTool({
-  toolState, updateToolState, shapes, deleteShape,
+  toolState, updateToolState, shapes, deleteShape, currentShape,
 }) {
   /** Change the active overlay tool */
   const changeTool = (e, tool) => {
@@ -55,16 +57,30 @@ function AnnotationFormOverlayTool({
       {toolState.activeTool}
       {
           toolState.activeTool === OVERLAY_TOOL.EDIT && (
-          <StyledUl>
-            {shapes && shapes.map((shape) => (
-              <StyledLi key={shape.id}>
-                {shape.id}
-                <Button onClick={() => deleteShape(shape.id)}>
-                  <DeleteIcon />
-                </Button>
-              </StyledLi>
-            ))}
-          </StyledUl>
+          <>
+            <Paper>
+              <Typography variant="overline">
+                Current shapes
+              </Typography>
+              {
+                currentShape && (
+                <ul>
+                  {Object.keys(currentShape).sort().map((key) => (
+                    <li key={key}>
+                      {key}
+                      :
+                      {currentShape[key]}
+                    </li>
+                  ))}
+                </ul>
+                )
+              }
+            </Paper>
+            <AccordionShapes
+              shapes={shapes}
+            />
+          </>
+
           )
       }
       {
