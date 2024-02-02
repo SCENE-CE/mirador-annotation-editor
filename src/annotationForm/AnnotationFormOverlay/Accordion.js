@@ -5,21 +5,20 @@ import React from 'react';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Button from "@mui/material/Button";
-import DeleteIcon from "@mui/icons-material/DeleteForever";
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/DeleteForever';
 
-function AccordionShapes({ shapes, deleteShape }) {
+function AccordionShapes({ shapes, deleteShape, currentShapeId }) {
   return (
     <Paper>
       {shapes.map((shape) => (
-        <Accordion>
+        <Accordion style={shape.id === currentShapeId ? { fontWeight: 'bold' } : {}}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1-content"
             id="panel1-header"
           >
-
-            <Typography>{shape.id}</Typography>
+            {shape.id}
           </AccordionSummary>
           <AccordionDetails>
             <ul>
@@ -32,9 +31,9 @@ function AccordionShapes({ shapes, deleteShape }) {
               ))}
             </ul>
             <Button
-                onClick={() => deleteShape(shape.id)}
+              onClick={() => deleteShape(shape.id)}
             >
-                <DeleteIcon />
+              <DeleteIcon />
             </Button>
           </AccordionDetails>
         </Accordion>
@@ -46,7 +45,7 @@ function AccordionShapes({ shapes, deleteShape }) {
 
 AccordionShapes.propTypes = {
   shapes: PropTypes.array.isRequired,
-    deleteShape: PropTypes.func.isRequired,
+  deleteShape: PropTypes.func.isRequired,
 };
 
 export default AccordionShapes;

@@ -61,7 +61,7 @@ function AnnotationFormOverlayTool({
             currentShape && (
             <Paper>
               <Typography variant="overline">
-                Forme selectionné
+                Forme selectionnée
               </Typography>
 
               <ul>
@@ -77,6 +77,7 @@ function AnnotationFormOverlayTool({
             )
             }
             <AccordionShapes
+              currentShapeId={currentShape?.id}
               shapes={shapes}
               deleteShape={deleteShape}
             />
