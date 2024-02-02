@@ -349,8 +349,8 @@ function AnnotationCreation(props) {
       xywh,
       tstart,
       tend,
-        image,
-        konvaThing,
+      image,
+      konvaThing,
     } = state;
     // TODO rename variable for better comprenhension
     // const svg = await getSvg();
@@ -374,6 +374,7 @@ function AnnotationCreation(props) {
         tags,
         konvaThing,
       }).toJson();
+
       if (annotation) {
         storageAdapter.update(anno)
           .then((annoPage) => {

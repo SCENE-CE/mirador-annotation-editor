@@ -23,6 +23,7 @@ export default class WebAnnotation {
       motivation: 'commenting',
       target: this.target(),
       type: 'Annotation',
+      konvaThing: this.konvaThing
     };
   }
 
@@ -46,13 +47,6 @@ export default class WebAnnotation {
       bodies.push(imgBody);
     }
 
-    if(this.konvaThing){
-      const konvaThing={
-        type: 'AnnotationkonvaThing',
-        value: this.konvaThing,
-      }
-      bodies.push(konvaThing)
-    }
     if (this.tags) {
       bodies = bodies.concat(this.tags.map((tag) => ({
         purpose: 'tagging',
