@@ -125,7 +125,7 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
 
     Object.assign(shape, modifiedshape);
     drawingState.currentShape = shape;
-    updateCurrentShapeInShapes();
+    updateCurrentShapeInShapes(drawingState.currentShape);
   };
 
   const handleDragEnd = (evt) => {
