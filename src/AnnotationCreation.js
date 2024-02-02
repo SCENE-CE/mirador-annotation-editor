@@ -22,6 +22,7 @@ import AnnotationFormContent from './annotationForm/AnnotationFormContent';
 import AnnotationFormTime from './annotationForm/AnnotationFormTime';
 import { geomFromAnnoTarget, timeFromAnnoTarget } from './AnnotationCreationUtils';
 import AnnotationFormOverlay from './annotationForm/AnnotationFormOverlay/AnnotationFormOverlay.js';
+import axios from 'axios';
 
 const TARGET_VIEW = 'target';
 const OVERLAY_VIEW = 'layer';
@@ -451,6 +452,25 @@ function AnnotationCreation(props) {
     setScale(overlay.containerWidth / overlay.canvasWidth);
   };
 
+  const sendFile = async () => {
+    const fileContent = 'Hello, this is a test file';
+    const blob = new Blob([fileContent], { type: 'text/plain' });
+
+    const formData = new FormData();
+    formData.append('file', blob);
+
+    try {
+      const response = await axios.post('http://localhost:3001/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('File Uploaded', response.data);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  }
+
   useEffect(() => {
   }, [overlay.containerWidth, overlay.canvasWidth]);
 
@@ -461,6 +481,11 @@ function AnnotationCreation(props) {
       windowId={windowId}
       id={id}
     >
+      <Button
+        onClick={sendFile}
+        >
+        Send data
+        </Button>
       <StyledAnnotationDrawing
         scale={scale}
         activeTool={activeTool}
