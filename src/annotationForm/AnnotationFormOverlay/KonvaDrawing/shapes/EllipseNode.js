@@ -34,7 +34,7 @@ function EllipseNode({
         width={shape.width}
         height={shape.height}
         fill={shape.fill}
-        stroke={`rgba(${shape.stroke.r},${shape.stroke.g},${shape.stroke.b},${shape.stroke.a})`}
+        stroke={shape.stroke}
         strokeWidth={shape.strokeWidth || 1}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
@@ -59,7 +59,6 @@ ArrowNode.propTypes = {
   onTransform: PropTypes.func.isRequired,
   shape: PropTypes.object.isRequired,
 };
-
 
 
 export default EllipseNode;
