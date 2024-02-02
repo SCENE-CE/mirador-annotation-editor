@@ -78,6 +78,7 @@ function AnnotationFormOverlayTool({
             }
             <AccordionShapes
               shapes={shapes}
+              deleteShape={deleteShape}
             />
           </>
 
@@ -108,6 +109,21 @@ function AnnotationFormOverlayTool({
               <GestureIcon />
             </ToggleButton>
           </StyledToggleButtonGroup>
+        )
+      }
+      {
+        toolState.activeTool === OVERLAY_TOOL.DELETE && (
+        <>
+          <p>
+            Cliquer sur les formes pour les supprimer
+          </p>
+          <Button
+            onClick={() => deleteShape()}
+          >
+            <span>Supprimer toutes les formes</span>
+            <DeleteIcon color="red" />
+          </Button>
+        </>
         )
       }
       <AnnotationFormOverlayToolOptions

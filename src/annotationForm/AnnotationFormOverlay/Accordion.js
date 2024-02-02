@@ -5,8 +5,10 @@ import React from 'react';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/DeleteForever";
 
-function AccordionShapes({ shapes }) {
+function AccordionShapes({ shapes, deleteShape }) {
   return (
     <Paper>
       {shapes.map((shape) => (
@@ -29,6 +31,11 @@ function AccordionShapes({ shapes }) {
                 </li>
               ))}
             </ul>
+            <Button
+                onClick={() => deleteShape(shape.id)}
+            >
+                <DeleteIcon />
+            </Button>
           </AccordionDetails>
         </Accordion>
 
@@ -39,6 +46,7 @@ function AccordionShapes({ shapes }) {
 
 AccordionShapes.propTypes = {
   shapes: PropTypes.array.isRequired,
+    deleteShape: PropTypes.func.isRequired,
 };
 
 export default AccordionShapes;
