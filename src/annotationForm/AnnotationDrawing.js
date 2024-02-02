@@ -130,7 +130,7 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
 
   const handleDragEnd = (evt) => {
     const modifiedshape = evt.currentTarget.attrs;
-    const shape = shapes.find((s) => s.id === modifiedshape.id);
+    const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
     shape.x = modifiedshape.x;
     shape.y = modifiedshape.y;
 
