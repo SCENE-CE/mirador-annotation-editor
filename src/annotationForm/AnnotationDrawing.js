@@ -142,19 +142,22 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
     e.stopPropagation();
     const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape', 'Tab', 'AltGraph', 'CapsLock', 'NumLock', 'ScrollLock', 'Pause', 'Insert', 'Home', 'PageUp', 'PageDown', 'End', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ContextMenu', 'PrintScreen', 'Help', 'Clear', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'OS'];
 
-    if (!currentShape) {
+    if (!drawingState.currentShape) {
       return;
     }
 
     if (e.key === 'Delete') {
-      const newShapes = shapes.filter((shape) => shape.id !== currentShape.id);
-      setShapes(newShapes);
+      const shapesWithoutTheDeleted = drawingState.shapes.filter((shape) => shape.id !== drawingState.currentShape.id);
+      setDrawingState({
+        ...drawingState,
+        shapes: shapesWithoutTheDeleted,
+      });
       return;
     }
 
     // TODO This comportment must be handle by the text component
-    if (currentShape.type === 'text') {
-      let newText = currentShape.text;
+    if (drawingState.currentShape.type === 'text') {
+      let newText = drawingState.currentShape.text;
       if (e.key === 'Backspace') {
         newText = newText.slice(0, -1);
       } else {
@@ -164,14 +167,14 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
         newText += e.key;
       }
 
-      // TODO Check
-      /* setCurrentShape({ ...currentShape, text: newText }); */
-      const newCurrentShape = { ...currentShape, text: newText };
-      setCurrentShape(newCurrentShape);
+      // Potentially bug during the update
+      const newCurrentShape = { ...drawingState.currentShape, text: newText };
 
-      // setShapes(shapes.map((shape) => (shape.id === currentShape.id ? currentShape : shape)));
-      const newShapes = shapes.map((shape) => (shape.id === currentShape.id ? newCurrentShape : shape));
-      setShapes(newShapes);
+      setDrawingState({
+        ...drawingState,
+        shapes: shapes.map((shape) => (shape.id === drawingState.currentShape.id ? newCurrentShape : shape)),
+        currentShape: newCurrentShape,
+      });
     }
   };
 
