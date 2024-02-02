@@ -59,8 +59,5 @@ ArrowNode.propTypes = {
   shape: PropTypes.object.isRequired,
 };
 
-ArrowNode.defaultProps = {
-  isSelected: false,
-};
 
 export default ArrowNode;

@@ -2,6 +2,7 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Ellipse, Transformer } from 'react-konva';
+import ArrowNode from "./ArrowNode";
 
 function EllipseNode({
   onShapeClick, shape, activeTool, isSelected,
@@ -50,26 +51,15 @@ function EllipseNode({
   );
 }
 
-EllipseNode.propTypes = {
-
-  fill: PropTypes.string.isRequired,
-  height: PropTypes.number,
+ArrowNode.propTypes = {
+  activeTool: PropTypes.string,
+  handleDragEnd: PropTypes.func.isRequired,
+  isSelected: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
-  selectedShapeId: PropTypes.string,
+  onTransform: PropTypes.func.isRequired,
   shape: PropTypes.object.isRequired,
-  stroke: PropTypes.string.isRequired,
-  strokeWidth: PropTypes.number.isRequired,
-  width: PropTypes.number,
-  x: PropTypes.number,
-  y: PropTypes.number,
 };
 
-EllipseNode.defaultProps = {
-  selectedShapeId: null,
-  x: 100,
-  y: 100,
-  width: 100,
-  height: 100,
-};
+
 
 export default EllipseNode;

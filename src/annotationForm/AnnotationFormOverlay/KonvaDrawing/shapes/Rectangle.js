@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Rect, Transformer } from 'react-konva';
+import ArrowNode from "./ArrowNode";
 
 function Rectangle({
   shape, onShapeClick, activeTool, isSelected,
@@ -49,29 +50,14 @@ function Rectangle({
   );
 }
 
-Rectangle.propTypes = {
+ArrowNode.propTypes = {
   activeTool: PropTypes.string,
-  fill: PropTypes.string,
-  height: PropTypes.number,
+  handleDragEnd: PropTypes.func.isRequired,
+  isSelected: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
-  selectedShapeId: PropTypes.string,
+  onTransform: PropTypes.func.isRequired,
   shape: PropTypes.object.isRequired,
-  stroke: PropTypes.string,
-  strokeWidth: PropTypes.number,
-  width: PropTypes.number,
-  x: PropTypes.number,
-  y: PropTypes.number,
 };
 
-Rectangle.defaultProps = {
-  selectedShapeId: null,
-  x: 100,
-  y: 100,
-  width: 100,
-  height: 100,
-  fill: 'red',
-  stroke: 'black',
-  strokeWidth: 1,
-};
 
 export default Rectangle;

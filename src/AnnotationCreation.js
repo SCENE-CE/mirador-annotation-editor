@@ -469,6 +469,7 @@ function AnnotationCreation(props) {
         shapes={shapes}
         isMouseOverSave={isMouseOverSave}
         mediaVideo={props.mediaVideo}
+
       />
       <StyledForm
         onSubmit={submitForm}

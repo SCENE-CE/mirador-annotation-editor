@@ -19,9 +19,9 @@ function ParentComponent({
   const [selectedShape, setSelectedShape] = useState(null);
 
   useEffect(() => {
-    if (shapes.length === 1 && !selectedShapeId) {
+   /* if (shapes.length === 1 && !selectedShapeId) {
       setSelectedShape(shapes[0]);
-    }
+    }*/
   }, [shapes, selectedShapeId]);
 
   useEffect(() => {

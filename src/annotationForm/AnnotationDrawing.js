@@ -14,6 +14,7 @@ import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentC
 import { SHAPES_TOOL } from '../AnnotationCreationUtils';
 /** All the stuff to draw on the canvas */
 function AnnotationDrawing(props) {
+
   const [shapes, setShapes] = useState([]);
   const [currentShape, setCurrentShape] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -49,16 +50,16 @@ function AnnotationDrawing(props) {
   const { fillColor, strokeColor, strokeWidth } = props;
 
   /** */
-  useEffect(() => {
-    if (!isDrawing) {
+/*  useEffect(() => {
+    /!*if (!isDrawing) {
       const newCurrentShape = shapes[shapes.length - 1];
       // get latest shape in the list
       if (newCurrentShape) {
         setCurrentShape(newCurrentShape);
       }
     }
-    props.updateShapes([...shapes]);
-  }, [shapes]);
+    props.updateShapes([...shapes]);*!/
+  }, [shapes]);*/
 
   useEffect(() => {
     // Perform an action when fillColor, strokeColor, or strokeWidth change
