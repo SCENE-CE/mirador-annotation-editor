@@ -108,6 +108,7 @@ function AnnotationCreation(props) {
       tstart,
       valueTime: [0, 1],
       valuetextTime: '',
+      textBody: '',
     };
   });
 
@@ -115,7 +116,7 @@ function AnnotationCreation(props) {
   const [isMouseOverSave, setIsMouseOverSave] = useState(false);
   const [scale, setScale] = useState(1);
 
-  const [value, setValue] = useState(TARGET_VIEW);
+  const [viewTool, setViewTool] = useState(TARGET_VIEW);
   const { height, width } = props.mediaVideo ? props.mediaVideo : 0;
 
   // TODO Check the effect to keep and remove the other
@@ -182,7 +183,7 @@ function AnnotationCreation(props) {
     }));
   };
   const tabHandler = (event, TabIndex) => {
-    setValue(TabIndex);
+    setViewTool(TabIndex);
   };
   /**
    * Change from slider
@@ -269,7 +270,7 @@ function AnnotationCreation(props) {
      */
   const getSvg = async () => {
     const stage = window.Konva.stages.find((s) => s.attrs.id === props.windowId);
-    const svg = await exportStageSVG(stage); // TODO clean
+    const svg = await exportStageSVG(stage, false); // TODO clean
     return svg;
   };
 
@@ -302,7 +303,7 @@ function AnnotationCreation(props) {
     // TODO Possibly problem of syncing
     // TODO Improve this code
     // If we are in edit mode, we have the transformer on the stage saved in the annotation
-    if (state.activeTool === 'edit') {
+    if (viewTool === OVERLAY_VIEW && state.activeTool === 'edit') {
       setState((prevState) => ({
         ...prevState,
         activeTool: 'cursor',
@@ -316,24 +317,45 @@ function AnnotationCreation(props) {
       receiveAnnotation,
       config,
     } = props;
+    // const svg = <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle fill="red" cx="50" cy="50" r="50" /></svg>;
+
+    // const dummyAnnot = {
+    //   title: 'dummyTitle',
+    //   textBody:'dummyTextBody',
+    //   image:{
+    //     id: null,
+    //     svg: svg
+    //   },
+    //   tags: null,
+    //   xywh:"220,470,450,50",
+    //   tstart: 1880,
+    //   tend:1905,
+    //   textEditorStateBustingKey:0,
+    //   konvaThing: ['SOME KONVA THING', 'AND ANOTHER KONVA THING', {thirdKonvaThing:'Third Konva thing here'}]
+    // }
+    // const title = dummyAnnot.title
+    const dumbIimage = {
+      id: null,
+      svg,
+    };
+    //
+    // const konvaThing = dummyAnnot.konvaThing;
+    state.image = dumbIimage;
+    state.konvaThing = ['SOME KONVA THING', 'AND ANOTHER KONVA THING', { thirdKonvaThing: 'Third Konva thing here' }];
 
     const {
-      title,
       textBody,
-      image,
       tags,
       xywh,
       tstart,
       tend,
-      textEditorStateBustingKey,
+      image,
+      konvaThing,
     } = state;
-
     // TODO rename variable for better comprenhension
     const svg = await getSvg();
-
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
-
     // TODO promises not handled. Use promiseAll ?
     canvases.forEach(async (canvas) => {
       const storageAdapter = config.annotation.adapter(canvas.id);
@@ -349,7 +371,7 @@ function AnnotationCreation(props) {
         manifestId: canvas.options.resource.id,
         svg,
         tags,
-        title,
+        konvaThing,
       }).toJson();
 
       if (annotation) {
@@ -364,15 +386,17 @@ function AnnotationCreation(props) {
           });
       }
     });
-
-    // TODO check if we need other thing in state
+    props.closeCompanionWindow('annotationCreation', {
+      id,
+      position: 'right',
+    });
+    // TODO this create a re-render too soon for react and crash the app
     setState({
       image: { id: null },
       svg: null,
       tend: 0,
       textBody: '',
       textEditorStateBustingKey: textEditorStateBustingKey + 1,
-      title: '',
       tstart: 0,
       xywh: null,
     });
@@ -403,9 +427,8 @@ function AnnotationCreation(props) {
     imageEvent,
   } = toolState;
 
-  // TODO : Vérifier ce code, c'est étrange de comprarer un typeof à une chaine de caractère.
   const mediaIsVideo = props.mediaVideo !== 'undefined';
-  if (mediaIsVideo) {
+  if (mediaIsVideo && valueTime) {
     valueTime[0] = tstart;
     valueTime[1] = tend;
   }
@@ -466,8 +489,8 @@ function AnnotationCreation(props) {
       <StyledForm
         onSubmit={submitForm}
       >
-        <TabContext value={value}>
-          <TabList value={value} onChange={tabHandler} aria-label="icon tabs">
+        <TabContext value={viewTool}>
+          <TabList value={viewTool} onChange={tabHandler} aria-label="icon tabs">
             <StyledTab
               icon={<HighlightAltIcon />}
               aria-label="TargetSelector"
