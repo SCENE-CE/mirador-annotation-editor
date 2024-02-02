@@ -118,7 +118,6 @@ function AnnotationCreation(props) {
     };
   });
 
-
   const [isMouseOverSave, setIsMouseOverSave] = useState(false);
   const [scale, setScale] = useState(1);
 
@@ -296,13 +295,21 @@ function AnnotationCreation(props) {
 
   /** delete shape */
 
- /* const deleteShape = (shapeId) => {
-    setShapes(newShapes);
-    setDrawingState((prevState) => ({
+  const deleteShape = (shapeId) => {
+    if (!shapeId) {
+      setDrawingState((prevState) => ({
         ...prevState,
-        shapes: newShapes,
+        currentShape: null,
+        shapes: [],
+      }));
+    } else {
+      setDrawingState((prevState) => ({
+        ...prevState,
+        currentShape: null,
+        shapes: prevState.shapes.filter((shape) => shape.id !== shapeId),
+      }));
     }
-  };*/
+  };
 
   /**
      * Validate form and save annotation
@@ -534,7 +541,7 @@ function AnnotationCreation(props) {
               handleImgChange={handleImgChange}
               shapes={drawingState.shapes}
               currentShape={drawingState.currentShape}
-              //deleteShape={deleteShape}
+              deleteShape={deleteShape}
             />
           </StyledTabPanel>
           <StyledTabPanel

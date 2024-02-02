@@ -42,7 +42,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 
 /** All the form part for the overlay view */
 function AnnotationFormOverlayTool({
-  toolState, updateToolState, shapes, deleteShape, currentShape,
+  toolState, updateToolState, currentShape, shapes, deleteShape
 }) {
   /** Change the active overlay tool */
   const changeTool = (e, tool) => {
@@ -60,7 +60,7 @@ function AnnotationFormOverlayTool({
           <>
             <Paper>
               <Typography variant="overline">
-                Current shapes
+                Forme selectionné
               </Typography>
               {
                 currentShape && (
@@ -101,7 +101,7 @@ function AnnotationFormOverlayTool({
             <ToggleButton value={SHAPES_TOOL.ARROW} aria-label="add an arrow">
               <ArrowOutwardIcon />
             </ToggleButton>
-            <ToggleButton value={SHAPES_TOOL.POLYGON} aria-label="add a polygon">
+            <ToggleButton value={SHAPES_TOOL.POLYGON} aria-label="add a polygon" style={{ display: 'none' }}>
               <PolygonIcon />
             </ToggleButton>
             <ToggleButton value={SHAPES_TOOL.FREEHAND} aria-label="free hand polygon">
@@ -119,6 +119,9 @@ function AnnotationFormOverlayTool({
 }
 
 AnnotationFormOverlayTool.propTypes = {
+  currentShape: PropTypes.object.isRequired,
+  deleteShape: PropTypes.func.isRequired,
+  shapes: PropTypes.array.isRequired,
   toolState: PropTypes.shape({
     activeTool: PropTypes.string.isRequired,
     closedMode: PropTypes.bool.isRequired,

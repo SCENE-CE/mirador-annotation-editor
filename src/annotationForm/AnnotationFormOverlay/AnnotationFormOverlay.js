@@ -33,7 +33,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 
 /** All the stuff to manage to choose the drawing tool */
 function AnnotationFormOverlay({
-  updateToolState, toolState, shapes, deleteShape, currentShape,
+  updateToolState, toolState, deleteShape, currentShape, shapes
 }) {
   useEffect(() => {
 
@@ -86,8 +86,8 @@ function AnnotationFormOverlay({
             <AnnotationFormOverlayTool
               toolState={toolState}
               updateToolState={updateToolState}
-              shapes={shapes}
               currentShape={currentShape}
+              shapes={shapes}
               deleteShape={deleteShape}
             />
           </Grid>
@@ -98,6 +98,7 @@ function AnnotationFormOverlay({
 }
 
 AnnotationFormOverlay.propTypes = {
+  currentShape: PropTypes.object.isRequired,
   deleteShape: PropTypes.func.isRequired,
   shapes: PropTypes.array.isRequired,
   toolState: PropTypes.shape({
