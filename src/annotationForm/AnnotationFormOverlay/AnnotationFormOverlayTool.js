@@ -42,7 +42,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 
 /** All the form part for the overlay view */
 function AnnotationFormOverlayTool({
-  toolState, updateToolState, currentShape, shapes, deleteShape
+  toolState, updateToolState, currentShape, shapes, deleteShape,
 }) {
   /** Change the active overlay tool */
   const changeTool = (e, tool) => {
@@ -54,28 +54,28 @@ function AnnotationFormOverlayTool({
 
   return (
     <>
-      {toolState.activeTool}
       {
           toolState.activeTool === OVERLAY_TOOL.EDIT && (
           <>
+            {
+            currentShape && (
             <Paper>
               <Typography variant="overline">
                 Forme selectionné
               </Typography>
-              {
-                currentShape && (
-                <ul>
-                  {Object.keys(currentShape).sort().map((key) => (
-                    <li key={key}>
-                      {key}
-                      :
-                      {currentShape[key]}
-                    </li>
-                  ))}
-                </ul>
-                )
-              }
+
+              <ul>
+                {Object.keys(currentShape).sort().map((key) => (
+                  <li key={key}>
+                    {key}
+                    :
+                    {currentShape[key]}
+                  </li>
+                ))}
+              </ul>
             </Paper>
+            )
+            }
             <AccordionShapes
               shapes={shapes}
             />
