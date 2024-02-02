@@ -74,11 +74,13 @@ function AnnotationCreation(props) {
         if (Array.isArray(props.annotation.target.selector)) {
           props.annotation.target.selector.forEach((selector) => {
             if (selector.type === 'SvgSelector') {
+              console.log('SVG SELECTOR ', selector.value);
               annoState.svg = selector.value;
             } else if (selector.type === 'FragmentSelector') {
               // TODO proper fragment selector extraction
               annoState.xywh = geomFromAnnoTarget(selector.value);
               [tstart, tend] = timeFromAnnoTarget(selector.value);
+              console.log('FRAGMENT SELECTOR', selector.value);
             }
           });
         } else {
@@ -86,9 +88,13 @@ function AnnotationCreation(props) {
           // TODO does this happen ? when ? where are fragments selectors ?
         }
       } else if (typeof props.annotation.target === 'string') {
+        console.log('props.annotation.target', props.annotation.target);
         annoState.xywh = geomFromAnnoTarget(props.annotation.target);
         [tstart, tend] = timeFromAnnoTarget(props.annotation.target);
       }
+      console.log('props.annotation.target', props.annotation.target);
+
+      console.log('ANNOSTATE', annoState);
     }
 
     // If we don't have tstart setted, we are creating a new annotation.
@@ -231,12 +237,10 @@ function AnnotationCreation(props) {
   };
 
   /** */
-  const updateGeometry = ({ svg, xywh }) => {
-    setState((prevState) => ({
-      ...prevState,
-      svg,
-      xywh,
-    }));
+  const updateGeometry = ({ xywh }) => {
+    console.log(xywh)
+    setState({...state, xywh: xywh})
+    console.log(xywh)
   };
 
   /** */
@@ -269,8 +273,11 @@ function AnnotationCreation(props) {
      * This image will be put in overlay of the iiif media
      */
   const getSvg = async () => {
+    console.log('ENTER GET SVG');
     const stage = window.Konva.stages.find((s) => s.attrs.id === props.windowId);
+    console.log('STAGE', stage);
     const svg = await exportStageSVG(stage, false); // TODO clean
+    console.log('svg', svg);
     return svg;
   };
 
@@ -300,6 +307,8 @@ function AnnotationCreation(props) {
      */
   const submitForm = async (e) => {
     e.preventDefault();
+
+    console.log('ENTER SUBMIT FORM');
     // TODO Possibly problem of syncing
     // TODO Improve this code
     // If we are in edit mode, we have the transformer on the stage saved in the annotation
@@ -308,7 +317,6 @@ function AnnotationCreation(props) {
         ...prevState,
         activeTool: 'cursor',
       }));
-      return;
     }
 
     const {
@@ -353,6 +361,7 @@ function AnnotationCreation(props) {
       konvaThing,
     } = state;
     // TODO rename variable for better comprenhension
+    console.log('CALL GET SVG INTO SUBMIT FORM');
     const svg = await getSvg();
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
@@ -373,7 +382,7 @@ function AnnotationCreation(props) {
         tags,
         konvaThing,
       }).toJson();
-
+      console.log('anno', anno);
       if (annotation) {
         storageAdapter.update(anno)
           .then((annoPage) => {

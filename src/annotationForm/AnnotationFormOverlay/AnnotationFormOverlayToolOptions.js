@@ -62,9 +62,6 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
     popoverLineWeightAnchorEl: null,
   });
 
-  useEffect(()=>{
-    //TODO: This useEffect fix the bug on konva to svg but may be useless
-  },[])
   // Set unused default color to avoid error on render
   const currentColor = toolOptions.currentColorType ? rgbaToObj(toolState[toolOptions.currentColorType]) : 'rgba(255, 0, 0, 0.5)';
 
@@ -131,6 +128,9 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
 
   /** Update color : fillColor or strokeColor */
   const updateColor = (color) => {
+    console.log('color', color)
+    console.log('color.rgb', color.rgb)
+    console.log(window.Konva.stages)
     updateToolState({
       ...toolState,
       [toolOptions.currentColorType]: objToRgba(color.rgb),

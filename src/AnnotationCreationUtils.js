@@ -12,10 +12,13 @@ export function timeFromAnnoTarget(annotarget) {
 /** Extract xywh from annotation target */
 export function geomFromAnnoTarget(annotarget) {
   console.info('TODO proper xywh extraction from: ', annotarget);
+  console.log(annotarget)
   const r = /xywh=((-?[0-9]+,?)+)/.exec(annotarget);
   if (!r || r.length !== 3) {
+    console.log('QUE DALLE')
     return '';
   }
+  console.log(r[1])
   return r[1];
 }
 

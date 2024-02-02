@@ -217,6 +217,10 @@ function AnnotationDrawing(props) {
           setIsDrawing(true);
           setShapes([...shapes, shape]);
           setCurrentShape(shape);
+          console.log('UPDATE GEO')
+            const xywh = {x: shape.x, y: shape.y, w: shape.width, h: shape.height}
+            console.log(xywh)
+          props.updateGeometry(xywh)
           break;
         case SHAPES_TOOL.ELLIPSE:
           shape = {
