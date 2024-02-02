@@ -41,6 +41,12 @@ function AnnotationCreation(props) {
     strokeWidth: 20,
   });
 
+  const [drawingState, setDrawingState] = useState({
+    shapes: [],
+    currentShape: null,
+    isDrawing: false,
+  });
+
   // Initial state setup
   const [state, setState] = useState(() => {
     let tstart;
@@ -112,7 +118,7 @@ function AnnotationCreation(props) {
     };
   });
 
-  const [shapes, setShapes] = useState([]);
+
   const [isMouseOverSave, setIsMouseOverSave] = useState(false);
   const [scale, setScale] = useState(1);
 
@@ -284,16 +290,19 @@ function AnnotationCreation(props) {
 
   /** update shapes with shapes from annotationDrawing */
 
-  const updateShapes = (newShapes) => {
-    setShapes(newShapes);
+  const updateShapes = (newDrawingState) => {
+    setDrawingState(newDrawingState);
   };
 
   /** delete shape */
 
-  const deleteShape = (shapeId) => {
-    const newShapes = shapes.filter((shape) => shape.id !== shapeId);
+ /* const deleteShape = (shapeId) => {
     setShapes(newShapes);
-  };
+    setDrawingState((prevState) => ({
+        ...prevState,
+        shapes: newShapes,
+    }
+  };*/
 
   /**
      * Validate form and save annotation
@@ -465,11 +474,10 @@ function AnnotationCreation(props) {
         updateScale={updateScale}
         imageEvent={imageEvent}
         setColorToolFromCurrentShape={setColorToolFromCurrentShape}
-        updateShapes={updateShapes}
-        shapes={shapes}
+        drawingState={drawingState}
         isMouseOverSave={isMouseOverSave}
         mediaVideo={props.mediaVideo}
-        setShapes={setShapes}
+        setDrawingState={setDrawingState}
       />
       <StyledForm
         onSubmit={submitForm}
@@ -523,8 +531,8 @@ function AnnotationCreation(props) {
               toolState={toolState}
               updateToolState={setToolState}
               handleImgChange={handleImgChange}
-              shapes={shapes}
-              deleteShape={deleteShape}
+              shapes={drawingState.shapes}
+              //deleteShape={deleteShape}
             />
           </StyledTabPanel>
           <StyledTabPanel
