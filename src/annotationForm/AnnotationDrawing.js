@@ -13,12 +13,7 @@ import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
 import { SHAPES_TOOL } from '../AnnotationCreationUtils';
 /** All the stuff to draw on the canvas */
-function AnnotationDrawing(props) {
-
-  const {shapes, setShapes} = props;
-  const [currentShape, setCurrentShape] = useState(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-
+function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
   const { height, width } = props.mediaVideo ? props.mediaVideo.ref.current : 0;
 
   useEffect(() => {
@@ -43,18 +38,17 @@ function AnnotationDrawing(props) {
       y: 0,
     };
 
-    setShapes([...shapes, shape]);
-    setCurrentShape(shape);
+    setDrawingState({
+      ...drawingState,
+      currentShape: shape,
+      shapes: [...drawingState.shapes, shape],
+    });
   }, [props.imageEvent]);
 
   const { fillColor, strokeColor, strokeWidth } = props;
 
-  useEffect(() => {
-
-  },[shapes]);
-
   /** */
-/*  useEffect(() => {
+  /*  useEffect(() => {
     /!*if (!isDrawing) {
       const newCurrentShape = shapes[shapes.length - 1];
       // get latest shape in the list
@@ -63,31 +57,30 @@ function AnnotationDrawing(props) {
       }
     }
     props.updateShapes([...shapes]);*!/
-  }, [shapes]);*/
+  }, [shapes]); */
 
   useEffect(() => {
     // Perform an action when fillColor, strokeColor, or strokeWidth change
     // update current shape
-    if (currentShape) {
-      currentShape.fill = fillColor;
-      currentShape.stroke = strokeColor;
-      currentShape.strokeWidth = strokeWidth;
-      setCurrentShape({ ...currentShape });
-      updateCurrentShapeInShapes();
+    if (drawingState.currentShape) {
+      drawingState.currentShape.fill = fillColor;
+      drawingState.currentShape.stroke = strokeColor;
+      drawingState.currentShape.strokeWidth = strokeWidth;
+      updateCurrentShapeInShapes(drawingState.currentShape);
     }
   }, [fillColor, strokeColor, strokeWidth]);
 
   // TODO Can be removed ? --> move currentSHape and shapes in the same state
   useLayoutEffect(() => {
-    if (shapes.find((s) => s.id === currentShape?.id)) {
+    if (drawingState.shapes.find((s) => s.id === drawingState.currentShape?.id)) {
       window.addEventListener('keydown', handleKeyPress);
 
-      props.setShapeProperties(currentShape); // TODO Check that code ?
+      // props.setShapeProperties(drawingState.currentShape); // TODO Check that code ?
       props.setColorToolFromCurrentShape(
         {
-          fillColor: currentShape.fill,
-          strokeColor: currentShape.stroke,
-          strokeWidth: currentShape.strokeWidth,
+          fillColor: drawingState.currentShape.fill,
+          strokeColor: drawingState.currentShape.stroke,
+          strokeWidth: drawingState.currentShape.strokeWidth,
         },
       );
 
@@ -95,26 +88,26 @@ function AnnotationDrawing(props) {
         window.removeEventListener('keydown', handleKeyPress);
       };
     }
-  }, [currentShape]);
-
-  useEffect(() => {
-    // compare shapes and props.shapes p, if different, update shapes
-    if (props.shapes.length !== shapes.length) { /// nul a revoir
-      setShapes(props.shapes);
-    }
-  }, [props.shapes]);
+  }, [drawingState.currentShape]);
 
   /** */
   const onShapeClick = async (shp) => {
-    const shape = shapes.find((s) => s.id === shp.id);
+    const shape = drawingState.shapes.find((s) => s.id === shp.id);
     if (props.activeTool === 'delete') {
-      const newShapes = shapes.filter((s) => s.id !== shape.id);
-      setShapes(newShapes);
+      const newShapes = drawingState.shapes.filter((s) => s.id !== shape.id);
+      setDrawingState({
+        ...drawingState,
+        shapes: newShapes,
+      });
       return;
     }
 
-    setCurrentShape(shape);
-    props.setShapeProperties(shape); // TODO Check that code ?
+    setDrawingState({
+      ...drawingState,
+      currentShape: shape,
+    });
+
+    // props.setShapeProperties(shape); // TODO Check that code ?
     props.setColorToolFromCurrentShape(
       {
         fillColor: shape.fill,
@@ -128,10 +121,10 @@ function AnnotationDrawing(props) {
     const modifiedshape = evt.target.attrs;
 
     console.log('modifiedshape', modifiedshape);
-    const shape = shapes.find((s) => s.id === modifiedshape.id);
+    const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
 
     Object.assign(shape, modifiedshape);
-    setCurrentShape({ ...shape });
+    drawingState.currentShape = shape;
     updateCurrentShapeInShapes();
   };
 
@@ -141,8 +134,7 @@ function AnnotationDrawing(props) {
     shape.x = modifiedshape.x;
     shape.y = modifiedshape.y;
 
-    setCurrentShape({ ...shape });
-    updateCurrentShapeInShapes();
+    updateCurrentShapeInShapes(shape);
   };
 
   /** */
@@ -184,14 +176,21 @@ function AnnotationDrawing(props) {
   };
 
   /** */
-  const updateCurrentShapeInShapes = () => {
-    const index = shapes.findIndex((s) => s.id === currentShape.id);
+  const updateCurrentShapeInShapes = (currentShape) => {
+    const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
 
     if (index !== -1) {
-      shapes[index] = currentShape;
-      setShapes([...shapes]);
+      drawingState.shapes[index] = currentShape;
+      setDrawingState({
+        ...drawingState,
+        currentShape,
+      });
     } else {
-      setShapes([...shapes, currentShape]);
+      setDrawingState({
+        ...drawingState,
+        shapes: [...drawingState.shapes, currentShape],
+        currentShape,
+      });
     }
   };
 
@@ -218,9 +217,11 @@ function AnnotationDrawing(props) {
             x: pos.x,
             y: pos.y,
           };
-          setIsDrawing(true);
-          setShapes([...shapes, shape]);
-          setCurrentShape(shape);
+          setDrawingState({
+            isDrawing: true,
+            currentShape: shape,
+            shapes: [...drawingState.shapes, shape],
+          });
           break;
         case SHAPES_TOOL.ELLIPSE:
           shape = {
@@ -239,10 +240,11 @@ function AnnotationDrawing(props) {
             x: pos.x,
             y: pos.y,
           };
-          setIsDrawing(true);
-          setShapes([...shapes, shape]);
-          setCurrentShape(shape);
-
+          setDrawingState({
+            isDrawing: true,
+            currentShape: shape,
+            shapes: [...drawingState.shapes, shape],
+          });
           break;
         case 'text':
           shape = {
@@ -258,12 +260,13 @@ function AnnotationDrawing(props) {
             y: pos.y,
           };
 
-          setShapes([...shapes, shape]);
-          setCurrentShape(shape);
+          setDrawingState({
+            ...drawingState,
+            currentShape: shape,
+            shapes: [...drawingState.shapes, shape],
+          });
           break;
         case SHAPES_TOOL.FREEHAND:
-          // Not totally functionnal
-          setIsDrawing(true);
           shape = {
             fill: props.fillColor,
             id: uuidv4(),
@@ -285,11 +288,13 @@ function AnnotationDrawing(props) {
             x: 0,
             y: 0,
           };
-          setShapes([...shapes, shape]);
-          setCurrentShape(shape);
+          setDrawingState({
+            currentShape: shape,
+            isDrawing: true,
+            shapes: [...drawingState.shapes, shape],
+          });
           break;
         case SHAPES_TOOL.POLYGON:
-          setIsDrawing(true);
           shape = {
             fill: props.fillColor,
             id: uuidv4(),
@@ -303,11 +308,13 @@ function AnnotationDrawing(props) {
             x: 0,
             y: 0,
           };
-          setShapes([...shapes, shape]);
-          setCurrentShape(shape);
+          setDrawingState({
+            currentShape: shape,
+            isDrawing: true,
+            shapes: [...drawingState.shapes, shape],
+          });
           break;
         case SHAPES_TOOL.ARROW:
-          setIsDrawing(true);
           shape = {
             fill: props.fillColor,
             id: uuidv4(),
@@ -321,8 +328,11 @@ function AnnotationDrawing(props) {
             strokeWidth: props.strokeWidth,
             type: SHAPES_TOOL.ARROW,
           };
-          setShapes([...shapes, shape]);
-          setCurrentShape(shape);
+          setDrawingState({
+            currentShape: shape,
+            isDrawing: true,
+            shapes: [...drawingState.shapes, shape],
+          });
           break;
         default:
           // Handle other cases if any
@@ -336,79 +346,75 @@ function AnnotationDrawing(props) {
   /** */
   const handleMouseMove = (e) => {
     try {
-      if (!isDrawing) {
+      if (!drawingState.isDrawing) {
         return;
       }
-      if (!currentShape) {
+      if (!drawingState.currentShape) {
         return;
       }
       const pos = e.target.getStage().getRelativePointerPosition();
       pos.x /= props.scale;
       pos.y /= props.scale;
 
+      let shape;
+
       switch (props.activeTool) {
         case SHAPES_TOOL.RECTANGLE:
-
-          setCurrentShape({
-            ...currentShape,
-            height: pos.y - currentShape.y,
-            width: pos.x - currentShape.x,
+          updateCurrentShapeInShapes({
+            ...drawingState.currentShape,
+            height: pos.y - drawingState.currentShape.y,
+            width: pos.x - drawingState.currentShape.x,
           });
-          updateCurrentShapeInShapes();
           break;
         case SHAPES_TOOL.ELLIPSE:
           // prevent negative radius for ellipse
-
-          if (pos.x < currentShape.x) {
-            pos.x = currentShape.x;
+          if (pos.x < drawingState.currentShape.x) {
+            pos.x = drawingState.currentShape.x;
           }
-          if (pos.y < currentShape.y) {
-            pos.y = currentShape.y;
+          if (pos.y < drawingState.currentShape.y) {
+            pos.y = drawingState.currentShape.y;
           }
 
-          setCurrentShape({
-            ...currentShape,
-            height: pos.y - currentShape.y,
-            radiusX: (pos.x - currentShape.x) / 2,
-            width: pos.x - currentShape.x,
-            radiusY: (pos.y - currentShape.y) / 2,
+          updateCurrentShapeInShapes({
+            ...drawingState.currentShape,
+            height: pos.y - drawingState.currentShape.y,
+            radiusX: (pos.x - drawingState.currentShape.x) / 2,
+            width: pos.x - drawingState.currentShape.x,
+            radiusY: (pos.y - drawingState.currentShape.y) / 2,
           });
-          updateCurrentShapeInShapes();
 
           break;
         case SHAPES_TOOL.FREEHAND:
-          const shape = { ...currentShape };
-          shape.lines.push({
+          const freehandShape = drawingState.currentShape; // TODO Check if not nuse { ...drawingState.currentShape };
+          freehandShape.lines.push({
             points: [pos.x, pos.y, pos.x, pos.y],
             stroke: props.strokeColor,
             strokeWidth: props.strokeWidth,
           });
-          setCurrentShape(shape);
-          updateCurrentShapeInShapes();
+          updateCurrentShapeInShapes(freehandShape);
           break;
         case SHAPES_TOOL.POLYGON:
-          const polygonShape = { ...currentShape };
+          const polygonShape = drawingState.currentShape;
           polygonShape.points[2] = pos.x;
           polygonShape.points[3] = pos.y;
-          setCurrentShape(polygonShape);
-          updateCurrentShapeInShapes();
+          updateCurrentShapeInShapes(polygonShape);
           break;
         case SHAPES_TOOL.ARROW:
           // TODO improve
           const arrowShape = {};
           // update points
-          arrowShape.points = [currentShape.points[0], currentShape.points[1], pos.x, pos.y];
-          arrowShape.id = currentShape.id;
-          arrowShape.type = currentShape.type;
-          arrowShape.pointerLength = currentShape.pointerLength;
-          arrowShape.pointerWidth = currentShape.pointerWidth;
-          arrowShape.x = currentShape.x;
-          arrowShape.y = currentShape.y;
+          arrowShape.points = [drawingState.currentShape.points[0], drawingState.currentShape.points[1], pos.x, pos.y];
+          arrowShape.id =drawingState.currentShape.id;
+          arrowShape.type =drawingState.currentShape.type;
+          arrowShape.pointerLength =drawingState.currentShape.pointerLength;
+          arrowShape.pointerWidth =drawingState.currentShape.pointerWidth;
+          arrowShape.x =drawingState.currentShape.x;
+          arrowShape.y =drawingState.currentShape.y;
           arrowShape.fill = props.fillColor;
           arrowShape.stroke = props.strokeColor;
           arrowShape.strokeWidth = props.strokeWidth;
-          setCurrentShape(arrowShape);
-          updateCurrentShapeInShapes();
+
+          updateCurrentShapeInShapes(arrowShape);
           break;
         default:
           break;
@@ -424,11 +430,14 @@ function AnnotationDrawing(props) {
     pos.x /= props.scale;
     pos.y /= props.scale;
     try {
-      if (!currentShape) {
+      if (!drawingState.currentShape) {
         return;
       }
       // For these cases, the action is similar: stop drawing and add the shape
-      setIsDrawing(false);
+      setDrawingState({
+        ... drawingState,
+        isDrawing: false,
+      });
     } catch (error) {
       console.error('error', error);
     }
@@ -455,10 +464,10 @@ function AnnotationDrawing(props) {
       id={props.windowId}
     >
       <ParentComponent
-        shapes={shapes}
+        shapes={drawingState.shapes}
         onShapeClick={onShapeClick}
         activeTool={props.activeTool}
-        selectedShapeId={currentShape?.id}
+        selectedShapeId={drawingState.currentShape?.id}
         style={{
           height: 'auto',
           left: 0,
@@ -492,6 +501,7 @@ function AnnotationDrawing(props) {
 }
 
 AnnotationDrawing.propTypes = {
+  drawingState: PropTypes.object.isRequired,
   activeTool: PropTypes.string,
   closed: PropTypes.bool,
   fillColor: PropTypes.string,
