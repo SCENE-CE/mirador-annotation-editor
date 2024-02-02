@@ -1,5 +1,5 @@
 import {
-  Button, ClickAwayListener, Divider, Grid, MenuItem, MenuList, Paper, Popover,
+  Button, Grid, Paper,
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -10,13 +10,10 @@ import React, { useEffect } from 'react';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { v4 as uuidv4 } from 'uuid';
 import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../../icons/Cursor';
 import AnnotationFormOverlayTool from './AnnotationFormOverlayTool';
 import { OVERLAY_TOOL } from '../../AnnotationCreationUtils';
-
-
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
@@ -48,7 +45,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 
 /** All the stuff to manage to choose the drawing tool */
 function AnnotationFormOverlay({
-  updateToolState, toolState, handleImgChange, shapes, deleteShape,
+  updateToolState, toolState, shapes, deleteShape,
 }) {
   useEffect(() => {
 
@@ -61,14 +58,8 @@ function AnnotationFormOverlay({
     });
   };
 
-  /**
-   *
-   */
-
-
   const {
     activeTool,
-    image,
   } = toolState;
 
   return (
@@ -130,7 +121,6 @@ function AnnotationFormOverlay({
 }
 
 AnnotationFormOverlay.propTypes = {
-  handleImgChange: PropTypes.func,
   toolState: PropTypes.object,
   updateToolState: PropTypes.func,
   shapes: PropTypes.object,

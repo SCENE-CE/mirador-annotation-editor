@@ -16,9 +16,9 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { SketchPicker } from 'react-color';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import { v4 as uuidv4 } from 'uuid';
 import ImageFormField from './ImageFormField';
-import {isShapesTool, OVERLAY_TOOL} from "../../AnnotationCreationUtils";
-import {v4 as uuidv4} from "uuid";
+import { isShapesTool, OVERLAY_TOOL } from '../../AnnotationCreationUtils';
 
 const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
@@ -267,17 +267,17 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
       }
       {
           toolState.activeTool === 'text' && (
-              // <TextField
-              //     value={toolState.text
-              //     onChange={(ev) => onChange(ev.target.value)}
-              //     error={imgUrl !== '' && !imgIsValid}
-              //     margin="dense"
-              //     label="Image URL"
-              //     type="url"
-              //     fullWidth
-              //     inputRef={inputRef}
-              // />
-              ' TODO add input'
+          // <TextField
+          //     value={toolState.text
+          //     onChange={(ev) => onChange(ev.target.value)}
+          //     error={imgUrl !== '' && !imgIsValid}
+          //     margin="dense"
+          //     label="Image URL"
+          //     type="url"
+          //     fullWidth
+          //     inputRef={inputRef}
+          // />
+            ' TODO add input'
 
           )
       }
