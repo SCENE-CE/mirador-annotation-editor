@@ -131,8 +131,6 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
 
   /** Update color : fillColor or strokeColor */
   const updateColor = (color) => {
-    console.log('color', color);
-    console.log('color.rgb',color.rgb)
     updateToolState({
       ...toolState,
       [toolOptions.currentColorType]: objToRgba(color.rgb),
