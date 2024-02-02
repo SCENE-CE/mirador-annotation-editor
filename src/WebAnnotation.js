@@ -2,9 +2,8 @@
 export default class WebAnnotation {
   /** */
   constructor({
-    canvasId, id, fragsel, image, body, tags, svg, manifestId, title, konvaThing
+    canvasId, id, fragsel, image, body, tags, svg, manifestId, konvaThing
   }) {
-    this.title = title,
     this.id = id;
     this.canvasId = canvasId;
     this.fragsel = fragsel;
@@ -46,13 +45,6 @@ export default class WebAnnotation {
       };
       bodies.push(imgBody);
     }
-    if(this.title){
-      const title={
-        type: 'AnnotationTitle',
-        value: this.title,
-      }
-      bodies.push(title)
-    }
 
     if(this.konvaThing){
       const konvaThing={
@@ -61,7 +53,6 @@ export default class WebAnnotation {
       }
       bodies.push(konvaThing)
     }
-
     if (this.tags) {
       bodies = bodies.concat(this.tags.map((tag) => ({
         purpose: 'tagging',
