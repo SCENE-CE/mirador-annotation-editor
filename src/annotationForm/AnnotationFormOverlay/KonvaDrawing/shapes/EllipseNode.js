@@ -5,7 +5,7 @@ import { Ellipse, Transformer } from 'react-konva';
 
 function EllipseNode({
   onShapeClick, shape, activeTool, isSelected,
-  onTransform, handleDragEnd
+  onTransform, handleDragEnd,
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -51,14 +51,14 @@ function EllipseNode({
 }
 
 EllipseNode.propTypes = {
-  
-  fill: PropTypes.string,
+
+  fill: PropTypes.string.isRequired,
   height: PropTypes.number,
   onShapeClick: PropTypes.func.isRequired,
   selectedShapeId: PropTypes.string,
   shape: PropTypes.object.isRequired,
-  stroke: PropTypes.string,
-  strokeWidth: PropTypes.number,
+  stroke: PropTypes.string.isRequired,
+  strokeWidth: PropTypes.number.isRequired,
   width: PropTypes.number,
   x: PropTypes.number,
   y: PropTypes.number,
@@ -70,9 +70,6 @@ EllipseNode.defaultProps = {
   y: 100,
   width: 100,
   height: 100,
-  fill: 'red',
-  stroke: 'black',
-  strokeWidth: 1,
 };
 
 export default EllipseNode;

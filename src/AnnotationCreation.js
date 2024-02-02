@@ -8,7 +8,7 @@ import { v4 as uuid } from 'uuid';
 import { exportStageSVG } from 'react-konva-to-svg';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
-import { VideosReferences } from "mirador/dist/es/src/plugins/VideosReferences";
+import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import Tab from '@mui/material/Tab';
 import HighlightAltIcon from '@mui/icons-material/HighlightAlt';
 import LayersIcon from '@mui/icons-material/Layers';
@@ -20,30 +20,24 @@ import WebAnnotation from './WebAnnotation';
 import { secondsToHMS } from './utils';
 import AnnotationFormContent from './annotationForm/AnnotationFormContent';
 import AnnotationFormTime from './annotationForm/AnnotationFormTime';
-import AnnotationFormDrawing from './annotationForm/AnnotationFormDrawing';
 import { geomFromAnnoTarget, timeFromAnnoTarget } from './AnnotationCreationUtils';
+import AnnotationFormOverlay from './annotationForm/AnnotationFormOverlay/AnnotationFormOverlay.js';
 
 const TARGET_VIEW = 'target';
 const OVERLAY_VIEW = 'layer';
 const TAG_VIEW = 'tag';
 const MANIFEST_LINK_VIEW = 'link';
 
-
 /** Component for creating annotations.
  * Display in companion window when a manifest is open and an annoation created or edited */
 function AnnotationCreation(props) {
   const [toolState, setToolState] = useState({
-    activeTool: 'cursor',
+    activeTool: 'edit',
     closedMode: 'closed',
-    colorPopoverOpen: false,
-    currentColorType: false,
     fillColor: 'rgba(255, 0, 0, 0.5)',
     image: { id: null },
     imageEvent: null,
-    lineWeightPopoverOpen: false,
-    popoverAnchorEl: null,
-    popoverLineWeightAnchorEl: null,
-    strokeColor: 'green',
+    strokeColor: 'rgba(255, 0, 0, 0.5)',
     strokeWidth: 3,
   });
 
@@ -147,8 +141,6 @@ function AnnotationCreation(props) {
     };
   }, []);
 
-
-
   useEffect(() => {
 
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
@@ -248,7 +240,6 @@ function AnnotationCreation(props) {
 
   /** */
   const setShapeProperties = (options) => new Promise(() => {
-
     if (options.fill) {
       state.fillColor = options.fill;
     }
@@ -282,30 +273,26 @@ function AnnotationCreation(props) {
     return svg;
   };
 
-
   /** Set color tool from current shape */
   const setColorToolFromCurrentShape = (colorState) => {
     setToolState((prevState) => ({
       ...prevState,
       ...colorState,
     }));
-  }
-
+  };
 
   /** update shapes with shapes from annotationDrawing */
 
   const updateShapes = (newShapes) => {
-
     setShapes(newShapes);
-  }
+  };
 
   /** delete shape */
 
   const deleteShape = (shapeId) => {
-
     const newShapes = shapes.filter((shape) => shape.id !== shapeId);
     setShapes(newShapes);
-  }
+  };
 
   /**
      * Validate form and save annotation
@@ -548,12 +535,12 @@ function AnnotationCreation(props) {
           <StyledTabPanel
             value={OVERLAY_VIEW}
           >
-            <AnnotationFormDrawing
+            <AnnotationFormOverlay
               toolState={toolState}
               updateToolState={setToolState}
               handleImgChange={handleImgChange}
               shapes={shapes}
-              deleteShape = {deleteShape}
+              deleteShape={deleteShape}
             />
           </StyledTabPanel>
           <StyledTabPanel
