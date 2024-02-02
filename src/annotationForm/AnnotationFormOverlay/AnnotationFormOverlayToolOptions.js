@@ -63,10 +63,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
   });
 
   useEffect(()=>{
-    updateToolState({
-      ...toolState,
-      [toolOptions.currentColorType]: objToRgba({r:255 ,g:0, b:0 ,a:0.5}),
-    });
+    //TODO: This useEffect fix the bug on konva to svg but may be useless
   },[])
   // Set unused default color to avoid error on render
   const currentColor = toolOptions.currentColorType ? rgbaToObj(toolState[toolOptions.currentColorType]) : 'rgba(255, 0, 0, 0.5)';
