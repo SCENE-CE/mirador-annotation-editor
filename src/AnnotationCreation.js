@@ -20,7 +20,7 @@ import WebAnnotation from './WebAnnotation';
 import { secondsToHMS } from './utils';
 import AnnotationFormContent from './annotationForm/AnnotationFormContent';
 import AnnotationFormTime from './annotationForm/AnnotationFormTime';
-import { geomFromAnnoTarget, timeFromAnnoTarget } from './AnnotationCreationUtils';
+import {geomFromAnnoTarget, getSvg, saveAnnotation, timeFromAnnoTarget} from './AnnotationCreationUtils';
 import AnnotationFormOverlay from './annotationForm/AnnotationFormOverlay/AnnotationFormOverlay.js';
 
 const TARGET_VIEW = 'target';
@@ -262,16 +262,6 @@ function AnnotationCreation(props) {
     }));
   };
 
-  /**
-     * Get SVG picture containing all the stuff draw in the stage (Konva Stage).
-     * This image will be put in overlay of the iiif media
-     */
-  const getSvg = async () => {
-    const stage = window.Konva.stages.find((s) => s.attrs.id === props.windowId);
-    const svg = await exportStageSVG(stage, false); // TODO clean
-    return svg;
-  };
-
   /** Set color tool from current shape */
   const setColorToolFromCurrentShape = (colorState) => {
     setToolState((prevState) => ({
@@ -279,14 +269,6 @@ function AnnotationCreation(props) {
       ...colorState,
     }));
   };
-
-  /** update shapes with shapes from annotationDrawing */
-
-  const updateShapes = (newDrawingState) => {
-    setDrawingState(newDrawingState);
-  };
-
-  /** delete shape */
 
   const deleteShape = (shapeId) => {
     if (!shapeId) {
@@ -313,13 +295,13 @@ function AnnotationCreation(props) {
     // TODO Possibly problem of syncing
     // TODO Improve this code
     // If we are in edit mode, we have the transformer on the stage saved in the annotation
-    if (viewTool === OVERLAY_VIEW && state.activeTool === 'edit') {
+   /* if (viewTool === OVERLAY_VIEW && state.activeTool === 'edit') {
       setState((prevState) => ({
         ...prevState,
         activeTool: 'cursor',
       }));
       return;
-    }
+    }*/
 
     const {
       annotation,
@@ -328,14 +310,13 @@ function AnnotationCreation(props) {
       config,
     } = props;
 
-    const dumbIimage = {
-      id: null,
-      svg,
-    };
-    //
-    // const konvaThing = dummyAnnot.konvaThing;
-    state.image = dumbIimage;
-    state.konvaThing = ['SOME KONVA THING', 'AND ANOTHER KONVA THING', { thirdKonvaThing: 'Third Konva thing here' }];
+    // const dumbIimage = {
+    //   id: null,
+    //   svg,
+    //    };
+    //state.image = dumbIimage;
+
+    const drawingStateSerialized = JSON.stringify(drawingState);
 
     const {
       textBody,
@@ -347,43 +328,17 @@ function AnnotationCreation(props) {
       konvaThing,
     } = state;
     // TODO rename variable for better comprenhension
-    const svg = await getSvg();
+    const svg = await getSvg(props.windowId);
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
-    // TODO promises not handled. Use promiseAll ?
-    canvases.forEach(async (canvas) => {
-      const storageAdapter = config.annotation.adapter(canvas.id);
-      const anno = new WebAnnotation({
-        body,
-        canvasId: canvas.id,
-        fragsel: {
-          t,
-          xywh,
-        },
-        id: (annotation && annotation.id) || `${uuid()}`,
-        image,
-        konvaThing,
-        manifestId: canvas.options.resource.id,
-        svg,
-        tags,
-      }).toJson();
 
-      if (annotation) {
-        storageAdapter.update(anno)
-          .then((annoPage) => {
-            receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
-          });
-      } else {
-        storageAdapter.create(anno)
-          .then((annoPage) => {
-            receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
-          });
-      }
-    });
+    saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, konvaThing, svg, tags);
+
     props.closeCompanionWindow('annotationCreation', {
       id,
       position: 'right',
     });
+
     // TODO this create a re-render too soon for react and crash the app
     setState({
       image: { id: null },

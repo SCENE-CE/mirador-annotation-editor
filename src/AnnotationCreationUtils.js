@@ -1,3 +1,7 @@
+import {exportStageSVG} from "react-konva-to-svg";
+import WebAnnotation from "./WebAnnotation";
+import {v4 as uuid} from "uuid";
+
 /** Extract time information from annotation target */
 export function timeFromAnnoTarget(annotarget) {
   console.info('TODO proper time extraction from: ', annotarget);
@@ -40,4 +44,47 @@ export const SHAPES_TOOL = {
 export function isShapesTool(activeTool) {
   // Find if active tool in the list of overlay tools. I want a boolean in return
   return Object.values(SHAPES_TOOL).find((tool) => tool === activeTool) ;
+}
+
+/**
+ * Get SVG picture containing all the stuff draw in the stage (Konva Stage).
+ * This image will be put in overlay of the iiif media
+ */
+export async function getSvg(windowId) {
+  const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
+  const svg = await exportStageSVG(stage, false); // TODO clean
+  return svg;
+};
+
+export function saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, konvaThing, svg, tags){
+  // TODO promises not handled. Use promiseAll ?
+  canvases.forEach(async (canvas) => {
+    const storageAdapter = config.annotation.adapter(canvas.id);
+    const anno = new WebAnnotation({
+      body,
+      canvasId: canvas.id,
+      fragsel: {
+        t,
+        xywh,
+      },
+      id: (annotation && annotation.id) || `${uuid()}`,
+      image,
+      konvaThing,
+      manifestId: canvas.options.resource.id,
+      svg,
+      tags,
+    }).toJson();
+
+    if (annotation) {
+      storageAdapter.update(anno)
+          .then((annoPage) => {
+            receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
+          });
+    } else {
+      storageAdapter.create(anno)
+          .then((annoPage) => {
+            receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
+          });
+    }
+  });
 }
