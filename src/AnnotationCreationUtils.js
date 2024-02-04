@@ -56,7 +56,7 @@ export async function getSvg(windowId) {
   return svg;
 };
 
-export function saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, konvaThing, svg, tags){
+export function saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, drawingStateSerialized, svg, tags){
   // TODO promises not handled. Use promiseAll ?
   canvases.forEach(async (canvas) => {
     const storageAdapter = config.annotation.adapter(canvas.id);
@@ -69,7 +69,7 @@ export function saveAnnotation(canvases, config, receiveAnnotation, annotation, 
       },
       id: (annotation && annotation.id) || `${uuid()}`,
       image,
-      konvaThing,
+      drawingStateSerialized,
       manifestId: canvas.options.resource.id,
       svg,
       tags,

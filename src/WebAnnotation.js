@@ -2,7 +2,7 @@
 export default class WebAnnotation {
   /** */
   constructor({
-    canvasId, id, fragsel, image, body, tags, svg, manifestId, konvaThing
+    canvasId, id, fragsel, image, body, tags, svg, manifestId, drawingStateSerialized
   }) {
     this.id = id;
     this.canvasId = canvasId;
@@ -12,7 +12,9 @@ export default class WebAnnotation {
     this.svg = svg;
     this.image = image;
     this.manifestId = manifestId;
-    this.konvaThing = konvaThing;
+    this.drawingState = drawingStateSerialized;
+
+    console.log('WebAnnotation constructor', this);
   }
 
   /** */
@@ -23,7 +25,7 @@ export default class WebAnnotation {
       motivation: 'commenting',
       target: this.target(),
       type: 'Annotation',
-      konvaThing: this.konvaThing
+      drawingStateSerialized: this.drawingStateSerialized,
     };
   }
 
@@ -43,17 +45,18 @@ export default class WebAnnotation {
       const imgBody = {
         id: this.image.id,
         type: 'Image',
+        format: 'image/svg+xml',
       };
       bodies.push(imgBody);
     }
 
-    if (this.tags) {
-      bodies = bodies.concat(this.tags.map((tag) => ({
-        purpose: 'tagging',
-        type: 'TextualBody',
-        value: tag,
-      })));
-    }
+    // if (this.tags) {
+    //   bodies = bodies.concat(this.tags.map((tag) => ({
+    //     purpose: 'tagging',
+    //     type: 'TextualBody',
+    //     value: tag,
+    //   })));
+    // }
     if (bodies.length === 1) {
       return bodies[0];
     }

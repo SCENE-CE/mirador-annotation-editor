@@ -332,7 +332,7 @@ function AnnotationCreation(props) {
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
 
-    saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, konvaThing, svg, tags);
+    saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, drawingStateSerialized, svg, tags);
 
     props.closeCompanionWindow('annotationCreation', {
       id,
