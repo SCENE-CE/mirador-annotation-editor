@@ -10,7 +10,8 @@ export default class WebAnnotation {
     this.body = body;
     this.tags = tags;
     this.svg = svg;
-    this.image = image;
+    //this.image = image;
+    this.image = null;
     this.manifestId = manifestId;
     this.drawingState = drawingStateSerialized;
 
@@ -19,14 +20,16 @@ export default class WebAnnotation {
 
   /** */
   toJson() {
-    return {
+    const result =  {
       body: this.createBody(),
       id: this.id,
       motivation: 'commenting',
       target: this.target(),
       type: 'Annotation',
-      drawingStateSerialized: this.drawingStateSerialized,
+      drawingState: this.drawingState,
     };
+    console.log('WebAnnotation toJson', result);
+    return result;
   }
 
   /** */
@@ -41,13 +44,20 @@ export default class WebAnnotation {
     }
 
     if (this.image) {
-
+      // TODO dumb image { this.image.id}
       const imgBody = {
-        id: this.image.id,
+        id: 'https://tetras-libre.fr/themes/tetras/img/logo.svg',
         type: 'Image',
         format: 'image/svg+xml',
       };
-      bodies.push(imgBody);
+      //bodies.push(imgBody);
+      const testImageBody = {
+        "id": "http://iiif.tetras-libre.fr/data/Hakanai/media/10_HKN-Garges_A2B4243.JPG",
+        "type": "Image",
+        "format": "image/jpg",
+        "value": "<a href=\"http://iiif.tetras-libre.fr/data/Hakanai/media/10_HKN-Garges_A2B4243.JPG\" target=\"_blank\">Dispositif</a>"
+      };
+      bodies.push(testImageBody);
     }
 
     // if (this.tags) {

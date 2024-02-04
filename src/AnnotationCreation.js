@@ -95,6 +95,10 @@ function AnnotationCreation(props) {
         annoState.xywh = geomFromAnnoTarget(props.annotation.target);
         [tstart, tend] = timeFromAnnoTarget(props.annotation.target);
       }
+
+      if(props.annotation.drawingState) {
+       setDrawingState(JSON.parse(props.annotation.drawingState));
+      }
     }
 
     // If we don't have tstart setted, we are creating a new annotation.

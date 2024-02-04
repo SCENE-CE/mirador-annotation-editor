@@ -53,6 +53,7 @@ export function isShapesTool(activeTool) {
 export async function getSvg(windowId) {
   const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
   const svg = await exportStageSVG(stage, false); // TODO clean
+  console.log('SVG:', svg);
   return svg;
 };
 
