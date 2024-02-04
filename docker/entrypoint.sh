@@ -1,5 +1,6 @@
 #!/bin/bash
 
+rm .balelrc
 npm install
 ./cli post_install
 
@@ -13,4 +14,4 @@ fi
 if [ ! -z "$1" ];  then
     cmd=$@
 fi
-exec $cmd 
+exec $cmd
