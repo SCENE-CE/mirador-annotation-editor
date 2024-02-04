@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rm .balelrc
+rm -f .balelrc
 npm install
 ./cli post_install
 
