@@ -29,7 +29,7 @@ function TextNode({
         rotation={shape.rotation}
         x={shape.x}
         y={shape.y}
-        fontSize={shape.fontSize}
+        fontSize={40}
         fill={shape.fill}
         text={shape.text}
         id={shape.id}

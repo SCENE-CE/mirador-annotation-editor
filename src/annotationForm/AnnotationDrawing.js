@@ -11,7 +11,7 @@ import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
-import { SHAPES_TOOL } from '../AnnotationCreationUtils';
+import {OVERLAY_TOOL, SHAPES_TOOL} from '../AnnotationCreationUtils';
 /** All the stuff to draw on the canvas */
 function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
   const { height, width } = props.mediaVideo ? props.mediaVideo.ref.current : 0;
@@ -170,7 +170,7 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
 
       setDrawingState({
         ...drawingState,
-        shapes: shapes.map((shape) => (shape.id === drawingState.currentShape.id ? newCurrentShape : shape)),
+        shapes: drawingState.shapes.map((shape) => (shape.id === drawingState.currentShape.id ? newCurrentShape : shape)),
         currentShape: newCurrentShape,
       });
     }
@@ -256,7 +256,7 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
             scaleX: 1,
             scaleY: 1,
             text: 'text',
-            type: SHAPES_TOOL.TEXT,
+            type: OVERLAY_TOOL.TEXT,
             x: pos.x,
             y: pos.y,
           };

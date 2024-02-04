@@ -95,8 +95,11 @@ function AnnotationFormOverlayTool({
                   fillColor: currentShape.fill,
                   strokeColor: currentShape.stroke,
                   strokeWidth: currentShape.strokeWidth,
+                  text: currentShape.text,
+                  image: { id : currentShape.url },
                 }}
                 updateToolState={customUpdateToolState}
+
               />
             </Paper>
             )

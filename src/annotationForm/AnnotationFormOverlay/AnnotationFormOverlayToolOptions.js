@@ -150,6 +150,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
     });
   };
 
+  /** TODO Code duplicate ?? */
   const handleImgChange = (newUrl, imgRef) => {
     updateToolState({
       ...toolState,
@@ -271,7 +272,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
       {
           toolState.activeTool === 'text' && (
           <TextField
-            value={toolState.textBody}
+            value={toolState.text}
             fullWidth
           />
           )

@@ -42,9 +42,9 @@ function AnnotationCreation(props) {
   });
 
   const [drawingState, setDrawingState] = useState({
-    shapes: [],
     currentShape: null,
     isDrawing: false,
+    shapes: [],
   });
 
   // Initial state setup
@@ -110,11 +110,11 @@ function AnnotationCreation(props) {
       mediaVideo: props.mediaVideo,
       ...annoState,
       tend,
+      textBody: '',
       textEditorStateBustingKey: 0,
       tstart,
       valueTime: [0, 1],
       valuetextTime: '',
-      textBody: '',
     };
   });
 
@@ -135,8 +135,8 @@ function AnnotationCreation(props) {
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({
-        width: window.innerWidth,
         height: window.innerHeight,
+        width: window.innerWidth,
       });
     };
 
@@ -154,13 +154,6 @@ function AnnotationCreation(props) {
   useLayoutEffect(() => {
   }, [{ height, width }]);
 
-  /** */
-  const handleImgChange = (newUrl, imgRef) => {
-    setToolState((prevState) => ({
-      ...prevState,
-      image: { ...prevState.image, id: newUrl },
-    }));
-  };
 
   /** set annotation start time to current time */
   const setTstartNow = () => {
@@ -369,10 +362,10 @@ function AnnotationCreation(props) {
         },
         id: (annotation && annotation.id) || `${uuid()}`,
         image,
+        konvaThing,
         manifestId: canvas.options.resource.id,
         svg,
         tags,
-        konvaThing,
       }).toJson();
 
       if (annotation) {
@@ -538,7 +531,6 @@ function AnnotationCreation(props) {
             <AnnotationFormOverlay
               toolState={toolState}
               updateToolState={setToolState}
-              handleImgChange={handleImgChange}
               shapes={drawingState.shapes}
               currentShape={drawingState.currentShape}
               deleteShape={deleteShape}
@@ -601,11 +593,11 @@ const StyledTabPanel = styled(TabPanel)(({ theme }) => ({
 }));
 
 const StyledAnnotationDrawing = styled(AnnotationDrawing)(({ theme }) => ({
+  height: 'auto',
+  left: 0,
   position: 'absolute',
   top: 0,
-  left: 0,
   width: '100%',
-  height: 'auto',
 }));
 
 AnnotationCreation.propTypes = {
@@ -635,6 +627,7 @@ AnnotationCreation.propTypes = {
   setCurrentTime: PropTypes.func,
   setSeekTo: PropTypes.func,
   windowId: PropTypes.string.isRequired,
+  // eslint-disable-next-line sort-keys
   mediaVideo: PropTypes.object.isRequired,
 };
 
