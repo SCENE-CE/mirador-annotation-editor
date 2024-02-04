@@ -1,6 +1,9 @@
 #!/bin/bash
 
-rm -f .balelrc
+# Remove all node stuff to avoid arror on docker rebuild
+rm -rf node_modules
+rm -f package-lock.json
+rm -f .babelrc
 npm install
 ./cli post_install
 
