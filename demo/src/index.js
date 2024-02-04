@@ -11,6 +11,8 @@ const config = {
     exportLocalStorageAnnotations: false, // display annotation JSON export button
   },
   catalog: [
+    { manifestId: 'https://files.tetras-libre.fr/manifests/jf_peyret_re_walden.json' },
+    { manifestId: 'https://files.tetras-libre.fr/manifests/re_walden_cut.json' },
     { manifestId: 'https://dzkimgs.l.u-tokyo.ac.jp/videos/iiif_in_japan_2017/manifest.json' },
     { manifestId: 'https://iiif.io/api/cookbook/recipe/0219-using-caption-file/manifest.json' },
     { manifestId: 'https://preview.iiif.io/cookbook/master/recipe/0003-mvm-video/manifest.json' },
