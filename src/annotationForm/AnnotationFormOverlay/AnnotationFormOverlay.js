@@ -43,8 +43,11 @@ function AnnotationFormOverlay({
     updateToolState({
       ...toolState,
       activeTool: tool,
+      currentShape: null,
     });
   };
+
+
 
   const {
     activeTool,

@@ -64,12 +64,13 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
     if (drawingState.shapes.find((s) => s.id === drawingState.currentShape?.id)) {
       window.addEventListener('keydown', handleKeyPress);
 
-      // props.setShapeProperties(drawingState.currentShape); // TODO Check that code ?
+      // Set here all the properties of the current shape for the tool options
       props.setColorToolFromCurrentShape(
         {
           fillColor: drawingState.currentShape.fill,
           strokeColor: drawingState.currentShape.stroke,
           strokeWidth: drawingState.currentShape.strokeWidth,
+          text: drawingState.currentShape.text,
         },
       );
 

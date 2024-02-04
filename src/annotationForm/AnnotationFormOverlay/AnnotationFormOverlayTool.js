@@ -69,7 +69,7 @@ function AnnotationFormOverlayTool({
             currentShape && (
             <Paper>
               <Typography variant="overline">
-                Forme selectionnée
+                Selected object
               </Typography>
 
               <ul>
@@ -96,7 +96,7 @@ function AnnotationFormOverlayTool({
                   strokeColor: currentShape.stroke,
                   strokeWidth: currentShape.strokeWidth,
                   text: currentShape.text,
-                  image: { id : currentShape.url },
+                  image: { id: currentShape.url },
                 }}
                 updateToolState={customUpdateToolState}
 
@@ -115,6 +115,10 @@ function AnnotationFormOverlayTool({
       }
       {
         isShapesTool(toolState.activeTool) && (
+        <>
+          <Typography variant="overline">
+            Drawing tool
+          </Typography>
           <StyledToggleButtonGroup
             value={toolState.activeTool} // State or props ?
             exclusive
@@ -138,18 +142,22 @@ function AnnotationFormOverlayTool({
               <GestureIcon />
             </ToggleButton>
           </StyledToggleButtonGroup>
+        </>
         )
       }
       {
         toolState.activeTool === OVERLAY_TOOL.DELETE && (
         <>
+          <Typography variant="overline">
+            Delete
+          </Typography>
           <p>
-            Cliquer sur les formes pour les supprimer
+            Click on object to remove it.
           </p>
           <Button
             onClick={() => deleteShape()}
           >
-            <span>Supprimer toutes les formes</span>
+            <span>Delete all</span>
             <DeleteIcon color="red" />
           </Button>
         </>

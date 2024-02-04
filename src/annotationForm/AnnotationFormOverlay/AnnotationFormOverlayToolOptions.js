@@ -163,6 +163,9 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
       {
         isShapesTool(toolState.activeTool) && (
           <Grid container>
+            <Typography variant="overline">
+              Object styles
+            </Typography>
             <Grid item xs={12}>
               <Typography variant="overline">
                 Style
@@ -258,6 +261,9 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
       {
           toolState.activeTool === OVERLAY_TOOL.IMAGE && (
           <>
+            <Typography variant="overline">
+              Add image from URL
+            </Typography>
             <Grid container>
               <ImageFormField xs={8} value={toolState.image} onChange={handleImgChange} />
             </Grid>
@@ -271,10 +277,19 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
       }
       {
           toolState.activeTool === 'text' && (
-          <TextField
-            value={toolState.text}
-            fullWidth
-          />
+          <>
+            <Typography variant="overline">
+              Text
+            </Typography>
+            { toolState.text ? (
+              <TextField
+                value={toolState.text}
+                fullWidth
+              />
+            ) : (
+              <p>Click on canva to add text</p>
+            )}
+          </>
           )
       }
     </div>
