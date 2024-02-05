@@ -11,7 +11,7 @@ export default class WebAnnotation {
     this.tags = tags;
     this.svg = svg;
     //this.image = image;
-    this.image = null;
+    this.image = image;
     this.manifestId = manifestId;
     this.drawingState = drawingStateSerialized;
 
@@ -52,11 +52,10 @@ export default class WebAnnotation {
       };
       //bodies.push(imgBody);
       const testImageBody = {
-        "id": "http://iiif.tetras-libre.fr/data/Hakanai/media/10_HKN-Garges_A2B4243.JPG",
-        "type": "Image",
-        "format": "image/jpg",
-        "value": "<a href=\"http://iiif.tetras-libre.fr/data/Hakanai/media/10_HKN-Garges_A2B4243.JPG\" target=\"_blank\">Dispositif</a>"
-      };
+            "id": "https://files.tetras-libre.fr/dev/Hakanai/media/10_HKN-Garges_A2B4243.JPG",
+            "type": "Image",
+            "format": "image/jpg"
+          };
       bodies.push(testImageBody);
     }
 

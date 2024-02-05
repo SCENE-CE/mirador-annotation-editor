@@ -53,6 +53,7 @@ function AnnotationCreation(props) {
     let tend;
     const annoState = {};
     if (props.annotation) {
+      console.log('props.annotation', props.annotation);
       // annotation body
       if (Array.isArray(props.annotation.body)) {
         annoState.tags = [];
@@ -100,6 +101,12 @@ function AnnotationCreation(props) {
        setDrawingState(JSON.parse(props.annotation.drawingState));
       }
     }
+    // TODO add a case where no annotation
+
+
+    if(!annoState?.textBody) {
+      annoState.textBody = '';
+    }
 
     // If we don't have tstart setted, we are creating a new annotation.
     // If we don't have tend setted, we set it at the end of the video.
@@ -114,7 +121,6 @@ function AnnotationCreation(props) {
       mediaVideo: props.mediaVideo,
       ...annoState,
       tend,
-      textBody: '',
       textEditorStateBustingKey: 0,
       tstart,
       valueTime: [0, 1],
