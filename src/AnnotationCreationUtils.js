@@ -86,7 +86,7 @@ export async function saveAnnotation(canvases, config, receiveAnnotation, annota
       drawingState: drawingStateSerialized,
       id: (annotation && annotation.id) || `${uuid()}`,
       motivation: 'commenting',
-      target: `${canvas.id}#xywh=0,0,640,360&t=0,1000',`,
+      target: `${canvas.id}#xywh=0,0,640,360&t=${t}`,
       type: 'Annotation',
     };
 
