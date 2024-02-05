@@ -66,7 +66,7 @@ function AnnotationCreation(props) {
             annoState.textBody = body.value;
           } else if (body.type === 'Image') {
             annoState.textBody = body.value; // why text body here ???
-            //annoState.image = body;
+            // annoState.image = body;
           } else if (body.type === 'AnnotationTitle') {
             annoState.title = body;
           }
@@ -104,6 +104,13 @@ function AnnotationCreation(props) {
       }
     }
     // TODO add a case where no annotation
+
+    // TODO improve this code
+    if (!annoState?.xywh) {
+      const targetHeigth = props.mediaVideo ? props.mediaVideo.props.canvas.__jsonld.height : 1000;
+      const targetWidth = props.mediaVideo ? props.mediaVideo.props.canvas.__jsonld.width : 500;
+      annoState.xywh = `10,10,${targetWidth - 10},${targetHeigth - 10}`;
+    }
 
     if (!annoState?.textBody) {
       annoState.textBody = '';
@@ -338,7 +345,7 @@ function AnnotationCreation(props) {
     } = state;
     // TODO rename variable for better comprenhension
     const svg = await getSvg(props.windowId);
-   // const jpg = await getJPG(props.windowId);
+    // const jpg = await getJPG(props.windowId);
     const drawingImageExport = svg;
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };

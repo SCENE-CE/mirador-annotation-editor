@@ -10,13 +10,14 @@ export function mapChildren(layerThing) {
 
 /** Pretty print a seconds count into HH:mm:ss */
 export function secondsToHMS(secs) {
-  const [h, m, s] = secondsToHMSarray(secs);
+  const { hours, minutes, seconds } = secondsToHMSarray(secs);
   // eslint-disable-next-line require-jsdoc
   const pad = (n) => (n < 10 ? `0${n}` : n);
-  return `${pad(h)}:${pad(m)}:${pad(s)}`;
+  const result = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+  return result;
 }
 
-/** Split a second to [hours, minutes, seconds]  */
+/** Split a second to { hours, minutes, seconds }  */
 export function secondsToHMSarray(secs) {
   const h = Math.floor(secs / 3600);
   return {
