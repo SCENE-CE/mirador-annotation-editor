@@ -1,0 +1,18 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1215"
+     height="684">
+    <defs/>
+    <g>
+        <g>
+            <path fill="rgb(255,0,0)" stroke="rgb(255,0,0)" paint-order="fill stroke markers"
+                  d=" M 188 197.66666412353516 L 477 197.66666412353516 L 477 524.6666641235352 L 188 524.6666641235352 L 188 197.66666412353516 Z Z"
+                  fill-opacity="0.5" stroke-opacity="0.5" stroke-miterlimit="10" stroke-width="12.65625"
+                  stroke-dasharray=""/>
+        </g>
+        <g>
+            <path fill="rgb(255,0,0)" stroke="rgb(255,0,0)" paint-order="fill stroke markers"
+                  d=" M 625 194.66666412353513 L 916 194.66666412353513 L 916 577.6666641235352 L 625 577.6666641235352 L 625 194.66666412353513 Z Z"
+                  fill-opacity="0.5" stroke-opacity="0.5" stroke-miterlimit="10" stroke-width="12.65625"
+                  stroke-dasharray=""/>
+        </g>
+    </g>
+</svg>

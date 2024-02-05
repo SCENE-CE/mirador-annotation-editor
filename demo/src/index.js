@@ -11,7 +11,7 @@ const config = {
     exportLocalStorageAnnotations: false, // display annotation JSON export button
   },
   catalog: [
-    { manifestIf: 'https://files.tetras-libre.fr/dev/Clock/manifest.json'},
+    { manifestId: 'https://files.tetras-libre.fr/dev/Clock/manifest.json' },
     { manifestId: 'https://files.tetras-libre.fr/dev/Hakanai/manifest/manifest.json' },
     { manifestId: 'https://dzkimgs.l.u-tokyo.ac.jp/videos/iiif_in_japan_2017/manifest.json' },
     { manifestId: 'https://iiif.io/api/cookbook/recipe/0219-using-caption-file/manifest.json' },

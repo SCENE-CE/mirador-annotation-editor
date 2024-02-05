@@ -1,6 +1,7 @@
 import {exportStageSVG} from "react-konva-to-svg";
 import WebAnnotation from "./WebAnnotation";
 import {v4 as uuid} from "uuid";
+import axios from 'axios';
 
 /** Extract time information from annotation target */
 export function timeFromAnnoTarget(annotarget) {
@@ -74,7 +75,9 @@ const dumbAnnotation = {
 
 export function saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, drawingStateSerialized, svg, tags){
   // TODO promises not handled. Use promiseAll ?
-  canvases.forEach(async (canvas) => {
+
+
+    canvases.forEach(async (canvas) => {
     const storageAdapter = config.annotation.adapter(canvas.id);
     // const anno = new WebAnnotation({
     //   body,
@@ -106,4 +109,23 @@ export function saveAnnotation(canvases, config, receiveAnnotation, annotation, 
           });
     }
   });
+}
+
+const sendFile = async () => {
+    const fileContent = 'Hello, this is a test file';
+    const blob = new Blob([fileContent], { type: 'text/plain' });
+
+    const formData = new FormData();
+    formData.append('file', blob);
+
+    try {
+        const response = await axios.post('http://localhost:3001/upload', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        console.log('File Uploaded', response.data);
+    } catch (error) {
+        console.error('Error uploading file:', error);
+    }
 }
