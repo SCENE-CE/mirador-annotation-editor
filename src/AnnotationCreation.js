@@ -65,8 +65,8 @@ function AnnotationCreation(props) {
           } else if (body.type === 'TextualBody') {
             annoState.textBody = body.value;
           } else if (body.type === 'Image') {
-            // annoState.textBody = body.value; // why text body here ???
-            annoState.image = body;
+            annoState.textBody = body.value; // why text body here ???
+            //annoState.image = body;
           } else if (body.type === 'AnnotationTitle') {
             annoState.title = body;
           }
@@ -74,7 +74,7 @@ function AnnotationCreation(props) {
       } else if (props.annotation.body.type === 'TextualBody') {
         annoState.textBody = props.annotation.body.value;
       } else if (props.annotation.body.type === 'Image') {
-        // annoState.textBody = props.annotation.body.value; // why text body here ???
+        annoState.textBody = props.annotation.body.value; // why text body here ???
         annoState.image = props.annotation.body;
       }
       //
@@ -335,7 +335,6 @@ function AnnotationCreation(props) {
       tstart,
       tend,
       image,
-      konvaThing,
     } = state;
     // TODO rename variable for better comprenhension
     const svg = await getSvg(props.windowId);

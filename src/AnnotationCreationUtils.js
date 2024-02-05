@@ -1,7 +1,10 @@
-import {exportStageSVG} from "react-konva-to-svg";
-import WebAnnotation from "./WebAnnotation";
-import {v4 as uuid} from "uuid";
+import { exportStageSVG } from 'react-konva-to-svg';
+import { v4 as uuid } from 'uuid';
 import axios from 'axios';
+import WebAnnotation from './WebAnnotation';
+
+//const fileUploaderUrl = 'https://scene-uploads.tetras-libre.fr/upload';
+const fileUploaderUrl = 'http://localhost:3000/upload';
 
 /** Extract time information from annotation target */
 export function timeFromAnnoTarget(annotarget) {
@@ -44,7 +47,7 @@ export const SHAPES_TOOL = {
 
 export function isShapesTool(activeTool) {
   // Find if active tool in the list of overlay tools. I want a boolean in return
-  return Object.values(SHAPES_TOOL).find((tool) => tool === activeTool) ;
+  return Object.values(SHAPES_TOOL).find((tool) => tool === activeTool);
 }
 
 /**
@@ -56,77 +59,71 @@ export async function getSvg(windowId) {
   const svg = await exportStageSVG(stage, false); // TODO clean
   console.log('SVG:', svg);
   return svg;
-};
+}
 
+export function saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, drawingStateSerialized, svg, tags) {
+  const dumbAnnotation = {
+    type: 'Annotation',
+    motivation: 'commenting',
+    body: {
+      id: 'https://files.tetras-libre.fr/dev/Hakanai/media/02_HKN-couv.jpg',
+      type: 'Image',
+      format: 'image/jpg',
+    },
+    target: 'https://preview.iiif.io/cookbook/master/recipe/0003-mvm-video/canvas#xywh=0,0,301,400&t=0,1000',
+  };
+  console.log('Send file :', svg);
+  const filename = sendFile(svg);
 
-const dumbAnnotation = {
-      "id": "https://preview.iiif.io/cookbook/master/recipe/0003-mvm-video/canvas/annotation/1",
-      "type": "Annotation",
-      "motivation": "commenting",
-      "body": {
-        "id": "https://files.tetras-libre.fr/dev/Hakanai/media/02_HKN-couv.jpg",
-        "type": "Image",
-        "format": "image/jpg",
-        "value": "Test image annotation"
-      },
-      "target": "https://preview.iiif.io/cookbook/master/recipe/0003-mvm-video/canvas#xywh=0,0,301,400&t=0,1000"
-    }
-  ;
-
-export function saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, drawingStateSerialized, svg, tags){
-  // TODO promises not handled. Use promiseAll ?
-
-
-    canvases.forEach(async (canvas) => {
+  canvases.forEach(async (canvas) => {
     const storageAdapter = config.annotation.adapter(canvas.id);
-    // const anno = new WebAnnotation({
-    //   body,
-    //   canvasId: canvas.id,
-    //   fragsel: {
-    //     t,
-    //     xywh,
-    //   },
-    //   id: (annotation && annotation.id) || `${uuid()}`,
-    //   image,
-    //   drawingStateSerialized,
-    //   manifestId: canvas.options.resource.id,
-    //   svg,
-    //   tags,
-    // }).toJson();
-
-    const anno = dumbAnnotation;
-    anno.drawingState = drawingStateSerialized;
-    anno.body.value = body.value;
+    const anno = {
+      body: {
+        id: filename,
+        type: 'Image',
+        format: 'image/jpg',
+        value: body.value,
+      },
+      drawingState: drawingStateSerialized,
+      id: (annotation && annotation.id) || `${uuid()}`,
+      motivation: 'commenting',
+      type: 'Annotation',
+    };
 
     if (annotation) {
       storageAdapter.update(anno)
-          .then((annoPage) => {
-            receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
-          });
+        .then((annoPage) => {
+          receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
+        });
     } else {
       storageAdapter.create(anno)
-          .then((annoPage) => {
-            receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
-          });
+        .then((annoPage) => {
+          receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
+        });
     }
   });
 }
 
-const sendFile = async () => {
-    const fileContent = 'Hello, this is a test file';
-    const blob = new Blob([fileContent], { type: 'text/plain' });
+const sendFile = async (fileContent) => {
+  const blob = new Blob([fileContent], {type: 'image/svg+xml'});
 
-    const formData = new FormData();
-    formData.append('file', blob);
+  const formData = new FormData();
+  formData.append('file', blob);
+  formData.append('filename', filename);
 
-    try {
-        const response = await axios.post('http://localhost:3001/upload', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        console.log('File Uploaded', response.data);
-    } catch (error) {
-        console.error('Error uploading file:', error);
-    }
-}
+
+
+  try {
+    const response = await axios.post(fileUploaderUrl, formData, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'no-cache',
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    console.log('File Uploaded', response.data);
+    return response.data.file.filename;
+  } catch (error) {
+    console.error('Error uploading file:', error);
+  }
+};

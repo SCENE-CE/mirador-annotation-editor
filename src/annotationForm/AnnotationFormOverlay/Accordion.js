@@ -22,17 +22,16 @@ function AccordionShapes({ shapes, deleteShape, currentShapeId }) {
           </AccordionSummary>
           <AccordionDetails>
             <ul>
-              {console.log(shape)}
               {Object.keys(shape).sort().map((key) => (
-                  <>
-                    { key !== 'lines' && key !== 'image'  && (
-                      <li key={key}>
-                        {key}
-                        :
-                        {shape[key]}
-                      </li>
-                    )}
-                  </>
+                <>
+                  { key !== 'lines' && key !== 'image' && (
+                  <li key={key}>
+                    {key}
+                    :
+                    {shape[key]}
+                  </li>
+                  )}
+                </>
               ))}
             </ul>
             <Button
