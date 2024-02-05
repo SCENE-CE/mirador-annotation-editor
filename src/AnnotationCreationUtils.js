@@ -57,24 +57,42 @@ export async function getSvg(windowId) {
   return svg;
 };
 
+
+const dumbAnnotation = {
+      "id": "https://preview.iiif.io/cookbook/master/recipe/0003-mvm-video/canvas/annotation/1",
+      "type": "Annotation",
+      "motivation": "commenting",
+      "body": {
+        "id": "https://files.tetras-libre.fr/dev/Hakanai/media/02_HKN-couv.jpg",
+        "type": "Image",
+        "format": "image/jpg",
+        "value": "Test image annotation"
+      },
+      "target": "https://preview.iiif.io/cookbook/master/recipe/0003-mvm-video/canvas#xywh=0,0,301,400&t=0,1000"
+    }
+  ;
+
 export function saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, drawingStateSerialized, svg, tags){
   // TODO promises not handled. Use promiseAll ?
   canvases.forEach(async (canvas) => {
     const storageAdapter = config.annotation.adapter(canvas.id);
-    const anno = new WebAnnotation({
-      body,
-      canvasId: canvas.id,
-      fragsel: {
-        t,
-        xywh,
-      },
-      id: (annotation && annotation.id) || `${uuid()}`,
-      image,
-      drawingStateSerialized,
-      manifestId: canvas.options.resource.id,
-      svg,
-      tags,
-    }).toJson();
+    // const anno = new WebAnnotation({
+    //   body,
+    //   canvasId: canvas.id,
+    //   fragsel: {
+    //     t,
+    //     xywh,
+    //   },
+    //   id: (annotation && annotation.id) || `${uuid()}`,
+    //   image,
+    //   drawingStateSerialized,
+    //   manifestId: canvas.options.resource.id,
+    //   svg,
+    //   tags,
+    // }).toJson();
+
+    const anno = dumbAnnotation;
+    anno.drawingState = drawingStateSerialized;
 
     if (annotation) {
       storageAdapter.update(anno)

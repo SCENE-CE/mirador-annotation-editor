@@ -2,31 +2,32 @@
 export default class WebAnnotation {
   /** */
   constructor({
-    id, body, drawingStateSerialized, motivation, target,
+    canvasId, id, fragsel, image, body, tags, svg, manifestId, drawingStateSerialized
   }) {
     this.id = id;
-    this.type = 'Annotation';
-    this.motivation = motivation;
+    this.canvasId = canvasId;
+    this.fragsel = fragsel;
     this.body = body;
+    this.tags = tags;
+    this.svg = svg;
+    //this.image = image;
+    this.image = image;
+    this.manifestId = manifestId;
     this.drawingState = drawingStateSerialized;
-    this.target = target;
 
     console.log('WebAnnotation constructor', this);
   }
 
   /** */
   toJson() {
-    // const result = {
-    //   body: this.createBody(),
-    //   drawingState: this.drawingState,
-    //   id: this.id,
-    //   motivation: 'commenting',
-    //   target: this.target(),
-    //   type: 'Annotation',
-    // };
-
-    const result = this;
-
+    const result =  {
+      body: this.createBody(),
+      id: this.id,
+      motivation: 'commenting',
+      target: this.target(),
+      type: 'Annotation',
+      drawingState: this.drawingState,
+    };
     console.log('WebAnnotation toJson', result);
     return result;
   }
