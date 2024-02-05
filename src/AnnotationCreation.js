@@ -18,6 +18,7 @@ import {
 } from './AnnotationCreationUtils';
 import AnnotationFormOverlay from './annotationForm/AnnotationFormOverlay/AnnotationFormOverlay';
 import AnnotationFormFooter from './annotationForm/AnnotationFormFooter';
+import AnnotationFormManifestNetwork from './annotationForm/AnnotationFormManifestNetwork';
 
 const TARGET_VIEW = 'target';
 const OVERLAY_VIEW = 'layer';
@@ -96,6 +97,9 @@ function AnnotationCreation(props) {
       if (props.annotation.drawingState) {
         setDrawingState(JSON.parse(props.annotation.drawingState));
       }
+      if (props.annotation.manifestNetwork) {
+        annoState.manifestNetwork = props.annotation.manifestNetwork;
+      }
     }
     // TODO add a case where no annotation
 
@@ -108,6 +112,10 @@ function AnnotationCreation(props) {
 
     if (!annoState?.textBody) {
       annoState.textBody = '';
+    }
+
+    if (!annoState?.manifestNetwork) {
+      annoState.manifestNetwork = '';
     }
 
     // If we don't have tstart setted, we are creating a new annotation.
@@ -273,6 +281,13 @@ function AnnotationCreation(props) {
     }));
   };
 
+  const updateManifestNetwork = (manifestNetwork) => {
+    setState((prevState) => ({
+      ...prevState,
+      manifestNetwork,
+    }));
+  };
+
   /** Set color tool from current shape */
   const setColorToolFromCurrentShape = (colorState) => {
     setToolState((prevState) => ({
@@ -315,7 +330,7 @@ function AnnotationCreation(props) {
       tstart: 0,
       xywh: null,
     });
-  }
+  };
 
   /** */
   const {
@@ -326,6 +341,7 @@ function AnnotationCreation(props) {
   } = props;
 
   const {
+    manifestNetwork,
     textBody,
     tstart,
     tend,
@@ -401,8 +417,7 @@ function AnnotationCreation(props) {
         mediaVideo={props.mediaVideo}
         setDrawingState={setDrawingState}
       />
-      <StyledForm
-      >
+      <StyledForm>
         <TabContext value={viewTool}>
           <TabList value={viewTool} onChange={tabHandler} aria-label="icon tabs">
             <StyledTab
@@ -467,7 +482,12 @@ function AnnotationCreation(props) {
           </StyledTabPanel>
           <StyledTabPanel
             value={MANIFEST_LINK_VIEW}
-          />
+          >
+            <AnnotationFormManifestNetwork
+              manifestNetwork={manifestNetwork}
+              updateManifestNetwork={updateManifestNetwork}
+            />
+          </StyledTabPanel>
         </TabContext>
         <AnnotationFormFooter
           annotation={annotation}

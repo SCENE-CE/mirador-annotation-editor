@@ -8,8 +8,7 @@ import {
 } from '../AnnotationCreationUtils';
 import { secondsToHMS } from '../utils';
 import {
-  getJPGAsDataURL,
-  getKonvaAsDataURL
+  getKonvaAsDataURL,
 } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
 const StyledButtonDivSaveOrCancel = styled('div')(({ theme }) => ({
@@ -48,20 +47,11 @@ function AnnotationFormFooter({
 
     const {
       textBody,
-      tags,
       xywh,
       tstart,
       tend,
-      image,
+      manifestNetwork,
     } = state;
-
-    // Save annotation drawing in svg and sent it to the server
-    // const svg = await getSvg(windowId);
-    // const drawingImageExport = jpg;
-    // const filename = await sendFile(drawingImageExport);
-    // const annotationBodyImageId = fileReaderUrl + filename;
-
-
 
     // Temporal target of the annotation
     const target = {
@@ -80,6 +70,7 @@ function AnnotationFormFooter({
       },
       drawingState: JSON.stringify(drawingState),
       id: (annotation && annotation.id) || `${uuid()}`,
+      manifestNetwork,
       motivation: 'commenting',
       target: null,
       type: 'Annotation', // Will be updated in saveAnnotationInEachCanvas
@@ -94,7 +85,7 @@ function AnnotationFormFooter({
     getKonvaAsDataURL(windowId).then((dataURL) => {
       console.log('dataURL:', dataURL);
       const annotation = { ...annotationToSaved };
-      annotation.body.id = dataURL
+      annotation.body.id = dataURL;
       saveAnnotationInEachCanvas(canvases, config, receiveAnnotation, annotation, target, isNewAnnotation);
       closeFormCompanionWindow();
       resetStateAfterSave();
