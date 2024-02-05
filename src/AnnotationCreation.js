@@ -1,11 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Button,
-} from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { v4 as uuid } from 'uuid';
-import { exportStageSVG } from 'react-konva-to-svg';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
@@ -16,13 +11,13 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import HubIcon from '@mui/icons-material/Hub';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import AnnotationDrawing from './annotationForm/AnnotationDrawing';
-import { secondsToHMS } from './utils';
 import AnnotationFormContent from './annotationForm/AnnotationFormContent';
 import AnnotationFormTime from './annotationForm/AnnotationFormTime';
 import {
-  geomFromAnnoTarget, getJPG, getSvg, saveAnnotation, timeFromAnnoTarget,
+  geomFromAnnoTarget, timeFromAnnoTarget,
 } from './AnnotationCreationUtils';
-import AnnotationFormOverlay from './annotationForm/AnnotationFormOverlay/AnnotationFormOverlay.js';
+import AnnotationFormOverlay from './annotationForm/AnnotationFormOverlay/AnnotationFormOverlay';
+import AnnotationFormFooter from './annotationForm/AnnotationFormFooter';
 
 const TARGET_VIEW = 'target';
 const OVERLAY_VIEW = 'layer';
@@ -302,54 +297,14 @@ function AnnotationCreation(props) {
     }
   };
 
-  /**
-     * Validate form and save annotation
-     */
-  const submitForm = async (e) => {
-    console.log('submitForm');
-    e.preventDefault();
-    // TODO Possibly problem of syncing
-    // TODO Improve this code
-    // If we are in edit mode, we have the transformer on the stage saved in the annotation
-    /* if (viewTool === OVERLAY_VIEW && state.activeTool === 'edit') {
-      setState((prevState) => ({
-        ...prevState,
-        activeTool: 'cursor',
-      }));
-      return;
-    } */
-
-    const {
-      annotation,
-      canvases,
-      receiveAnnotation,
-      config,
-    } = props;
-
-
-    const drawingStateSerialized = JSON.stringify(drawingState);
-
-    const {
-      textBody,
-      tags,
-      xywh,
-      tstart,
-      tend,
-      image,
-    } = state;
-    // TODO rename variable for better comprenhension
-    const svg = await getSvg(props.windowId);
-    // const jpg = await getJPG(props.windowId);
-    const drawingImageExport = svg;
-    const t = (tstart && tend) ? `${tstart},${tend}` : null;
-    const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
-    saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, drawingStateSerialized, drawingImageExport, tags);
-
-    props.closeCompanionWindow('annotationCreation', {
-      id,
+  const closeFormCompanionWindow = () => {
+    closeCompanionWindow('annotationCreation', {
+      id: props.id,
       position: 'right',
     });
+  };
 
+  const resetStateAfterSave = () => {
     // TODO this create a re-render too soon for react and crash the app
     setState({
       image: { id: null },
@@ -360,7 +315,7 @@ function AnnotationCreation(props) {
       tstart: 0,
       xywh: null,
     });
-  };
+  }
 
   /** */
   const {
@@ -432,7 +387,7 @@ function AnnotationCreation(props) {
         updateGeometry={updateGeometry}
         windowId={windowId}
         player={mediaIsVideo ? props.mediaVideo : OSDReferences.get(windowId)}
-          // we need to pass the width and height of the image to the annotation drawing component
+        // we need to pass the width and height of the image to the annotation drawing component
         width={overlay ? overlay.containerWidth : 1920}
         height={overlay ? overlay.containerHeight : 1080}
         orignalWidth={overlay ? overlay.canvasWidth : 1920}
@@ -447,7 +402,6 @@ function AnnotationCreation(props) {
         setDrawingState={setDrawingState}
       />
       <StyledForm
-        onSubmit={submitForm}
       >
         <TabContext value={viewTool}>
           <TabList value={viewTool} onChange={tabHandler} aria-label="icon tabs">
@@ -515,29 +469,21 @@ function AnnotationCreation(props) {
             value={MANIFEST_LINK_VIEW}
           />
         </TabContext>
-        <StyledButtonDivSaveOrCancel>
-          <Button onClick={closeCompanionWindow}>
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            onMouseOver={() => setIsMouseOverSave(true)}
-            onMouseOut={() => setIsMouseOverSave(false)}
-          >
-            Save
-          </Button>
-        </StyledButtonDivSaveOrCancel>
+        <AnnotationFormFooter
+          annotation={annotation}
+          canvases={props.canvases}
+          closeFormCompanionWindow={closeFormCompanionWindow}
+          config={props.config}
+          drawingState={drawingState}
+          receiveAnnotation={props.receiveAnnotation}
+          resetStateAfterSave={resetStateAfterSave}
+          state={state}
+          windowId={windowId}
+        />
       </StyledForm>
     </CompanionWindow>
   );
 }
-
-const StyledButtonDivSaveOrCancel = styled('div')(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'flex-end',
-}));
 
 const StyledForm = styled('form')(({ theme }) => ({
   display: 'flex',

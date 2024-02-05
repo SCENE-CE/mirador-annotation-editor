@@ -1,10 +1,7 @@
-import { exportStageSVG } from 'react-konva-to-svg';
-import { v4 as uuid } from 'uuid';
 import axios from 'axios';
-import WebAnnotation from './WebAnnotation';
 
-const fileUploaderUrl = 'https://scene-uploads.tetras-libre.fr/upload';
-const fileReaderUrl = 'https://scene-uploads.tetras-libre.fr/static/';
+export const fileUploaderUrl = 'https://scene-uploads.tetras-libre.fr/upload';
+export const fileReaderUrl = 'https://scene-uploads.tetras-libre.fr/static/';
 /*const fileUploaderUrl = 'http://localhost:3000/upload';
 const fileReaderUrl = 'http://localhost:3000/static/';*/
 
@@ -52,55 +49,28 @@ export function isShapesTool(activeTool) {
   return Object.values(SHAPES_TOOL).find((tool) => tool === activeTool);
 }
 
-/**
- * Get SVG picture containing all the stuff draw in the stage (Konva Stage).
- * This image will be put in overlay of the iiif media
- */
-export async function getSvg(windowId) {
-  const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
-  const svg = await exportStageSVG(stage, false); // TODO clean
-  console.log('SVG:', svg);
-  return svg;
+/** Save annotation in the storage adapter */
+export async function saveAnnotation(canvas, storageAdapter, receiveAnnotation, annotationToSaved, isNewAnnotation) {
+  if (isNewAnnotation) {
+    storageAdapter.update(annotationToSaved)
+      .then((annoPage) => {
+        receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
+      });
+  } else {
+    storageAdapter.create(annotationToSaved)
+      .then((annoPage) => {
+        receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
+      });
+  }
 }
 
-export async function getJPG(windowId) {
-  const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
-  const jpg = await stage.toImage({ mimeType: 'image/jpeg', quality: 1 });
-  console.log('JPG:', jpg);
-  return jpg;
-}
-
-export async function saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, drawingStateSerialized, drawingImageExport, tags) {
-  console.log('Send file :', drawingImageExport);
-  const filename = await sendFile(drawingImageExport);
-
+export async function saveAnnotationInEachCanvas(canvases, config, receiveAnnotation, annotationToSaved, target, isNewAnnotation) {
   canvases.forEach(async (canvas) => {
+    // Adapt target to the canvas
+    // eslint-disable-next-line no-param-reassign
+    annotationToSaved.target = `${canvas.id}#xywh=${target.xywh}&t=${target.t}`;
     const storageAdapter = config.annotation.adapter(canvas.id);
-    const anno = {
-      body: {
-        id: fileReaderUrl + filename,
-        type: 'Image',
-        format: 'image/svg+xml',
-        value: body.value,
-      },
-      drawingState: drawingStateSerialized,
-      id: (annotation && annotation.id) || `${uuid()}`,
-      motivation: 'commenting',
-      target: `${canvas.id}#xywh=${xywh}&t=${t}`,
-      type: 'Annotation',
-    };
-
-    if (annotation) {
-      storageAdapter.update(anno)
-        .then((annoPage) => {
-          receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
-        });
-    } else {
-      storageAdapter.create(anno)
-        .then((annoPage) => {
-          receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
-        });
-    }
+    saveAnnotation(canvas, storageAdapter, receiveAnnotation, annotationToSaved, isNewAnnotation);
   });
 }
 
@@ -109,7 +79,6 @@ const sendFile = async (fileContent) => {
 
   const formData = new FormData();
   formData.append('file', blob);
-
 
   try {
     const response = await axios.post(fileUploaderUrl, formData, {
@@ -128,20 +97,11 @@ const sendFile = async (fileContent) => {
 };
 
 
-// export function dataURLtoBlob(dataurl) {
-//   // Split the Data URL to get the metadata and the actual data
-//   console.log('Data URL:', dataurl);
-//   var arr = dataurl.split(','),
-//     mime = arr[0].match(/:(.*?);/)[1], // Extract MIME type
-//     bstr = atob(arr[1]), // Decode base64
-//     n = bstr.length,
-//     u8arr = new Uint8Array(n); // Create a new ArrayBuffer
-//
-//   // Convert the binary string to an ArrayBuffer
-//   while(n--){
-//     u8arr[n] = bstr.charCodeAt(n);
-//   }
-//
-//   // Return a Blob object
-//   return new Blob([u8arr], {type:mime});
+function dataURLtoBlob(dataurl) {
+  var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+  while(n--){
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], {type:mime});
 }
