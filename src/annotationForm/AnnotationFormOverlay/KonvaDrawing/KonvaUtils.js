@@ -14,7 +14,10 @@ export async function getSvg(windowId) {
 /** Export the stage as a JPG image in a data url */
 export async function getKonvaAsDataURL(windowId) {
   const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
-  const dataURL = await stage.toDataURL({ mimeType: 'image/png', quality: 1 });
+  const dataURL = stage.toDataURL({
+    mimeType: 'image/png',
+    quality: 1,
+  });
   console.log('dataURL:', dataURL);
   return dataURL;
 }

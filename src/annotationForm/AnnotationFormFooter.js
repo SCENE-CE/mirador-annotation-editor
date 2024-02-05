@@ -61,8 +61,7 @@ function AnnotationFormFooter({
     // const filename = await sendFile(drawingImageExport);
     // const annotationBodyImageId = fileReaderUrl + filename;
 
-    // Save jpg image of the drawing in a data url
-    const annotationBodyImageId = getKonvaAsDataURL(windowId);
+
 
     // Temporal target of the annotation
     const target = {
@@ -72,11 +71,9 @@ function AnnotationFormFooter({
 
     const annotationText = (!textBody.length && target.t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody;
 
-    console.log('annotationBodyImageId:', annotationBodyImageId);
-
     const annotationToSaved = {
       body: {
-        id: annotationBodyImageId,
+        id: null, // Will be updated after
         type: 'Image',
         format: 'image/svg+xml',
         value: annotationText,
@@ -93,11 +90,15 @@ function AnnotationFormFooter({
 
     const isNewAnnotation = !annotation;
 
-    saveAnnotationInEachCanvas(canvases, config, receiveAnnotation, annotationToSaved, target, isNewAnnotation);
-
-    closeFormCompanionWindow();
-
-    resetStateAfterSave();
+    // Save jpg image of the drawing in a data url
+    getKonvaAsDataURL(windowId).then((dataURL) => {
+      console.log('dataURL:', dataURL);
+      const annotation = { ...annotationToSaved };
+      annotation.body.id = dataURL
+      saveAnnotationInEachCanvas(canvases, config, receiveAnnotation, annotation, target, isNewAnnotation);
+      closeFormCompanionWindow();
+      resetStateAfterSave();
+    });
   };
 
   return (

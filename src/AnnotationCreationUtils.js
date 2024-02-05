@@ -50,27 +50,27 @@ export function isShapesTool(activeTool) {
 }
 
 /** Save annotation in the storage adapter */
-export async function saveAnnotation(canvas, storageAdapter, receiveAnnotation, annotationToSaved, isNewAnnotation) {
-  if (isNewAnnotation) {
-    storageAdapter.update(annotationToSaved)
+export async function saveAnnotation(canvas, storageAdapter, receiveAnnotation, annotation, isNewAnnotation) {
+  if (!isNewAnnotation) {
+    storageAdapter.update(annotation)
       .then((annoPage) => {
         receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
       });
   } else {
-    storageAdapter.create(annotationToSaved)
+    storageAdapter.create(annotation)
       .then((annoPage) => {
         receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
       });
   }
 }
 
-export async function saveAnnotationInEachCanvas(canvases, config, receiveAnnotation, annotationToSaved, target, isNewAnnotation) {
+export async function saveAnnotationInEachCanvas(canvases, config, receiveAnnotation, annotation, target, isNewAnnotation) {
   canvases.forEach(async (canvas) => {
     // Adapt target to the canvas
     // eslint-disable-next-line no-param-reassign
-    annotationToSaved.target = `${canvas.id}#xywh=${target.xywh}&t=${target.t}`;
+    annotation.target = `${canvas.id}#xywh=${target.xywh}&t=${target.t}`;
     const storageAdapter = config.annotation.adapter(canvas.id);
-    saveAnnotation(canvas, storageAdapter, receiveAnnotation, annotationToSaved, isNewAnnotation);
+    saveAnnotation(canvas, storageAdapter, receiveAnnotation, annotation, isNewAnnotation);
   });
 }
 
