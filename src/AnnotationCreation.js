@@ -16,7 +16,6 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import HubIcon from '@mui/icons-material/Hub';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import AnnotationDrawing from './annotationForm/AnnotationDrawing';
-import WebAnnotation from './WebAnnotation';
 import { secondsToHMS } from './utils';
 import AnnotationFormContent from './annotationForm/AnnotationFormContent';
 import AnnotationFormTime from './annotationForm/AnnotationFormTime';
@@ -327,11 +326,6 @@ function AnnotationCreation(props) {
       config,
     } = props;
 
-    // const dumbIimage = {
-    //   id: null,
-    //   svg,
-    //    };
-    // state.image = dumbIimage;
 
     const drawingStateSerialized = JSON.stringify(drawingState);
 
@@ -349,7 +343,6 @@ function AnnotationCreation(props) {
     const drawingImageExport = svg;
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
-
     saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, drawingStateSerialized, drawingImageExport, tags);
 
     props.closeCompanionWindow('annotationCreation', {

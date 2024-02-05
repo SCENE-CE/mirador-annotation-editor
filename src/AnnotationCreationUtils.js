@@ -126,3 +126,22 @@ const sendFile = async (fileContent) => {
     console.error('Error uploading file:', error);
   }
 };
+
+
+// export function dataURLtoBlob(dataurl) {
+//   // Split the Data URL to get the metadata and the actual data
+//   console.log('Data URL:', dataurl);
+//   var arr = dataurl.split(','),
+//     mime = arr[0].match(/:(.*?);/)[1], // Extract MIME type
+//     bstr = atob(arr[1]), // Decode base64
+//     n = bstr.length,
+//     u8arr = new Uint8Array(n); // Create a new ArrayBuffer
+//
+//   // Convert the binary string to an ArrayBuffer
+//   while(n--){
+//     u8arr[n] = bstr.charCodeAt(n);
+//   }
+//
+//   // Return a Blob object
+//   return new Blob([u8arr], {type:mime});
+}
