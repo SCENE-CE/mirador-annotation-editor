@@ -61,6 +61,12 @@ function AnnotationFormFooter({
 
     const annotationText = (!textBody.length && target.t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody;
 
+    let id = annotation?.id ? annotation.id : `https://${uuid()}`;
+    id = id.split('#')[0];
+    if (manifestNetwork) {
+      id = `${id}#${manifestNetwork}`;
+    }
+
     const annotationToSaved = {
       body: {
         id: null, // Will be updated after
@@ -69,7 +75,7 @@ function AnnotationFormFooter({
         value: annotationText,
       },
       drawingState: JSON.stringify(drawingState),
-      id: (annotation && annotation.id) || `${uuid()}`,
+      id,
       manifestNetwork,
       motivation: 'commenting',
       target: null,
