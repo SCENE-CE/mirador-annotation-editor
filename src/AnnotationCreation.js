@@ -107,7 +107,7 @@ function AnnotationCreation(props) {
     if (!annoState?.xywh) {
       const targetHeigth = props.mediaVideo ? props.mediaVideo.props.canvas.__jsonld.height : 1000;
       const targetWidth = props.mediaVideo ? props.mediaVideo.props.canvas.__jsonld.width : 500;
-      annoState.xywh = `10,10,${targetWidth - 10},${targetHeigth - 10}`;
+      annoState.xywh = `0,0,${targetWidth},${targetHeigth}`;
     }
 
     if (!annoState?.textBody) {
