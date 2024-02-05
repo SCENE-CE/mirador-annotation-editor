@@ -21,7 +21,7 @@ import { secondsToHMS } from './utils';
 import AnnotationFormContent from './annotationForm/AnnotationFormContent';
 import AnnotationFormTime from './annotationForm/AnnotationFormTime';
 import {
-  geomFromAnnoTarget, getSvg, saveAnnotation, timeFromAnnoTarget,
+  geomFromAnnoTarget, getJPG, getSvg, saveAnnotation, timeFromAnnoTarget,
 } from './AnnotationCreationUtils';
 import AnnotationFormOverlay from './annotationForm/AnnotationFormOverlay/AnnotationFormOverlay.js';
 
@@ -338,10 +338,12 @@ function AnnotationCreation(props) {
     } = state;
     // TODO rename variable for better comprenhension
     const svg = await getSvg(props.windowId);
+   // const jpg = await getJPG(props.windowId);
+    const drawingImageExport = svg;
     const t = (tstart && tend) ? `${tstart},${tend}` : null;
     const body = { value: (!textBody.length && t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody };
 
-    saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, drawingStateSerialized, svg, tags);
+    saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, drawingStateSerialized, drawingImageExport, tags);
 
     props.closeCompanionWindow('annotationCreation', {
       id,

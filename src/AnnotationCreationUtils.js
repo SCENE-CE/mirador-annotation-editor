@@ -5,6 +5,7 @@ import WebAnnotation from './WebAnnotation';
 
 //const fileUploaderUrl = 'https://scene-uploads.tetras-libre.fr/upload';
 const fileUploaderUrl = 'http://localhost:3000/upload';
+const fileReaderUrl = 'http://localhost:3000/static/';
 
 /** Extract time information from annotation target */
 export function timeFromAnnoTarget(annotarget) {
@@ -61,32 +62,30 @@ export async function getSvg(windowId) {
   return svg;
 }
 
-export function saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, drawingStateSerialized, svg, tags) {
-  const dumbAnnotation = {
-    type: 'Annotation',
-    motivation: 'commenting',
-    body: {
-      id: 'https://files.tetras-libre.fr/dev/Hakanai/media/02_HKN-couv.jpg',
-      type: 'Image',
-      format: 'image/jpg',
-    },
-    target: 'https://preview.iiif.io/cookbook/master/recipe/0003-mvm-video/canvas#xywh=0,0,301,400&t=0,1000',
-  };
-  console.log('Send file :', svg);
-  const filename = sendFile(svg);
+export async function getJPG(windowId) {
+  const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
+  const jpg = await stage.toImage({ mimeType: 'image/jpeg', quality: 1 });
+  console.log('JPG:', jpg);
+  return jpg;
+}
+
+export async function saveAnnotation(canvases, config, receiveAnnotation, annotation, body, t, xywh, image, drawingStateSerialized, drawingImageExport, tags) {
+  console.log('Send file :', drawingImageExport);
+  const filename = await sendFile(drawingImageExport);
 
   canvases.forEach(async (canvas) => {
     const storageAdapter = config.annotation.adapter(canvas.id);
     const anno = {
       body: {
-        id: filename,
+        id: fileReaderUrl + filename,
         type: 'Image',
-        format: 'image/jpg',
+        format: 'image/svg+xml',
         value: body.value,
       },
       drawingState: drawingStateSerialized,
       id: (annotation && annotation.id) || `${uuid()}`,
-      motivation: 'commenting',
+      motivation: 'painting',
+      target: `${canvas.id}#xywh=0,0,640,360&t=0,1000',`,
       type: 'Annotation',
     };
 
@@ -105,12 +104,10 @@ export function saveAnnotation(canvases, config, receiveAnnotation, annotation, 
 }
 
 const sendFile = async (fileContent) => {
-  const blob = new Blob([fileContent], {type: 'image/svg+xml'});
+  const blob = new Blob([fileContent], { type: 'image/svg+xml'});
 
   const formData = new FormData();
   formData.append('file', blob);
-  formData.append('filename', filename);
-
 
 
   try {
@@ -124,6 +121,7 @@ const sendFile = async (fileContent) => {
     console.log('File Uploaded', response.data);
     return response.data.file.filename;
   } catch (error) {
+    return '';
     console.error('Error uploading file:', error);
   }
 };
