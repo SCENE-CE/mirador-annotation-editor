@@ -3,9 +3,10 @@ import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 import WebAnnotation from './WebAnnotation';
 
-//const fileUploaderUrl = 'https://scene-uploads.tetras-libre.fr/upload';
-const fileUploaderUrl = 'http://localhost:3000/upload';
-const fileReaderUrl = 'http://localhost:3000/static/';
+const fileUploaderUrl = 'https://scene-uploads.tetras-libre.fr/upload';
+const fileReaderUrl = 'https://scene-uploads.tetras-libre.fr/static/';
+/*const fileUploaderUrl = 'http://localhost:3000/upload';
+const fileReaderUrl = 'http://localhost:3000/static/';*/
 
 /** Extract time information from annotation target */
 export function timeFromAnnoTarget(annotarget) {
