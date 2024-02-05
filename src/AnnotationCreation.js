@@ -20,7 +20,9 @@ import WebAnnotation from './WebAnnotation';
 import { secondsToHMS } from './utils';
 import AnnotationFormContent from './annotationForm/AnnotationFormContent';
 import AnnotationFormTime from './annotationForm/AnnotationFormTime';
-import {geomFromAnnoTarget, getSvg, saveAnnotation, timeFromAnnoTarget} from './AnnotationCreationUtils';
+import {
+  geomFromAnnoTarget, getSvg, saveAnnotation, timeFromAnnoTarget,
+} from './AnnotationCreationUtils';
 import AnnotationFormOverlay from './annotationForm/AnnotationFormOverlay/AnnotationFormOverlay.js';
 
 const TARGET_VIEW = 'target';
@@ -97,14 +99,13 @@ function AnnotationCreation(props) {
         [tstart, tend] = timeFromAnnoTarget(props.annotation.target);
       }
 
-      if(props.annotation.drawingState) {
-       setDrawingState(JSON.parse(props.annotation.drawingState));
+      if (props.annotation.drawingState) {
+        setDrawingState(JSON.parse(props.annotation.drawingState));
       }
     }
     // TODO add a case where no annotation
 
-
-    if(!annoState?.textBody) {
+    if (!annoState?.textBody) {
       annoState.textBody = '';
     }
 
@@ -163,7 +164,6 @@ function AnnotationCreation(props) {
 
   useLayoutEffect(() => {
   }, [{ height, width }]);
-
 
   /** set annotation start time to current time */
   const setTstartNow = () => {
@@ -305,13 +305,13 @@ function AnnotationCreation(props) {
     // TODO Possibly problem of syncing
     // TODO Improve this code
     // If we are in edit mode, we have the transformer on the stage saved in the annotation
-   /* if (viewTool === OVERLAY_VIEW && state.activeTool === 'edit') {
+    /* if (viewTool === OVERLAY_VIEW && state.activeTool === 'edit') {
       setState((prevState) => ({
         ...prevState,
         activeTool: 'cursor',
       }));
       return;
-    }*/
+    } */
 
     const {
       annotation,
@@ -324,7 +324,7 @@ function AnnotationCreation(props) {
     //   id: null,
     //   svg,
     //    };
-    //state.image = dumbIimage;
+    // state.image = dumbIimage;
 
     const drawingStateSerialized = JSON.stringify(drawingState);
 

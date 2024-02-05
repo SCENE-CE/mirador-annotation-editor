@@ -96,6 +96,7 @@ export function saveAnnotation(canvases, config, receiveAnnotation, annotation, 
 
     const anno = dumbAnnotation;
     anno.drawingState = drawingStateSerialized;
+    anno.body.value = body.value;
 
     if (annotation) {
       storageAdapter.update(anno)
