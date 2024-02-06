@@ -3,25 +3,10 @@ import {
   Grid, Paper, TextField, Typography, Button, Link,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+import { isValidUrl } from '../utils';
 
 /** Form part for edit annotation content and body */
 function AnnotationFormNetwork({ manifestNetwork, updateManifestNetwork }) {
-  const isValidUrl = (string) => {
-    if (string === '') {
-      return true;
-    }
-    try {
-      new URL(string);
-      return true;
-    } catch (_) {
-      return false;
-    }
-  };
-
-  const onChangeManifestNetworkInput = (event) => {
-      updateManifestNetwork(event.target.value.trim());
-  };
-
   return (
     <Paper style={{ padding: '5px' }}>
       <Typography variant="overline">
@@ -30,22 +15,19 @@ function AnnotationFormNetwork({ manifestNetwork, updateManifestNetwork }) {
       <Grid>
         <TextField
           value={manifestNetwork}
-          onChange={onChangeManifestNetworkInput}
+          onChange={(event) => updateManifestNetwork(event.target.value.trim())}
           label="Manifest URL"
           type="url"
         />
         {
-          isValidUrl(manifestNetwork) && (
+          isValidUrl(manifestNetwork) ? (
             <Link
               href={manifestNetwork}
               target="_blank"
             >
               {manifestNetwork}
             </Link>
-          )
-        }
-        {
-          !isValidUrl(manifestNetwork) && (
+          ) : (
             <Typography variant="caption">
               Not a valid URL
             </Typography>

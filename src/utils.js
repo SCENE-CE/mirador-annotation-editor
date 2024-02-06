@@ -26,3 +26,15 @@ export function secondsToHMSarray(secs) {
     seconds: secs % 60,
   };
 }
+
+export const isValidUrl = (string) => {
+  if (string === '') {
+    return true;
+  }
+  try {
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
+};
