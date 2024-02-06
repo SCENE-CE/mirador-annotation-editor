@@ -444,7 +444,6 @@ function AnnotationCreation({
           resetStateAfterSave={resetStateAfterSave}
           state={state}
           windowId={windowId}
-          mediaIsVideo={mediaIsVideo}
         />
       </StyledForm>
     </CompanionWindow>
