@@ -8,7 +8,7 @@ function AnnotationFormContent({ textBody, updateTextBody, textEditorStateBustin
   return (
     <Paper style={{ padding: '5px' }}>
       <Typography variant="overline">
-        Metadata
+        Infos
       </Typography>
       <Grid>
         <TextEditor
