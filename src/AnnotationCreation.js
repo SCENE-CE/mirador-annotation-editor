@@ -288,7 +288,7 @@ function AnnotationCreation({
     imageEvent,
   } = toolState;
 
-  const mediaIsVideo = mediaVideo !== 'undefined';
+  const mediaIsVideo = mediaVideo !== undefined;
   if (mediaIsVideo && valueTime) {
     valueTime[0] = tstart;
     valueTime[1] = tend;
@@ -302,9 +302,23 @@ function AnnotationCreation({
   let overlay = null;
   if (videoref) {
     overlay = videoref.canvasOverlay;
-  }
-  if (osdref) {
-    console.debug('osdref', osdref);
+  } else {
+    if (osdref) {
+      console.debug('osdref', osdref);
+      overlay = {
+        canvasHeight: osdref.current.canvas.clientHeight,
+        canvasWidth: osdref.current.canvas.clientWidth,
+        containerHeight: osdref.current.canvas.clientHeight,
+        containerWidth: osdref.current.canvas.clientWidth,
+      };
+    } else {
+      overlay = {
+        canvasHeight: 500,
+        canvasWidth: 1000,
+        containerHeight: 500,
+        containerWidth: 1000,
+      };
+    }
   }
 
   /** Change scale from container / canva */
@@ -430,6 +444,7 @@ function AnnotationCreation({
           resetStateAfterSave={resetStateAfterSave}
           state={state}
           windowId={windowId}
+          mediaIsVideo={mediaIsVideo}
         />
       </StyledForm>
     </CompanionWindow>

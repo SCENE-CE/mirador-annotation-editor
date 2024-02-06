@@ -23,10 +23,12 @@ function AnnotationFormFooter({
   closeFormCompanionWindow,
   config,
   drawingState,
+  mediaIsVideo,
   receiveAnnotation,
   resetStateAfterSave,
   state,
   windowId,
+
 }) {
   /**
    * Validate form and save annotation
