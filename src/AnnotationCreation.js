@@ -14,6 +14,7 @@ import AnnotationDrawing from './annotationForm/AnnotationDrawing';
 import AnnotationFormContent from './annotationForm/AnnotationFormContent';
 import AnnotationFormTime from './annotationForm/AnnotationFormTime';
 import {
+  defaultToolState,
   geomFromAnnoTarget, timeFromAnnoTarget,
 } from './AnnotationCreationUtils';
 import AnnotationFormOverlay from './annotationForm/AnnotationFormOverlay/AnnotationFormOverlay';
@@ -28,15 +29,7 @@ const MANIFEST_LINK_VIEW = 'link';
 /** Component for creating annotations.
  * Display in companion window when a manifest is open and an annoation created or edited */
 function AnnotationCreation(props) {
-  const [toolState, setToolState] = useState({
-    activeTool: 'edit',
-    closedMode: 'closed',
-    fillColor: 'rgba(255, 0, 0, 0.5)',
-    image: { id: null },
-    imageEvent: null,
-    strokeColor: 'rgba(255, 0, 0, 0.5)',
-    strokeWidth: 20,
-  });
+  const [toolState, setToolState] = useState(defaultToolState);
 
   const [drawingState, setDrawingState] = useState({
     currentShape: null,

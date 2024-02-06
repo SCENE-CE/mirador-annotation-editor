@@ -1,10 +1,3 @@
-import axios from 'axios';
-
-export const fileUploaderUrl = 'https://scene-uploads.tetras-libre.fr/upload';
-export const fileReaderUrl = 'https://scene-uploads.tetras-libre.fr/static/';
-/*const fileUploaderUrl = 'http://localhost:3000/upload';
-const fileReaderUrl = 'http://localhost:3000/static/';*/
-
 /** Extract time information from annotation target */
 export function timeFromAnnoTarget(annotarget) {
   console.info('TODO proper time extraction from: ', annotarget);
@@ -74,34 +67,12 @@ export async function saveAnnotationInEachCanvas(canvases, config, receiveAnnota
   });
 }
 
-const sendFile = async (fileContent) => {
-  const blob = new Blob([fileContent], { type: 'image/svg+xml'});
-
-  const formData = new FormData();
-  formData.append('file', blob);
-
-  try {
-    const response = await axios.post(fileUploaderUrl, formData, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 'no-cache',
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    console.log('File Uploaded', response.data);
-    return response.data.file.filename;
-  } catch (error) {
-    return '';
-    console.error('Error uploading file:', error);
-  }
-};
-
-
-function dataURLtoBlob(dataurl) {
-  var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-    bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-  while(n--){
-    u8arr[n] = bstr.charCodeAt(n);
-  }
-  return new Blob([u8arr], {type:mime});
+export const defaultToolState = {
+  activeTool: OVERLAY_TOOL.EDIT,
+  closedMode: 'closed',
+  fillColor: 'rgba(83,162, 235, 50)',
+  image: { id: null },
+  imageEvent: null,
+  strokeColor: 'rgba(20,82,168,100)',
+  strokeWidth: 2,
 }

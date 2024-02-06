@@ -19,6 +19,7 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { v4 as uuidv4 } from 'uuid';
 import ImageFormField from './ImageFormField';
 import { isShapesTool, OVERLAY_TOOL } from '../../AnnotationCreationUtils';
+import { defaultLineWeightChoices } from './KonvaDrawing/KonvaUtils';
 
 const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
@@ -228,7 +229,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseLineWeight}>
                   <MenuList autoFocus role="listbox">
-                    {[5, 10, 20, 50].map((option, index) => (
+                    {defaultLineWeightChoices.map((option, index) => (
                       <MenuItem
                         key={option}
                         onClick={handleLineWeightSelect}

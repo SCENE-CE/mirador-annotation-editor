@@ -21,3 +21,5 @@ export async function getKonvaAsDataURL(windowId) {
   console.log('dataURL:', dataURL);
   return dataURL;
 }
+
+export const defaultLineWeightChoices = [0, 2, 5, 10, 20, 50];
