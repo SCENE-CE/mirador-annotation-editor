@@ -96,6 +96,8 @@ function AnnotationCreation({
       } else if (typeof annotation.target === 'string') {
         annoState.xywh = geomFromAnnoTarget(annotation.target);
         [tstart, tend] = timeFromAnnoTarget(annotation.target);
+        annoState.tstart = tstart;
+        annoState.tend = tend;
       }
 
       if (annotation.drawingState) {
