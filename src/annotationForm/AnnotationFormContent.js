@@ -1,18 +1,16 @@
 import React from 'react';
-import {Grid, Paper, Typography} from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import TextEditor from '../TextEditor';
 
 /** Form part for edit annotation content and body */
-function AnnotationFormContent({textBody, updateTextBody, textEditorStateBustingKey,
-}) {
+function AnnotationFormContent({ textBody, updateTextBody, textEditorStateBustingKey }) {
   return (
-    <Paper style={{padding:"5px"}}>
+    <Paper style={{ padding: '5px' }}>
       <Typography variant="overline">
         Metadata
       </Typography>
-      <Grid
-      >
+      <Grid>
         <TextEditor
           key={textEditorStateBustingKey}
           annoHtml={textBody}
@@ -24,10 +22,9 @@ function AnnotationFormContent({textBody, updateTextBody, textEditorStateBusting
 }
 
 AnnotationFormContent.propTypes = {
-  onChange: PropTypes.func,
-  textBody: PropTypes.string,
-  textEditorStateBustingKey: PropTypes.string,
-  updateTextBody: PropTypes.func,
+  textBody: PropTypes.string.isRequired,
+  textEditorStateBustingKey: PropTypes.string.isRequired,
+  updateTextBody: PropTypes.func.isRequired,
 };
 
 export default AnnotationFormContent;

@@ -12,7 +12,7 @@ import HubIcon from '@mui/icons-material/Hub';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import AnnotationDrawing from './annotationForm/AnnotationDrawing';
 import AnnotationFormContent from './annotationForm/AnnotationFormContent';
-import AnnotationFormTime from './annotationForm/AnnotationFormTime';
+import AnnotationFormTarget from './annotationForm/AnnotationFormTarget';
 import {
   defaultToolState,
   geomFromAnnoTarget, timeFromAnnoTarget,
@@ -417,41 +417,43 @@ function AnnotationCreation(props) {
               icon={<HighlightAltIcon />}
               aria-label="TargetSelector"
               value={TARGET_VIEW}
+              tooltip="Target"
             />
             <StyledTab
               icon={<LayersIcon />}
-              aria-label="TargetSelector"
+              aria-label="OverlaySelector"
               value={OVERLAY_VIEW}
+              tooltip="Overlay"
             />
             <StyledTab
               icon={<LocalOfferIcon />}
-              aria-label="TargetSelector"
+              aria-label="InfosSelector"
               value={TAG_VIEW}
+              tooltip="Infos"
             />
             <StyledTab
               icon={<HubIcon />}
-              aria-label="TargetSelector"
+              aria-label="ManifestNetworkSelector"
               value={MANIFEST_LINK_VIEW}
+              tooltip="Manifest Network"
             />
           </TabList>
           <StyledTabPanel
             value={TARGET_VIEW}
           >
-            {mediaIsVideo && (
-              <AnnotationFormTime
-                mediaIsVideo={mediaIsVideo}
-                videoDuration={videoDuration}
-                value={valueTime}
-                handleChangeTime={handleChangeTime}
-                windowid={windowId}
-                setTstartNow={setTstartNow}
-                tstart={tstart}
-                updateTstart={updateTstart}
-                setTendNow={setTendNow}
-                tend={tend}
-                updateTend={updateTend}
-              />
-            )}
+            <AnnotationFormTarget
+              mediaIsVideo={mediaIsVideo}
+              videoDuration={videoDuration}
+              value={valueTime}
+              handleChangeTime={handleChangeTime}
+              windowid={windowId}
+              setTstartNow={setTstartNow}
+              tstart={tstart}
+              updateTstart={updateTstart}
+              setTendNow={setTendNow}
+              tend={tend}
+              updateTend={updateTend}
+            />
           </StyledTabPanel>
           <StyledTabPanel
             value={OVERLAY_VIEW}

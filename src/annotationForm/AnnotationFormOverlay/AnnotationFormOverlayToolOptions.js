@@ -164,9 +164,6 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
       {
         isShapesTool(toolState.activeTool) && (
           <Grid container>
-            <Typography variant="overline">
-              Object styles
-            </Typography>
             <Grid item xs={12}>
               <Typography variant="overline">
                 Style

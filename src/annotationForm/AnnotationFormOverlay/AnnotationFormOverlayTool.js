@@ -71,32 +71,31 @@ function AnnotationFormOverlayTool({
               <Typography variant="overline">
                 Selected object
               </Typography>
-
-              <ul>
-                {
-                  Object.keys(currentShape).sort().map((key) => (
-                    <>
-                      { key !== 'lines' && key !== 'image' && (
-                        <li key={key}>
-                          {key}
-                          :
-                          {currentShape[key]}
-                        </li>
-                      )}
-                    </>
-                  ))
-                }
-              </ul>
+              {/* <ul> // useful for debug */}
+              {/*   { */}
+              {/*     Object.keys(currentShape).sort().map((key) => ( */}
+              {/*       <> */}
+              {/*         { key !== 'lines' && key !== 'image' && ( */}
+              {/*           <li key={key}> */}
+              {/*             {key} */}
+              {/*             : */}
+              {/*             {currentShape[key]} */}
+              {/*           </li> */}
+              {/*         )} */}
+              {/*       </> */}
+              {/*     )) */}
+              {/*   } */}
+              {/* </ul> */}
               <AnnotationFormOverlayToolOptions
                 toolState={{
                   ...toolState,
                   activeTool: currentShape.type,
                   closedMode: currentShape.closedMode,
                   fillColor: currentShape.fill,
+                  image: { id: currentShape.url },
                   strokeColor: currentShape.stroke,
                   strokeWidth: currentShape.strokeWidth,
                   text: currentShape.text,
-                  image: { id: currentShape.url },
                 }}
                 updateToolState={customUpdateToolState}
 
@@ -104,11 +103,20 @@ function AnnotationFormOverlayTool({
             </Paper>
             )
             }
-            <AccordionShapes
-              currentShapeId={currentShape?.id}
-              shapes={shapes}
-              deleteShape={deleteShape}
-            />
+            {
+              shapes.length > 0 && (
+                <>
+                  <Typography variant="overline">
+                    Object lists
+                  </Typography>
+                  <AccordionShapes
+                    currentShapeId={currentShape?.id}
+                    shapes={shapes}
+                    deleteShape={deleteShape}
+                  />
+                </>
+              )
+            }
           </>
 
           )
