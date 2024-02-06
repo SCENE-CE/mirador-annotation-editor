@@ -1,13 +1,25 @@
 import React from 'react';
 import {
-  Grid, Paper, TextField, Typography, Button,
+  Grid, Paper, TextField, Typography, Button, Link,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
 /** Form part for edit annotation content and body */
 function AnnotationFormNetwork({ manifestNetwork, updateManifestNetwork }) {
-  const addManifest = () => {
-    updateManifestNetwork(manifestNetwork);
+  const isValidUrl = (string) => {
+    if (string === '') {
+      return true;
+    }
+    try {
+      new URL(string);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  };
+
+  const onChangeManifestNetworkInput = (event) => {
+      updateManifestNetwork(event.target.value.trim());
   };
 
   return (
@@ -18,9 +30,27 @@ function AnnotationFormNetwork({ manifestNetwork, updateManifestNetwork }) {
       <Grid>
         <TextField
           value={manifestNetwork}
-          onChange={(ev) => updateManifestNetwork(ev.target.value)}
+          onChange={onChangeManifestNetworkInput}
           label="Manifest URL"
+          type="url"
         />
+        {
+          isValidUrl(manifestNetwork) && (
+            <Link
+              href={manifestNetwork}
+              target="_blank"
+            >
+              {manifestNetwork}
+            </Link>
+          )
+        }
+        {
+          !isValidUrl(manifestNetwork) && (
+            <Typography variant="caption">
+              Not a valid URL
+            </Typography>
+          )
+        }
       </Grid>
     </Paper>
   );
