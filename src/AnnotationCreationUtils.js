@@ -37,6 +37,7 @@ export const SHAPES_TOOL = {
   SHAPES: 'shapes',
 };
 
+/** Check if the active tool is a shape tool */
 export function isShapesTool(activeTool) {
   // Find if active tool in the list of overlay tools. I want a boolean in return
   return Object.values(SHAPES_TOOL).find((tool) => tool === activeTool);
@@ -57,6 +58,7 @@ export async function saveAnnotation(canvas, storageAdapter, receiveAnnotation, 
   }
 }
 
+/** Save annotation for each canvas */
 export async function saveAnnotationInEachCanvas(canvases, config, receiveAnnotation, annotation, target, isNewAnnotation) {
   canvases.forEach(async (canvas) => {
     // Adapt target to the canvas
@@ -70,9 +72,9 @@ export async function saveAnnotationInEachCanvas(canvases, config, receiveAnnota
 export const defaultToolState = {
   activeTool: OVERLAY_TOOL.EDIT,
   closedMode: 'closed',
-  fillColor: 'rgba(83,162, 235, 50)',
+  fillColor: 'rgba(83,162, 235, 0.5)',
   image: { id: null },
   imageEvent: null,
-  strokeColor: 'rgba(20,82,168,100)',
+  strokeColor: 'rgba(20,82,168,1)',
   strokeWidth: 2,
-}
+};
