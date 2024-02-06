@@ -85,15 +85,23 @@ function AnnotationFormFooter({
 
     const isNewAnnotation = !annotation;
 
-    // Save jpg image of the drawing in a data url
-    getKonvaAsDataURL(windowId).then((dataURL) => {
-      console.log('dataURL:', dataURL);
+    // TODO dumb code to avoid error from Konva export. WIth image, Konva doesnot work
+    if (mediaIsVideo) {
+      // Save jpg image of the drawing in a data url
+      getKonvaAsDataURL(windowId).then((dataURL) => {
+        console.log('dataURL:', dataURL);
+        const annotation = { ...annotationToSaved };
+        annotation.body.id = dataURL;
+        saveAnnotationInEachCanvas(canvases, config, receiveAnnotation, annotation, target, isNewAnnotation);
+        closeFormCompanionWindow();
+        resetStateAfterSave();
+      });
+    } else {
       const annotation = { ...annotationToSaved };
-      annotation.body.id = dataURL;
       saveAnnotationInEachCanvas(canvases, config, receiveAnnotation, annotation, target, isNewAnnotation);
       closeFormCompanionWindow();
       resetStateAfterSave();
-    });
+    }
   };
 
   return (
