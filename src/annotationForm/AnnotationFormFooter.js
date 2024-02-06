@@ -32,7 +32,6 @@ function AnnotationFormFooter({
    * Validate form and save annotation
    */
   const submitAnnotationForm = async (e) => {
-    console.log('submitForm');
     e.preventDefault();
     // TODO Possibly problem of syncing
     // TODO Improve this code
@@ -81,9 +80,6 @@ function AnnotationFormFooter({
       target: null,
       type: 'Annotation', // Will be updated in saveAnnotationInEachCanvas
     };
-
-    console.log('Annotation to save:', annotationToSaved);
-    console.log('target:', target);
 
     const isNewAnnotation = !annotation;
 

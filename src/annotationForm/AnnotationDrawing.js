@@ -110,7 +110,6 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
   const onTransform = (evt) => {
     const modifiedshape = evt.target.attrs;
 
-    console.log('modifiedshape', modifiedshape);
     const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
 
     Object.assign(shape, modifiedshape);

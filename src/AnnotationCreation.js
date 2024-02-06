@@ -28,7 +28,19 @@ const MANIFEST_LINK_VIEW = 'link';
 
 /** Component for creating annotations.
  * Display in companion window when a manifest is open and an annoation created or edited */
-function AnnotationCreation(props) {
+function AnnotationCreation({
+  annotation,
+  canvases,
+  closeCompanionWindow,
+  config,
+  currentTime,
+  id,
+  mediaVideo,
+  receiveAnnotation,
+  setCurrentTime,
+  setSeekTo,
+  windowId,
+}) {
   const [toolState, setToolState] = useState(defaultToolState);
 
   const [drawingState, setDrawingState] = useState({
@@ -42,12 +54,12 @@ function AnnotationCreation(props) {
     let tstart;
     let tend;
     const annoState = {};
-    if (props.annotation) {
-      console.log('props.annotation', props.annotation);
+    if (annotation) {
+      console.log('annotation', annotation);
       // annotation body
-      if (Array.isArray(props.annotation.body)) {
+      if (Array.isArray(annotation.body)) {
         annoState.tags = [];
-        props.annotation.body.forEach((body) => {
+        annotation.body.forEach((body) => {
           if (body.purpose === 'tagging' && body.type === 'TextualBody') {
             annoState.tags.push(body.value);
           } else if (body.type === 'TextualBody') {
@@ -59,17 +71,16 @@ function AnnotationCreation(props) {
             annoState.title = body;
           }
         });
-      } else if (props.annotation.body.type === 'TextualBody') {
-        annoState.textBody = props.annotation.body.value;
-      } else if (props.annotation.body.type === 'Image') {
-        annoState.textBody = props.annotation.body.value; // why text body here ???
-        annoState.image = props.annotation.body;
+      } else if (annotation.body.type === 'TextualBody') {
+        annoState.textBody = annotation.body.value;
+      } else if (annotation.body.type === 'Image') {
+        annoState.textBody = annotation.body.value; // why text body here ???
+        annoState.image = annotation.body;
       }
-      //
       // drawing position
-      if (props.annotation.target.selector) {
-        if (Array.isArray(props.annotation.target.selector)) {
-          props.annotation.target.selector.forEach((selector) => {
+      if (annotation.target.selector) {
+        if (Array.isArray(annotation.target.selector)) {
+          annotation.target.selector.forEach((selector) => {
             if (selector.type === 'SvgSelector') {
               annoState.svg = selector.value;
             } else if (selector.type === 'FragmentSelector') {
@@ -79,55 +90,44 @@ function AnnotationCreation(props) {
             }
           });
         } else {
-          annoState.svg = props.annotation.target.selector.value;
+          annoState.svg = annotation.target.selector.value;
           // TODO does this happen ? when ? where are fragments selectors ?
         }
-      } else if (typeof props.annotation.target === 'string') {
-        annoState.xywh = geomFromAnnoTarget(props.annotation.target);
-        [tstart, tend] = timeFromAnnoTarget(props.annotation.target);
+      } else if (typeof annotation.target === 'string') {
+        annoState.xywh = geomFromAnnoTarget(annotation.target);
+        [tstart, tend] = timeFromAnnoTarget(annotation.target);
       }
 
-      if (props.annotation.drawingState) {
-        setDrawingState(JSON.parse(props.annotation.drawingState));
+      if (annotation.drawingState) {
+        setDrawingState(JSON.parse(annotation.drawingState));
       }
-      if (props.annotation.manifestNetwork) {
-        annoState.manifestNetwork = props.annotation.manifestNetwork;
+      if (annotation.manifestNetwork) {
+        annoState.manifestNetwork = annotation.manifestNetwork;
       }
-    }
-    // TODO add a case where no annotation
+    } else {
+      const video = true;
+      if (video) {
+        // Time target
+        annoState.tstart = currentTime ? Math.floor(currentTime) : 0;
+        annoState.tend = mediaVideo ? mediaVideo.props.canvas.__jsonld.duration : 0;
 
-    // TODO improve this code
-    if (!annoState?.xywh) {
-      const targetHeigth = props.mediaVideo ? props.mediaVideo.props.canvas.__jsonld.height : 1000;
-      const targetWidth = props.mediaVideo ? props.mediaVideo.props.canvas.__jsonld.width : 500;
-      annoState.xywh = `0,0,${targetWidth},${targetHeigth}`;
-    }
-
-    if (!annoState?.textBody) {
+        // Geometry target
+        const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
+        const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
+        annoState.xywh = `0,0,${targetWidth},${targetHeigth}`;
+      } else {
+        // TODO image and audio case
+      }
       annoState.textBody = '';
-    }
-
-    if (!annoState?.manifestNetwork) {
       annoState.manifestNetwork = '';
-    }
-
-    // If we don't have tstart setted, we are creating a new annotation.
-    // If we don't have tend setted, we set it at the end of the video.
-    // So Tstart is current time and Tend the end of the video
-    if (!tstart) {
-      tstart = props.currentTime ? Math.floor(props.currentTime) : 0;
-      tend = props.mediaVideo ? props.mediaVideo.props.canvas.__jsonld.duration : 0;
     }
 
     return {
       ...toolState,
-      mediaVideo: props.mediaVideo,
+      mediaVideo,
       ...annoState,
-      tend,
       textEditorStateBustingKey: 0,
-      tstart,
       valueTime: [0, 1],
-      valuetextTime: '',
     };
   });
 
@@ -135,7 +135,19 @@ function AnnotationCreation(props) {
   const [scale, setScale] = useState(1);
 
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
-  const { height, width } = props.mediaVideo ? props.mediaVideo : 0;
+
+  const getHeightAndWidth = () => {
+    if (mediaVideo) {
+      return mediaVideo;
+    }
+    // Todo get size from manifest image
+    return {
+      height: 1000,
+      width: 500,
+    };
+  };
+
+  const { height, width } = getHeightAndWidth();
 
   // TODO Check the effect to keep and remove the other
   // Add a state to trigger redraw
@@ -167,77 +179,8 @@ function AnnotationCreation(props) {
   useLayoutEffect(() => {
   }, [{ height, width }]);
 
-  /** set annotation start time to current time */
-  const setTstartNow = () => {
-    setState((prevState) => ({
-      ...prevState,
-      tstart: Math.floor(props.currentTime),
-    }));
-  };
-
-  /** set annotation end time to current time */
-  const setTendNow = () => {
-    setState((prevState) => ({
-      ...prevState,
-      tend: Math.floor(props.currentTime),
-    }));
-  };
-
-  /**
-     * @param {number} newValueTime
-     */
-  const setValueTime = (newValueTime) => {
-    setState((prevState) => ({
-      ...prevState,
-      valueTime: newValueTime,
-    }));
-  };
   const tabHandler = (event, TabIndex) => {
     setViewTool(TabIndex);
-  };
-  /**
-   * Change from slider
-   * @param {Event} event
-   * @param {number} newValueTime
-   */
-  const handleChangeTime = (event, newValueTime) => {
-    const timeStart = newValueTime[0];
-    const timeEnd = newValueTime[1];
-    updateTstart(timeStart);
-    updateTend(timeEnd);
-    seekToTstart();
-    setValueTime(newValueTime);
-  };
-
-  /** Change from Tstart HMS Input */
-  const updateTstart = (value) => {
-    if (value > state.tend) {
-      return;
-    }
-    setState((prevState) => ({
-      ...prevState,
-      tstart: value,
-      ...props.setSeekTo(value),
-      ...props.setCurrentTime(value),
-
-    }));
-  };
-
-  /** update annotation end time */
-  const updateTend = (value) => {
-    setState((prevState) => ({
-      ...prevState,
-      tend: value,
-    }));
-  };
-
-  // eslint-disable-next-line require-jsdoc
-  const seekToTstart = () => {
-    setState((prevState) => ({
-      ...prevState,
-      ...props.setSeekTo(prevState.tstart),
-      ...props.setCurrentTime(prevState.tstart),
-    }));
   };
 
   /** */
@@ -307,7 +250,7 @@ function AnnotationCreation(props) {
 
   const closeFormCompanionWindow = () => {
     closeCompanionWindow('annotationCreation', {
-      id: props.id,
+      id,
       position: 'right',
     });
   };
@@ -324,14 +267,6 @@ function AnnotationCreation(props) {
       xywh: null,
     });
   };
-
-  /** */
-  const {
-    annotation,
-    closeCompanionWindow,
-    id,
-    windowId,
-  } = props;
 
   const {
     manifestNetwork,
@@ -351,13 +286,13 @@ function AnnotationCreation(props) {
     imageEvent,
   } = toolState;
 
-  const mediaIsVideo = props.mediaVideo !== 'undefined';
+  const mediaIsVideo = mediaVideo !== 'undefined';
   if (mediaIsVideo && valueTime) {
     valueTime[0] = tstart;
     valueTime[1] = tend;
   }
 
-  const videoDuration = props.mediaVideo ? props.mediaVideo.props.canvas.__jsonld.duration : 0;
+  const videoDuration = mediaVideo ? mediaVideo.props.canvas.__jsonld.duration : 0;
   // TODO: L'erreur de "Ref" sur l'ouverture d'une image vient d'ici et plus particulièrement
   //  du useEffect qui prend en dépedance [overlay.containerWidth, overlay.canvasWidth]
   const videoref = VideosReferences.get(windowId);
@@ -395,7 +330,7 @@ function AnnotationCreation(props) {
         closed={closedMode === 'closed'}
         updateGeometry={updateGeometry}
         windowId={windowId}
-        player={mediaIsVideo ? props.mediaVideo : OSDReferences.get(windowId)}
+        player={mediaIsVideo ? mediaVideo : OSDReferences.get(windowId)}
         // we need to pass the width and height of the image to the annotation drawing component
         width={overlay ? overlay.containerWidth : 1920}
         height={overlay ? overlay.containerHeight : 1080}
@@ -407,7 +342,7 @@ function AnnotationCreation(props) {
         setColorToolFromCurrentShape={setColorToolFromCurrentShape}
         drawingState={drawingState}
         isMouseOverSave={isMouseOverSave}
-        mediaVideo={props.mediaVideo}
+        mediaVideo={mediaVideo}
         setDrawingState={setDrawingState}
       />
       <StyledForm>
@@ -445,14 +380,13 @@ function AnnotationCreation(props) {
               mediaIsVideo={mediaIsVideo}
               videoDuration={videoDuration}
               value={valueTime}
-              handleChangeTime={handleChangeTime}
               windowid={windowId}
-              setTstartNow={setTstartNow}
               tstart={tstart}
-              updateTstart={updateTstart}
-              setTendNow={setTendNow}
               tend={tend}
-              updateTend={updateTend}
+              currentTime={currentTime}
+              setState={setState}
+              setCurrentTime={setCurrentTime}
+              setSeekTo={setSeekTo}
             />
           </StyledTabPanel>
           <StyledTabPanel
@@ -486,11 +420,11 @@ function AnnotationCreation(props) {
         </TabContext>
         <AnnotationFormFooter
           annotation={annotation}
-          canvases={props.canvases}
+          canvases={canvases}
           closeFormCompanionWindow={closeFormCompanionWindow}
-          config={props.config}
+          config={config}
           drawingState={drawingState}
-          receiveAnnotation={props.receiveAnnotation}
+          receiveAnnotation={receiveAnnotation}
           resetStateAfterSave={resetStateAfterSave}
           state={state}
           windowId={windowId}
@@ -564,7 +498,6 @@ AnnotationCreation.defaultProps = {
   closeCompanionWindow: () => {
   },
   currentTime: null,
-  paused: true,
   setCurrentTime: () => {
   },
   setSeekTo: () => {
