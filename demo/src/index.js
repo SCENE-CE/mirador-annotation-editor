@@ -11,6 +11,7 @@ const config = {
     exportLocalStorageAnnotations: false, // display annotation JSON export button
   },
   catalog: [
+    { manifestId: 'https://files.tetras-libre.fr/manifests/re_walden_cut.json' },
     { manifestId: 'https://files.tetras-libre.fr/manifests/jf_peyret_re_walden.json' },
     { manifestId: 'https://files.tetras-libre.fr/manifests/test_markeas_manifest.json' },
     { manifestId: 'https://files.tetras-libre.fr/manifests/installation_fresnoy_manifest.json' },
