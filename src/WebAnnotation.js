@@ -10,8 +10,6 @@ export default class WebAnnotation {
     this.body = body;
     this.drawingState = drawingStateSerialized;
     this.target = target;
-
-    console.log('WebAnnotation constructor', this);
   }
 
   /** */
@@ -27,7 +25,6 @@ export default class WebAnnotation {
 
     const result = this;
 
-    console.log('WebAnnotation toJson', result);
     return result;
   }
 

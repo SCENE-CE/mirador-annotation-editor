@@ -11,10 +11,10 @@ import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
-import {OVERLAY_TOOL, SHAPES_TOOL} from '../AnnotationCreationUtils';
+import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
 /** All the stuff to draw on the canvas */
-function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
-  const { height, width } = props.mediaVideo ? props.mediaVideo.ref.current : 0;
+function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...props }) {
+
 
   useEffect(() => {
     const overlay = props.mediaVideo ? props.mediaVideo.ref.current : null;
@@ -46,7 +46,6 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
   }, [props.imageEvent]);
 
   const { fillColor, strokeColor, strokeWidth } = props;
-
 
   useEffect(() => {
     // Perform an action when fillColor, strokeColor, or strokeWidth change
@@ -110,7 +109,6 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
   const onTransform = (evt) => {
     const modifiedshape = evt.target.attrs;
 
-    console.log('modifiedshape', modifiedshape);
     const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
 
     Object.assign(shape, modifiedshape);
@@ -130,10 +128,10 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
   const handleDragStart = (evt) => {
     const modifiedshape = evt.currentTarget.attrs;
 
-   setDrawingState({
-        ...drawingState,
-     currentShape: drawingState.shapes.find((s) => s.id === modifiedshape.id),
-   });
+    setDrawingState({
+      ...drawingState,
+      currentShape: drawingState.shapes.find((s) => s.id === modifiedshape.id),
+    });
   };
 
   /** */
@@ -220,8 +218,8 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
             y: pos.y,
           };
           setDrawingState({
-            isDrawing: true,
             currentShape: shape,
+            isDrawing: true,
             shapes: [...drawingState.shapes, shape],
           });
           break;
@@ -243,8 +241,8 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
             y: pos.y,
           };
           setDrawingState({
-            isDrawing: true,
             currentShape: shape,
+            isDrawing: true,
             shapes: [...drawingState.shapes, shape],
           });
           break;
@@ -358,7 +356,6 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
       pos.x /= props.scale;
       pos.y /= props.scale;
 
-
       switch (props.activeTool) {
         case SHAPES_TOOL.RECTANGLE:
           updateCurrentShapeInShapes({
@@ -380,8 +377,8 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
             ...drawingState.currentShape,
             height: pos.y - drawingState.currentShape.y,
             radiusX: (pos.x - drawingState.currentShape.x) / 2,
-            width: pos.x - drawingState.currentShape.x,
             radiusY: (pos.y - drawingState.currentShape.y) / 2,
+            width: pos.x - drawingState.currentShape.x,
           });
 
           break;
@@ -405,12 +402,12 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
           const arrowShape = {};
           // update points
           arrowShape.points = [drawingState.currentShape.points[0], drawingState.currentShape.points[1], pos.x, pos.y];
-          arrowShape.id =drawingState.currentShape.id;
-          arrowShape.type =drawingState.currentShape.type;
-          arrowShape.pointerLength =drawingState.currentShape.pointerLength;
-          arrowShape.pointerWidth =drawingState.currentShape.pointerWidth;
-          arrowShape.x =drawingState.currentShape.x;
-          arrowShape.y =drawingState.currentShape.y;
+          arrowShape.id = drawingState.currentShape.id;
+          arrowShape.type = drawingState.currentShape.type;
+          arrowShape.pointerLength = drawingState.currentShape.pointerLength;
+          arrowShape.pointerWidth = drawingState.currentShape.pointerWidth;
+          arrowShape.x = drawingState.currentShape.x;
+          arrowShape.y = drawingState.currentShape.y;
           arrowShape.fill = props.fillColor;
           arrowShape.stroke = props.strokeColor;
           arrowShape.strokeWidth = props.strokeWidth;
@@ -436,7 +433,7 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
       }
       // For these cases, the action is similar: stop drawing and add the shape
       setDrawingState({
-        ... drawingState,
+        ...drawingState,
         isDrawing: false,
       });
     } catch (error) {
@@ -497,32 +494,22 @@ function AnnotationDrawing({ drawingState, setDrawingState, ...props }) {
   if (osdref && videoref) {
     throw new Error('Unhandled case: both OpenSeadragon (image viewer) and video player on the same canvas');
   }
-  const container = osdref ? osdref.current.element : videoref.ref.current.parentElement;
+  const container = osdref ? osdref.current.container : videoref.ref.current.parentElement;
 
   return ReactDOM.createPortal(drawKonvas(), container);
 }
 
 AnnotationDrawing.propTypes = {
+  activeTool: PropTypes.string.isRequired,
+  closed: PropTypes.bool.isRequired,
   drawingState: PropTypes.object.isRequired,
-  activeTool: PropTypes.string,
-  closed: PropTypes.bool,
-  fillColor: PropTypes.string,
-  selectedShapeId: PropTypes.string,
-  strokeColor: PropTypes.string,
-  strokeWidth: PropTypes.number,
+  fillColor: PropTypes.string.isRequired,
+  selectedShapeId: PropTypes.string.isRequired,
+  strokeColor: PropTypes.string.isRequired,
+  strokeWidth: PropTypes.number.isRequired,
   svg: PropTypes.func.isRequired,
   updateGeometry: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
-};
-
-AnnotationDrawing.defaultProps = {
-  activeTool: null,
-  closed: true,
-  fillColor: 'red',
-  selectedShapeId: null,
-  strokeColor: '#00BFFF',
-  strokeWidth: 1,
-  svg: null,
 };
 
 export default AnnotationDrawing;

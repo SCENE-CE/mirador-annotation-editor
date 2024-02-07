@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid';
 import {
   saveAnnotationInEachCanvas,
 } from '../AnnotationCreationUtils';
-import { secondsToHMS } from '../utils';
+import { removeHTMLTags, secondsToHMS } from '../utils';
 import {
   getKonvaAsDataURL,
 } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
@@ -32,7 +32,6 @@ function AnnotationFormFooter({
    * Validate form and save annotation
    */
   const submitAnnotationForm = async (e) => {
-    console.log('submitForm');
     e.preventDefault();
     // TODO Possibly problem of syncing
     // TODO Improve this code
@@ -59,7 +58,16 @@ function AnnotationFormFooter({
       xywh, // TODO retrouver calcul de xywh
     };
 
-    const annotationText = (!textBody.length && target.t) ? `${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}` : textBody;
+    let annotationText;
+    if (textBody.length == 0 || removeHTMLTags(textBody).length == 0) {
+      if (target.t) {
+        annotationText = `${new Date().toLocaleString()} - ${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}`;
+      } else {
+        annotationText = new Date().toLocaleString();
+      }
+    } else {
+      annotationText = textBody;
+    }
 
     let id = annotation?.id ? annotation.id : `https://${uuid()}`;
     id = id.split('#')[0];
@@ -81,9 +89,6 @@ function AnnotationFormFooter({
       target: null,
       type: 'Annotation', // Will be updated in saveAnnotationInEachCanvas
     };
-
-    console.log('Annotation to save:', annotationToSaved);
-    console.log('target:', target);
 
     const isNewAnnotation = !annotation;
 

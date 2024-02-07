@@ -60,8 +60,89 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 
 /** Form part with time mangement, dual slider + double input. Mange Tstart and Tend value */
 function AnnotationFormTarget({
-  videoDuration, value, handleChangeTime, windowid, setTstartNow, tstart, updateTstart, setTendNow, tend, updateTend, mediaIsVideo,
+  videoDuration,
+  value,
+  windowid,
+  tstart,
+  tend,
+  mediaIsVideo,
+  setState,
+  currentTime,
+  setSeekTo,
+  setCurrentTime,
 }) {
+
+  /** set annotation start time to current time */
+  const setTstartNow = () => {
+    setState((prevState) => ({
+      ...prevState,
+      tstart: Math.floor(currentTime),
+    }));
+  };
+
+  /** set annotation end time to current time */
+  const setTendNow = () => {
+    setState((prevState) => ({
+      ...prevState,
+      tend: Math.floor(currentTime),
+    }));
+  };
+
+  /**
+   * @param {number} newValueTime
+   */
+  const setValueTime = (newValueTime) => {
+    setState((prevState) => ({
+      ...prevState,
+      valueTime: newValueTime,
+    }));
+  };
+
+  /**
+   * Change from slider
+   * @param {Event} event
+   * @param {number} newValueTime
+   */
+  const handleChangeTime = (event, newValueTime) => {
+    const timeStart = newValueTime[0];
+    const timeEnd = newValueTime[1];
+    updateTstart(timeStart);
+    updateTend(timeEnd);
+    seekToTstart();
+    setValueTime(newValueTime);
+  };
+
+  /** Change from Tstart HMS Input */
+  const updateTstart = (value) => {
+    if (value > tend) {
+      return;
+    }
+    setState((prevState) => ({
+      ...prevState,
+      tstart: value,
+      ...setSeekTo(value),
+      ...setCurrentTime(value),
+
+    }));
+  };
+
+  /** update annotation end time */
+  const updateTend = (value) => {
+    setState((prevState) => ({
+      ...prevState,
+      tend: value,
+    }));
+  };
+
+  // eslint-disable-next-line require-jsdoc
+  const seekToTstart = () => {
+    setState((prevState) => ({
+      ...prevState,
+      ...setSeekTo(prevState.tstart),
+      ...setCurrentTime(prevState.tstart),
+    }));
+  };
+
   return (
     <>
       { mediaIsVideo && (
@@ -132,17 +213,16 @@ function AnnotationFormTarget({
 }
 
 AnnotationFormTarget.propTypes = {
-  handleChangeTime: PropTypes.func.isRequired,
   mediaIsVideo: PropTypes.bool.isRequired,
-  setTendNow: PropTypes.func.isRequired,
-  setTstartNow: PropTypes.func.isRequired,
   tend: PropTypes.any.isRequired,
   tstart: PropTypes.number.isRequired,
-  updateTend: PropTypes.func.isRequired,
-  updateTstart: PropTypes.func.isRequired,
   value: PropTypes.arrayOf(PropTypes.number).isRequired,
   videoDuration: PropTypes.any.isRequired,
   windowid: PropTypes.any.isRequired,
+  currentTime: PropTypes.any.isRequired,
+  setSeekTo: PropTypes.func.isRequired,
+  setState: PropTypes.func.isRequired,
+  setCurrentTime: PropTypes.func.isRequired,
 };
 
 export default AnnotationFormTarget;

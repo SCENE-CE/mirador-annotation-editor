@@ -132,9 +132,6 @@ class EditTool extends Component {
 
   /** */
   render() {
-
-    console.log('rendering edit tool');
-
     return (
       <Tool
         onMouseDown={this.onMouseDown}
