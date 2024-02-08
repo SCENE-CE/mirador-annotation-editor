@@ -37,13 +37,13 @@ The authors of this software are :
 
 - AZOPSOFT SAS 
   - Samuel Jugnet (especially code for the Konvas part)
-  - Loïs Poujade (especially the original modifications to anotate videos)
+- Loïs Poujade (especially the original modifications to anotate videos)
 
 ### General functionatities 
 
 - Activate a pannel with tools to create annotations on IIIF documents (manifests) containing images **and videos**
 - Spatial and temporal targets for annotations
-- Overlay annotations (geometric forms, free hand drawing and text)
+- Overlay annotations (geometric forms, free hand drawing, text and images)
 - Textual/semantic annotations and tags
 - Annotation metadata (based on Dublin Core)
 - Annotation with anoter manifest -> network of IIIF documents
