@@ -6,7 +6,7 @@
 
 `mirador-revamped-annotations` is a [Mirador 3](https://github.com/projectmirador/mirador) plugin that adds annotation creation tools to the user interface. 
 
-It is based on the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugins with a lot of technical and functional modifications.
+It is based on the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugin with a lot of technical and functional modifications.
 
 ### Copyrights
 
@@ -14,7 +14,7 @@ It is based on the original [mirador-annotations](https://github.com/ProjectMira
 
 Unlike the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugin, this `mirador-revamped-annotations` is distributed under the **GPL v3**.
 
-Please acknoldge that any modification you make must be distributed under a compatible licence and cannot be closed.
+Please acknoldge that any modification you make must be distributed under a compatible licence and cannot be closed source.
 
 If you need to integrate this code base in closed source pieces of software, please contact us so we can discuss dual licencing. 
 
@@ -22,19 +22,40 @@ If you need to integrate this code base in closed source pieces of software, ple
 
 The base of this software (up to V1) is the property of [SATT Ouest Valorisation](https://www.ouest-valorisation.fr/) that funded its development under the french public contract AO-MA2023-0004-DV5189.
 
-### Authors 
+#### Authors 
 
 The authors of this software are :
 
-- Clarisse Bardit
-- Jacob Hart
-- Tétras Libre SARL
+- Clarisse Bardit (concept and use cases)
+- Jacob Hart (specifications)
+- [Tétras Libre SARL](https://tetras-libre.fr) (development):
+  - David Rouquet
+  - Anthony Geourgeon
+  - Antoine Roy
 
-Users can` create rectangle, oval, and polygon annotations and add text descriptors. A [live demo](https://mirador-annotations.netlify.app/) that stores annotations in local storage is available for testing. See the [issue queue](https://github.com/ProjectMirador/mirador-annotations/issues) for design proposals for additional functionality.
+#### Contributors (updated february 2024)
 
-![annotation creation panel](https://user-images.githubusercontent.com/5402927/86628717-23c3ae80-bf7f-11ea-8f0b-389c39eb4398.png)
+- AZOPSOFT SAS 
+  - Samuel Jugnet (especially code for the Konvas part)
+  - Loïs Poujade (especially the original modifications to anotate videos)
 
-TODO Explain the evolution proposed by Tétras Libre fork
+### General functionatities 
+
+- Activate a pannel with tools to create annotations on IIIF documents (manifests) containing images **and videos**
+- Spatial and temporal targets for annotations
+- Overlay annotations (geometric forms, free hand drawing and text)
+- Textual/semantic annotations and tags
+- Annotation metadata (based on Dublin Core)
+- Annotation with anoter manifest -> network of IIIF documents
+
+### Technical aspects 
+
+- Update to Material UI 5 and React 18 to follow latest Mirador upgrades (React 17 release also available)
+- The [paperjs](http://paperjs.org/ ) library has been replaced with [Konvas](https://konvajs.org) 
+- Major refactorisation since the original `[mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugins`
+- Works with the original [Mirador 3](https://github.com/projectmirador/mirador) if you need only image annotation
+- If you need video annotation, you can use [our fork of Mirador: mirador-video](https://gitlab.tetras-libre.fr/iiif/mirador/mirador-video)
+
 
 ## Install (local)
 
@@ -58,17 +79,6 @@ Run mirador and the plugin :
 npm start
 ```
 
-## Install using docker
-
-This method requires `docker` and `docker-compose` (or `docker compose`)
-
-```
-cp .env.sample .env
-$EDITOR .env
-# Change the variables you need
-docker-compose up 
-```
-
 ## Persisting Annotations
 Persisting annotations requires implementing an a IIIF annotation server. Several [examples of annotation servers](https://github.com/IIIF/awesome-iiif#annotation-servers) are available on iiif-awesome.
 
@@ -79,14 +89,7 @@ Persisting annotations requires implementing an a IIIF annotation server. Severa
 `mirador-annotations` requires an instance of Mirador 3. See the [Mirador wiki](https://github.com/ProjectMirador/mirador/wiki) for examples of embedding Mirador within an application. See the [live demo's index.js](https://github.com/ProjectMirador/mirador-annotations/blob/master/demo/src/index.js) for an example of importing the `mirador-annotations` plugin and configuring the adapter.
 
 **You must use node v16.20.2**. You can `run nvm use` at the racine of the project to set your node version to 16.20.2.
+
 ## Contribute
 Mirador's development, design, and maintenance is driven by community needs and ongoing feedback and discussion. Join us at our regularly scheduled community calls, on [IIIF slack #mirador](http://bit.ly/iiif-slack), or the [mirador-tech](https://groups.google.com/forum/#!forum/mirador-tech) and [iiif-discuss](https://groups.google.com/forum/#!forum/iiif-discuss) mailing lists. To suggest features, report bugs, and clarify usage, please submit a GitHub issue.
 
-[build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square
-[build]: https://travis-ci.org/user/repo
-
-[npm-badge]: https://img.shields.io/npm/v/mirador-annotations.png?style=flat-square
-[npm]: https://www.npmjs.org/package/mirador-annotations
-
-[coveralls-badge]: https://img.shields.io/coveralls/user/repo/master.png?style=flat-square
-[coveralls]: https://coveralls.io/github/user/repo
