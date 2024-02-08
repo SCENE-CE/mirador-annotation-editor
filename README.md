@@ -1,12 +1,36 @@
-# mirador-annotations
+# Mirador Revamped Annotations Plugin - GPL edition
 
+## Presentation
 
+### Generalities
 
-[![Travis][build-badge]][build]
-[![npm package][npm-badge]][npm]
-[![Coveralls][coveralls-badge]][coveralls]
+`mirador-revamped-annotations` is a [Mirador 3](https://github.com/projectmirador/mirador) plugin that adds annotation creation tools to the user interface. 
 
-`mirador-annotations` is a [Mirador 3](https://github.com/projectmirador/mirador) plugin that adds annotation creation tools to the user interface. Users can` create rectangle, oval, and polygon annotations and add text descriptors. A [live demo](https://mirador-annotations.netlify.app/) that stores annotations in local storage is available for testing. See the [issue queue](https://github.com/ProjectMirador/mirador-annotations/issues) for design proposals for additional functionality.
+It is based on the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugins with a lot of technical and functional modifications.
+
+### Copyrights
+
+#### Licence
+
+Unlike the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugin, this `mirador-revamped-annotations` is distributed under the **GPL v3**.
+
+Please acknoldge that any modification you make must be distributed under a compatible licence and cannot be closed.
+
+If you need to integrate this code base in closed source pieces of software, please contact us so we can discuss dual licencing. 
+
+#### Property
+
+The base of this software (up to V1) is the property of [SATT Ouest Valorisation](https://www.ouest-valorisation.fr/) that funded its development under the french public contract AO-MA2023-0004-DV5189.
+
+### Authors 
+
+The authors of this software are :
+
+- Clarisse Bardit
+- Jacob Hart
+- Tétras Libre SARL
+
+Users can` create rectangle, oval, and polygon annotations and add text descriptors. A [live demo](https://mirador-annotations.netlify.app/) that stores annotations in local storage is available for testing. See the [issue queue](https://github.com/ProjectMirador/mirador-annotations/issues) for design proposals for additional functionality.
 
 ![annotation creation panel](https://user-images.githubusercontent.com/5402927/86628717-23c3ae80-bf7f-11ea-8f0b-389c39eb4398.png)
 
