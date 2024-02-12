@@ -1,10 +1,10 @@
-# Mirador Revamped Annotations Plugin - GPL edition
+# Mirador Annotation Editor - GPL edition
 
 ## Presentation
 
 ### Generalities
 
-`mirador-revamped-annotations` is a [Mirador 3](https://github.com/projectmirador/mirador) plugin that adds annotation creation tools to the user interface. 
+`mirador-annotation-editor` is a [Mirador 3](https://github.com/projectmirador/mirador) plugin that adds annotation creation tools to the user interface. 
 
 It is based on the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugin with a lot of technical and functional modifications.
 
@@ -12,7 +12,7 @@ It is based on the original [mirador-annotations](https://github.com/ProjectMira
 
 #### Licence
 
-Unlike the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugin, this `mirador-revamped-annotations` is distributed under the **GPL v3**.
+Unlike the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugin, this `mirador-annotation-editor` is distributed under the **GPL v3**.
 
 Please acknoldge that any modification you make must be distributed under a compatible licence and cannot be closed source.
 
@@ -26,11 +26,11 @@ The base of this software (up to V1) is the property of [SATT Ouest Valorisation
 
 The authors of this software are :
 
-- Clarisse Bardit (concept and use cases)
+- Clarisse Bardiot (concept and use cases)
 - Jacob Hart (specifications)
 - [Tétras Libre SARL](https://tetras-libre.fr) (development):
   - David Rouquet
-  - Anthony Geourgeon
+  - Anthony Geourjon
   - Antoine Roy
 
 #### Contributors (updated february 2024)
