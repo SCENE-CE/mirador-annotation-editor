@@ -12,15 +12,33 @@ import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
-/** All the stuff to draw on the canvas */
-function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...props }) {
+import Surface from './AnnotationFormOverlay/KonvaDrawing/Surface';
 
+/** All the stuff to draw on the canvas */
+function AnnotationDrawing({ drawingState, orignalWidth, orignalHeight setDrawingState, height, width, ...props }) {
+
+  const [surfacedata, setSurfaceData] = useState({
+    x: 1,
+    y: 1,
+    width: width/props.scale,
+    height: height/props.scale,
+    scaleX: 1,
+    scaleY: 1,
+  });
 
   useEffect(() => {
     const overlay = props.mediaVideo ? props.mediaVideo.ref.current : null;
     if (overlay) {
       props.updateScale(overlay.containerWidth / overlay.canvasWidth);
     }
+    const newSurfaceData = {...surfacedata};
+    newSurfaceData.width = overlay.width  /props.scale;
+    newSurfaceData.height = overlay.height/props.scale;
+    // compare newSurfaceData and surfacedata, if different, update surfacedata
+    if (newSurfaceData.width !== surfacedata.width || newSurfaceData.height !== surfacedata.height) {
+      setSurfaceData(newSurfaceData);
+    }
+
   }, [{ height, width }]);
 
   useEffect(() => {
@@ -81,6 +99,11 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
 
   /** */
   const onShapeClick = async (shp) => {
+    // return if we are not in edit or cursor mode
+    if (props.activeTool !== 'edit' && props.activeTool !== 'cursor' && props.activeTool !== 'delete') {
+      return;
+    }
+    console.log('shape clicked', shp);
     const shape = drawingState.shapes.find((s) => s.id === shp.id);
     if (props.activeTool === 'delete') {
       const newShapes = drawingState.shapes.filter((s) => s.id !== shape.id);
@@ -97,14 +120,14 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
     });
 
     // props.setShapeProperties(shape); // TODO Check that code ?
-    props.setColorToolFromCurrentShape(
-      {
-        fillColor: shape.fill,
-        strokeColor: shape.stroke,
-        strokeWidth: shape.strokeWidth,
-      },
-    );
-  };
+  //   props.setColorToolFromCurrentShape(
+  //     {
+  //       fillColor: shape.fill,
+  //       strokeColor: shape.stroke,
+  //       strokeWidth: shape.strokeWidth,
+  //     },
+  //   );
+  // };
 
   const onTransform = (evt) => {
     const modifiedshape = evt.target.attrs;
@@ -133,6 +156,22 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
       currentShape: drawingState.shapes.find((s) => s.id === modifiedshape.id),
     });
   };
+
+  const onSurfaceTransform = (evt) => {
+    const modifiedshape = evt.target.attrs;
+    const shape = surfacedata;
+    Object.assign(shape, modifiedshape);
+    setSurfaceData({ ...shape });
+  }
+
+  const handleSurfaceDrag = (evt) => {
+    const modifiedshape = evt.currentTarget.attrs;
+    const shape = {...surfacedata};
+    shape.x = modifiedshape.x;
+    shape.y = modifiedshape.y;
+    setSurfaceData({ ...shape });
+  }
+
 
   /** */
   const handleKeyPress = (e) => {
@@ -411,8 +450,8 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
           arrowShape.fill = props.fillColor;
           arrowShape.stroke = props.strokeColor;
           arrowShape.strokeWidth = props.strokeWidth;
-
           updateCurrentShapeInShapes(arrowShape);
+          setIsDrawing(true);
           break;
         default:
           break;
@@ -424,21 +463,10 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
 
   /** Stop drawing */
   const handleMouseUp = (e) => {
-    const pos = e.target.getStage().getRelativePointerPosition();
-    pos.x /= props.scale;
-    pos.y /= props.scale;
-    try {
-      if (!drawingState.currentShape) {
-        return;
-      }
-      // For these cases, the action is similar: stop drawing and add the shape
       setDrawingState({
         ...drawingState,
         isDrawing: false,
       });
-    } catch (error) {
-      console.error('error', error);
-    }
   };
 
   /** */
@@ -461,29 +489,52 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
       onMouseMove={handleMouseMove}
       id={props.windowId}
     >
+
+      {props.tabView !== 'target' && (
+
+          <Surface
+              shape={surfacedata}
+              onTransform={onSurfaceTransform}
+              handleDrag={handleSurfaceDrag}
+              trview={false}
+              width={width}
+              height={height}
+              scale={props.scale}
+
+
+          />
+      )}
+
       <ParentComponent
         shapes={drawingState.shapes}
         onShapeClick={onShapeClick}
         activeTool={props.activeTool}
         selectedShapeId={drawingState.currentShape?.id}
-        style={{
-          height: 'auto',
-          left: 0,
-          objectFit: 'contain',
-          overflow: 'clip',
-          overflowClipMargin: 'content-box',
-          position: 'absolute',
-          top: 0,
-          width: '100%',
-        }}
         scale={props.scale}
-        width={props.originalWidth}
-        height={props.originalHeight}
+        width={originalWidth}
+        height={originalHeight}
         onTransform={onTransform}
         handleDragEnd={handleDragEnd}
         handleDragStart={handleDragStart}
         isMouseOverSave={props.isMouseOverSave}
+        trview={props.tabView !== 'target'}
       />
+      {props.tabView === 'target' && (
+
+          <Surface
+              shape={surfacedata}
+              onTransform={onSurfaceTransform}
+              handleDrag={handleSurfaceDrag}
+              trview={true}
+              width={width}
+              height={height}
+              scale={props.scale}
+
+
+          />
+      )}
+
+
     </Stage>
   );
   const osdref = OSDReferences.get(props.windowId);

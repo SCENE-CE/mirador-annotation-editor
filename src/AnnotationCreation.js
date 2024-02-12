@@ -360,6 +360,7 @@ function AnnotationCreation({
         isMouseOverSave={isMouseOverSave}
         mediaVideo={mediaVideo}
         setDrawingState={setDrawingState}
+        tabView={value}
       />
       <StyledForm>
         <TabContext value={viewTool}>
