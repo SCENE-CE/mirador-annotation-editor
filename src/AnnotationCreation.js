@@ -350,8 +350,8 @@ function AnnotationCreation({
         // we need to pass the width and height of the image to the annotation drawing component
         width={overlay ? overlay.containerWidth : 1920}
         height={overlay ? overlay.containerHeight : 1080}
-        orignalWidth={overlay ? overlay.canvasWidth : 1920}
-        orignalHeight={overlay ? overlay.canvasHeight : 1080}
+        originalWidth={overlay ? overlay.canvasWidth : 1920}
+        originalHeight={overlay ? overlay.canvasHeight : 1080}
         setShapeProperties={setShapeProperties}
         updateScale={updateScale}
         imageEvent={imageEvent}
