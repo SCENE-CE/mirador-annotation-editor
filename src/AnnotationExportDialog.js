@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
-import Typography from '@material-ui/core/Typography';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import MenuList from '@mui/material/MenuList';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 import PropTypes, { bool } from 'prop-types';
-import { withStyles } from '@material-ui/core';
+import { styled } from '@mui/system';
 
 /** */
 const styles = (theme) => ({
@@ -137,4 +137,4 @@ AnnotationExportDialog.defaultProps = {
   classes: {},
 };
 
-export default withStyles(styles)(AnnotationExportDialog);
+export default styled(styles)(AnnotationExportDialog);

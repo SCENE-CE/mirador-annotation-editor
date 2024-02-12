@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
 import * as actions from 'mirador/dist/es/src/state/actions';
 import { getWindowViewType } from 'mirador/dist/es/src/state/selectors';
+import { getCompanionWindowsForContent } from 'mirador/dist/es/src/state/selectors/companionWindows';
 import CanvasListItem from '../CanvasListItem';
 import AnnotationActionsContext from '../AnnotationActionsContext';
 import SingleCanvasDialog from '../SingleCanvasDialog';
@@ -30,7 +31,7 @@ class CanvasAnnotationsWrapper extends Component {
   render() {
     const {
       addCompanionWindow, annotationsOnCanvases, canvases, config, receiveAnnotation,
-      switchToSingleCanvasView, TargetComponent, targetProps, windowViewType,
+      switchToSingleCanvasView, TargetComponent, targetProps, windowViewType, containerRef, annotationEditCompanionWindowIsOpened,
     } = this.props;
     const { singleCanvasDialogOpen } = this.state;
     const props = {
@@ -41,6 +42,7 @@ class CanvasAnnotationsWrapper extends Component {
       <AnnotationActionsContext.Provider
         value={{
           addCompanionWindow,
+          annotationEditCompanionWindowIsOpened,
           annotationsOnCanvases,
           canvases,
           config,
@@ -52,7 +54,8 @@ class CanvasAnnotationsWrapper extends Component {
         }}
       >
         <TargetComponent
-          {...props} // eslint-disable-line react/jsx-props-no-spreading
+          {...props}
+          ref={containerRef}
         />
         {windowViewType !== 'single' && (
           <SingleCanvasDialog
@@ -67,22 +70,27 @@ class CanvasAnnotationsWrapper extends Component {
 }
 
 CanvasAnnotationsWrapper.propTypes = {
+  TargetComponent: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.node,
+  ]).isRequired,
   addCompanionWindow: PropTypes.func.isRequired,
-  annotationsOnCanvases: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  annotationEditCompanionWindowIsOpened: PropTypes.bool.isRequired, // eslint-disable-line react/forbid-prop-types
+  annotationsOnCanvases: PropTypes.object,
   canvases: PropTypes.arrayOf(
-    PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
+      PropTypes.shape({id: PropTypes.string, index: PropTypes.number}),
   ),
   config: PropTypes.shape({
     annotation: PropTypes.shape({
       adapter: PropTypes.func,
     }),
   }).isRequired,
+  containerRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({current: PropTypes.instanceOf(Element)}),
+  ]),
   receiveAnnotation: PropTypes.func.isRequired,
   switchToSingleCanvasView: PropTypes.func.isRequired,
-  TargetComponent: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.node,
-  ]).isRequired,
   targetProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   windowViewType: PropTypes.string.isRequired,
 };
@@ -90,12 +98,19 @@ CanvasAnnotationsWrapper.propTypes = {
 CanvasAnnotationsWrapper.defaultProps = {
   annotationsOnCanvases: {},
   canvases: [],
+  containerRef: null,
 };
 
-/** */
+/** TODO this logic is duplicated */
 function mapStateToProps(state, { targetProps: { windowId } }) {
   const canvases = getVisibleCanvases(state, { windowId });
   const annotationsOnCanvases = {};
+  const annotationCreationCompanionWindows = getCompanionWindowsForContent(state, { content: 'annotationCreation', windowId });
+  let annotationEditCompanionWindowIsOpened = true;
+
+  if (Object.keys(annotationCreationCompanionWindows).length !== 0) {
+    annotationEditCompanionWindowIsOpened = false;
+  }
 
   canvases.forEach((canvas) => {
     const anno = state.annotations[canvas.id];
@@ -104,6 +119,7 @@ function mapStateToProps(state, { targetProps: { windowId } }) {
     }
   });
   return {
+    annotationEditCompanionWindowIsOpened,
     annotationsOnCanvases,
     canvases,
     config: state.config,
@@ -112,7 +128,7 @@ function mapStateToProps(state, { targetProps: { windowId } }) {
 }
 
 /** */
-const mapDispatchToProps = (dispatch, props) => ({
+const mapDispatchToProps = (dispatch, props, annotationEditCompanionWindowIsOpened) => ({
   addCompanionWindow: (content, additionalProps) => dispatch(
     actions.addCompanionWindow(props.targetProps.windowId, { content, ...additionalProps }),
   ),

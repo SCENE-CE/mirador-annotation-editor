@@ -2,14 +2,18 @@
   "env": {
     "jest/globals": true
   },
-  "extends": ["airbnb","react-app"],
+  "extends": ["airbnb", "react-app"],
   "globals": {
     "page": true,
     "document": true
   },
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "plugins": ["jest"],
   "rules": {
+    "import/no-extraneous-dependencies": [
+    "error",
+{"devDependencies": true}
+],
     "import/prefer-default-export": "off",
     "no-console": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],

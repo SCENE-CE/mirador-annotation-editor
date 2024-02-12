@@ -2,79 +2,96 @@
 export default class WebAnnotation {
   /** */
   constructor({
-    canvasId, id, xywh, body, tags, svg, manifestId,
+    id, body, drawingStateSerialized, motivation, target,
   }) {
     this.id = id;
-    this.canvasId = canvasId;
-    this.xywh = xywh;
+    this.type = 'Annotation';
+    this.motivation = motivation;
     this.body = body;
-    this.tags = tags;
-    this.svg = svg;
-    this.manifestId = manifestId;
+    this.drawingState = drawingStateSerialized;
+    this.target = target;
   }
 
   /** */
   toJson() {
-    return {
-      body: this.createBody(),
-      id: this.id,
-      motivation: 'commenting',
-      target: this.target(),
-      type: 'Annotation',
-    };
+    // const result = {
+    //   body: this.createBody(),
+    //   drawingState: this.drawingState,
+    //   id: this.id,
+    //   motivation: 'commenting',
+    //   target: this.target(),
+    //   type: 'Annotation',
+    // };
+
+    const result = this;
+
+    return result;
   }
 
   /** */
   createBody() {
     let bodies = [];
-    if (this.body) {
-      bodies.push({
+    if (this.body && this.body.value !== '') {
+      const textBody = {
         type: 'TextualBody',
-        value: this.body,
-      });
+        value: this.body.value,
+      };
+      bodies.push(textBody);
     }
-    if (this.tags) {
-      bodies = bodies.concat(this.tags.map((tag) => ({
-        purpose: 'tagging',
-        type: 'TextualBody',
-        value: tag,
-      })));
+
+    if (this.image) {
+      // TODO dumb image { this.image.id}
+      const imgBody = {
+        id: 'https://tetras-libre.fr/themes/tetras/img/logo.svg',
+        type: 'Image',
+        format: 'image/svg+xml',
+      };
+      //bodies.push(imgBody);
+      const testImageBody = {
+            "id": "https://files.tetras-libre.fr/dev/Hakanai/media/10_HKN-Garges_A2B4243.JPG",
+            "type": "Image",
+            "format": "image/jpg"
+          };
+      bodies.push(testImageBody);
     }
+
+    // if (this.tags) {
+    //   bodies = bodies.concat(this.tags.map((tag) => ({
+    //     purpose: 'tagging',
+    //     type: 'TextualBody',
+    //     value: tag,
+    //   })));
+    // }
     if (bodies.length === 1) {
       return bodies[0];
     }
     return bodies;
   }
 
-  /** */
+  /** Fill target object with selectors (if any), else returns target url */
   target() {
-    let target = this.canvasId;
-    if (this.svg || this.xywh) {
-      target = {
-        source: this.source(),
-      };
+    if (!this.svg
+      && (!this.fragsel || !Object.values(this.fragsel).find((e) => e !== null))) {
+      return this.canvasId;
     }
+    const target = { source: this.source() };
+    const selectors = [];
     if (this.svg) {
-      target.selector = {
+      selectors.push({
         type: 'SvgSelector',
         value: this.svg,
-      };
+      });
     }
-    if (this.xywh) {
-      const fragsel = {
+    if (this.fragsel) {
+      selectors.push({
         type: 'FragmentSelector',
-        value: `xywh=${this.xywh}`,
-      };
-      if (target.selector) {
-        // add fragment selector
-        target.selector = [
-          fragsel,
-          target.selector,
-        ];
-      } else {
-        target.selector = fragsel;
-      }
+        value: Object.entries(this.fragsel)
+          .filter((kv) => kv[1])
+          .map((kv) => `${kv[0]}=${kv[1]}`)
+          .join('&'),
+      });
     }
+    target.selector = selectors.length === 1 ? selectors[0] : selectors;
     return target;
   }
 

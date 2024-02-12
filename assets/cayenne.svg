@@ -1,0 +1,16 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1215" height="684">
+    <defs/>
+    <g>
+        <g>
+            <path fill="rgb(255,0,0)" stroke="rgb(255,0,0)" d=" M 143 124.66666412353516 L 392 124.66666412353516 L 392 354.66666412353516 L 143 354.66666412353516 L 143 124.66666412353516 Z Z" fill-opacity="0.5" stroke-opacity="0.5" stroke-miterlimit="10" stroke-width="12.65625" stroke-dasharray=""/>
+        </g>
+        <g>
+            <image width="1800" height="963" preserveAspectRatio="none" transform="matrix(0.3266922638266449 0 0 0.3266922638266448 478.0164251120414 122.79378743494328)" xlink:href="https://presskit.porsche.de/models/assets/images/e/P17_0701_a5_rgb-c04a4c6e.jpg"/>
+        </g>
+        <g>
+            <g>
+                <text fill="red" stroke="none" font-family="Arial" font-size="40px" font-style="normal" font-weight="normal" text-decoration="undefined" x="0" y="20" text-anchor="start" dominant-baseline="central" transform="matrix(0.6328125 0 0 0.6328125 332.99999999999994 538.6666641235352)">Mon gros Cayenne</text>
+            </g>
+        </g>
+    </g>
+</svg>

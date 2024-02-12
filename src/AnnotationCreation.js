@@ -1,470 +1,523 @@
-import React, { Component } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import RectangleIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CircleIcon from '@material-ui/icons/RadioButtonUnchecked';
-import PolygonIcon from '@material-ui/icons/Timeline';
-import GestureIcon from '@material-ui/icons/Gesture';
-import ClosedPolygonIcon from '@material-ui/icons/ChangeHistory';
-import OpenPolygonIcon from '@material-ui/icons/ShowChart';
-import FormatColorFillIcon from '@material-ui/icons/FormatColorFill';
-import StrokeColorIcon from '@material-ui/icons/BorderColor';
-import LineWeightIcon from '@material-ui/icons/LineWeight';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import FormatShapesIcon from '@material-ui/icons/FormatShapes';
-import Popover from '@material-ui/core/Popover';
-import Divider from '@material-ui/core/Divider';
-import MenuItem from '@material-ui/core/MenuItem';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import MenuList from '@material-ui/core/MenuList';
-import { SketchPicker } from 'react-color';
-import { v4 as uuid } from 'uuid';
-import { withStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
-import AnnotationDrawing from './AnnotationDrawing';
-import TextEditor from './TextEditor';
-import WebAnnotation from './WebAnnotation';
-import CursorIcon from './icons/Cursor';
+import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
+import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
+import Tab from '@mui/material/Tab';
+import HighlightAltIcon from '@mui/icons-material/HighlightAlt';
+import LayersIcon from '@mui/icons-material/Layers';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import HubIcon from '@mui/icons-material/Hub';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import AnnotationDrawing from './annotationForm/AnnotationDrawing';
+import AnnotationFormContent from './annotationForm/AnnotationFormContent';
+import AnnotationFormTarget from './annotationForm/AnnotationFormTarget';
+import {
+  defaultToolState,
+  geomFromAnnoTarget, timeFromAnnoTarget,
+} from './AnnotationCreationUtils';
+import AnnotationFormOverlay from './annotationForm/AnnotationFormOverlay/AnnotationFormOverlay';
+import AnnotationFormFooter from './annotationForm/AnnotationFormFooter';
+import AnnotationFormManifestNetwork from './annotationForm/AnnotationFormManifestNetwork';
 
-/** */
-class AnnotationCreation extends Component {
-  /** */
-  constructor(props) {
-    super(props);
+const TARGET_VIEW = 'target';
+const OVERLAY_VIEW = 'layer';
+const TAG_VIEW = 'tag';
+const MANIFEST_LINK_VIEW = 'link';
+
+/** Component for creating annotations.
+ * Display in companion window when a manifest is open and an annoation created or edited */
+function AnnotationCreation({
+  annotation,
+  canvases,
+  closeCompanionWindow,
+  config,
+  currentTime,
+  id,
+  mediaVideo,
+  receiveAnnotation,
+  setCurrentTime,
+  setSeekTo,
+  windowId,
+}) {
+  const [toolState, setToolState] = useState(defaultToolState);
+
+  const [drawingState, setDrawingState] = useState({
+    currentShape: null,
+    isDrawing: false,
+    shapes: [],
+  });
+
+  // Initial state setup
+  const [state, setState] = useState(() => {
+    let tstart;
+    let tend;
     const annoState = {};
-    if (props.annotation) {
-      if (Array.isArray(props.annotation.body)) {
+    if (annotation) {
+      console.log('annotation', annotation);
+      // annotation body
+      if (Array.isArray(annotation.body)) {
         annoState.tags = [];
-        props.annotation.body.forEach((body) => {
-          if (body.purpose === 'tagging') {
+        annotation.body.forEach((body) => {
+          if (body.purpose === 'tagging' && body.type === 'TextualBody') {
             annoState.tags.push(body.value);
-          } else {
-            annoState.annoBody = body.value;
+          } else if (body.type === 'TextualBody') {
+            annoState.textBody = body.value;
+          } else if (body.type === 'Image') {
+            annoState.textBody = body.value; // why text body here ???
+            // annoState.image = body;
+          } else if (body.type === 'AnnotationTitle') {
+            annoState.title = body;
           }
         });
-      } else {
-        annoState.annoBody = props.annotation.body.value;
+      } else if (annotation.body.type === 'TextualBody') {
+        annoState.textBody = annotation.body.value;
+      } else if (annotation.body.type === 'Image') {
+        annoState.textBody = annotation.body.value; // why text body here ???
+        annoState.image = annotation.body;
       }
-      if (props.annotation.target.selector) {
-        if (Array.isArray(props.annotation.target.selector)) {
-          props.annotation.target.selector.forEach((selector) => {
+      // drawing position
+      if (annotation.target.selector) {
+        if (Array.isArray(annotation.target.selector)) {
+          annotation.target.selector.forEach((selector) => {
             if (selector.type === 'SvgSelector') {
               annoState.svg = selector.value;
             } else if (selector.type === 'FragmentSelector') {
-              annoState.xywh = selector.value.replace('xywh=', '');
+              // TODO proper fragment selector extraction
+              annoState.xywh = geomFromAnnoTarget(selector.value);
+              [tstart, tend] = timeFromAnnoTarget(selector.value);
             }
           });
         } else {
-          annoState.svg = props.annotation.target.selector.value;
+          annoState.svg = annotation.target.selector.value;
+          // TODO does this happen ? when ? where are fragments selectors ?
         }
+      } else if (typeof annotation.target === 'string') {
+        annoState.xywh = geomFromAnnoTarget(annotation.target);
+        [tstart, tend] = timeFromAnnoTarget(annotation.target);
+        annoState.tstart = tstart;
+        annoState.tend = tend;
       }
+
+      if (annotation.drawingState) {
+        setDrawingState(JSON.parse(annotation.drawingState));
+      }
+      if (annotation.manifestNetwork) {
+        annoState.manifestNetwork = annotation.manifestNetwork;
+      }
+    } else {
+      const video = true;
+      if (video) {
+        // Time target
+        annoState.tstart = currentTime ? Math.floor(currentTime) : 0;
+        annoState.tend = mediaVideo ? mediaVideo.props.canvas.__jsonld.duration : 0;
+
+        // Geometry target
+        const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
+        const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
+        annoState.xywh = `0,0,${targetWidth},${targetHeigth}`;
+      } else {
+        // TODO image and audio case
+      }
+      annoState.textBody = '';
+      annoState.manifestNetwork = '';
     }
 
-    const toolState = {
-      activeTool: 'cursor',
-      closedMode: 'closed',
-      currentColorType: false,
-      fillColor: null,
-      strokeColor: '#00BFFF',
-      strokeWidth: 3,
-      ...(props.config.annotation.defaults || {}),
-    };
-
-    this.state = {
+    return {
       ...toolState,
-      annoBody: '',
-      colorPopoverOpen: false,
-      lineWeightPopoverOpen: false,
-      popoverAnchorEl: null,
-      popoverLineWeightAnchorEl: null,
-      svg: null,
-      textEditorStateBustingKey: 0,
-      xywh: null,
+      mediaVideo,
       ...annoState,
+      textEditorStateBustingKey: 0,
+      valueTime: [0, 1],
+    };
+  });
+
+  const [isMouseOverSave, setIsMouseOverSave] = useState(false);
+  const [scale, setScale] = useState(1);
+
+  const [viewTool, setViewTool] = useState(TARGET_VIEW);
+
+  const getHeightAndWidth = () => {
+    if (mediaVideo) {
+      return mediaVideo;
+    }
+    // Todo get size from manifest image
+    return {
+      height: 1000,
+      width: 500,
+    };
+  };
+
+  const { height, width } = getHeightAndWidth();
+
+  // TODO Check the effect to keep and remove the other
+  // Add a state to trigger redraw
+  const [windowSize, setWindowSize] = useState({
+    height: window.innerHeight,
+    width: window.innerWidth,
+  });
+
+  // Listen to window resize event
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        height: window.innerHeight,
+        width: window.innerWidth,
+      });
     };
 
-    this.submitForm = this.submitForm.bind(this);
-    this.updateBody = this.updateBody.bind(this);
-    this.updateGeometry = this.updateGeometry.bind(this);
-    this.changeTool = this.changeTool.bind(this);
-    this.changeClosedMode = this.changeClosedMode.bind(this);
-    this.openChooseColor = this.openChooseColor.bind(this);
-    this.openChooseLineWeight = this.openChooseLineWeight.bind(this);
-    this.handleLineWeightSelect = this.handleLineWeightSelect.bind(this);
-    this.handleCloseLineWeight = this.handleCloseLineWeight.bind(this);
-    this.closeChooseColor = this.closeChooseColor.bind(this);
-    this.updateStrokeColor = this.updateStrokeColor.bind(this);
-  }
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+
+  }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
+
+  useLayoutEffect(() => {
+  }, [{ height, width }]);
+
+  const tabHandler = (event, TabIndex) => {
+    setViewTool(TabIndex);
+  };
 
   /** */
-  handleCloseLineWeight(e) {
-    this.setState({
-      lineWeightPopoverOpen: false,
-      popoverLineWeightAnchorEl: null,
-    });
-  }
+  const updateGeometry = ({ svg, xywh }) => {
+    setState((prevState) => ({
+      ...prevState,
+      svg,
+      xywh,
+    }));
+  };
 
   /** */
-  handleLineWeightSelect(e) {
-    this.setState({
-      lineWeightPopoverOpen: false,
-      popoverLineWeightAnchorEl: null,
-      strokeWidth: e.currentTarget.value,
-    });
-  }
+  const setShapeProperties = (options) => new Promise(() => {
+    if (options.fill) {
+      state.fillColor = options.fill;
+    }
+
+    if (options.strokeWidth) {
+      state.strokeWidth = options.strokeWidth;
+    }
+
+    if (options.stroke) {
+      state.strokeColor = options.stroke;
+    }
+
+    setState({ ...state });
+  });
 
   /** */
-  openChooseColor(e) {
-    this.setState({
-      colorPopoverOpen: true,
-      currentColorType: e.currentTarget.value,
-      popoverAnchorEl: e.currentTarget,
-    });
-  }
+  const updateTextBody = (textBody) => {
+    setState((prevState) => ({
+      ...prevState,
+      textBody,
+    }));
+  };
 
-  /** */
-  openChooseLineWeight(e) {
-    this.setState({
-      lineWeightPopoverOpen: true,
-      popoverLineWeightAnchorEl: e.currentTarget,
-    });
-  }
+  const updateManifestNetwork = (manifestNetwork) => {
+    setState((prevState) => ({
+      ...prevState,
+      manifestNetwork,
+    }));
+  };
 
-  /** */
-  closeChooseColor(e) {
-    this.setState({
-      colorPopoverOpen: false,
-      currentColorType: null,
-      popoverAnchorEl: null,
-    });
-  }
+  /** Set color tool from current shape */
+  const setColorToolFromCurrentShape = (colorState) => {
+    setToolState((prevState) => ({
+      ...prevState,
+      ...colorState,
+    }));
+  };
 
-  /** */
-  updateStrokeColor(color) {
-    const { currentColorType } = this.state;
-    this.setState({
-      [currentColorType]: color.hex,
-    });
-  }
+  const deleteShape = (shapeId) => {
+    if (!shapeId) {
+      setDrawingState((prevState) => ({
+        ...prevState,
+        currentShape: null,
+        shapes: [],
+      }));
+    } else {
+      setDrawingState((prevState) => ({
+        ...prevState,
+        currentShape: null,
+        shapes: prevState.shapes.filter((shape) => shape.id !== shapeId),
+      }));
+    }
+  };
 
-  /** */
-  submitForm(e) {
-    e.preventDefault();
-    const {
-      annotation, canvases, receiveAnnotation, config,
-    } = this.props;
-    const {
-      annoBody, tags, xywh, svg, textEditorStateBustingKey,
-    } = this.state;
-    canvases.forEach((canvas) => {
-      const storageAdapter = config.annotation.adapter(canvas.id);
-      const anno = new WebAnnotation({
-        body: annoBody,
-        canvasId: canvas.id,
-        id: (annotation && annotation.id) || `${uuid()}`,
-        manifestId: canvas.options.resource.id,
-        svg,
-        tags,
-        xywh,
-      }).toJson();
-      if (annotation) {
-        storageAdapter.update(anno).then((annoPage) => {
-          receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
-        });
-      } else {
-        storageAdapter.create(anno).then((annoPage) => {
-          receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
-        });
-      }
+  const closeFormCompanionWindow = () => {
+    closeCompanionWindow('annotationCreation', {
+      id,
+      position: 'right',
     });
+  };
 
-    this.setState({
-      annoBody: '',
+  const resetStateAfterSave = () => {
+    // TODO this create a re-render too soon for react and crash the app
+    setState({
+      image: { id: null },
       svg: null,
+      tend: 0,
+      textBody: '',
       textEditorStateBustingKey: textEditorStateBustingKey + 1,
+      tstart: 0,
       xywh: null,
     });
+  };
+
+  const {
+    manifestNetwork,
+    textBody,
+    tstart,
+    tend,
+    textEditorStateBustingKey,
+    valueTime,
+  } = state;
+
+  const {
+    activeTool,
+    fillColor,
+    strokeColor,
+    strokeWidth,
+    closedMode,
+    imageEvent,
+  } = toolState;
+
+  const mediaIsVideo = mediaVideo !== undefined;
+  if (mediaIsVideo && valueTime) {
+    valueTime[0] = tstart;
+    valueTime[1] = tend;
   }
 
-  /** */
-  changeTool(e, tool) {
-    this.setState({
-      activeTool: tool,
-    });
+  const videoDuration = mediaVideo ? mediaVideo.props.canvas.__jsonld.duration : 0;
+  // TODO: L'erreur de "Ref" sur l'ouverture d'une image vient d'ici et plus particulièrement
+  //  du useEffect qui prend en dépedance [overlay.containerWidth, overlay.canvasWidth]
+  const videoref = VideosReferences.get(windowId);
+  const osdref = OSDReferences.get(windowId);
+  let overlay = null;
+  if (videoref) {
+    overlay = videoref.canvasOverlay;
+  } else {
+    if (osdref) {
+      console.debug('osdref', osdref);
+      overlay = {
+        canvasHeight: osdref.current.canvas.clientHeight,
+        canvasWidth: osdref.current.canvas.clientWidth,
+        containerHeight: osdref.current.canvas.clientHeight,
+        containerWidth: osdref.current.canvas.clientWidth,
+      };
+    } else {
+      overlay = {
+        canvasHeight: 500,
+        canvasWidth: 1000,
+        containerHeight: 500,
+        containerWidth: 1000,
+      };
+    }
   }
 
-  /** */
-  changeClosedMode(e) {
-    this.setState({
-      closedMode: e.currentTarget.value,
-    });
-  }
+  /** Change scale from container / canva */
+  const updateScale = () => {
+    setScale(overlay.containerWidth / overlay.canvasWidth);
+  };
 
-  /** */
-  updateBody(annoBody) {
-    this.setState({ annoBody });
-  }
+  useEffect(() => {
+  }, [overlay.containerWidth, overlay.canvasWidth]);
 
-  /** */
-  updateGeometry({ svg, xywh }) {
-    this.setState({
-      svg, xywh,
-    });
-  }
-
-  /** */
-  render() {
-    const {
-      annotation, classes, closeCompanionWindow, id, windowId,
-    } = this.props;
-
-    const {
-      activeTool, colorPopoverOpen, currentColorType, fillColor, popoverAnchorEl, strokeColor,
-      popoverLineWeightAnchorEl, lineWeightPopoverOpen, strokeWidth, closedMode, annoBody, svg,
-      textEditorStateBustingKey,
-    } = this.state;
-    return (
-      <CompanionWindow
-        title={annotation ? 'Edit annotation' : 'New annotation'}
+  return (
+    // we need to get the width and height of the image to pass it to the annotation drawing component
+    <CompanionWindow
+      title={annotation ? 'Edit annotation' : 'New annotation'}
+      windowId={windowId}
+      id={id}
+    >
+      <StyledAnnotationDrawing
+        scale={scale}
+        activeTool={activeTool}
+        annotation={annotation}
+        fillColor={fillColor}
+        strokeColor={strokeColor}
+        strokeWidth={strokeWidth}
+        closed={closedMode === 'closed'}
+        updateGeometry={updateGeometry}
         windowId={windowId}
-        id={id}
-      >
-        <AnnotationDrawing
-          activeTool={activeTool}
-          fillColor={fillColor}
-          strokeColor={strokeColor}
-          strokeWidth={strokeWidth}
-          closed={closedMode === 'closed'}
-          svg={svg}
-          updateGeometry={this.updateGeometry}
+        player={mediaIsVideo ? mediaVideo : OSDReferences.get(windowId)}
+        // we need to pass the width and height of the image to the annotation drawing component
+        width={overlay ? overlay.containerWidth : 1920}
+        height={overlay ? overlay.containerHeight : 1080}
+        orignalWidth={overlay ? overlay.canvasWidth : 1920}
+        orignalHeight={overlay ? overlay.canvasHeight : 1080}
+        setShapeProperties={setShapeProperties}
+        updateScale={updateScale}
+        imageEvent={imageEvent}
+        setColorToolFromCurrentShape={setColorToolFromCurrentShape}
+        drawingState={drawingState}
+        isMouseOverSave={isMouseOverSave}
+        mediaVideo={mediaVideo}
+        setDrawingState={setDrawingState}
+      />
+      <StyledForm>
+        <TabContext value={viewTool}>
+          <TabList value={viewTool} onChange={tabHandler} aria-label="icon tabs">
+            <StyledTab
+              icon={<HighlightAltIcon />}
+              aria-label="TargetSelector"
+              value={TARGET_VIEW}
+              tooltip="Target"
+            />
+            <StyledTab
+              icon={<LayersIcon />}
+              aria-label="OverlaySelector"
+              value={OVERLAY_VIEW}
+              tooltip="Overlay"
+            />
+            <StyledTab
+              icon={<LocalOfferIcon />}
+              aria-label="InfosSelector"
+              value={TAG_VIEW}
+              tooltip="Infos"
+            />
+            <StyledTab
+              icon={<HubIcon />}
+              aria-label="ManifestNetworkSelector"
+              value={MANIFEST_LINK_VIEW}
+              tooltip="Manifest Network"
+            />
+          </TabList>
+          <StyledTabPanel
+            value={TARGET_VIEW}
+          >
+            <AnnotationFormTarget
+              mediaIsVideo={mediaIsVideo}
+              videoDuration={videoDuration}
+              value={valueTime}
+              windowid={windowId}
+              tstart={tstart}
+              tend={tend}
+              currentTime={currentTime}
+              setState={setState}
+              setCurrentTime={setCurrentTime}
+              setSeekTo={setSeekTo}
+            />
+          </StyledTabPanel>
+          <StyledTabPanel
+            value={OVERLAY_VIEW}
+          >
+            <AnnotationFormOverlay
+              toolState={toolState}
+              updateToolState={setToolState}
+              shapes={drawingState.shapes}
+              currentShape={drawingState.currentShape}
+              deleteShape={deleteShape}
+            />
+          </StyledTabPanel>
+          <StyledTabPanel
+            value={TAG_VIEW}
+          >
+            <AnnotationFormContent
+              textBody={textBody}
+              updateTextBody={updateTextBody}
+              textEditorStateBustingKey={textEditorStateBustingKey}
+            />
+          </StyledTabPanel>
+          <StyledTabPanel
+            value={MANIFEST_LINK_VIEW}
+          >
+            <AnnotationFormManifestNetwork
+              manifestNetwork={manifestNetwork}
+              updateManifestNetwork={updateManifestNetwork}
+            />
+          </StyledTabPanel>
+        </TabContext>
+        <AnnotationFormFooter
+          annotation={annotation}
+          canvases={canvases}
+          closeFormCompanionWindow={closeFormCompanionWindow}
+          config={config}
+          drawingState={drawingState}
+          receiveAnnotation={receiveAnnotation}
+          resetStateAfterSave={resetStateAfterSave}
+          state={state}
           windowId={windowId}
         />
-        <form onSubmit={this.submitForm} className={classes.section}>
-          <Grid container>
-            <Grid item xs={12}>
-              <Typography variant="overline">
-                Target
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper elevation={0} className={classes.paper}>
-                <ToggleButtonGroup
-                  className={classes.grouped}
-                  value={activeTool}
-                  exclusive
-                  onChange={this.changeTool}
-                  aria-label="tool selection"
-                  size="small"
-                >
-                  <ToggleButton value="cursor" aria-label="select cursor">
-                    <CursorIcon />
-                  </ToggleButton>
-                  <ToggleButton value="edit" aria-label="select cursor">
-                    <FormatShapesIcon />
-                  </ToggleButton>
-                </ToggleButtonGroup>
-                <Divider flexItem orientation="vertical" className={classes.divider} />
-                <ToggleButtonGroup
-                  className={classes.grouped}
-                  value={activeTool}
-                  exclusive
-                  onChange={this.changeTool}
-                  aria-label="tool selection"
-                  size="small"
-                >
-                  <ToggleButton value="rectangle" aria-label="add a rectangle">
-                    <RectangleIcon />
-                  </ToggleButton>
-                  <ToggleButton value="ellipse" aria-label="add a circle">
-                    <CircleIcon />
-                  </ToggleButton>
-                  <ToggleButton value="polygon" aria-label="add a polygon">
-                    <PolygonIcon />
-                  </ToggleButton>
-                  <ToggleButton value="freehand" aria-label="free hand polygon">
-                    <GestureIcon />
-                  </ToggleButton>
-                </ToggleButtonGroup>
-              </Paper>
-            </Grid>
-          </Grid>
-          <Grid container>
-            <Grid item xs={12}>
-              <Typography variant="overline">
-                Style
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <ToggleButtonGroup
-                aria-label="style selection"
-                size="small"
-              >
-                <ToggleButton
-                  value="strokeColor"
-                  aria-label="select color"
-                  onClick={this.openChooseColor}
-                >
-                  <StrokeColorIcon style={{ fill: strokeColor }} />
-                  <ArrowDropDownIcon />
-                </ToggleButton>
-                <ToggleButton
-                  value="strokeColor"
-                  aria-label="select line weight"
-                  onClick={this.openChooseLineWeight}
-                >
-                  <LineWeightIcon />
-                  <ArrowDropDownIcon />
-                </ToggleButton>
-                <ToggleButton
-                  value="fillColor"
-                  aria-label="select color"
-                  onClick={this.openChooseColor}
-                >
-                  <FormatColorFillIcon style={{ fill: fillColor }} />
-                  <ArrowDropDownIcon />
-                </ToggleButton>
-              </ToggleButtonGroup>
-
-              <Divider flexItem orientation="vertical" className={classes.divider} />
-              { /* close / open polygon mode only for freehand drawing mode. */
-                activeTool === 'freehand'
-                  ? (
-                    <ToggleButtonGroup
-                      size="small"
-                      value={closedMode}
-                      onChange={this.changeClosedMode}
-                    >
-                      <ToggleButton value="closed">
-                        <ClosedPolygonIcon />
-                      </ToggleButton>
-                      <ToggleButton value="open">
-                        <OpenPolygonIcon />
-                      </ToggleButton>
-                    </ToggleButtonGroup>
-                  )
-                  : null
-              }
-
-            </Grid>
-          </Grid>
-          <Grid container>
-            <Grid item xs={12}>
-              <Typography variant="overline">
-                Content
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <TextEditor
-                key={textEditorStateBustingKey}
-                annoHtml={annoBody}
-                updateAnnotationBody={this.updateBody}
-              />
-            </Grid>
-          </Grid>
-          <Button onClick={closeCompanionWindow}>
-            Cancel
-          </Button>
-          <Button variant="contained" color="primary" type="submit">
-            Save
-          </Button>
-        </form>
-        <Popover
-          open={lineWeightPopoverOpen}
-          anchorEl={popoverLineWeightAnchorEl}
-        >
-          <Paper>
-            <ClickAwayListener onClickAway={this.handleCloseLineWeight}>
-              <MenuList autoFocus role="listbox">
-                {[1, 3, 5, 10, 50].map((option, index) => (
-                  <MenuItem
-                    key={option}
-                    onClick={this.handleLineWeightSelect}
-                    value={option}
-                    selected={option == strokeWidth}
-                    role="option"
-                    aria-selected={option == strokeWidth}
-                  >
-                    {option}
-                  </MenuItem>
-                ))}
-              </MenuList>
-            </ClickAwayListener>
-          </Paper>
-        </Popover>
-        <Popover
-          open={colorPopoverOpen}
-          anchorEl={popoverAnchorEl}
-          onClose={this.closeChooseColor}
-        >
-          <SketchPicker
-            // eslint-disable-next-line react/destructuring-assignment
-            color={this.state[currentColorType] || {}}
-            onChangeComplete={this.updateStrokeColor}
-          />
-        </Popover>
-      </CompanionWindow>
-    );
-  }
+      </StyledForm>
+    </CompanionWindow>
+  );
 }
 
-/** */
-const styles = (theme) => ({
-  divider: {
-    margin: theme.spacing(1, 0.5),
-  },
-  grouped: {
-    '&:first-child': {
-      borderRadius: theme.shape.borderRadius,
-    },
-    '&:not(:first-child)': {
-      borderRadius: theme.shape.borderRadius,
-    },
-    border: 'none',
-    margin: theme.spacing(0.5),
-  },
-  paper: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  section: {
-    paddingBottom: theme.spacing(1),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-    paddingTop: theme.spacing(2),
-  },
-});
+const StyledForm = styled('form')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '20px',
+  paddingBottom: theme.spacing(1),
+  paddingLeft: theme.spacing(2),
+  paddingRight: theme.spacing(1),
+  paddingTop: theme.spacing(2),
+}));
+
+const StyledTab = styled(Tab)(({ theme }) => ({
+  minWidth: '0px',
+  padding: '12px 8px',
+}));
+
+const StyledTabPanel = styled(TabPanel)(({ theme }) => ({
+  padding: '0',
+}));
+
+const StyledAnnotationDrawing = styled(AnnotationDrawing)(({ theme }) => ({
+  height: 'auto',
+  left: 0,
+  position: 'absolute',
+  top: 0,
+  width: '100%',
+}));
 
 AnnotationCreation.propTypes = {
+  // TODO proper web annotation type ?
   annotation: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   canvases: PropTypes.arrayOf(
-    PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
+    PropTypes.shape({
+      id: PropTypes.string,
+      index: PropTypes.number,
+    }),
   ),
-  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   closeCompanionWindow: PropTypes.func,
+
   config: PropTypes.shape({
     annotation: PropTypes.shape({
       adapter: PropTypes.func,
       defaults: PropTypes.objectOf(
         PropTypes.oneOfType(
-          [PropTypes.bool, PropTypes.func, PropTypes.number, PropTypes.string]
-        )
+          [PropTypes.bool, PropTypes.func, PropTypes.number, PropTypes.string],
+        ),
       ),
     }),
   }).isRequired,
+  currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]),
   id: PropTypes.string.isRequired,
   receiveAnnotation: PropTypes.func.isRequired,
+  setCurrentTime: PropTypes.func,
+  setSeekTo: PropTypes.func,
   windowId: PropTypes.string.isRequired,
+  // eslint-disable-next-line sort-keys
+  mediaVideo: PropTypes.object.isRequired,
 };
 
 AnnotationCreation.defaultProps = {
   annotation: null,
   canvases: [],
-  closeCompanionWindow: () => {},
+  closeCompanionWindow: () => {
+  },
+  currentTime: null,
+  setCurrentTime: () => {
+  },
+  setSeekTo: () => {
+  },
 };
 
-export default withStyles(styles)(AnnotationCreation);
+export default AnnotationCreation;

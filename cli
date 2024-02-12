@@ -1,0 +1,41 @@
+#!/bin/bash
+
+is_docker() {
+    if [ ! -z "$(which docker-compose 2>/dev/null)" ];
+    then
+        echo "1"
+    else
+        echo "0"
+    fi
+}
+
+usage() {
+    echo -e "Usage $0 <command> [args]\n"
+    echo -e "COMMANDS\n"
+    echo "post_install"
+    echo -e "\t Do post install tasks "
+}
+
+DIR="$(dirname $0)"
+SCRIPTS_DIR="$DIR/public/scripts"
+
+action=$1
+shift
+# Keep actions sorted
+case $action in
+    "post_install")
+        rm -f ./mirador/node_modules/dnd-multi-backend/dist/index.js
+        rm -f ./mirador/node_modules/react-dnd-multi-backend/dist/index.js
+        cp ./post_install_assets/dnd-multi-backend/index.js node_modules/dnd-multi-backend/dist/index.js
+        cp ./post_install_assets/react-dnd-multi-backend/index.js node_modules/react-dnd-multi-backend/dist/index.js
+        ;;
+
+    "help")
+        usage
+        ;;
+    *)
+        echo "ERROR: No command given"
+        usage
+        exit 1
+        ;;
+esac

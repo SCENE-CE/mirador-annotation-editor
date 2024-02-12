@@ -1,49 +1,42 @@
-import React, { Component } from 'react';
+import React, {
+  useState, useContext, forwardRef, useEffect,
+} from 'react';
 import PropTypes from 'prop-types';
-import DeleteIcon from '@material-ui/icons/DeleteForever';
-import EditIcon from '@material-ui/icons/Edit';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import DeleteIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import flatten from 'lodash/flatten';
 import AnnotationActionsContext from './AnnotationActionsContext';
 
-/** */
-class CanvasListItem extends Component {
-  /** */
-  constructor(props) {
-    super(props);
+const CanvasListItem = forwardRef((props, ref) => {
+  const [isHovering, setIsHovering] = useState(false);
+  const context = useContext(AnnotationActionsContext);
 
-    this.state = {
-      isHovering: false,
-    };
+  const handleMouseHover = () => {
+    setIsHovering(!isHovering);
+  };
 
-    this.handleMouseHover = this.handleMouseHover.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
-  }
-
-  /** */
-  handleDelete() {
-    const { canvases, receiveAnnotation, storageAdapter } = this.context;
-    const { annotationid } = this.props;
+  const handleDelete = () => {
+    const { canvases, receiveAnnotation, storageAdapter } = context;
+    const { annotationid } = props;
     canvases.forEach((canvas) => {
       const adapter = storageAdapter(canvas.id);
       adapter.delete(annotationid).then((annoPage) => {
         receiveAnnotation(canvas.id, adapter.annotationPageId, annoPage);
       });
     });
-  }
+  };
 
-  /** */
-  handleEdit() {
+  const handleEdit = () => {
     const {
       addCompanionWindow, canvases, annotationsOnCanvases,
-    } = this.context;
-    const { annotationid } = this.props;
+    } = context;
+    const { annotationid } = props;
     let annotation;
     canvases.some((canvas) => {
       if (annotationsOnCanvases[canvas.id]) {
-        Object.entries(annotationsOnCanvases[canvas.id]).forEach(([key, value], i) => {
+        Object.entries(annotationsOnCanvases[canvas.id]).forEach(([key, value]) => {
           if (value.json && value.json.items) {
             annotation = value.json.items.find((anno) => anno.id === annotationid);
           }
@@ -55,22 +48,14 @@ class CanvasListItem extends Component {
       annotationid,
       position: 'right',
     });
-  }
+  };
 
-  /** */
-  handleMouseHover() {
-    this.setState((prevState) => ({
-      isHovering: !prevState.isHovering,
-    }));
-  }
-
-  /** */
-  editable() {
-    const { annotationsOnCanvases, canvases } = this.context;
-    const { annotationid } = this.props;
+  const editable = () => {
+    const { annotationsOnCanvases, canvases } = context;
+    const { annotationid } = props;
     const annoIds = canvases.map((canvas) => {
       if (annotationsOnCanvases[canvas.id]) {
-        return flatten(Object.entries(annotationsOnCanvases[canvas.id]).map(([key, value], i) => {
+        return flatten(Object.entries(annotationsOnCanvases[canvas.id]).map(([key, value]) => {
           if (value.json && value.json.items) {
             return value.json.items.map((item) => item.id);
           }
@@ -80,65 +65,60 @@ class CanvasListItem extends Component {
       return [];
     });
     return flatten(annoIds).includes(annotationid);
-  }
+  };
 
-  /** */
-  render() {
-    const { children } = this.props;
-    const { isHovering } = this.state;
-    const { windowViewType, toggleSingleCanvasDialogOpen } = this.context;
-    return (
-      <div
-        onMouseEnter={this.handleMouseHover}
-        onMouseLeave={this.handleMouseHover}
-      >
-        {isHovering && this.editable() && (
-          <div
-            style={{
-              position: 'relative',
-              top: -20,
-              zIndex: 10000,
-            }}
-          >
-            <ToggleButtonGroup
-              aria-label="annotation tools"
-              size="small"
-              style={{
-                position: 'absolute',
-                right: 0,
-              }}
-            >
-              <ToggleButton
-                aria-label="Edit"
-                onClick={windowViewType === 'single' ? this.handleEdit : toggleSingleCanvasDialogOpen}
-                value="edit"
-              >
-                <EditIcon />
-              </ToggleButton>
-              <ToggleButton aria-label="Delete" onClick={this.handleDelete} value="delete">
-                <DeleteIcon />
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </div>
-        )}
-        <li
-          {...this.props} // eslint-disable-line react/jsx-props-no-spreading
+  return (
+    <div
+      onMouseEnter={handleMouseHover}
+      onMouseLeave={handleMouseHover}
+      className="mirador-annotation-list-item"
+      ref={ref}
+    >
+      {isHovering && editable() && (
+        <div
+          style={{
+            position: 'relative',
+            top: -20,
+            zIndex: 10000,
+          }}
         >
-          {children}
-        </li>
-      </div>
-    );
-  }
-}
+          <ToggleButtonGroup
+            aria-label="annotation tools"
+            size="small"
+            style={{ position: 'absolute', right: 0 }}
+            disabled={!context.annotationEditCompanionWindowIsOpened}
+          >
+            <ToggleButton
+              aria-label="Edit"
+              onClick={context.windowViewType === 'single' ? handleEdit : context.toggleSingleCanvasDialogOpen}
+              value="edit"
+            >
+              <EditIcon />
+            </ToggleButton>
+            <ToggleButton
+              aria-label="Delete"
+              onClick={handleDelete}
+              value="delete"
+            >
+              <DeleteIcon />
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </div>
+      )}
+      <li {...props}>
+        {props.children}
+      </li>
+    </div>
+  );
+});
 
 CanvasListItem.propTypes = {
+  annotationEditCompanionWindowIsOpened: PropTypes.bool.isRequired,
   annotationid: PropTypes.string.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.node,
   ]).isRequired,
 };
-
-CanvasListItem.contextType = AnnotationActionsContext;
 
 export default CanvasListItem;
