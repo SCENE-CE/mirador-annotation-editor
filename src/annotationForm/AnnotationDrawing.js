@@ -100,8 +100,11 @@ export default function AnnotationDrawing({
     // Perform an action when fillColor, strokeColor, or strokeWidth change
     // update current shape
     if (drawingState.currentShape) {
+      // eslint-disable-next-line no-param-reassign
       drawingState.currentShape.fill = fillColor;
+      // eslint-disable-next-line no-param-reassign
       drawingState.currentShape.stroke = strokeColor;
+      // eslint-disable-next-line no-param-reassign
       drawingState.currentShape.strokeWidth = strokeWidth;
       updateCurrentShapeInShapes(drawingState.currentShape);
     }
@@ -150,6 +153,7 @@ export default function AnnotationDrawing({
     }
   };
   // TODO Can be removed ? --> move currentSHape and shapes in the same state
+  // eslint-disable-next-line consistent-return
   useLayoutEffect(() => {
     if (drawingState.shapes.find((s) => s.id === drawingState.currentShape?.id)) {
       window.addEventListener('keydown', handleKeyPress);
@@ -503,7 +507,7 @@ export default function AnnotationDrawing({
   };
 
   /** Stop drawing */
-  const handleMouseUp = (e) => {
+  const handleMouseUp = () => {
     setDrawingState({
       ...drawingState,
       isDrawing: false,
