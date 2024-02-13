@@ -4,9 +4,8 @@ import { Layer, Rect, Transformer } from 'react-konva';
 
 // eslint-disable-next-line require-jsdoc
 function Surface({
-  shape, activeTool, tabView,
-  onTransform, handleDrag, trview,
-  width, height, scale,
+  shape, tabView,
+  onTransform, handleDrag, trview, scale,
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -20,7 +19,6 @@ function Surface({
 
   return (
     <Layer
-
       scaleX={scale}
       scaleY={scale}
     >
@@ -31,14 +29,11 @@ function Surface({
           y={shape.y}
           scaleX={shape.scaleX}
           scaleY={shape.scaleY}
-
           width={shape.width}
           height={shape.height}
-          fill="transparent"
-          stroke="#1967d2"
-
+          fill={"transparent"}
+          stroke={"#1967d2"}
           strokeWidth={1}
-
           draggable={trview}
           onTransform={onTransform}
           onDrag={handleDrag}
@@ -58,10 +53,8 @@ function Surface({
 }
 
 Surface.propTypes = {
-  activeTool: PropTypes.string.isRequired,
   fill: PropTypes.string,
   height: PropTypes.number,
-  onShapeClick: PropTypes.func.isRequired,
   selectedShapeId: PropTypes.string,
   shape: PropTypes.object.isRequired,
   stroke: PropTypes.string,

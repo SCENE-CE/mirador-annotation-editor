@@ -51,7 +51,6 @@ function Polygon({
         onDragStart={handleDragStart}
 
       />
-
       <Transformer
         ref={trRef}
         visible={activeTool === 'edit' && isSelected}
