@@ -18,6 +18,7 @@ import Surface from './AnnotationFormOverlay/KonvaDrawing/Surface';
 export default function AnnotationDrawing({
   drawingState, originalWidth, orignalHeight, setDrawingState, height, width, ...props
 }) {
+  const [isDrawing, setIsDrawing] = useState(false);
   const [surfacedata, setSurfaceData] = useState({
     x: 1,
     y: 1,
@@ -65,6 +66,35 @@ export default function AnnotationDrawing({
 
   const { fillColor, strokeColor, strokeWidth } = props;
 
+  /** */
+  const updateCurrentShapeInShapes = (currentShape) => {
+    const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
+
+    if (index !== -1) {
+      drawingState.shapes[index] = currentShape;
+      setDrawingState({
+        ...drawingState,
+        currentShape,
+      });
+    } else {
+      setDrawingState({
+        ...drawingState,
+        shapes: [...drawingState.shapes, currentShape],
+        currentShape,
+      });
+    }
+  };
+  /** */
+  useEffect(() => {
+    if (!isDrawing) {
+      const newCurrentShape = drawingState[drawingState.shapes.length - 1];
+      // get latest shape in the list
+      if (newCurrentShape) {
+      updateCurrentShapeInShapes(newCurrentShape);
+      }
+    }
+  }, [drawingState]);
+
   useEffect(() => {
     // Perform an action when fillColor, strokeColor, or strokeWidth change
     // update current shape
@@ -76,6 +106,46 @@ export default function AnnotationDrawing({
     }
   }, [fillColor, strokeColor, strokeWidth]);
 
+  /** */
+  const handleKeyPress = (e) => {
+    e.stopPropagation();
+    const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape', 'Tab', 'AltGraph', 'CapsLock', 'NumLock', 'ScrollLock', 'Pause', 'Insert', 'Home', 'PageUp', 'PageDown', 'End', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ContextMenu', 'PrintScreen', 'Help', 'Clear', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'OS'];
+
+    if (!drawingState.currentShape) {
+      return;
+    }
+
+    if (e.key === 'Delete') {
+      const shapesWithoutTheDeleted = drawingState.shapes.filter((shape) => shape.id !== drawingState.currentShape.id);
+      setDrawingState({
+        ...drawingState,
+        shapes: shapesWithoutTheDeleted,
+      });
+      return;
+    }
+
+    // TODO This comportment must be handle by the text component
+    if (drawingState.currentShape.type === 'text') {
+      let newText = drawingState.currentShape.text;
+      if (e.key === 'Backspace') {
+        newText = newText.slice(0, -1);
+      } else {
+        if (unnalowedKeys.includes(e.key)) {
+          return;
+        }
+        newText += e.key;
+      }
+
+      // Potentially bug during the update
+      const newCurrentShape = { ...drawingState.currentShape, text: newText };
+
+      setDrawingState({
+        ...drawingState,
+        shapes: drawingState.shapes.map((shape) => (shape.id === drawingState.currentShape.id ? newCurrentShape : shape)),
+        currentShape: newCurrentShape,
+      });
+    }
+  };
   // TODO Can be removed ? --> move currentSHape and shapes in the same state
   useLayoutEffect(() => {
     if (drawingState.shapes.find((s) => s.id === drawingState.currentShape?.id)) {
@@ -170,66 +240,6 @@ export default function AnnotationDrawing({
       shape.x = modifiedshape.x;
       shape.y = modifiedshape.y;
       setSurfaceData({ ...shape });
-    };
-
-    /** */
-    const handleKeyPress = (e) => {
-      e.stopPropagation();
-      const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape', 'Tab', 'AltGraph', 'CapsLock', 'NumLock', 'ScrollLock', 'Pause', 'Insert', 'Home', 'PageUp', 'PageDown', 'End', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ContextMenu', 'PrintScreen', 'Help', 'Clear', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'OS'];
-
-      if (!drawingState.currentShape) {
-        return;
-      }
-
-      if (e.key === 'Delete') {
-        const shapesWithoutTheDeleted = drawingState.shapes.filter((shape) => shape.id !== drawingState.currentShape.id);
-        setDrawingState({
-          ...drawingState,
-          shapes: shapesWithoutTheDeleted,
-        });
-        return;
-      }
-
-      // TODO This comportment must be handle by the text component
-      if (drawingState.currentShape.type === 'text') {
-        let newText = drawingState.currentShape.text;
-        if (e.key === 'Backspace') {
-          newText = newText.slice(0, -1);
-        } else {
-          if (unnalowedKeys.includes(e.key)) {
-            return;
-          }
-          newText += e.key;
-        }
-
-        // Potentially bug during the update
-        const newCurrentShape = { ...drawingState.currentShape, text: newText };
-
-        setDrawingState({
-          ...drawingState,
-          shapes: drawingState.shapes.map((shape) => (shape.id === drawingState.currentShape.id ? newCurrentShape : shape)),
-          currentShape: newCurrentShape,
-        });
-      }
-    };
-
-    /** */
-    const updateCurrentShapeInShapes = (currentShape) => {
-      const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
-
-      if (index !== -1) {
-        drawingState.shapes[index] = currentShape;
-        setDrawingState({
-          ...drawingState,
-          currentShape,
-        });
-      } else {
-        setDrawingState({
-          ...drawingState,
-          shapes: [...drawingState.shapes, currentShape],
-          currentShape,
-        });
-      }
     };
 
     /** */

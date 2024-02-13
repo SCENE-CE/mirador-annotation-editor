@@ -135,7 +135,6 @@ function AnnotationCreation({
 
   const [isMouseOverSave, setIsMouseOverSave] = useState(false);
   const [scale, setScale] = useState(1);
-
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
 
   const getHeightAndWidth = () => {
@@ -150,7 +149,6 @@ function AnnotationCreation({
   };
 
   const { height, width } = getHeightAndWidth();
-
   // TODO Check the effect to keep and remove the other
   // Add a state to trigger redraw
   const [windowSize, setWindowSize] = useState({
@@ -360,7 +358,7 @@ function AnnotationCreation({
         isMouseOverSave={isMouseOverSave}
         mediaVideo={mediaVideo}
         setDrawingState={setDrawingState}
-        tabView={value}
+        tabView={viewTool}
       />
       <StyledForm>
         <TabContext value={viewTool}>
