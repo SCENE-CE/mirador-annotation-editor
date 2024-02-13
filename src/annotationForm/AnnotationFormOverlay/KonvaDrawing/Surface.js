@@ -2,7 +2,10 @@ import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Layer, Rect, Transformer } from 'react-konva';
 
-// eslint-disable-next-line require-jsdoc
+/**
+ * Represents a surface component.
+ * @returns {JSX.Element} The Surface component.
+ */
 function Surface({
   shape, tabView,
   onTransform, handleDrag, trview, scale,
@@ -16,7 +19,8 @@ function Surface({
       trRef.current.getLayer().batchDraw();
     }
   }, [tabView]);
-
+  // TODO: TabView may be useless in useEffect dependencies,
+  //  Surface is never call with TabView Props
   return (
     <Layer
       scaleX={scale}
@@ -31,8 +35,8 @@ function Surface({
           scaleY={shape.scaleY}
           width={shape.width}
           height={shape.height}
-          fill={"transparent"}
-          stroke={"#1967d2"}
+          fill="transparent"
+          stroke="#1967d2"
           strokeWidth={1}
           draggable={trview}
           onTransform={onTransform}
@@ -53,26 +57,20 @@ function Surface({
 }
 
 Surface.propTypes = {
-  fill: PropTypes.string,
-  height: PropTypes.number,
-  selectedShapeId: PropTypes.string,
-  shape: PropTypes.object.isRequired,
-  stroke: PropTypes.string,
-  strokeWidth: PropTypes.number,
-  width: PropTypes.number,
-  x: PropTypes.number,
-  y: PropTypes.number,
+  handleDrag: PropTypes.func.isRequired,
+  onTransform: PropTypes.func.isRequired,
+  scale: PropTypes.number.isRequired,
+  shape: PropTypes.shape({
+    height: PropTypes.number,
+    scaleX: PropTypes.number,
+    scaleY: PropTypes.number,
+    width: PropTypes.number,
+    x: PropTypes.number,
+    y: PropTypes.number,
+  }).isRequired,
+  tabView: PropTypes.string.isRequired,
+  trview: PropTypes.bool.isRequired,
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
 };
-
-Surface.defaultProps = {
-  fill: 'red',
-  height: 100,
-  selectedShapeId: null,
-  stroke: 'black',
-  strokeWidth: 1,
-  width: 100,
-  x: 100,
-  y: 100,
-};
-
 export default Surface;
