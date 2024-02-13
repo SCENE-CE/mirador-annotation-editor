@@ -70,7 +70,5 @@ Surface.propTypes = {
   }).isRequired,
   tabView: PropTypes.string.isRequired,
   trview: PropTypes.bool.isRequired,
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
 };
 export default Surface;
