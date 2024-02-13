@@ -588,7 +588,15 @@ export default function AnnotationDrawing({
 AnnotationDrawing.propTypes = {
   activeTool: PropTypes.string.isRequired,
   closed: PropTypes.bool.isRequired,
-  drawingState: PropTypes.object.isRequired,
+  drawingState: PropTypes.oneOfType(
+    [
+      PropTypes.shape({
+        currentShape: PropTypes.oneOfType,
+        isDrawing: PropTypes.bool,
+        shapes: PropTypes.arrayOf,
+      }),
+    ],
+  ).isRequired,
   fillColor: PropTypes.string.isRequired,
   originalHeight: PropTypes.number.isRequired,
   originalWidth: PropTypes.number.isRequired,
