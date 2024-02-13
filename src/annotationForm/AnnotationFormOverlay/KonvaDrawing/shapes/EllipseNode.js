@@ -1,12 +1,13 @@
-/* eslint-disable require-jsdoc */
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Ellipse, Transformer } from 'react-konva';
-import ArrowNode from "./ArrowNode";
-
+/**
+ * Represents a Elipse node component.
+ * @returns {JSX.Element} The TextNode component.
+ */
 function EllipseNode({
   onShapeClick, shape, activeTool, isSelected,
-  onTransform, handleDragEnd, handleDragStart
+  onTransform, handleDragEnd, handleDragStart,
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -18,6 +19,12 @@ function EllipseNode({
     }
   }, [isSelected]);
 
+  /**
+   * Handles the click event on the shape by invoking the provided callback function.
+   * @function handleClick
+   *- The shape object representing the properties of the clicked shape.
+   * @returns {void}
+   */
   const handleClick = () => {
     onShapeClick(shape);
   };
@@ -60,8 +67,20 @@ EllipseNode.propTypes = {
   isSelected: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
   onTransform: PropTypes.func.isRequired,
-  shape: PropTypes.object.isRequired,
+  shape: PropTypes.shape({
+    fill: PropTypes.string,
+    height: PropTypes.number,
+    id: PropTypes.string,
+    rotation: PropTypes.number,
+    scaleX: PropTypes.number,
+    scaleY: PropTypes.number,
+    stroke: PropTypes.string,
+    strokeWidth: PropTypes.number,
+    type: PropTypes.string,
+    url: PropTypes.string,
+    width: PropTypes.number,
+    x: PropTypes.number,
+    y: PropTypes.number,
+  }).isRequired,
 };
-
-
 export default EllipseNode;

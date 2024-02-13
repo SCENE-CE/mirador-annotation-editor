@@ -176,7 +176,7 @@ ParentComponent.propTypes = {
     url: PropTypes.string,
     x: PropTypes.number,
     y: PropTypes.number,
-  })),
+  })).isRequired,
   trview: PropTypes.bool.isRequired,
 };
 export default ParentComponent;

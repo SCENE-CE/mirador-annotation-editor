@@ -18,7 +18,12 @@ function Polygon({
     }
   }, [isSelected, shape]);
 
-  /** */
+  /**
+   * Handles the click event on the shape by invoking the provided callback function.
+   * @function handleClick
+   *- The shape object representing the properties of the clicked shape.
+   * @returns {void}
+   */
   const handleClick = () => {
     onShapeClick(shape);
   };
@@ -66,9 +71,20 @@ Polygon.propTypes = {
   isSelected: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
   onTransform: PropTypes.func.isRequired,
-  points: PropTypes.arrayOf(PropTypes.number),
-  shape: PropTypes.object.isRequired,
-
+  shape: PropTypes.shape({
+    fill: PropTypes.string,
+    id: PropTypes.string,
+    points: PropTypes.arrayOf(PropTypes.number),
+    rotation: PropTypes.number,
+    scaleX: PropTypes.number,
+    scaleY: PropTypes.number,
+    stroke: PropTypes.string,
+    strokeWidth: PropTypes.number,
+    type: PropTypes.string,
+    url: PropTypes.string,
+    x: PropTypes.number,
+    y: PropTypes.number,
+  }).isRequired,
 };
 
 export default Polygon;
