@@ -190,14 +190,14 @@ export default function AnnotationDrawing({
     });
 
     // props.setShapeProperties(shape); // TODO Check that code ?
-    //   props.setColorToolFromCurrentShape(
-    //     {
-    //       fillColor: shape.fill,
-    //       strokeColor: shape.stroke,
-    //       strokeWidth: shape.strokeWidth,
-    //     },
-    //   );
-    // };
+      props.setColorToolFromCurrentShape(
+        {
+          fillColor: shape.fill,
+          strokeColor: shape.stroke,
+          strokeWidth: shape.strokeWidth,
+        },
+      );
+    };
 
     const onTransform = (evt) => {
       const modifiedshape = evt.target.attrs;
@@ -567,4 +567,3 @@ export default function AnnotationDrawing({
     updateGeometry: PropTypes.func.isRequired,
     windowId: PropTypes.string.isRequired,
   };
-}
