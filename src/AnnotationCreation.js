@@ -288,7 +288,6 @@ function AnnotationCreation({
   /**
    * Closes the companion window with the specified ID and position.
    *
-   * @param {string} id - The ID of the companion window to close.
    * @returns {void}
    */
   const closeFormCompanionWindow = () => {
@@ -526,8 +525,22 @@ const StyledAnnotationDrawing = styled(AnnotationDrawing)(({ theme }) => ({
 }));
 
 AnnotationCreation.propTypes = {
-  // TODO proper web annotation type ?
-  annotation: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  annotation: PropTypes.oneOfType([
+    PropTypes.shape({
+      body: PropTypes.shape({
+        format: PropTypes.string,
+        id: PropTypes.string,
+        type: PropTypes.string,
+        value: PropTypes.string,
+      }),
+      drawingState: PropTypes.string,
+      id: PropTypes.string,
+      manifestNetwork: PropTypes.string,
+      motivation: PropTypes.string,
+      target: PropTypes.string,
+    }),
+    PropTypes.string,
+  ]),
   canvases: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,

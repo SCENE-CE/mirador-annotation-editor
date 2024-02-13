@@ -216,8 +216,7 @@ export default function AnnotationDrawing({
     const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
 
     Object.assign(shape, modifiedshape);
-    drawingState.currentShape = shape;
-    updateCurrentShapeInShapes(drawingState.currentShape);
+    updateCurrentShapeInShapes(shape);
   };
 
   /**
@@ -460,7 +459,7 @@ export default function AnnotationDrawing({
 
           break;
         case SHAPES_TOOL.FREEHAND:
-          // eslint-disable-next-line max-len
+          // eslint-disable-next-line max-len,no-case-declarations
           const freehandShape = drawingState.currentShape; // TODO Check if not nuse { ...drawingState.currentShape };
           freehandShape.lines.push({
             points: [pos.x, pos.y, pos.x, pos.y],
@@ -470,6 +469,7 @@ export default function AnnotationDrawing({
           updateCurrentShapeInShapes(freehandShape);
           break;
         case SHAPES_TOOL.POLYGON:
+          // eslint-disable-next-line no-case-declarations
           const polygonShape = drawingState.currentShape;
           polygonShape.points[2] = pos.x;
           polygonShape.points[3] = pos.y;
@@ -477,6 +477,7 @@ export default function AnnotationDrawing({
           break;
         case SHAPES_TOOL.ARROW:
           // TODO improve
+          // eslint-disable-next-line no-case-declarations
           const arrowShape = {};
           // update points
           // eslint-disable-next-line max-len
@@ -587,7 +588,6 @@ export default function AnnotationDrawing({
 AnnotationDrawing.propTypes = {
   activeTool: PropTypes.string.isRequired,
   closed: PropTypes.bool.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   drawingState: PropTypes.object.isRequired,
   fillColor: PropTypes.string.isRequired,
   originalHeight: PropTypes.number.isRequired,
