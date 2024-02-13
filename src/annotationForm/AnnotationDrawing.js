@@ -585,18 +585,54 @@ export default function AnnotationDrawing({
   return ReactDOM.createPortal(drawKonvas(), container);
 }
 
+const shapeObjectPropTypes = PropTypes.shape({
+  id: PropTypes.string,
+  rotation: PropTypes.number,
+  scaleX: PropTypes.number,
+  scaleY: PropTypes.number,
+  type: PropTypes.string,
+  url: PropTypes.string,
+  x: PropTypes.number,
+  y: PropTypes.number,
+});
+
 AnnotationDrawing.propTypes = {
   activeTool: PropTypes.string.isRequired,
   closed: PropTypes.bool.isRequired,
-  drawingState: PropTypes.oneOfType(
-    [
+  drawingState: PropTypes.oneOfType([
+    PropTypes.shape({
+      currentShape: shapeObjectPropTypes,
+      isDrawing: PropTypes.bool,
+      shapes: PropTypes.arrayOf(shapeObjectPropTypes),
+    }),
+    PropTypes.arrayOf(
       PropTypes.shape({
-        currentShape: PropTypes.oneOfType,
+        currentShape: PropTypes.shape({
+          id: PropTypes.string,
+          rotation: PropTypes.number,
+          scaleX: PropTypes.number,
+          scaleY: PropTypes.number,
+          type: PropTypes.string,
+          url: PropTypes.string,
+          x: PropTypes.number,
+          y: PropTypes.number,
+        }),
         isDrawing: PropTypes.bool,
-        shapes: PropTypes.arrayOf,
+        shapes: PropTypes.arrayOf(
+          PropTypes.shape({
+            id: PropTypes.string,
+            rotation: PropTypes.number,
+            scaleX: PropTypes.number,
+            scaleY: PropTypes.number,
+            type: PropTypes.string,
+            url: PropTypes.string,
+            x: PropTypes.number,
+            y: PropTypes.number,
+          }),
+        ),
       }),
-    ],
-  ).isRequired,
+    ),
+  ]).isRequired,
   fillColor: PropTypes.string.isRequired,
   originalHeight: PropTypes.number.isRequired,
   originalWidth: PropTypes.number.isRequired,
