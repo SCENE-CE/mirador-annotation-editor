@@ -30,8 +30,7 @@ const baseConfig = (mode) => ({
     library: 'Mirador Annotation Editor',
     libraryExport: 'default',
     libraryTarget: 'umd',
-    path: path.join(__dirname, 'dist'),
-    publicPath: '/dist/',
+    publicPath: '/umd/',
   },
   plugins: [
     new webpack.IgnorePlugin({
@@ -70,10 +69,6 @@ module.exports = (env, options) => {
     devServer: {
       hot: true,
       port: 4444,
-      static: [
-        './__tests__/integration/mirador',
-        './__tests__/fixtures',
-      ],
     },
     devtool: 'eval-source-map',
     mode: 'development',

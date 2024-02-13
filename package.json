@@ -1,15 +1,8 @@
 {
   "name": "mirador-annotation-editor",
-  "version": "0.5.0",
+  "main": "umd/mirador-annotation-editor.js",
+  "version": "1.0.0",
   "description": "mirador-annotation-editor React component",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "files": [
-    "css",
-    "es",
-    "lib",
-    "umd"
-  ],
   "scripts": {
     "build": "nwb build-react-component",
     "clean": "nwb clean-module",

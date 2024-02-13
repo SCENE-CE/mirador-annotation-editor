@@ -3,6 +3,8 @@ import annotationPlugins from '../../src';
 import LocalStorageAdapter from '../../src/LocalStorageAdapter';
 import AnnototAdapter from '../../src/AnnototAdapter';
 
+console.log('annotationPlugins', annotationPlugins);
+
 const endpointUrl = 'http://127.0.0.1:3000/annotations';
 const config = {
   annotation: {
