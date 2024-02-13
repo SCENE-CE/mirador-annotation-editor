@@ -33,4 +33,8 @@ const config = {
   ],
 };
 
+console.log('miradorb', mirador);
+
 mirador.viewer(config, [...annotationPlugins]);
+
+console.log('mirador', mirador);

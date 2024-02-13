@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 /** */
 const baseConfig = (mode) => ({
   entry: ['./demo/src/index.js'],
@@ -36,6 +37,10 @@ const baseConfig = (mode) => ({
     new webpack.IgnorePlugin({
       resourceRegExp: /@blueprintjs\/(core|icons)/, // ignore optional UI framework dependencies
     }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      title: 'Application name',
+    })
   ],
   resolve: {
     alias: {
