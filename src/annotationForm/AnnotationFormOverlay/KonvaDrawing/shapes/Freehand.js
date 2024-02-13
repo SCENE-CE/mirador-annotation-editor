@@ -28,6 +28,7 @@ function Freehand({
       <Group
         ref={shapeRef}
         onClick={handleClick}
+        onMousedown={handleClick}
         onTransform={onTransform}
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
@@ -37,7 +38,7 @@ function Freehand({
         width={shape.width || 1920}
         height={shape.height || 1080}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
-        onDragEnd={handleDragEnd}
+        onDrag={handleDragEnd}
         onDragStart={handleDragStart}
         id={shape.id}
       >

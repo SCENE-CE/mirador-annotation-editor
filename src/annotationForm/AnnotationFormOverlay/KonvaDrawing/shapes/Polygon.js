@@ -36,6 +36,7 @@ function Polygon({
         lineCap="round"
         lineJoin="round"
         closed={false}
+        onMousedown={handleClick}
         onClick={handleClick}
         fill={shape.fill}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
@@ -46,7 +47,7 @@ function Polygon({
         rotation={shape.rotation}
         x={shape.x}
         y={shape.y}
-        onDragEnd={handleDragEnd}
+        onDrag={handleDragEnd}
         onDragStart={handleDragStart}
 
       />

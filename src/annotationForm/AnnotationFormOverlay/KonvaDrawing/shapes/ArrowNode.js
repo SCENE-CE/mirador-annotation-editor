@@ -37,10 +37,11 @@ function ArrowNode({
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
+        onMousedown={handleClick}
         pointerLength={shape.pointerLength}
         pointerWidth={shape.pointerWidth}
         onTransform={onTransform}
-        onDragEnd={handleDragEnd}
+        onDrag={handleDragEnd}
         onDragStart={handleDragEnd}
       />
       <Transformer
