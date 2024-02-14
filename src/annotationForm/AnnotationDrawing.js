@@ -60,8 +60,8 @@ export default function AnnotationDrawing({
       };
 
       setDrawingState({
-        ...drawingState,
-        currentShape: imageShape,
+        isDrawing: false,
+        currentShape: null,
         shapes: [...drawingState.shapes, imageShape],
       });
     }
@@ -196,8 +196,8 @@ export default function AnnotationDrawing({
     }
 
     setDrawingState({
-      ...drawingState,
-      currentShape: shape,
+      isDrawing: false,
+      currentShape: null,
     });
 
     // props.setShapeProperties(shape); // TODO Check that code ?
