@@ -506,7 +506,7 @@ export default function AnnotationDrawing({
           break;
       }
     } catch (error) {
-      console.log('error', error);
+      console.error('error', error);
     }
   };
 

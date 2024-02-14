@@ -15,7 +15,6 @@ function Freehand({
       trRef.current.nodes([shapeRef.current]);
       trRef.current.getLayer().batchDraw();
     }
-    console.log('SHAPE', shape);
   }, [isSelected, shape]);
 
   /** */
