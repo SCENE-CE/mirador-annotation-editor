@@ -9,13 +9,14 @@ import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
-import Surface from './AnnotationFormOverlay/KonvaDrawing/Surface';
+import SpatialTarget from './AnnotationFormOverlay/KonvaDrawing/SpatialTarget';
 
 /** All the stuff to draw on the canvas */
 export default function AnnotationDrawing({
   drawingState, originalWidth, orignalHeight, setDrawingState, height, width, imageEvent, ...props
 }) {
   const [isDrawing, setIsDrawing] = useState(false);
+  // TODO target from the annotation
   const [surfacedata, setSurfaceData] = useState({
     height: height / props.scale,
     scaleX: 1,
@@ -533,20 +534,15 @@ export default function AnnotationDrawing({
       onMouseMove={handleMouseMove}
       id={props.windowId}
     >
-
-      {props.tabView !== 'target' && (
-
-      <Surface
+      <SpatialTarget
         shape={surfacedata}
         onTransform={onSurfaceTransform}
         handleDrag={handleSurfaceDrag}
-        trview={false}
+        showTransformer={props.tabView === 'target'}
         width={width}
         height={height}
         scale={props.scale}
       />
-      )}
-
       <ParentComponent
         shapes={drawingState.shapes}
         onShapeClick={onShapeClick}
@@ -561,18 +557,6 @@ export default function AnnotationDrawing({
         isMouseOverSave={props.isMouseOverSave}
         trview={props.tabView !== 'target'}
       />
-      {props.tabView === 'target' && (
-
-      <Surface
-        shape={surfacedata}
-        onTransform={onSurfaceTransform}
-        handleDrag={handleSurfaceDrag}
-        trview
-        width={width}
-        height={height}
-        scale={props.scale}
-      />
-      )}
     </Stage>
   );
   const osdref = OSDReferences.get(props.windowId);

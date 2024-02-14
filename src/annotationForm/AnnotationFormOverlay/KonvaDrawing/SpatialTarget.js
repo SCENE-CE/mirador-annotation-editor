@@ -1,26 +1,29 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Layer, Rect, Transformer } from 'react-konva';
 
 /**
- * Represents a surface component.
- * @returns {JSX.Element} The Surface component.
+ * Represents the spatial target of the annotation.
+ * For now it's just a rectangle with xy coordinates and width and height.
+ * @returns {JSX.Element} The SpatialTarget component.
  */
-function Surface({
-  shape, tabView,
-  onTransform, handleDrag, trview, scale,
+function SpatialTarget({
+  handleDrag,
+  onTransform,
+  scale,
+  shape,
+  tabView,
+  showTransformer,
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
 
-  useEffect(() => {
-    if (trRef.current) {
-      trRef.current.nodes([shapeRef.current]);
-      trRef.current.getLayer().batchDraw();
-    }
-  }, [tabView]);
-  // TODO: TabView may be useless in useEffect dependencies,
-  //  Surface is never call with TabView Props
+  if (trRef.current) {
+    trRef.current.nodes([shapeRef.current]);
+    trRef.current.getLayer()
+      .batchDraw();
+  }
+
   return (
     <Layer
       scaleX={scale}
@@ -37,17 +40,17 @@ function Surface({
           height={shape.height}
           fill="transparent"
           stroke="#1967d2"
-          strokeWidth={1}
-          draggable={trview}
+          strokeWidth={10}
+          draggable={showTransformer}
           onTransform={onTransform}
           onDrag={handleDrag}
           onDragEnd={handleDrag}
-          dash={[10, 5]}
+          dash={[30 / scale, 30]}
         />
 
         <Transformer
           ref={trRef}
-          visible={trview}
+          visible={showTransformer}
           rotateEnabled={false}
           borderEnabled={false}
         />
@@ -56,7 +59,7 @@ function Surface({
   );
 }
 
-Surface.propTypes = {
+SpatialTarget.propTypes = {
   handleDrag: PropTypes.func.isRequired,
   onTransform: PropTypes.func.isRequired,
   scale: PropTypes.number.isRequired,
@@ -69,6 +72,6 @@ Surface.propTypes = {
     y: PropTypes.number,
   }).isRequired,
   tabView: PropTypes.string.isRequired,
-  trview: PropTypes.bool.isRequired,
+  showTransformer: PropTypes.bool.isRequired,
 };
-export default Surface;
+export default SpatialTarget;
