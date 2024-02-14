@@ -33,7 +33,6 @@ function AnnotationFormFooter({
    */
   const submitAnnotationForm = async (e) => {
     e.preventDefault();
-    return console.log(state);
     // TODO Possibly problem of syncing
     // TODO Improve this code
     // If we are in edit mode, we have the transformer on the stage saved in the annotation
