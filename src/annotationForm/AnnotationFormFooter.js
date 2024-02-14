@@ -33,9 +33,8 @@ function AnnotationFormFooter({
    */
   const submitAnnotationForm = async (e) => {
     e.preventDefault();
-    // TODO Possibly problem of syncing
-    // TODO Improve this code
-    // If we are in edit mode, we have the transformer on the stage saved in the annotation
+    // TODO If we are in edit mode, we have the transformer paint on the stage and saved in the
+    //  annotation image export. We should remove it from the stage before saving the annotation
     /* if (viewTool === OVERLAY_VIEW && state.activeTool === 'edit') {
       setState((prevState) => ({
         ...prevState,
@@ -93,7 +92,6 @@ function AnnotationFormFooter({
 
     // Save jpg image of the drawing in a data url
     getKonvaAsDataURL(windowId).then((dataURL) => {
-      console.log('dataURL:', dataURL);
       const thisAnnotation = { ...annotationToSaved };
       thisAnnotation.body.id = dataURL;
       // eslint-disable-next-line max-len
