@@ -106,8 +106,7 @@ function AnnotationCreation({
         annoState.manifestNetwork = annotation.manifestNetwork;
       }
     } else {
-      const video = true;
-      if (video) {
+      if (mediaVideo) {
         // Time target
         annoState.tstart = currentTime ? Math.floor(currentTime) : 0;
         // eslint-disable-next-line no-underscore-dangle

@@ -27,6 +27,10 @@ export default function AnnotationDrawing({
   });
 
   useEffect(() => {
+    // TODO add proper difference between mediaVideo and mediaImage
+    if (!props.mediaVideo) {
+      return;
+    }
     const overlay = props.mediaVideo ? props.mediaVideo.ref.current : null;
     if (overlay) {
       props.updateScale(overlay.containerWidth / overlay.canvasWidth);
