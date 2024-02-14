@@ -53,6 +53,7 @@ function ParentComponent({
                 {...{
                   activeTool,
                   handleDragEnd,
+                  handleDragStart,
                   isSelected,
                   onShapeClick: handleShapeClick,
                   onTransform,
