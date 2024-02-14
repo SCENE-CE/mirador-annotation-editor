@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 /** */
 const baseConfig = (mode) => ({
   entry: ['./demo/src/index.js'],
@@ -23,6 +24,13 @@ const baseConfig = (mode) => ({
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       },
+    ],
+  },
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        extractComments: true,
+      }),
     ],
   },
   output: {
