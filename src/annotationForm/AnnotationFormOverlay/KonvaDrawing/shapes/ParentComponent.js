@@ -12,8 +12,8 @@ import ImageShape from './Image';
 /** Loads Konva and display in function of their type */
 function ParentComponent({
   isMouseOverSave,
-  scale, width, height, onTransform, handleDragEnd,
-  shapes, onShapeClick, selectedShapeId, activeTool, handleDragStart
+  scale, onTransform, handleDragEnd,
+  shapes, onShapeClick, selectedShapeId, activeTool, handleDragStart, trview,
 }) {
   // TODO Simplify these state
   const [selectedShape, setSelectedShape] = useState(null);
@@ -39,13 +39,13 @@ function ParentComponent({
 
   return (
     <Layer
-      width={width}
-      height={height}
       scaleX={scale}
       scaleY={scale}
     >
+      {/* eslint-disable-next-line consistent-return */}
       {shapes.map((shape, i) => {
-        const isSelected = selectedShapeId === shape.id && isMouseOverSave === false;
+        // eslint-disable-next-line max-len
+        const isSelected = selectedShapeId === shape.id && isMouseOverSave === false && trview === true;
         switch (shape.type) {
           case 'rectangle':
             return (
@@ -53,6 +53,7 @@ function ParentComponent({
                 {...{
                   activeTool,
                   handleDragEnd,
+                  handleDragStart,
                   isSelected,
                   onShapeClick: handleShapeClick,
                   onTransform,
@@ -161,13 +162,22 @@ function ParentComponent({
 ParentComponent.propTypes = {
   activeTool: PropTypes.string.isRequired,
   handleDragEnd: PropTypes.func.isRequired,
-  height: PropTypes.number.isRequired,
+  handleDragStart: PropTypes.func.isRequired,
   isMouseOverSave: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
   onTransform: PropTypes.func.isRequired,
   scale: PropTypes.number.isRequired,
   selectedShapeId: PropTypes.string.isRequired,
-  shapes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  width: PropTypes.number.isRequired,
+  shapes: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    rotation: PropTypes.number,
+    scaleX: PropTypes.number,
+    scaleY: PropTypes.number,
+    type: PropTypes.string,
+    url: PropTypes.string,
+    x: PropTypes.number,
+    y: PropTypes.number,
+  })).isRequired,
+  trview: PropTypes.bool.isRequired,
 };
 export default ParentComponent;

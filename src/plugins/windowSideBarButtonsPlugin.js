@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
+// TODO: Change this classComponent into functional component
 /**
  * A wrapper plugin that sets hasAnyAnnotations to true so that the annotation
  * companion window button is present

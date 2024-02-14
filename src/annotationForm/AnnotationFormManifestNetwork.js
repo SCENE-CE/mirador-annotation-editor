@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Grid, Paper, TextField, Typography, Button, Link,
+  Grid, Paper, TextField, Typography, Link,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { isValidUrl } from '../utils';
