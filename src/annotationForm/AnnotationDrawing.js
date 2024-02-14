@@ -180,7 +180,6 @@ export default function AnnotationDrawing({
     if (props.activeTool !== 'edit' && props.activeTool !== 'cursor' && props.activeTool !== 'delete') {
       return;
     }
-    console.log('shape clicked', shp);
     const shape = drawingState.shapes.find((s) => s.id === shp.id);
     if (props.activeTool === 'delete') {
       const newShapes = drawingState.shapes.filter((s) => s.id !== shape.id);

@@ -55,7 +55,6 @@ function AnnotationCreation({
     let tend;
     const annoState = {};
     if (annotation) {
-      console.log('annotation', annotation);
       // annotation body
       if (Array.isArray(annotation.body)) {
         annoState.tags = [];

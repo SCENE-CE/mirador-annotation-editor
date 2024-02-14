@@ -48,7 +48,6 @@ class CanvasAnnotationsWrapper extends Component {
       listContainerComponent: CanvasListItem,
     };
 
-    console.log('targetProps :', targetProps);
     return (
       <AnnotationActionsContext.Provider
         value={{
