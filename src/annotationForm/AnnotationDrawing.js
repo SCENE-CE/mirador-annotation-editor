@@ -47,15 +47,15 @@ export default function AnnotationDrawing({
 
   useEffect(() => {
     // TODO clean
-    if (!props.imageEvent) return;
-    if (!props.imageEvent.id) return;
+    if (!imageEvent) return;
+    if (!imageEvent.id) return;
     const shape = {
       id: uuidv4(),
       rotation: 0,
       scaleX: 1,
       scaleY: 1,
       type: 'image',
-      url: props.imageEvent.id,
+      url: imageEvent.id,
       x: 0,
       y: 0,
     };
@@ -65,7 +65,7 @@ export default function AnnotationDrawing({
       currentShape: shape,
       shapes: [...drawingState.shapes, shape],
     });
-  }, [drawingState, imageEvent, props.imageEvent, setDrawingState]);
+  }, [imageEvent]);
 
   const { fillColor, strokeColor, strokeWidth } = props;
 
