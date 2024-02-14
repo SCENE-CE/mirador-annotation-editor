@@ -12,7 +12,8 @@ export {
 };
 
 export default [
-  {component:miradorAnnotationPlugin,
+  {
+    component: miradorAnnotationPlugin,
     mode: 'wrap',
     target: 'AnnotationSettings',
   },

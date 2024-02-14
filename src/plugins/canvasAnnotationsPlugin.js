@@ -7,7 +7,7 @@ import { getCompanionWindowsForContent } from 'mirador/dist/es/src/state/selecto
 import CanvasListItem from '../CanvasListItem';
 import AnnotationActionsContext from '../AnnotationActionsContext';
 import SingleCanvasDialog from '../SingleCanvasDialog';
-
+// TODO: Change this classComponent into functional component
 /** */
 class CanvasAnnotationsWrapper extends Component {
   /** */
@@ -30,14 +30,25 @@ class CanvasAnnotationsWrapper extends Component {
   /** */
   render() {
     const {
-      addCompanionWindow, annotationsOnCanvases, canvases, config, receiveAnnotation,
-      switchToSingleCanvasView, TargetComponent, targetProps, windowViewType, containerRef, annotationEditCompanionWindowIsOpened,
+      addCompanionWindow,
+      annotationsOnCanvases,
+      canvases,
+      config,
+      receiveAnnotation,
+      switchToSingleCanvasView,
+      TargetComponent,
+      targetProps,
+      windowViewType,
+      containerRef,
+      annotationEditCompanionWindowIsOpened,
     } = this.props;
     const { singleCanvasDialogOpen } = this.state;
     const props = {
       ...targetProps,
       listContainerComponent: CanvasListItem,
     };
+
+    console.log('targetProps :', targetProps);
     return (
       <AnnotationActionsContext.Provider
         value={{
@@ -70,15 +81,33 @@ class CanvasAnnotationsWrapper extends Component {
 }
 
 CanvasAnnotationsWrapper.propTypes = {
-  TargetComponent: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.node,
-  ]).isRequired,
   addCompanionWindow: PropTypes.func.isRequired,
-  annotationEditCompanionWindowIsOpened: PropTypes.bool.isRequired, // eslint-disable-line react/forbid-prop-types
-  annotationsOnCanvases: PropTypes.object,
+  annotationEditCompanionWindowIsOpened: PropTypes.bool.isRequired,
+  annotationsOnCanvases: PropTypes.shape({
+    id: PropTypes.string,
+    isFetching: PropTypes.bool,
+    json: PropTypes.shape({
+      id: PropTypes.string,
+      items: PropTypes.arrayOf(
+        PropTypes.shape({
+          body: PropTypes.shape({
+            format: PropTypes.string,
+            id: PropTypes.string,
+            value: PropTypes.string,
+          }),
+          drawingState: PropTypes.string,
+          id: PropTypes.string,
+          manifestNetwork: PropTypes.string,
+          motivation: PropTypes.string,
+          target: PropTypes.string,
+          type: PropTypes.string,
+        }),
+      ),
+      type: PropTypes.string,
+    }),
+  }),
   canvases: PropTypes.arrayOf(
-      PropTypes.shape({id: PropTypes.string, index: PropTypes.number}),
+    PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
   ),
   config: PropTypes.shape({
     annotation: PropTypes.shape({
@@ -87,11 +116,16 @@ CanvasAnnotationsWrapper.propTypes = {
   }).isRequired,
   containerRef: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.shape({current: PropTypes.instanceOf(Element)}),
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
   ]),
   receiveAnnotation: PropTypes.func.isRequired,
   switchToSingleCanvasView: PropTypes.func.isRequired,
-  targetProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  TargetComponent: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.node,
+  ]).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  targetProps: PropTypes.object.isRequired,
   windowViewType: PropTypes.string.isRequired,
 };
 

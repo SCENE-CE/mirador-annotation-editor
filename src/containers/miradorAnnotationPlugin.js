@@ -6,6 +6,9 @@ import { getCompanionWindowsForContent } from 'mirador/dist/es/src/state/selecto
 import MiradorAnnotation from '../plugins/miradorAnnotationPlugin';
 
 // TODO use selector in main componenent
+/**
+* this function map the state to the annotationPlugin's props
+ * */
 function mapStateToProps(state, { targetProps: { windowId } }) {
   // Annotation edit companion window ou annotation creation companion window is the same thing
   const annotationCreationCompanionWindows = getCompanionWindowsForContent(state, { content: 'annotationCreation', windowId });

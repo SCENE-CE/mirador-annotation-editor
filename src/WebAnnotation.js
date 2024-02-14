@@ -23,14 +23,12 @@ export default class WebAnnotation {
     //   type: 'Annotation',
     // };
 
-    const result = this;
-
-    return result;
+    return this;
   }
 
   /** */
   createBody() {
-    let bodies = [];
+    const bodies = [];
     if (this.body && this.body.value !== '') {
       const textBody = {
         type: 'TextualBody',
@@ -42,16 +40,16 @@ export default class WebAnnotation {
     if (this.image) {
       // TODO dumb image { this.image.id}
       const imgBody = {
+        format: 'image/svg+xml',
         id: 'https://tetras-libre.fr/themes/tetras/img/logo.svg',
         type: 'Image',
-        format: 'image/svg+xml',
       };
-      //bodies.push(imgBody);
+      // bodies.push(imgBody);
       const testImageBody = {
-            "id": "https://files.tetras-libre.fr/dev/Hakanai/media/10_HKN-Garges_A2B4243.JPG",
-            "type": "Image",
-            "format": "image/jpg"
-          };
+        format: 'image/jpg',
+        id: 'https://files.tetras-libre.fr/dev/Hakanai/media/10_HKN-Garges_A2B4243.JPG',
+        type: 'Image',
+      };
       bodies.push(testImageBody);
     }
 

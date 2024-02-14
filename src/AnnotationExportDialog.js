@@ -22,6 +22,7 @@ const styles = (theme) => ({
     },
   },
 });
+// TODO: Change this classComponent into functional component
 
 /** */
 class AnnotationExportDialog extends Component {

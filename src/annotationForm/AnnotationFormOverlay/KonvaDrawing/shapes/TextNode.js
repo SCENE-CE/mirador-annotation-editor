@@ -27,7 +27,7 @@ function TextNode({
       trRef.current.nodes([shapeRef.current]);
       trRef.current.getLayer().batchDraw();
     }
-  }, []); // Empty array to mimic componentDidMount behavior
+  }, []);
 
   return (
     <>

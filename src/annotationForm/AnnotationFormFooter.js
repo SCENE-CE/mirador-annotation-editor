@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { v4 as uuid } from 'uuid';
 import {
   saveAnnotationInEachCanvas,
@@ -33,7 +33,7 @@ function AnnotationFormFooter({
    */
   const submitAnnotationForm = async (e) => {
     e.preventDefault();
-    return console.log(canvases)
+    return console.log(state);
     // TODO Possibly problem of syncing
     // TODO Improve this code
     // If we are in edit mode, we have the transformer on the stage saved in the annotation
@@ -59,7 +59,7 @@ function AnnotationFormFooter({
       xywh, // TODO retrouver calcul de xywh
     };
     let annotationText;
-    if (textBody.length == 0 || removeHTMLTags(textBody).length == 0) {
+    if (textBody.length === 0 || removeHTMLTags(textBody).length === 0) {
       if (target.t) {
         annotationText = `${new Date().toLocaleString()} - ${secondsToHMS(tstart)} -> ${secondsToHMS(tend)}`;
       } else {
@@ -70,7 +70,7 @@ function AnnotationFormFooter({
     }
 
     let id = annotation?.id ? annotation.id : `https://${uuid()}`;
-    id = id.split('#')[0];
+    [id] = id.split('#');
     if (manifestNetwork) {
       id = `${id}#${manifestNetwork}`;
     }
@@ -121,6 +121,17 @@ function AnnotationFormFooter({
   );
 }
 
+const shapeObjectPropTypes = PropTypes.shape({
+  id: PropTypes.string,
+  rotation: PropTypes.number,
+  scaleX: PropTypes.number,
+  scaleY: PropTypes.number,
+  type: PropTypes.string,
+  url: PropTypes.string,
+  x: PropTypes.number,
+  y: PropTypes.number,
+});
+
 AnnotationFormFooter.propTypes = {
   annotation: PropTypes.shape(
     {
@@ -140,11 +151,13 @@ AnnotationFormFooter.propTypes = {
       type: PropTypes.string,
     },
   ).isRequired,
-  // TODO: passer dans le composant uniquement ce dont on a besoin dans canvases et non tout l'objet
+  // eslint-disable-next-line react/forbid-prop-types
   canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
   config: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  drawingState: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  drawingState: PropTypes.shape(
+    { shapeObjectPropTypes },
+  ).isRequired,
   receiveAnnotation: PropTypes.func.isRequired,
   resetStateAfterSave: PropTypes.func.isRequired,
   state: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types

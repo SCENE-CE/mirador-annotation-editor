@@ -71,7 +71,6 @@ function AnnotationFormTarget({
   setSeekTo,
   setCurrentTime,
 }) {
-
   /** set annotation start time to current time */
   const setTstartNow = () => {
     setState((prevState) => ({
@@ -113,28 +112,30 @@ function AnnotationFormTarget({
   };
 
   /** Change from Tstart HMS Input */
-  const updateTstart = (value) => {
-    if (value > tend) {
+  const updateTstart = (valueTstart) => {
+    if (valueTstart > tend) {
       return;
     }
     setState((prevState) => ({
       ...prevState,
-      tstart: value,
-      ...setSeekTo(value),
-      ...setCurrentTime(value),
+      tstart: valueTstart,
+      ...setSeekTo(valueTstart),
+      ...setCurrentTime(valueTstart),
 
     }));
   };
 
   /** update annotation end time */
-  const updateTend = (value) => {
+  const updateTend = (valueTend) => {
     setState((prevState) => ({
       ...prevState,
-      tend: value,
+      tend: valueTend,
     }));
   };
 
-  // eslint-disable-next-line require-jsdoc
+  /**
+   * Set the video player to the start of the annotation
+    */
   const seekToTstart = () => {
     setState((prevState) => ({
       ...prevState,
@@ -213,16 +214,16 @@ function AnnotationFormTarget({
 }
 
 AnnotationFormTarget.propTypes = {
+  currentTime: PropTypes.number.isRequired,
   mediaIsVideo: PropTypes.bool.isRequired,
-  tend: PropTypes.any.isRequired,
-  tstart: PropTypes.number.isRequired,
-  value: PropTypes.arrayOf(PropTypes.number).isRequired,
-  videoDuration: PropTypes.any.isRequired,
-  windowid: PropTypes.any.isRequired,
-  currentTime: PropTypes.any.isRequired,
+  setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   setState: PropTypes.func.isRequired,
-  setCurrentTime: PropTypes.func.isRequired,
+  tend: PropTypes.number.isRequired,
+  tstart: PropTypes.number.isRequired,
+  value: PropTypes.arrayOf(PropTypes.number).isRequired,
+  videoDuration: PropTypes.number.isRequired,
+  windowid: PropTypes.string.isRequired,
 };
 
 export default AnnotationFormTarget;

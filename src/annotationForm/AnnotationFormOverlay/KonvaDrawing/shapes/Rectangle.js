@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react';
-import PropTypes, {number} from 'prop-types';
+import PropTypes from 'prop-types';
 import { Rect, Transformer } from 'react-konva';
-import ArrowNode from './ArrowNode';
 /**
  * Represents a rectangle node component.
  * @returns {JSX.Element} The TextNode component.
@@ -64,6 +63,7 @@ function Rectangle({
 Rectangle.propTypes = {
   activeTool: PropTypes.string.isRequired,
   handleDragEnd: PropTypes.func.isRequired,
+  handleDragStart: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
   onTransform: PropTypes.func.isRequired,

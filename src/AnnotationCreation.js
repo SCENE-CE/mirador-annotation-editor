@@ -179,7 +179,6 @@ function AnnotationCreation({
         width: window.innerWidth,
       });
     };
-
     window.addEventListener('resize', handleResize);
 
     return () => {

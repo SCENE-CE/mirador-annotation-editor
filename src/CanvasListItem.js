@@ -12,11 +12,20 @@ import AnnotationActionsContext from './AnnotationActionsContext';
 const CanvasListItem = forwardRef((props, ref) => {
   const [isHovering, setIsHovering] = useState(false);
   const context = useContext(AnnotationActionsContext);
-
+  /**
+   * Function to handle mouse hover event.
+   * @function handleMouseHover
+   * @returns {void}
+   */
   const handleMouseHover = () => {
     setIsHovering(!isHovering);
   };
-
+  /**
+   * Handle deletion of annotation.
+   * @function
+   * @name handleDelete
+   * @returns {void}
+   */
   const handleDelete = () => {
     const { canvases, receiveAnnotation, storageAdapter } = context;
     const { annotationid } = props;
@@ -27,7 +36,11 @@ const CanvasListItem = forwardRef((props, ref) => {
       });
     });
   };
-
+  /**
+   * Handles editing of an annotation.
+   * @function handleEdit
+   * @returns {void}
+   */
   const handleEdit = () => {
     const {
       addCompanionWindow, canvases, annotationsOnCanvases,
@@ -49,7 +62,10 @@ const CanvasListItem = forwardRef((props, ref) => {
       position: 'right',
     });
   };
-
+  /**
+   * Checks if a given annotation ID is editable.
+   * @returns {boolean} Returns true if the annotation ID is editable, false otherwise.
+   */
   const editable = () => {
     const { annotationsOnCanvases, canvases } = context;
     const { annotationid } = props;
@@ -105,6 +121,7 @@ const CanvasListItem = forwardRef((props, ref) => {
           </ToggleButtonGroup>
         </div>
       )}
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <li {...props}>
         {props.children}
       </li>
