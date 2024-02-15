@@ -2,12 +2,15 @@ import {
   Accordion, AccordionDetails, AccordionSummary, Paper,
 } from '@mui/material';
 import React from 'react';
-import Typography from '@mui/material/Typography';
-import PropTypes from 'prop-types';
+import PropTypes, { arrayOf } from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 
+/**
+ * Renders an accordion of shapes.
+ * @returns {JSX.Element} - AccordionShapes component.
+ */
 function AccordionShapes({ shapes, deleteShape, currentShapeId }) {
   return (
     <Paper>
@@ -47,10 +50,27 @@ function AccordionShapes({ shapes, deleteShape, currentShapeId }) {
   );
 }
 
+const shape = PropTypes.shape(
+  {
+    closedMode: PropTypes.bool,
+    fill: PropTypes.string,
+    id: PropTypes.string,
+    pointerLength: PropTypes.number,
+    pointerWidth: PropTypes.number,
+    points: arrayOf(PropTypes.number),
+    stroke: PropTypes.string,
+    strokeWidth: PropTypes.number,
+    text: PropTypes.string,
+    type: PropTypes.string,
+    url: PropTypes.string,
+    x: null,
+    y: null,
+  },
+);
 AccordionShapes.propTypes = {
-  shapes: PropTypes.array.isRequired,
-  deleteShape: PropTypes.func.isRequired,
   currentShapeId: PropTypes.string.isRequired,
+  deleteShape: PropTypes.func.isRequired,
+  shapes: PropTypes.arrayOf(shape).isRequired,
 };
 
 export default AccordionShapes;

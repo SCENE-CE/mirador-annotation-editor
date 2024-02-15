@@ -158,7 +158,6 @@ function AnnotationFormTarget({
 }
 
 AnnotationFormTarget.propTypes = {
-  currentTime: PropTypes.number.isRequired,
   mediaIsVideo: PropTypes.bool.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,

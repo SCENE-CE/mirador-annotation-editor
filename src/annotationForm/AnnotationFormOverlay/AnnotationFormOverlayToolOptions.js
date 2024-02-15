@@ -141,6 +141,10 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
     });
   };
 
+  /**
+   * Adds an image with a generated UUID.
+   * @returns {void}
+   */
   const addImage = () => {
     const data = {
       id: toolState?.image?.id,
@@ -302,11 +306,10 @@ AnnotationFormOverlayToolOptions.propTypes = {
     activeTool: PropTypes.string.isRequired,
     closedMode: PropTypes.bool.isRequired,
     fillColor: PropTypes.string.isRequired,
-    image: PropTypes.shape({
-      id: PropTypes.string,
-    }).isRequired,
+    image: PropTypes.shape({ id: PropTypes.string }),
     strokeColor: PropTypes.string.isRequired,
     strokeWidth: PropTypes.number.isRequired,
+    text: PropTypes.string,
     textBody: PropTypes.string,
     updateColor: PropTypes.func.isRequired,
   }).isRequired,

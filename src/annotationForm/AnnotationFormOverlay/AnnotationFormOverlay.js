@@ -8,7 +8,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect } from 'react';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import PropTypes from 'prop-types';
+import PropTypes, { arrayOf } from 'prop-types';
 import { styled } from '@mui/material/styles';
 import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../../icons/Cursor';
@@ -100,11 +100,27 @@ function AnnotationFormOverlay({
     </div>
   );
 }
-
+const shape = PropTypes.shape(
+  {
+    closedMode: PropTypes.bool,
+    fill: PropTypes.string,
+    id: PropTypes.string,
+    pointerLength: PropTypes.number,
+    pointerWidth: PropTypes.number,
+    points: arrayOf(PropTypes.number),
+    stroke: PropTypes.string,
+    strokeWidth: PropTypes.number,
+    text: PropTypes.string,
+    type: PropTypes.string,
+    url: PropTypes.string,
+    x: null,
+    y: null,
+  },
+);
 AnnotationFormOverlay.propTypes = {
-  currentShape: PropTypes.object.isRequired,
+  currentShape: shape.isRequired,
   deleteShape: PropTypes.func.isRequired,
-  shapes: PropTypes.array.isRequired,
+  shapes: PropTypes.arrayOf(shape).isRequired,
   toolState: PropTypes.shape({
     activeTool: PropTypes.string.isRequired,
     closedMode: PropTypes.bool.isRequired,
