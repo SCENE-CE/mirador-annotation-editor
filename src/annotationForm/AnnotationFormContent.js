@@ -14,7 +14,7 @@ const MainContainer = styled(Typography)(({ theme }) => ({
 /** Form part for edit annotation content and body */
 function AnnotationFormContent({ textBody, updateTextBody, textEditorStateBustingKey }) {
   return (
-    <MainContainer style={{ padding: '5px' }}>
+    <MainContainer>
       <MainTitleTypography variant="overline" component="h1">
         Infos
       </MainTitleTypography>

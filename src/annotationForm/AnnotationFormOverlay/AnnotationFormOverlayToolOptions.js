@@ -31,6 +31,10 @@ const StyledDivButtonImage = styled('div')(({ theme }) => ({
   marginTop: '5px',
 }));
 
+const StyledTypography = styled(Typography)(({ theme }) => ({
+  fontSize: '0.8em',
+}));
+
 /** Utils functions to convert string to object */
 const rgbaToObj = (rgba = 'rgba(255,255,255,0.5)') => {
   const rgbaArray = rgba.split(',');
@@ -285,7 +289,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
                 fullWidth
               />
             ) : (
-              <p>Click on canva to add text</p>
+              <StyledTypography>Click on canva to add text</StyledTypography>
             )}
           </>
           )

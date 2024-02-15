@@ -28,6 +28,10 @@ const StyledUl = styled('ul')(({ theme }) => ({
   paddingLeft: '0',
 }));
 
+const StyledTypography = styled(Typography)(({ theme }) => ({
+  fontSize: '0.8em',
+}));
+
 // TODO WIP code duplicated
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
@@ -67,8 +71,8 @@ function AnnotationFormOverlayTool({
           <>
             {
             currentShape && (
-            <Paper>
-              <Typography variant="overline">
+            <div>
+              <Typography variant="overline" component="h2">
                 Selected object
               </Typography>
               {/* <ul> // useful for debug */}
@@ -100,13 +104,13 @@ function AnnotationFormOverlayTool({
                 updateToolState={customUpdateToolState}
 
               />
-            </Paper>
+            </div>
             )
             }
             {
               shapes.length > 0 && (
                 <>
-                  <Typography variant="overline">
+                  <Typography variant="overline" component="h2">
                     Object lists
                   </Typography>
                   <AccordionShapes
@@ -124,7 +128,7 @@ function AnnotationFormOverlayTool({
       {
         isShapesTool(toolState.activeTool) && (
         <>
-          <Typography variant="overline">
+          <Typography variant="overline" component="h2">
             Drawing tool
           </Typography>
           <StyledToggleButtonGroup
@@ -159,9 +163,9 @@ function AnnotationFormOverlayTool({
           <Typography variant="overline">
             Delete
           </Typography>
-          <p>
+          <StyledTypography>
             Click on object to remove it.
-          </p>
+          </StyledTypography>
           <Button
             onClick={() => deleteShape()}
           >
