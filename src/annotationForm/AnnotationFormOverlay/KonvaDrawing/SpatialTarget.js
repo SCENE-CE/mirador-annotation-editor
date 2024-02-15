@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Layer, Rect, Transformer } from 'react-konva';
 
@@ -17,24 +17,22 @@ function SpatialTarget({
   const shapeRef = useRef();
   const trRef = useRef();
 
-  const [originalSpatialTarget, setOriginalSpatialTarget ] = useState(true)
-  const shapeWidth = shape.width
-  const shapeHeight = shape.height
-  useEffect(()=>{
-     console.log(shapeWidth,shapeHeight);
-  },[]
-  );
+  const [originalSpatialTarget, setOriginalSpatialTarget] = useState(true);
 
   if (trRef.current) {
     trRef.current.nodes([shapeRef.current]);
     trRef.current.getLayer()
       .batchDraw();
   }
-
+  /**
+   * Function to handle the first transformation on a spatial target.
+   * @param {Event} event - The event triggering the transformation.
+   * @returns {void}
+   */
   const onSpatialTargetFirstTransfromation = (event) => {
     onTransform(event);
-    setOriginalSpatialTarget(false)
-  }
+    setOriginalSpatialTarget(false);
+  };
 
   return (
     <Layer
@@ -44,7 +42,7 @@ function SpatialTarget({
       <>
         <Rect
           ref={shapeRef}
-          x={originalSpatialTarget ? shape.x + 15 : shape.x }
+          x={originalSpatialTarget ? shape.x + 15 : shape.x}
           y={originalSpatialTarget ? shape.y + 15 : shape.y}
           scaleX={shape.scaleX}
           scaleY={shape.scaleY}
