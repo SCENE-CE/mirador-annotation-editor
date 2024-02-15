@@ -2,7 +2,7 @@
 export default class WebAnnotation {
   /** */
   constructor({
-    canvasId, id, fragsel, image, body, tags, svg, manifestId, drawingStateSerialized
+    canvasId, id, fragsel, image, body, tags, svg, manifestId, drawingStateSerialized,
   }) {
     this.id = id;
     this.canvasId = canvasId;
@@ -10,7 +10,7 @@ export default class WebAnnotation {
     this.body = body;
     this.tags = tags;
     this.svg = svg;
-    //this.image = image;
+    // this.image = image;
     this.image = image;
     this.manifestId = manifestId;
     this.drawingState = drawingStateSerialized;
@@ -20,13 +20,13 @@ export default class WebAnnotation {
 
   /** */
   toJson() {
-    const result =  {
+    const result = {
       body: this.createBody(),
+      drawingState: this.drawingState,
       id: this.id,
       motivation: 'commenting',
       target: this.target(),
       type: 'Annotation',
-      drawingState: this.drawingState,
     };
     console.log('WebAnnotation toJson', result);
     return result;
@@ -34,7 +34,7 @@ export default class WebAnnotation {
 
   /** */
   createBody() {
-    let bodies = [];
+    const bodies = [];
     if (this.body && this.body.value !== '') {
       const textBody = {
         type: 'TextualBody',
@@ -46,16 +46,16 @@ export default class WebAnnotation {
     if (this.image) {
       // TODO dumb image { this.image.id}
       const imgBody = {
+        format: 'image/svg+xml',
         id: 'https://tetras-libre.fr/themes/tetras/img/logo.svg',
         type: 'Image',
-        format: 'image/svg+xml',
       };
-      //bodies.push(imgBody);
+      // bodies.push(imgBody);
       const testImageBody = {
-            "id": "https://files.tetras-libre.fr/dev/Hakanai/media/10_HKN-Garges_A2B4243.JPG",
-            "type": "Image",
-            "format": "image/jpg"
-          };
+        format: 'image/jpg',
+        id: 'https://files.tetras-libre.fr/dev/Hakanai/media/10_HKN-Garges_A2B4243.JPG',
+        type: 'Image',
+      };
       bodies.push(testImageBody);
     }
 

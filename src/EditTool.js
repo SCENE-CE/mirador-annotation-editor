@@ -60,8 +60,8 @@ class EditTool extends Component {
         const scale = e.point.subtract(bounds.center).length / path.data.scaleBase.length;
         const tlVec = bounds.topLeft.subtract(bounds.center).multiply(scale);
         const brVec = bounds.bottomRight.subtract(bounds.center).multiply(scale);
-        const newBounds = new Rectangle(tlVec.add(bounds.center), brVec.add(bounds.center));
-        path.bounds = newBounds; // eslint-disable-line no-param-reassign
+        // eslint-disable-next-line no-param-reassign
+        path.bounds = new Rectangle(tlVec.add(bounds.center), brVec.add(bounds.center));
       }
     });
   }

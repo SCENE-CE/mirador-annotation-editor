@@ -1,138 +1,119 @@
-/* eslint-disable require-jsdoc */
 import React, {
   useEffect, useState, useLayoutEffect,
 } from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes, { object } from 'prop-types';
+import PropTypes from 'prop-types';
 import { Stage } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
-/** All the stuff to draw on the canvas */
-function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...props }) {
+import SpatialTarget from './AnnotationFormOverlay/KonvaDrawing/SpatialTarget';
 
+/** All the stuff to draw on the canvas */
+export default function AnnotationDrawing({
+  drawingState, originalWidth, orignalHeight, setDrawingState, height, width, imageEvent, ...props
+}) {
+  const [isDrawing, setIsDrawing] = useState(false);
+  // TODO target from the annotation
+  const [surfacedata, setSurfaceData] = useState({
+    height: height / props.scale,
+    scaleX: 1,
+    scaleY: 1,
+    width: width / props.scale,
+    x: 1,
+    y: 1,
+  });
 
   useEffect(() => {
+    // TODO add proper difference between mediaVideo and mediaImage
+    if (!props.mediaVideo) {
+      return;
+    }
     const overlay = props.mediaVideo ? props.mediaVideo.ref.current : null;
     if (overlay) {
       props.updateScale(overlay.containerWidth / overlay.canvasWidth);
+    }
+    const newSurfaceData = { ...surfacedata };
+    newSurfaceData.width = overlay.width / props.scale;
+    newSurfaceData.height = overlay.height / props.scale;
+    // compare newSurfaceData and surfacedata, if different, update surfacedata
+    // eslint-disable-next-line max-len
+    if (newSurfaceData.width !== surfacedata.width || newSurfaceData.height !== surfacedata.height) {
+      setSurfaceData(newSurfaceData);
     }
   }, [{ height, width }]);
 
   useEffect(() => {
     // TODO clean
-    if (!props.imageEvent) return;
-    if (!props.imageEvent.id) return;
-    const shape = {
-      id: uuidv4(),
-      rotation: 0,
-      scaleX: 1,
-      scaleY: 1,
-      type: 'image',
-      url: props.imageEvent.id,
-      x: 0,
-      y: 0,
-    };
+    if (imageEvent && imageEvent.id) {
+      const imageShape = {
+        id: uuidv4(),
+        rotation: 0,
+        scaleX: 1,
+        scaleY: 1,
+        type: 'image',
+        url: imageEvent.id,
+        x: 30,
+        y: 30,
+      };
 
-    setDrawingState({
-      ...drawingState,
-      currentShape: shape,
-      shapes: [...drawingState.shapes, shape],
-    });
-  }, [props.imageEvent]);
+      setDrawingState({
+        ...drawingState,
+        currentShape: imageShape,
+        shapes: [...drawingState.shapes, imageShape],
+      });
+    }
+  }, [imageEvent]);
 
   const { fillColor, strokeColor, strokeWidth } = props;
+
+  /** */
+  const updateCurrentShapeInShapes = (currentShape) => {
+    const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
+
+    if (index !== -1) {
+      // eslint-disable-next-line max-len
+      const updatedShapes = drawingState.shapes.map((shape, i) => (i === index ? currentShape : shape));
+      setDrawingState({
+        ...drawingState,
+        currentShape,
+        shapes: updatedShapes,
+      });
+    } else {
+      setDrawingState({
+        ...drawingState,
+        currentShape,
+        shapes: [...drawingState.shapes, currentShape],
+      });
+    }
+  };
+
+  /** */
+  useEffect(() => {
+    if (!isDrawing) {
+      const newCurrentShape = drawingState[drawingState.shapes.length - 1];
+      // get latest shape in the list
+      if (newCurrentShape) {
+        updateCurrentShapeInShapes(newCurrentShape);
+      }
+    }
+  }, [drawingState]);
 
   useEffect(() => {
     // Perform an action when fillColor, strokeColor, or strokeWidth change
     // update current shape
     if (drawingState.currentShape) {
+      // eslint-disable-next-line no-param-reassign
       drawingState.currentShape.fill = fillColor;
+      // eslint-disable-next-line no-param-reassign
       drawingState.currentShape.stroke = strokeColor;
+      // eslint-disable-next-line no-param-reassign
       drawingState.currentShape.strokeWidth = strokeWidth;
       updateCurrentShapeInShapes(drawingState.currentShape);
     }
   }, [fillColor, strokeColor, strokeWidth]);
-
-  // TODO Can be removed ? --> move currentSHape and shapes in the same state
-  useLayoutEffect(() => {
-    if (drawingState.shapes.find((s) => s.id === drawingState.currentShape?.id)) {
-      window.addEventListener('keydown', handleKeyPress);
-
-      // Set here all the properties of the current shape for the tool options
-      props.setColorToolFromCurrentShape(
-        {
-          fillColor: drawingState.currentShape.fill,
-          strokeColor: drawingState.currentShape.stroke,
-          strokeWidth: drawingState.currentShape.strokeWidth,
-          text: drawingState.currentShape.text,
-        },
-      );
-
-      return () => {
-        window.removeEventListener('keydown', handleKeyPress);
-      };
-    }
-  }, [drawingState.currentShape]);
-
-  /** */
-  const onShapeClick = async (shp) => {
-    const shape = drawingState.shapes.find((s) => s.id === shp.id);
-    if (props.activeTool === 'delete') {
-      const newShapes = drawingState.shapes.filter((s) => s.id !== shape.id);
-      setDrawingState({
-        ...drawingState,
-        shapes: newShapes,
-      });
-      return;
-    }
-
-    setDrawingState({
-      ...drawingState,
-      currentShape: shape,
-    });
-
-    // props.setShapeProperties(shape); // TODO Check that code ?
-    props.setColorToolFromCurrentShape(
-      {
-        fillColor: shape.fill,
-        strokeColor: shape.stroke,
-        strokeWidth: shape.strokeWidth,
-      },
-    );
-  };
-
-  const onTransform = (evt) => {
-    const modifiedshape = evt.target.attrs;
-
-    const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
-
-    Object.assign(shape, modifiedshape);
-    drawingState.currentShape = shape;
-    updateCurrentShapeInShapes(drawingState.currentShape);
-  };
-
-  const handleDragEnd = (evt) => {
-    const modifiedshape = evt.currentTarget.attrs;
-    const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
-    shape.x = modifiedshape.x;
-    shape.y = modifiedshape.y;
-
-    updateCurrentShapeInShapes(shape);
-  };
-
-  const handleDragStart = (evt) => {
-    const modifiedshape = evt.currentTarget.attrs;
-
-    setDrawingState({
-      ...drawingState,
-      currentShape: drawingState.shapes.find((s) => s.id === modifiedshape.id),
-    });
-  };
 
   /** */
   const handleKeyPress = (e) => {
@@ -144,6 +125,7 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
     }
 
     if (e.key === 'Delete') {
+      // eslint-disable-next-line max-len
       const shapesWithoutTheDeleted = drawingState.shapes.filter((shape) => shape.id !== drawingState.currentShape.id);
       setDrawingState({
         ...drawingState,
@@ -169,29 +151,131 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
 
       setDrawingState({
         ...drawingState,
-        shapes: drawingState.shapes.map((shape) => (shape.id === drawingState.currentShape.id ? newCurrentShape : shape)),
         currentShape: newCurrentShape,
+        // eslint-disable-next-line max-len
+        shapes: drawingState.shapes.map((shape) => (shape.id === drawingState.currentShape.id ? newCurrentShape : shape)),
       });
     }
   };
+  // TODO Can be removed ? --> move currentSHape and shapes in the same state
+  // eslint-disable-next-line consistent-return
+  useLayoutEffect(() => {
+    if (drawingState.shapes.find((s) => s.id === drawingState.currentShape?.id)) {
+      window.addEventListener('keydown', handleKeyPress);
+
+      // Set here all the properties of the current shape for the tool options
+      props.setColorToolFromCurrentShape(
+        {
+          fillColor: drawingState.currentShape.fill,
+          strokeColor: drawingState.currentShape.stroke,
+          strokeWidth: drawingState.currentShape.strokeWidth,
+          text: drawingState.currentShape.text,
+        },
+      );
+
+      return () => {
+        window.removeEventListener('keydown', handleKeyPress);
+      };
+    }
+  }, [drawingState.currentShape]);
 
   /** */
-  const updateCurrentShapeInShapes = (currentShape) => {
-    const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
-
-    if (index !== -1) {
-      drawingState.shapes[index] = currentShape;
-      setDrawingState({
-        ...drawingState,
-        currentShape,
-      });
-    } else {
-      setDrawingState({
-        ...drawingState,
-        shapes: [...drawingState.shapes, currentShape],
-        currentShape,
-      });
+  const onShapeClick = async (shp) => {
+    // return if we are not in edit or cursor mode
+    if (props.activeTool !== 'edit' && props.activeTool !== 'cursor' && props.activeTool !== 'delete') {
+      return;
     }
+    const shape = drawingState.shapes.find((s) => s.id === shp.id);
+    if (props.activeTool === 'delete') {
+      const newShapes = drawingState.shapes.filter((s) => s.id !== shape.id);
+      setDrawingState({
+        ...drawingState,
+        shapes: newShapes,
+      });
+      return;
+    }
+
+    setDrawingState({
+      ...drawingState,
+      currentShape: shape,
+    });
+
+    // props.setShapeProperties(shape); // TODO Check that code ?
+    props.setColorToolFromCurrentShape(
+      {
+        fillColor: shape.fill,
+        strokeColor: shape.stroke,
+        strokeWidth: shape.strokeWidth,
+      },
+    );
+  };
+
+  /**
+   * Handles the transformation event on a shape. It updates the shape's properties
+   * with the modified attributes from the event target, finds the corresponding shape
+   * in the global state by ID, and updates the current shape in the global shapes array.
+   * Finally, it invokes the update function to reflect these changes in the global state.
+   *
+   * @param {Object} evt - The event object containing the target shape's modified attributes.
+   */
+  const onTransform = (evt) => {
+    const modifiedshape = evt.target.attrs;
+
+    const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
+
+    Object.assign(shape, modifiedshape);
+    updateCurrentShapeInShapes(shape);
+  };
+
+  /**
+   * Handles the drag end event for a shape.
+   * @param {Event} evt - The drag end event object.
+   */
+  const handleDragEnd = (evt) => {
+    const modifiedshape = evt.currentTarget.attrs;
+    const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
+    shape.x = modifiedshape.x;
+    shape.y = modifiedshape.y;
+
+    updateCurrentShapeInShapes(shape);
+  };
+
+  /**
+   * Handles the drag start event.
+   * @param {Event} evt - The drag start event object.
+   * @returns {void}
+   */
+  const handleDragStart = (evt) => {
+    const modifiedshape = evt.currentTarget.attrs;
+
+    setDrawingState({
+      ...drawingState,
+      currentShape: drawingState.shapes.find((s) => s.id === modifiedshape.id),
+    });
+  };
+
+  /**
+   * Handles the transformation event on a surface element.
+   * @param {Event} evt - The transformation event object.
+   */
+  const onSurfaceTransform = (evt) => {
+    const modifiedshape = evt.target.attrs;
+    const shape = surfacedata;
+    Object.assign(shape, modifiedshape);
+    setSurfaceData({ ...shape });
+  };
+
+  /**
+   * Handles the drag event on a surface element.
+   * Updates the surface data with the new position.
+   * @param {Event} evt - The drag event object.
+   */
+  const handleSurfaceDrag = (evt) => {
+    const modifiedshape = evt.currentTarget.attrs;
+    const shape = { ...surfacedata };
+    shape.x = modifiedshape.x;
+    shape.y = modifiedshape.y;
+    setSurfaceData({ ...shape });
   };
 
   /** */
@@ -383,6 +467,7 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
 
           break;
         case SHAPES_TOOL.FREEHAND:
+          // eslint-disable-next-line max-len,no-case-declarations
           const freehandShape = drawingState.currentShape; // TODO Check if not nuse { ...drawingState.currentShape };
           freehandShape.lines.push({
             points: [pos.x, pos.y, pos.x, pos.y],
@@ -392,6 +477,7 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
           updateCurrentShapeInShapes(freehandShape);
           break;
         case SHAPES_TOOL.POLYGON:
+          // eslint-disable-next-line no-case-declarations
           const polygonShape = drawingState.currentShape;
           polygonShape.points[2] = pos.x;
           polygonShape.points[3] = pos.y;
@@ -399,8 +485,10 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
           break;
         case SHAPES_TOOL.ARROW:
           // TODO improve
+          // eslint-disable-next-line no-case-declarations
           const arrowShape = {};
           // update points
+          // eslint-disable-next-line max-len
           arrowShape.points = [drawingState.currentShape.points[0], drawingState.currentShape.points[1], pos.x, pos.y];
           arrowShape.id = drawingState.currentShape.id;
           arrowShape.type = drawingState.currentShape.type;
@@ -411,34 +499,23 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
           arrowShape.fill = props.fillColor;
           arrowShape.stroke = props.strokeColor;
           arrowShape.strokeWidth = props.strokeWidth;
-
           updateCurrentShapeInShapes(arrowShape);
+          setIsDrawing(true);
           break;
         default:
           break;
       }
     } catch (error) {
-      console.log('error', error);
+      console.error('error', error);
     }
   };
 
   /** Stop drawing */
-  const handleMouseUp = (e) => {
-    const pos = e.target.getStage().getRelativePointerPosition();
-    pos.x /= props.scale;
-    pos.y /= props.scale;
-    try {
-      if (!drawingState.currentShape) {
-        return;
-      }
-      // For these cases, the action is similar: stop drawing and add the shape
-      setDrawingState({
-        ...drawingState,
-        isDrawing: false,
-      });
-    } catch (error) {
-      console.error('error', error);
-    }
+  const handleMouseUp = () => {
+    setDrawingState({
+      ...drawingState,
+      isDrawing: false,
+    });
   };
 
   /** */
@@ -461,28 +538,28 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
       onMouseMove={handleMouseMove}
       id={props.windowId}
     >
+      <SpatialTarget
+        shape={surfacedata}
+        onTransform={onSurfaceTransform}
+        handleDrag={handleSurfaceDrag}
+        showTransformer={props.tabView === 'target'}
+        width={width}
+        height={height}
+        scale={props.scale}
+      />
       <ParentComponent
         shapes={drawingState.shapes}
         onShapeClick={onShapeClick}
         activeTool={props.activeTool}
         selectedShapeId={drawingState.currentShape?.id}
-        style={{
-          height: 'auto',
-          left: 0,
-          objectFit: 'contain',
-          overflow: 'clip',
-          overflowClipMargin: 'content-box',
-          position: 'absolute',
-          top: 0,
-          width: '100%',
-        }}
         scale={props.scale}
-        width={props.originalWidth}
-        height={props.originalHeight}
+        width={originalWidth}
+        height={orignalHeight}
         onTransform={onTransform}
         handleDragEnd={handleDragEnd}
         handleDragStart={handleDragStart}
         isMouseOverSave={props.isMouseOverSave}
+        trview={props.tabView !== 'target'}
       />
     </Stage>
   );
@@ -499,11 +576,57 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
   return ReactDOM.createPortal(drawKonvas(), container);
 }
 
+const shapeObjectPropTypes = PropTypes.shape({
+  id: PropTypes.string,
+  rotation: PropTypes.number,
+  scaleX: PropTypes.number,
+  scaleY: PropTypes.number,
+  type: PropTypes.string,
+  url: PropTypes.string,
+  x: PropTypes.number,
+  y: PropTypes.number,
+});
+
 AnnotationDrawing.propTypes = {
   activeTool: PropTypes.string.isRequired,
   closed: PropTypes.bool.isRequired,
-  drawingState: PropTypes.object.isRequired,
+  drawingState: PropTypes.oneOfType([
+    PropTypes.shape({
+      currentShape: shapeObjectPropTypes,
+      isDrawing: PropTypes.bool,
+      shapes: PropTypes.arrayOf(shapeObjectPropTypes),
+    }),
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        currentShape: PropTypes.shape({
+          id: PropTypes.string,
+          rotation: PropTypes.number,
+          scaleX: PropTypes.number,
+          scaleY: PropTypes.number,
+          type: PropTypes.string,
+          url: PropTypes.string,
+          x: PropTypes.number,
+          y: PropTypes.number,
+        }),
+        isDrawing: PropTypes.bool,
+        shapes: PropTypes.arrayOf(
+          PropTypes.shape({
+            id: PropTypes.string,
+            rotation: PropTypes.number,
+            scaleX: PropTypes.number,
+            scaleY: PropTypes.number,
+            type: PropTypes.string,
+            url: PropTypes.string,
+            x: PropTypes.number,
+            y: PropTypes.number,
+          }),
+        ),
+      }),
+    ),
+  ]).isRequired,
   fillColor: PropTypes.string.isRequired,
+  originalHeight: PropTypes.number.isRequired,
+  originalWidth: PropTypes.number.isRequired,
   selectedShapeId: PropTypes.string.isRequired,
   strokeColor: PropTypes.string.isRequired,
   strokeWidth: PropTypes.number.isRequired,
@@ -511,5 +634,3 @@ AnnotationDrawing.propTypes = {
   updateGeometry: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };
-
-export default AnnotationDrawing;

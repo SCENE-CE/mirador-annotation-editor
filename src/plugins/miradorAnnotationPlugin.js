@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import GetAppIcon from '@mui/icons-material/GetApp';
@@ -11,8 +11,13 @@ import SingleCanvasDialog from '../SingleCanvasDialog';
 import AnnotationExportDialog from '../AnnotationExportDialog';
 import LocalStorageAdapter from '../LocalStorageAdapter';
 
-/** Mirador annotation plugin component. Get all the stuff and info to manage annotation functionnality */
-function MiradorAnnotation({ targetProps, TargetComponent, annotationEditCompanionWindowIsOpened}) {
+/** Mirador annotation plugin component. Get all the stuff
+ * and info to manage annotation functionnality */
+function MiradorAnnotation({
+  targetProps,
+  TargetComponent,
+  annotationEditCompanionWindowIsOpened,
+}) {
   const [annotationExportDialogOpen, setAnnotationExportDialogOpen] = useState(false);
   const [singleCanvasDialogOpen, setSingleCanvasDialogOpen] = useState(false);
   const [currentCompanionWindowId, setCurrentCompanionWindowId] = useState(null);
@@ -31,8 +36,12 @@ function MiradorAnnotation({ targetProps, TargetComponent, annotationEditCompani
     dispatch(actions.setWindowViewType(targetProps.windowId, 'single'));
   };
 
-  const windowViewType = useSelector((state) => getWindowViewType(state, { windowId: targetProps.windowId }));
-  const canvases = useSelector((state) => getVisibleCanvases(state, { windowId: targetProps.windowId }));
+  const windowViewType = useSelector(
+    (state) => getWindowViewType(state, { windowId: targetProps.windowId }),
+  );
+  const canvases = useSelector(
+    (state) => getVisibleCanvases(state, { windowId: targetProps.windowId }),
+  );
   const config = useSelector((state) => state.config);
 
   const openCreateAnnotationCompanionWindow = useCallback((e) => {
@@ -42,7 +51,6 @@ function MiradorAnnotation({ targetProps, TargetComponent, annotationEditCompani
   }, [targetProps.windowId]);
 
   const toggleSingleCanvasDialogOpen = useCallback(() => {
-
     setSingleCanvasDialogOpen(!singleCanvasDialogOpen);
   }, [singleCanvasDialogOpen]);
 
@@ -56,6 +64,7 @@ function MiradorAnnotation({ targetProps, TargetComponent, annotationEditCompani
 
   return (
     <div>
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <TargetComponent {...targetProps} />
       <MiradorMenuButton
         aria-label="Create new annotation"
@@ -94,21 +103,22 @@ function MiradorAnnotation({ targetProps, TargetComponent, annotationEditCompani
 }
 
 MiradorAnnotation.propTypes = {
-  TargetComponent: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.node,
-  ]).isRequired,
   annotationEditCompanionWindowIsOpened: PropTypes.bool.isRequired,
   canvases: PropTypes.arrayOf(
-    PropTypes.shape({id: PropTypes.string, index: PropTypes.number}),
+    PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
   ).isRequired,
   config: PropTypes.shape({
     annotation: PropTypes.shape({
       adapter: PropTypes.func,
       exportLocalStorageAnnotations: PropTypes.bool,
     }),
-  }).isRequired, // eslint-disable-line react/forbid-prop-types
+  }).isRequired,
   createAnnotation: PropTypes.bool.isRequired,
+  TargetComponent: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.node,
+  ]).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   targetProps: PropTypes.object.isRequired,
   windowViewType: PropTypes.string.isRequired,
 };

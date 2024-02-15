@@ -7,7 +7,6 @@ import { exportStageSVG } from 'react-konva-to-svg';
 export async function getSvg(windowId) {
   const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
   const svg = await exportStageSVG(stage, false); // TODO clean
-  console.log('SVG:', svg);
   return svg;
 }
 
@@ -18,7 +17,6 @@ export async function getKonvaAsDataURL(windowId) {
     mimeType: 'image/png',
     quality: 1,
   });
-  console.log('dataURL:', dataURL);
   return dataURL;
 }
 

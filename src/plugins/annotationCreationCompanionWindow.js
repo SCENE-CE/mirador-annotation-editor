@@ -1,8 +1,8 @@
 import * as actions from 'mirador/dist/es/src/state/actions';
 import { getCompanionWindow } from 'mirador/dist/es/src/state/selectors/companionWindows';
-import { getWindowCurrentTime, getWindowPausedStatus } from 'mirador/dist/es/src/state/selectors/window'
+import { getWindowCurrentTime, getWindowPausedStatus } from 'mirador/dist/es/src/state/selectors/window';
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
-import { getPresentAnnotationsOnSelectedCanvases } from 'mirador/dist/es/src/state/selectors/annotations'
+import { getPresentAnnotationsOnSelectedCanvases } from 'mirador/dist/es/src/state/selectors/annotations';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import AnnotationCreation from '../AnnotationCreation';
 

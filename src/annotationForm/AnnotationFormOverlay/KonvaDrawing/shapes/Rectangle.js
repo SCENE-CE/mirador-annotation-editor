@@ -1,8 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Rect, Transformer } from 'react-konva';
-import ArrowNode from "./ArrowNode";
-
+/**
+ * Represents a rectangle node component.
+ * @returns {JSX.Element} The TextNode component.
+ */
 function Rectangle({
   shape, onShapeClick, activeTool, isSelected,
   onTransform, handleDragEnd, handleDragStart
@@ -17,6 +19,12 @@ function Rectangle({
     }
   }, [isSelected]);
 
+  /**
+   * Handles the click event on the shape by invoking the provided callback function.
+   * @function handleClick
+   *- The shape object representing the properties of the clicked shape.
+   * @returns {void}
+   */
   const handleClick = () => {
     onShapeClick(shape);
   };
@@ -38,8 +46,9 @@ function Rectangle({
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
+        onMousedown={handleClick}
         onTransform={onTransform}
-        onDragEnd={handleDragEnd}
+        onDrag={handleDragEnd}
         onDragStart={handleDragStart}
       />
 
@@ -51,13 +60,29 @@ function Rectangle({
   );
 }
 
-ArrowNode.propTypes = {
+Rectangle.propTypes = {
   activeTool: PropTypes.string.isRequired,
   handleDragEnd: PropTypes.func.isRequired,
+  handleDragStart: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
   onTransform: PropTypes.func.isRequired,
-  shape: PropTypes.object.isRequired,
+  shape: PropTypes.shape({
+    fill: PropTypes.string,
+    height: PropTypes.number,
+    id: PropTypes.string,
+    rotation: PropTypes.number,
+    scaleX: PropTypes.number,
+    scaleY: PropTypes.number,
+    stroke: PropTypes.string,
+    strokeWidth: PropTypes.number,
+    text: PropTypes.string,
+    type: PropTypes.string,
+    width: PropTypes.number,
+    x: PropTypes.number,
+    y: PropTypes.number,
+  }).isRequired,
+
 };
 
 export default Rectangle;
