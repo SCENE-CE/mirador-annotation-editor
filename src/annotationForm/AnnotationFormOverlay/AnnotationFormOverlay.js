@@ -26,14 +26,13 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  padding: '5px',
+const MainTitleTypography = styled(Typography)(({ theme }) => ({
+  fontSize: '0.8em',
 }));
 
 /** All the stuff to manage to choose the drawing tool */
 function AnnotationFormOverlay({
-  updateToolState, toolState, deleteShape, currentShape, shapes
+  updateToolState, toolState, deleteShape, currentShape, shapes,
 }) {
   useEffect(() => {
 
@@ -47,56 +46,52 @@ function AnnotationFormOverlay({
     });
   };
 
-
-
   const {
     activeTool,
   } = toolState;
 
   return (
-    <StyledPaper>
-      <div>
-        <Grid container>
-          <Grid item xs={12}>
-            <Typography variant="overline">
-              Overlay
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <StyledToggleButtonGroup
-              value={activeTool} // State or props ?
-              exclusive
-              onChange={changeTool}
-              aria-label="tool selection"
-              size="small"
-            >
-              <ToggleButton value={OVERLAY_TOOL.EDIT} aria-label="select cursor">
-                <CursorIcon />
-              </ToggleButton>
-              <ToggleButton value={OVERLAY_TOOL.SHAPE} aria-label="select cursor">
-                <CategoryIcon />
-              </ToggleButton>
-              <ToggleButton value={OVERLAY_TOOL.IMAGE} aria-label="select cursor">
-                <ImageIcon />
-              </ToggleButton>
-              <ToggleButton value={OVERLAY_TOOL.TEXT} aria-label="select text">
-                <TitleIcon />
-              </ToggleButton>
-              <ToggleButton value={OVERLAY_TOOL.DELETE} aria-label="select cursor">
-                <DeleteIcon />
-              </ToggleButton>
-            </StyledToggleButtonGroup>
-            <AnnotationFormOverlayTool
-              toolState={toolState}
-              updateToolState={updateToolState}
-              currentShape={currentShape}
-              shapes={shapes}
-              deleteShape={deleteShape}
-            />
-          </Grid>
+    <div>
+      <Grid container>
+        <Grid item xs={12}>
+          <MainTitleTypography variant="overline" component="h1">
+            Overlay
+          </MainTitleTypography>
         </Grid>
-      </div>
-    </StyledPaper>
+        <Grid item xs={12}>
+          <StyledToggleButtonGroup
+            value={activeTool} // State or props ?
+            exclusive
+            onChange={changeTool}
+            aria-label="tool selection"
+            size="small"
+          >
+            <ToggleButton value={OVERLAY_TOOL.EDIT} aria-label="select cursor">
+              <CursorIcon />
+            </ToggleButton>
+            <ToggleButton value={OVERLAY_TOOL.SHAPE} aria-label="select cursor">
+              <CategoryIcon />
+            </ToggleButton>
+            <ToggleButton value={OVERLAY_TOOL.IMAGE} aria-label="select cursor">
+              <ImageIcon />
+            </ToggleButton>
+            <ToggleButton value={OVERLAY_TOOL.TEXT} aria-label="select text">
+              <TitleIcon />
+            </ToggleButton>
+            <ToggleButton value={OVERLAY_TOOL.DELETE} aria-label="select cursor">
+              <DeleteIcon />
+            </ToggleButton>
+          </StyledToggleButtonGroup>
+          <AnnotationFormOverlayTool
+            toolState={toolState}
+            updateToolState={updateToolState}
+            currentShape={currentShape}
+            shapes={shapes}
+            deleteShape={deleteShape}
+          />
+        </Grid>
+      </Grid>
+    </div>
   );
 }
 

@@ -1,17 +1,24 @@
 import React from 'react';
 import {
-  Grid, Paper, TextField, Typography, Button, Link,
+  Grid, TextField, Typography, Link,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
 import { isValidUrl } from '../utils';
 
+const MainTitleTypography = styled(Typography)(({ theme }) => ({
+  fontSize: '0.8em',
+}));
+const MainContainer = styled(Typography)(({ theme }) => ({
+  padding: '5px',
+}));
 /** Form part for edit annotation content and body */
 function AnnotationFormNetwork({ manifestNetwork, updateManifestNetwork }) {
   return (
-    <Paper style={{ padding: '5px' }}>
-      <Typography variant="overline">
+    <MainContainer>
+      <MainTitleTypography variant="overline" component="h1">
         Network
-      </Typography>
+      </MainTitleTypography>
       <Grid>
         <TextField
           value={manifestNetwork}
@@ -34,7 +41,7 @@ function AnnotationFormNetwork({ manifestNetwork, updateManifestNetwork }) {
           )
         }
       </Grid>
-    </Paper>
+    </MainContainer>
   );
 }
 

@@ -1,4 +1,3 @@
-import LastPageIcon from '@mui/icons-material/LastPage';
 import { Grid, Paper } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
@@ -7,7 +6,7 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import HMSInput from '../HMSInput';
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
+const StyledTargetContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: '10px',
@@ -34,6 +33,10 @@ const StyledFieldset = styled('fieldset')(({ theme }) => ({
   borderRadius: '4px',
   display: 'flex',
   justifyContent: 'center',
+}));
+
+const MainTitleTypography = styled(Typography)(({ theme }) => ({
+  fontSize: '0.8em',
 }));
 
 /** Form part with time mangement, dual slider + double input. Mange Tstart and Tend value */
@@ -106,14 +109,14 @@ function AnnotationFormTarget({
   return (
     <>
       { mediaIsVideo && (
-        <StyledPaper>
+        <StyledTargetContainer>
           <Grid
             item
             xs={12}
           >
-            <Typography id="range-slider" variant="overline">
+            <MainTitleTypography id="range-slider" variant="overline" component="h1">
               Target
-            </Typography>
+            </MainTitleTypography>
             <ContainerSlider>
               <StyledSlider
                 size="small"
@@ -130,18 +133,22 @@ function AnnotationFormTarget({
           <StyledDivFormTimeContainer>
             <StyledFieldset>
               <legend>
-                Start
+                <Typography variant="overline" component="h2">
+                  Start
+                </Typography>
               </legend>
               <HMSInput seconds={tstart} onChange={updateTstart} />
             </StyledFieldset>
             <StyledFieldset>
               <legend>
-                <LastPageIcon />
+                <Typography variant="overline" component="h2">
+                  End
+                </Typography>
               </legend>
               <HMSInput seconds={tend} onChange={updateTend} />
             </StyledFieldset>
           </StyledDivFormTimeContainer>
-        </StyledPaper>
+        </StyledTargetContainer>
       )}
     </>
 
