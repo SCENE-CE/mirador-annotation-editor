@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import { Layer, Rect, Transformer } from 'react-konva';
 
@@ -12,16 +12,28 @@ function SpatialTarget({
   onTransform,
   scale,
   shape,
-  tabView,
   showTransformer,
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
 
+  const [originalSpatialTarget, setOriginalSpatialTarget ] = useState(true)
+  const shapeWidth = shape.width
+  const shapeHeight = shape.height
+  useEffect(()=>{
+     console.log(shapeWidth,shapeHeight);
+  },[]
+  );
+
   if (trRef.current) {
     trRef.current.nodes([shapeRef.current]);
     trRef.current.getLayer()
       .batchDraw();
+  }
+
+  const onSpatialTargetFirstTransfromation = (event) => {
+    onTransform(event);
+    setOriginalSpatialTarget(false)
   }
 
   return (
@@ -32,17 +44,17 @@ function SpatialTarget({
       <>
         <Rect
           ref={shapeRef}
-          x={shape.x}
-          y={shape.y}
+          x={originalSpatialTarget ? shape.x + 15 : shape.x }
+          y={originalSpatialTarget ? shape.y + 15 : shape.y}
           scaleX={shape.scaleX}
           scaleY={shape.scaleY}
-          width={shape.width}
-          height={shape.height}
+          width={originalSpatialTarget ? shape.width - 30 : shape.width}
+          height={originalSpatialTarget ? shape.height - 30 : shape.height}
           fill="transparent"
           stroke="#1967d2"
           strokeWidth={10}
           draggable={showTransformer}
-          onTransform={onTransform}
+          onTransform={onSpatialTargetFirstTransfromation}
           onDrag={handleDrag}
           onDragEnd={handleDrag}
           dash={[30 / scale, 30]}
@@ -71,7 +83,6 @@ SpatialTarget.propTypes = {
     x: PropTypes.number,
     y: PropTypes.number,
   }).isRequired,
-  tabView: PropTypes.string.isRequired,
   showTransformer: PropTypes.bool.isRequired,
 };
 export default SpatialTarget;
