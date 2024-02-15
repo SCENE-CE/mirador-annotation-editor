@@ -1,8 +1,7 @@
+import LastPageIcon from '@mui/icons-material/LastPage';
 import { Grid, Paper } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
-import ToggleButton from '@mui/material/ToggleButton';
-import { Alarm } from '@mui/icons-material';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
@@ -30,32 +29,11 @@ const StyledDivFormTimeContainer = styled('div')(({ theme }) => ({
   flexDirection: 'column',
   gap: '5px',
 }));
-const StyledDivTimeSelector = styled('div')(({ theme }) => ({
+const StyledFieldset = styled('fieldset')(({ theme }) => ({
   border: '1px solid rgba(0, 0, 0, 0.12)',
   borderRadius: '4px',
   display: 'flex',
-  flexWrap: 'nowrap',
   justifyContent: 'center',
-  padding: '5px',
-}));
-
-const StyledDivToggleButton = styled('div')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-}));
-
-const StyledLabelSelector = styled('p')(({ theme }) => ({
-  fontSize: '15px',
-  margin: 0,
-  minWidth: '40px',
-}));
-
-const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
-  border: 'none',
-  height: '30px',
-  margin: 'auto',
-  marginLeft: '0',
-  marginRight: '5px',
 }));
 
 /** Form part with time mangement, dual slider + double input. Mange Tstart and Tend value */
@@ -67,27 +45,9 @@ function AnnotationFormTarget({
   tend,
   mediaIsVideo,
   setState,
-  currentTime,
   setSeekTo,
   setCurrentTime,
 }) {
-
-  /** set annotation start time to current time */
-  const setTstartNow = () => {
-    setState((prevState) => ({
-      ...prevState,
-      tstart: Math.floor(currentTime),
-    }));
-  };
-
-  /** set annotation end time to current time */
-  const setTendNow = () => {
-    setState((prevState) => ({
-      ...prevState,
-      tend: Math.floor(currentTime),
-    }));
-  };
-
   /**
    * @param {number} newValueTime
    */
@@ -168,42 +128,18 @@ function AnnotationFormTarget({
             </ContainerSlider>
           </Grid>
           <StyledDivFormTimeContainer>
-            <StyledDivTimeSelector>
-              <StyledDivToggleButton>
-                <div>
-                  <StyledLabelSelector>
-                    Start
-                  </StyledLabelSelector>
-                </div>
-                <StyledToggleButton
-                  value="true"
-                  title="Set current time"
-                  size="small"
-                  onClick={setTstartNow}
-                >
-                  <Alarm fontSize="small" />
-                </StyledToggleButton>
-              </StyledDivToggleButton>
+            <StyledFieldset>
+              <legend>
+                Start
+              </legend>
               <HMSInput seconds={tstart} onChange={updateTstart} />
-            </StyledDivTimeSelector>
-            <StyledDivTimeSelector>
-              <StyledDivToggleButton>
-                <div>
-                  <StyledLabelSelector>
-                    End
-                  </StyledLabelSelector>
-                </div>
-                <StyledToggleButton
-                  value="true"
-                  title="Set current time"
-                  size="small"
-                  onClick={setTendNow}
-                >
-                  <Alarm fontSize="small" />
-                </StyledToggleButton>
-              </StyledDivToggleButton>
+            </StyledFieldset>
+            <StyledFieldset>
+              <legend>
+                <LastPageIcon />
+              </legend>
               <HMSInput seconds={tend} onChange={updateTend} />
-            </StyledDivTimeSelector>
+            </StyledFieldset>
           </StyledDivFormTimeContainer>
         </StyledPaper>
       )}
