@@ -4,19 +4,18 @@ import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import PolygonIcon from '@mui/icons-material/Timeline';
 import GestureIcon from '@mui/icons-material/Gesture';
-import PropTypes from 'prop-types';
+import PropTypes, { arrayOf } from 'prop-types';
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { Button, Paper } from '@mui/material';
+import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from '@mui/material/Typography';
 import AnnotationFormOverlayToolOptions from './AnnotationFormOverlayToolOptions';
 import {
-  defaultToolState,
   isShapesTool,
   OVERLAY_TOOL,
-  SHAPES_TOOL
+  SHAPES_TOOL,
 } from '../../AnnotationCreationUtils';
 import AccordionShapes from './Accordion';
 
@@ -59,6 +58,7 @@ function AnnotationFormOverlayTool({
       ...toolState,
       activeTool: tool,
     });
+    console.log('Annotation Form Overlay', currentShape);
   };
 
   /** Stay in edit mode when a shape is selected */
@@ -188,10 +188,28 @@ function AnnotationFormOverlayTool({
   );
 }
 
+const shape = PropTypes.shape(
+  {
+    closedMode: PropTypes.bool,
+    fill: PropTypes.string,
+    id: PropTypes.string,
+    pointerLength: PropTypes.number,
+    pointerWidth: PropTypes.number,
+    points: arrayOf(PropTypes.number),
+    stroke: PropTypes.string,
+    strokeWidth: PropTypes.number,
+    text: PropTypes.string,
+    type: PropTypes.string,
+    url: PropTypes.string,
+    x: null,
+    y: null,
+  },
+);
+
 AnnotationFormOverlayTool.propTypes = {
-  currentShape: PropTypes.object.isRequired,
+  currentShape: shape.isRequired,
   deleteShape: PropTypes.func.isRequired,
-  shapes: PropTypes.array.isRequired,
+  shapes: PropTypes.arrayOf(shape).isRequired,
   toolState: PropTypes.shape({
     activeTool: PropTypes.string.isRequired,
     closedMode: PropTypes.bool.isRequired,
