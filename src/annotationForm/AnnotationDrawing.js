@@ -12,6 +12,7 @@ import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
+import {styled} from "@mui/material/styles";
 /** All the stuff to draw on the canvas */
 function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...props }) {
 
@@ -443,39 +444,19 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
 
   /** */
   const drawKonvas = () => (
-    <Stage
+    <StyledStage
       width={width}
       height={height}
-      style={{
-        height: 'auto',
-        left: 0,
-        objectFit: 'contain',
-        overflow: 'clip',
-        overflowClipMargin: 'content-box',
-        position: 'absolute',
-        top: 0,
-        width: '100%',
-      }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
       id={props.windowId}
     >
-      <ParentComponent
+      <StyledParentComponent
         shapes={drawingState.shapes}
         onShapeClick={onShapeClick}
         activeTool={props.activeTool}
         selectedShapeId={drawingState.currentShape?.id}
-        style={{
-          height: 'auto',
-          left: 0,
-          objectFit: 'contain',
-          overflow: 'clip',
-          overflowClipMargin: 'content-box',
-          position: 'absolute',
-          top: 0,
-          width: '100%',
-        }}
         scale={props.scale}
         width={props.originalWidth}
         height={props.originalHeight}
@@ -484,7 +465,7 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
         handleDragStart={handleDragStart}
         isMouseOverSave={props.isMouseOverSave}
       />
-    </Stage>
+    </StyledStage>
   );
   const osdref = OSDReferences.get(props.windowId);
   const videoref = VideosReferences.get(props.windowId);
@@ -498,6 +479,30 @@ function AnnotationDrawing({ drawingState, setDrawingState, height, width, ...pr
 
   return ReactDOM.createPortal(drawKonvas(), container);
 }
+
+const StyledStage = styled(Stage)(({ theme }) => ({
+  height: 'auto',
+  left: 0,
+  objectFit: 'contain',
+  overflow: 'clip',
+  overflowClipMargin: 'content-box',
+  position: 'absolute',
+  top: 0,
+  width: '100%',
+}));
+
+const StyledParentComponent = styled(ParentComponent)(({ theme }) => ({
+  height: 'auto',
+  left: 0,
+  objectFit: 'contain',
+  overflow: 'clip',
+  overflowClipMargin: 'content-box',
+  position: 'absolute',
+  top: 0,
+  width: '100%',
+}));
+
+
 
 AnnotationDrawing.propTypes = {
   activeTool: PropTypes.string.isRequired,

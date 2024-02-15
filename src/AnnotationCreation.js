@@ -453,7 +453,7 @@ function AnnotationCreation({
 const StyledForm = styled('form')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: '20px',
+  gap: theme.spacing(2),
   paddingBottom: theme.spacing(1),
   paddingLeft: theme.spacing(2),
   paddingRight: theme.spacing(1),
@@ -462,11 +462,14 @@ const StyledForm = styled('form')(({ theme }) => ({
 
 const StyledTab = styled(Tab)(({ theme }) => ({
   minWidth: '0px',
-  padding: '12px 8px',
+  paddingTop: theme.spacing(1),
+  paddingRight: theme.spacing(1),
+  paddingLeft: theme.spacing(1),
+  paddingBottom: theme.spacing(1),
 }));
 
 const StyledTabPanel = styled(TabPanel)(({ theme }) => ({
-  padding: '0',
+  padding: theme.spacing(0),
 }));
 
 const StyledAnnotationDrawing = styled(AnnotationDrawing)(({ theme }) => ({

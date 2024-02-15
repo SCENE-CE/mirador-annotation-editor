@@ -58,6 +58,10 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   marginRight: '5px',
 }));
 
+const StyledTypography = styled(Typography)(({ theme }) => ({
+
+}));
+
 /** Form part with time mangement, dual slider + double input. Mange Tstart and Tend value */
 function AnnotationFormTarget({
   videoDuration,
