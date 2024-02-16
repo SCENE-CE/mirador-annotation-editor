@@ -13,18 +13,20 @@ import SpatialTarget from './AnnotationFormOverlay/KonvaDrawing/SpatialTarget';
 
 /** All the stuff to draw on the canvas */
 export default function AnnotationDrawing({
-  drawingState, originalWidth, orignalHeight, setDrawingState, height, width, imageEvent, ...props
+  drawingState,
+  onSurfaceTransform,
+  originalWidth,
+  orignalHeight,
+  surfaceData,
+  setSurfaceData,
+  setDrawingState,
+  height,
+  width,
+  imageEvent,
+  ...props
 }) {
   const [isDrawing, setIsDrawing] = useState(false);
   // TODO target from the annotation
-  const [surfacedata, setSurfaceData] = useState({
-    height: height / props.scale,
-    scaleX: 1,
-    scaleY: 1,
-    width: width / props.scale,
-    x: 1,
-    y: 1,
-  });
 
   useEffect(() => {
     // TODO add proper difference between mediaVideo and mediaImage
@@ -35,12 +37,12 @@ export default function AnnotationDrawing({
     if (overlay) {
       props.updateScale(overlay.containerWidth / overlay.canvasWidth);
     }
-    const newSurfaceData = { ...surfacedata };
+    const newSurfaceData = { ...surfaceData };
     newSurfaceData.width = overlay.width / props.scale;
     newSurfaceData.height = overlay.height / props.scale;
-    // compare newSurfaceData and surfacedata, if different, update surfacedata
+    // compare newSurfaceData and surfaceData, if different, update surfaceData
     // eslint-disable-next-line max-len
-    if (newSurfaceData.width !== surfacedata.width || newSurfaceData.height !== surfacedata.height) {
+    if (newSurfaceData.width !== surfaceData.width || newSurfaceData.height !== surfaceData.height) {
       setSurfaceData(newSurfaceData);
     }
   }, [{ height, width }]);
@@ -220,9 +222,7 @@ export default function AnnotationDrawing({
    */
   const onTransform = (evt) => {
     const modifiedshape = evt.target.attrs;
-
     const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
-
     Object.assign(shape, modifiedshape);
     updateCurrentShapeInShapes(shape);
   };
@@ -255,27 +255,16 @@ export default function AnnotationDrawing({
   };
 
   /**
-   * Handles the transformation event on a surface element.
-   * @param {Event} evt - The transformation event object.
-   */
-  const onSurfaceTransform = (evt) => {
-    const modifiedshape = evt.target.attrs;
-    const shape = surfacedata;
-    Object.assign(shape, modifiedshape);
-    setSurfaceData({ ...shape });
-  };
-
-  /**
    * Handles the drag event on a surface element.
    * Updates the surface data with the new position.
    * @param {Event} evt - The drag event object.
    */
   const handleSurfaceDrag = (evt) => {
-    const modifiedshape = evt.currentTarget.attrs;
-    const shape = { ...surfacedata };
-    shape.x = modifiedshape.x;
-    shape.y = modifiedshape.y;
-    setSurfaceData({ ...shape });
+    // const modifiedshape = evt.currentTarget.attrs;
+    // const shape = { ...surfaceData };
+    // shape.x = modifiedshape.x;
+    // shape.y = modifiedshape.y;
+    // setSurfaceData({ ...shape });
   };
 
   /** */
@@ -539,7 +528,7 @@ export default function AnnotationDrawing({
       id={props.windowId}
     >
       <SpatialTarget
-        shape={surfacedata}
+        shape={surfaceData}
         onTransform={onSurfaceTransform}
         handleDrag={handleSurfaceDrag}
         showTransformer={props.tabView === 'target'}
@@ -630,7 +619,5 @@ AnnotationDrawing.propTypes = {
   selectedShapeId: PropTypes.string.isRequired,
   strokeColor: PropTypes.string.isRequired,
   strokeWidth: PropTypes.number.isRequired,
-  svg: PropTypes.func.isRequired,
-  updateGeometry: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };

@@ -20,6 +20,7 @@ import {
 import AnnotationFormOverlay from './annotationForm/AnnotationFormOverlay/AnnotationFormOverlay';
 import AnnotationFormFooter from './annotationForm/AnnotationFormFooter';
 import AnnotationFormManifestNetwork from './annotationForm/AnnotationFormManifestNetwork';
+import Button from "@mui/material/Button";
 
 const TARGET_VIEW = 'target';
 const OVERLAY_VIEW = 'layer';
@@ -48,6 +49,8 @@ function AnnotationCreation({
     isDrawing: false,
     shapes: [],
   });
+
+  const [spatialTarget, setSpatialTarget] = useState();
 
   // Initial state setup
   const [state, setState] = useState(() => {
@@ -211,6 +214,30 @@ function AnnotationCreation({
     }));
   };
 
+  /**
+   * Handles the transformation event on a surface element.
+   */
+  const onSurfaceTransform = (evt) => {
+    const modifiedshape = evt.target.attrs;
+    setSpatialTarget(modifiedshape);
+    const shape = surfaceData;
+    Object.assign(shape, modifiedshape);
+    setSurfaceData({ ...shape });
+  };
+  /**
+   * Set SpatialTarget to MaxSize of container Width and Height
+   */
+  const spatialTargetMaxSize = (event) => {
+    event.preventDefault();
+    setSurfaceData({
+      ...surfaceData,
+      height: overlay.containerHeight - 30,
+      scaleX: 0.98,
+      scaleY: 0.97,
+      width: overlay.containerWidth - 30,
+    });
+  };
+
   /** */
   const setShapeProperties = (options) => new Promise(() => {
     if (options.fill) {
@@ -337,7 +364,6 @@ function AnnotationCreation({
     valueTime[1] = tend;
   }
 
-  // eslint-disable-next-line no-underscore-dangle
   const videoDuration = mediaVideo ? mediaVideo.props.canvas.__jsonld.duration : 0;
   // TODO: L'erreur de "Ref" sur l'ouverture d'une image vient d'ici et plus particulièrement
   //  du useEffect qui prend en dépedance [overlay.containerWidth, overlay.canvasWidth]
@@ -362,6 +388,15 @@ function AnnotationCreation({
       containerWidth: 1000,
     };
   }
+
+  const [surfaceData, setSurfaceData] = useState({
+    height: overlay.containerHeight / scale,
+    scaleX: 1,
+    scaleY: 1,
+    width: overlay.containerWidth / scale,
+    x: 1,
+    y: 1,
+  });
 
   /** Change scale from container / canva */
   const updateScale = () => {
@@ -404,6 +439,9 @@ function AnnotationCreation({
         mediaVideo={mediaVideo}
         setDrawingState={setDrawingState}
         tabView={viewTool}
+        surfaceData={surfaceData}
+        setSurfaceData={setSurfaceData}
+        onSurfaceTransform={onSurfaceTransform}
       />
       <StyledForm>
         <TabContext value={viewTool}>
@@ -478,6 +516,7 @@ function AnnotationCreation({
             />
           </StyledTabPanel>
         </TabContext>
+        <Button onClick={spatialTargetMaxSize}>Resize Spatial Target</Button>
         <AnnotationFormFooter
           annotation={annotation}
           canvases={canvases}
