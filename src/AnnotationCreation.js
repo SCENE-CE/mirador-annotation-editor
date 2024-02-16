@@ -233,7 +233,7 @@ function AnnotationCreation({
       ...surfaceData,
       height: overlay.containerHeight - 30,
       scaleX: 0.98,
-      scaleY: 0.97,
+      scaleY: 0.96,
       width: overlay.containerWidth - 30,
     });
   };
