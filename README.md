@@ -57,6 +57,18 @@ The authors of this software are :
 - If you need video annotation, you can use [our fork of Mirador: mirador-video](https://gitlab.tetras-libre.fr/iiif/mirador/mirador-video)
 
 
+## Integration with npm in existing project
+
+You can override Mirador and existing annotation plugin with your own versions by using npm.
+Our custom Mirador 3 version. https://github.com/SCENE-CE/mirador-video
+
+```js
+"mirador": "npm:mirador-video@^1.0.0",
+"mirador-annotations": "npm:mirador-annotation-editor@^1.0.2",
+```
+
+You can find an example of integration in our Mirador-integration repository : https://gitlab.tetras-libre.fr/iiif/mirador/mirador-integration
+
 ## Install (local)
 
 This method requires `nvm`, `npm`.
