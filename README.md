@@ -64,7 +64,7 @@ Our custom Mirador 3 version. https://github.com/SCENE-CE/mirador-video
 
 ```js
 "mirador": "npm:mirador-video@^1.0.0",
-"mirador-annotations": "npm:mirador-annotation-editor@^1.0.2",
+"mirador-annotations": "npm:mirador-annotation-editor@^1.0.3",
 ```
 
 You can find an example of integration in our Mirador-integration repository : https://gitlab.tetras-libre.fr/iiif/mirador/mirador-integration
