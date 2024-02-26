@@ -105,9 +105,15 @@ function AnnotationFormTarget({
   const handleChangeTime = (event, newValueTime) => {
     const timeStart = newValueTime[0];
     const timeEnd = newValueTime[1];
-    updateTstart(timeStart);
-    updateTend(timeEnd);
-    seekToTstart();
+    if (timeStart !== tstart) {
+      updateTstart(timeStart);
+      seekToTstart();
+    }
+    if (timeEnd !== tend) {
+      updateTend(timeEnd);
+      updateTend(timeEnd);
+      seekToTend();
+    }
     setValueTime(newValueTime);
   };
 
@@ -130,6 +136,8 @@ function AnnotationFormTarget({
     setState((prevState) => ({
       ...prevState,
       tend: valueTend,
+      ...setSeekTo(valueTend),
+      ...setCurrentTime(valueTend),
     }));
   };
 
@@ -141,6 +149,18 @@ function AnnotationFormTarget({
       ...prevState,
       ...setSeekTo(prevState.tstart),
       ...setCurrentTime(prevState.tstart),
+    }));
+  };
+
+  /**
+   * Seeks to the tend time and updates state accordingly.
+   * @function seekToTend
+   */
+  const seekToTend = () => {
+    setState((prevState) => ({
+      ...prevState,
+      ...setSeekTo(prevState.tend),
+      ...setCurrentTime(prevState.tend),
     }));
   };
 
