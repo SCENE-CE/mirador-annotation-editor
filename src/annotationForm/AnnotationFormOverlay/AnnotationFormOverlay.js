@@ -13,7 +13,7 @@ import { styled } from '@mui/material/styles';
 import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../../icons/Cursor';
 import AnnotationFormOverlayTool from './AnnotationFormOverlayTool';
-import { OVERLAY_TOOL } from '../../AnnotationCreationUtils';
+import { defaultToolState, OVERLAY_TOOL } from '../../AnnotationCreationUtils';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
@@ -40,11 +40,17 @@ function AnnotationFormOverlay({
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
 
   const changeTool = (e, tool) => {
-    updateToolState({
-      ...toolState,
-      activeTool: tool,
-      currentShape: null,
-    });
+    if (tool === OVERLAY_TOOL.SHAPE) {
+      updateToolState({
+        ...defaultToolState,
+        activeTool: tool,
+      });
+    } else {
+      updateToolState({
+        ...toolState,
+        activeTool: tool,
+      });
+    }
   };
 
 

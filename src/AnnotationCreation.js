@@ -55,7 +55,6 @@ function AnnotationCreation({
     let tend;
     const annoState = {};
     if (annotation) {
-      console.log('annotation', annotation);
       // annotation body
       if (Array.isArray(annotation.body)) {
         annoState.tags = [];
@@ -107,15 +106,16 @@ function AnnotationCreation({
         annoState.manifestNetwork = annotation.manifestNetwork;
       }
     } else {
-      const video = true;
-      if (video) {
+      if (mediaVideo) {
         // Time target
         annoState.tstart = currentTime ? Math.floor(currentTime) : 0;
-        annoState.tend = mediaVideo ? mediaVideo.props.canvas.__jsonld.duration : 0;
+        // eslint-disable-next-line no-underscore-dangle
+        const annotJson = mediaVideo.props.canvas.__jsonld;
+        annoState.tend = mediaVideo ? annotJson.duration : 0;
 
         // Geometry target
-        const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
-        const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
+        const targetHeigth = mediaVideo ? annotJson.height : 1000;
+        const targetWidth = mediaVideo ? annotJson.width : 500;
         annoState.xywh = `0,0,${targetWidth},${targetHeigth}`;
       } else {
         // TODO image and audio case
@@ -135,9 +135,16 @@ function AnnotationCreation({
 
   const [isMouseOverSave, setIsMouseOverSave] = useState(false);
   const [scale, setScale] = useState(1);
-
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
 
+  /**
+   * Retrieves the height and width of a media element.
+   * If the media element is a video, returns its dimensions.
+   * If not a video, attempts to retrieve dimensions from a manifest image.
+   * If no dimensions are found, default values are returned.
+   *
+   * @returns {{height: number, width: number}}
+   */
   const getHeightAndWidth = () => {
     if (mediaVideo) {
       return mediaVideo;
@@ -150,7 +157,6 @@ function AnnotationCreation({
   };
 
   const { height, width } = getHeightAndWidth();
-
   // TODO Check the effect to keep and remove the other
   // Add a state to trigger redraw
   const [windowSize, setWindowSize] = useState({
@@ -160,13 +166,17 @@ function AnnotationCreation({
 
   // Listen to window resize event
   useEffect(() => {
+    /**
+     * Updates the state with the current window size when the window is resized.
+     * @function handleResize
+     * @returns {void}
+     */
     const handleResize = () => {
       setWindowSize({
         height: window.innerHeight,
         width: window.innerWidth,
       });
     };
-
     window.addEventListener('resize', handleResize);
 
     return () => {
@@ -181,6 +191,13 @@ function AnnotationCreation({
   useLayoutEffect(() => {
   }, [{ height, width }]);
 
+  /**
+   * Handles tab selection event.
+   *
+   * @param {Event} event - The event object triggered by the tab selection.
+   * @param {string} TabIndex - The index of the selected tab.
+   * @returns {void}
+   */
   const tabHandler = (event, TabIndex) => {
     setViewTool(TabIndex);
   };
@@ -219,6 +236,10 @@ function AnnotationCreation({
     }));
   };
 
+  /**
+   * Updates the manifest network in the component's state.
+   * @param {Object} manifestNetwork The new manifest network object to update.
+   */
   const updateManifestNetwork = (manifestNetwork) => {
     setState((prevState) => ({
       ...prevState,
@@ -226,7 +247,11 @@ function AnnotationCreation({
     }));
   };
 
-  /** Set color tool from current shape */
+  /**
+   * Updates the tool state by merging the current color state with the existing tool state.
+   * @param {object} colorState - The color state to be merged with the tool state.
+   * @returns {void}
+   */
   const setColorToolFromCurrentShape = (colorState) => {
     setToolState((prevState) => ({
       ...prevState,
@@ -234,6 +259,13 @@ function AnnotationCreation({
     }));
   };
 
+  /**
+   * Deletes a shape from the drawing state based on its ID.
+   * If no shape ID is provided, clears all shapes from the drawing state.
+   *
+   * @param {string} [shapeId] - The ID of the shape to delete.
+   * If not provided, clears all shapes.
+   */
   const deleteShape = (shapeId) => {
     if (!shapeId) {
       setDrawingState((prevState) => ({
@@ -250,6 +282,11 @@ function AnnotationCreation({
     }
   };
 
+  /**
+   * Closes the companion window with the specified ID and position.
+   *
+   * @returns {void}
+   */
   const closeFormCompanionWindow = () => {
     closeCompanionWindow('annotationCreation', {
       id,
@@ -257,6 +294,12 @@ function AnnotationCreation({
     });
   };
 
+  /**
+   * Resets the state after saving, potentially causing a re-render.
+   *
+   * @function resetStateAfterSave
+   * @returns {void}
+   */
   const resetStateAfterSave = () => {
     // TODO this create a re-render too soon for react and crash the app
     setState({
@@ -294,6 +337,7 @@ function AnnotationCreation({
     valueTime[1] = tend;
   }
 
+  // eslint-disable-next-line no-underscore-dangle
   const videoDuration = mediaVideo ? mediaVideo.props.canvas.__jsonld.duration : 0;
   // TODO: L'erreur de "Ref" sur l'ouverture d'une image vient d'ici et plus particulièrement
   //  du useEffect qui prend en dépedance [overlay.containerWidth, overlay.canvasWidth]
@@ -302,23 +346,21 @@ function AnnotationCreation({
   let overlay = null;
   if (videoref) {
     overlay = videoref.canvasOverlay;
+  } else if (osdref) {
+    console.debug('osdref', osdref);
+    overlay = {
+      canvasHeight: osdref.current.canvas.clientHeight,
+      canvasWidth: osdref.current.canvas.clientWidth,
+      containerHeight: osdref.current.canvas.clientHeight,
+      containerWidth: osdref.current.canvas.clientWidth,
+    };
   } else {
-    if (osdref) {
-      console.debug('osdref', osdref);
-      overlay = {
-        canvasHeight: osdref.current.canvas.clientHeight,
-        canvasWidth: osdref.current.canvas.clientWidth,
-        containerHeight: osdref.current.canvas.clientHeight,
-        containerWidth: osdref.current.canvas.clientWidth,
-      };
-    } else {
-      overlay = {
-        canvasHeight: 500,
-        canvasWidth: 1000,
-        containerHeight: 500,
-        containerWidth: 1000,
-      };
-    }
+    overlay = {
+      canvasHeight: 500,
+      canvasWidth: 1000,
+      containerHeight: 500,
+      containerWidth: 1000,
+    };
   }
 
   /** Change scale from container / canva */
@@ -330,6 +372,7 @@ function AnnotationCreation({
   }, [overlay.containerWidth, overlay.canvasWidth]);
 
   return (
+  // eslint-disable-next-line max-len
     // we need to get the width and height of the image to pass it to the annotation drawing component
     <CompanionWindow
       title={annotation ? 'Edit annotation' : 'New annotation'}
@@ -350,8 +393,8 @@ function AnnotationCreation({
         // we need to pass the width and height of the image to the annotation drawing component
         width={overlay ? overlay.containerWidth : 1920}
         height={overlay ? overlay.containerHeight : 1080}
-        orignalWidth={overlay ? overlay.canvasWidth : 1920}
-        orignalHeight={overlay ? overlay.canvasHeight : 1080}
+        originalWidth={overlay ? overlay.canvasWidth : 1920}
+        originalHeight={overlay ? overlay.canvasHeight : 1080}
         setShapeProperties={setShapeProperties}
         updateScale={updateScale}
         imageEvent={imageEvent}
@@ -360,6 +403,7 @@ function AnnotationCreation({
         isMouseOverSave={isMouseOverSave}
         mediaVideo={mediaVideo}
         setDrawingState={setDrawingState}
+        tabView={viewTool}
       />
       <StyledForm>
         <TabContext value={viewTool}>
@@ -478,8 +522,22 @@ const StyledAnnotationDrawing = styled(AnnotationDrawing)(({ theme }) => ({
 }));
 
 AnnotationCreation.propTypes = {
-  // TODO proper web annotation type ?
-  annotation: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  annotation: PropTypes.oneOfType([
+    PropTypes.shape({
+      body: PropTypes.shape({
+        format: PropTypes.string,
+        id: PropTypes.string,
+        type: PropTypes.string,
+        value: PropTypes.string,
+      }),
+      drawingState: PropTypes.string,
+      id: PropTypes.string,
+      manifestNetwork: PropTypes.string,
+      motivation: PropTypes.string,
+      target: PropTypes.string,
+    }),
+    PropTypes.string,
+  ]),
   canvases: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
@@ -500,12 +558,12 @@ AnnotationCreation.propTypes = {
   }).isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]),
   id: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  mediaVideo: PropTypes.object.isRequired,
   receiveAnnotation: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func,
   setSeekTo: PropTypes.func,
   windowId: PropTypes.string.isRequired,
-  // eslint-disable-next-line sort-keys
-  mediaVideo: PropTypes.object.isRequired,
 };
 
 AnnotationCreation.defaultProps = {

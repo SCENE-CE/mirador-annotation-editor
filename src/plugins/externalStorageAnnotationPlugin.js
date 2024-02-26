@@ -4,6 +4,7 @@ import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases
 import isEqual from 'lodash/isEqual';
 import * as actions from 'mirador/dist/es/src/state/actions';
 
+// TODO: Change this classComponent into functional component
 /** */
 class ExternalStorageAnnotation extends Component {
   /** */

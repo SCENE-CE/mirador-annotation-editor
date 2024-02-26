@@ -12,7 +12,12 @@ import { Button, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from '@mui/material/Typography';
 import AnnotationFormOverlayToolOptions from './AnnotationFormOverlayToolOptions';
-import { isShapesTool, OVERLAY_TOOL, SHAPES_TOOL } from '../../AnnotationCreationUtils';
+import {
+  defaultToolState,
+  isShapesTool,
+  OVERLAY_TOOL,
+  SHAPES_TOOL
+} from '../../AnnotationCreationUtils';
 import AccordionShapes from './Accordion';
 
 const StyledLi = styled('li')(({ theme }) => ({

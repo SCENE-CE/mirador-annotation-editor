@@ -4,7 +4,7 @@
 
 ### Generalities
 
-`mirador-annotation-editor` is a [Mirador 3](https://github.com/projectmirador/mirador) plugin that adds annotation creation tools to the user interface. 
+`mirador-annotation-editor`(also know as "MAE") is a [Mirador 3](https://github.com/projectmirador/mirador) plugin that adds annotation creation tools to the user interface. 
 
 It is based on the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugin with a lot of technical and functional modifications.
 
@@ -57,6 +57,18 @@ The authors of this software are :
 - If you need video annotation, you can use [our fork of Mirador: mirador-video](https://gitlab.tetras-libre.fr/iiif/mirador/mirador-video)
 
 
+## Integration with npm in existing project
+
+You can override Mirador and existing annotation plugin with your own versions by using npm.
+Our custom Mirador 3 version. https://github.com/SCENE-CE/mirador-video
+
+```js
+"mirador": "npm:mirador-video@^1.0.0",
+"mirador-annotations": "npm:mirador-annotation-editor@^1.0.3",
+```
+
+You can find an example of integration in our Mirador-integration repository : https://gitlab.tetras-libre.fr/iiif/mirador/mirador-integration
+
 ## Install (local)
 
 This method requires `nvm`, `npm`.
@@ -67,8 +79,9 @@ cd mirador-annotations
 nvm use
 npm install
 ```
-NPM Install throw two errors  (https://gitlab.tetras-libre.fr/iiif/mirador/mirador-annotations/-/issues/12). To fix run : 
+NPM Install will throw two errors  (https://gitlab.tetras-libre.fr/iiif/mirador/mirador-annotations/-/issues/12). To fix run : 
 
+Use the following command to fix the issue (Will be fixed in future release) : 
 ```
 ./cli post_install
 ```
@@ -84,12 +97,13 @@ Persisting annotations requires implementing an a IIIF annotation server. Severa
 
 `mirador-annotations` currently supports adapters for [annotot](https://github.com/ProjectMirador/mirador-annotations/blob/master/src/AnnototAdapter.js) and [local storage](https://github.com/ProjectMirador/mirador-annotations/blob/master/src/LocalStorageAdapter.js). We welcome contributions of adapters for other annotation servers.
 
-## Installing `mirador-annotations`
+## Installing `mirador-annotation-editor`
 
-`mirador-annotations` requires an instance of Mirador 3. See the [Mirador wiki](https://github.com/ProjectMirador/mirador/wiki) for examples of embedding Mirador within an application. See the [live demo's index.js](https://github.com/ProjectMirador/mirador-annotations/blob/master/demo/src/index.js) for an example of importing the `mirador-annotations` plugin and configuring the adapter.
-
-**You must use node v16.20.2**. You can `run nvm use` at the racine of the project to set your node version to 16.20.2.
+`mirador-annotation-editor` requires our custom version of Mirador 3 : https://github.com/SCENE-CE/mirador-video. 
+Our version is up-to-date (at the 2024/15/02) with the master branch of Mirador and support React 17 and MUI5. We will soon make a pull request to the original Mirador 3 repository.
 
 ## Contribute
-Mirador's development, design, and maintenance is driven by community needs and ongoing feedback and discussion. Join us at our regularly scheduled community calls, on [IIIF slack #mirador](http://bit.ly/iiif-slack), or the [mirador-tech](https://groups.google.com/forum/#!forum/mirador-tech) and [iiif-discuss](https://groups.google.com/forum/#!forum/iiif-discuss) mailing lists. To suggest features, report bugs, and clarify usage, please submit a GitHub issue.
+
+Our plugin follow the Mirador guidelines. Development, design, and maintenance is driven by community needs and ongoing feedback and discussion.
+To suggest features, report bugs, and clarify usage, please submit a GitHub issue.
 

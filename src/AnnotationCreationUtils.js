@@ -42,7 +42,13 @@ export function isShapesTool(activeTool) {
 }
 
 /** Save annotation in the storage adapter */
-export async function saveAnnotation(canvas, storageAdapter, receiveAnnotation, annotation, isNewAnnotation) {
+export async function saveAnnotation(
+  canvas,
+  storageAdapter,
+  receiveAnnotation,
+  annotation,
+  isNewAnnotation,
+) {
   if (!isNewAnnotation) {
     storageAdapter.update(annotation)
       .then((annoPage) => {
@@ -57,7 +63,14 @@ export async function saveAnnotation(canvas, storageAdapter, receiveAnnotation, 
 }
 
 /** Save annotation for each canvas */
-export async function saveAnnotationInEachCanvas(canvases, config, receiveAnnotation, annotation, target, isNewAnnotation) {
+export async function saveAnnotationInEachCanvas(
+  canvases,
+  config,
+  receiveAnnotation,
+  annotation,
+  target,
+  isNewAnnotation,
+) {
   canvases.forEach(async (canvas) => {
     // Adapt target to the canvas
     // eslint-disable-next-line no-param-reassign

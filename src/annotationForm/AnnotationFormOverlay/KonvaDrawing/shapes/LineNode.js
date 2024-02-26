@@ -1,7 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Line, Transformer } from 'react-konva';
-
+/**
+ * Represents a line node component.
+ * @returns {JSX.Element} The TextNode component.
+ */
 function LineNode({
   onShapeClick, shape, activeTool, selectedShapeId,
 }) {
@@ -34,6 +37,7 @@ function LineNode({
         closed={false}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
+        onMousedown={handleClick}
       />
 
       <Transformer
@@ -51,8 +55,16 @@ LineNode.propTypes = {
   isSelected: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
   onTransform: PropTypes.func.isRequired,
-  shape: PropTypes.object.isRequired,
-};
+  shape: PropTypes.shape({
+    id: PropTypes.string,
+    rotation: PropTypes.number,
+    scaleX: PropTypes.number,
+    scaleY: PropTypes.number,
+    type: PropTypes.string,
+    url: PropTypes.string,
+    x: PropTypes.number,
+    y: PropTypes.number,
+  }).isRequired,};
 
 
 export default LineNode;

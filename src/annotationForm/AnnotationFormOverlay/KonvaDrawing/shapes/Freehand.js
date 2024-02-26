@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { number } from 'prop-types';
 import { Transformer, Line, Group } from 'react-konva';
 
 /** FreeHand shape displaying */
 function Freehand({
-  activeTool,  onShapeClick, isSelected, shape, onTransform, handleDragEnd,handleDragStart,
+  activeTool, onShapeClick, isSelected, shape, onTransform, handleDragEnd, handleDragStart,
 }) {
   // TODO check if selectedShapeId is needed
   const shapeRef = useRef();
@@ -22,12 +22,12 @@ function Freehand({
     onShapeClick(shape);
   };
 
-
   return (
     <>
       <Group
         ref={shapeRef}
         onClick={handleClick}
+        onMousedown={handleClick}
         onTransform={onTransform}
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
@@ -37,12 +37,11 @@ function Freehand({
         width={shape.width || 1920}
         height={shape.height || 1080}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
-        onDragEnd={handleDragEnd}
+        onDrag={handleDragEnd}
         onDragStart={handleDragStart}
         id={shape.id}
       >
         {shape.lines.map((line, i) => (
-
           <Line
             key={i}
             fill={shape.stroke}
@@ -70,16 +69,27 @@ Freehand.propTypes = {
   isSelected: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
   onTransform: PropTypes.func.isRequired,
-  shape: PropTypes.object.isRequired,
-};
-
-Freehand.defaultProps = {
-  fill: 'red',
-  height: 1080,
-  points: [0, 0, 100, 0, 100, 100],
-  stroke: 'black',
-  strokeWidth: 1,
-  width: 1920,
+  shape: PropTypes.shape({
+    fill: PropTypes.string,
+    height: PropTypes.number,
+    id: PropTypes.string,
+    lines: PropTypes.arrayOf({
+      points: PropTypes.arrayOf(number),
+      stroke: PropTypes.string,
+      strokeWidth: PropTypes.number,
+      x: PropTypes.number,
+      y: PropTypes.number,
+    }),
+    rotation: PropTypes.number,
+    scaleX: PropTypes.number,
+    scaleY: PropTypes.number,
+    stroke: PropTypes.string,
+    strokeWidth: PropTypes.number,
+    type: PropTypes.string,
+    width: PropTypes.number,
+    x: PropTypes.number,
+    y: PropTypes.number,
+  }).isRequired,
 };
 
 export default Freehand;
