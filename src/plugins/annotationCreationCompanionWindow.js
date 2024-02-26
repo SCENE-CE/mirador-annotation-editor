@@ -4,8 +4,7 @@ import { getWindowCurrentTime, getWindowPausedStatus } from 'mirador/dist/es/src
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
 import { getPresentAnnotationsOnSelectedCanvases } from 'mirador/dist/es/src/state/selectors/annotations';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
-import AnnotationCreation from '../AnnotationCreation';
-
+import annotationForm from "../AnnotationForm";
 /** */
 const mapDispatchToProps = (dispatch, { id, windowId }) => ({
   closeCompanionWindow: () => dispatch(
@@ -41,7 +40,7 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
 
 export default {
   companionWindowKey: 'annotationCreation',
-  component: AnnotationCreation,
+  component: annotationForm,
   mapDispatchToProps,
   mapStateToProps,
 };
