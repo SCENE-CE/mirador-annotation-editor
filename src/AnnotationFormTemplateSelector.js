@@ -12,8 +12,7 @@ export default function AnnotationFormTemplateSelector({ setCommentingType }) {
   /**
      * Sets the comment type for the application.
      */
-  const setCommentType = (template) => {setCommentingType(template)
-  console.log(template)};
+  const setCommentType = (template) => setCommentingType(template);
 
   return (
     <CardContainer>
