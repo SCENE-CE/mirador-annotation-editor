@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import CompanionWindow from "mirador/dist/es/src/containers/CompanionWindow";
+import AnnotationFormTemplateSelector from "./AnnotationFormTemplateSelector";
 export default  function AnnotationForm(
     {
         annotation,
@@ -20,7 +21,7 @@ return(
     windowId={windowId}
     id={id}
         >
-        <p>Hello World !</p>
+        <AnnotationFormTemplateSelector/>
     </CompanionWindow>
 )
 }
