@@ -8,103 +8,78 @@ import HubIcon from '@mui/icons-material/Hub';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import ArticleIcon from '@mui/icons-material/Article';
 import PropTypes from 'prop-types';
-
-const TEXT_TYPE = 'text';
-const IMAGE_TYPE = 'image';
-const KONVA_TYPE = 'konva';
-const MANIFEST_TYPE = 'manifest';
-const TAGGING_TYPE = 'tagging';
-const IIIF_TYPE = 'iiif';
+import {template} from './AnnotationFormUtils';
+import CategoryIcon from "@mui/icons-material/Category";
 /**
  * A component that renders a selection of annotation
  * form templates for different types of comments.
- *
- * @param {Object} props - Component props.
- * @param {Function} props.setCommentType - A function to set the type of comment.
  */
-export default function AnnotationFormTemplateSelector({ setCommentType }) {
+export default function AnnotationFormTemplateSelector({ setCommentingType }) {
   /**
      * Sets the comment type for the application.
      * @param {string} type - The type of comment to set.
      */
-  function setingComentType(type) {
-    setCommentType(type);
+  function setCommentType(type) {
+    return setCommentingType(type);
   }
+
+  const templateTypes = [
+      {
+          label:'Text Comment',
+          id:template.TEXT_TYPE,
+          icon:<TextFieldsIcon/>,
+          description:'mon incroyable description',
+      },
+      {
+          label:'Image Comment',
+          id:template.IMAGE_TYPE,
+          icon:<ImageIcon/>,
+          description:'mon incroyable description',
+      },
+      {
+          label:'Konva Comment',
+          id:template.KONVA_TYPE,
+          icon:<CategoryIcon/>,
+          description:'mon incroyable description',
+      },
+      {
+          label:'Manifest Comment',
+          id:template.MANIFEST_TYPE,
+          icon:<HubIcon/>,
+          description:'mon incroyable description',
+      },
+      {
+          label:'Tagging Comment',
+          id:template.TAGGING_TYPE,
+          icon:<LocalOfferIcon/>,
+          description:'mon incroyable description',
+      },
+      {
+          label:'IIIF Manifest',
+          id:template.IIIF_TYPE,
+          icon:<ArticleIcon/>,
+          description:'mon incroyable description',
+      },
+  ];
+
 
   return (
     <CardContainer>
-      <button type="button" onClick={setingComentType(TEXT_TYPE)}>
-        <Card>
-          <CardActionArea>
-            <CardContent>
-              <CardTypography component="div">
-                Text comment
-                <TextFieldsIcon />
-              </CardTypography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </button>
-      <button type="button" onClick={setingComentType(IMAGE_TYPE)}>
-        <Card>
-          <CardActionArea>
-            <CardContent>
-              <CardTypography component="div">
-                Image comment
-                <ImageIcon />
-              </CardTypography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </button>
-      <button type="button" onClick={setingComentType(KONVA_TYPE)}>
-        <Card>
-          <CardActionArea>
-            <CardContent>
-              <CardTypography component="div">
-                Konva comment
-                <ImageIcon />
-              </CardTypography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </button>
-      <button type="button" onClick={setingComentType(MANIFEST_TYPE)}>
-        <Card>
-          <CardActionArea>
-            <CardContent>
-              <CardTypography component="div">
-                Manifest comment
-                <HubIcon />
-              </CardTypography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </button>
-      <button type="button" onClick={setingComentType(TAGGING_TYPE)}>
-        <Card>
-          <CardActionArea>
-            <CardContent>
-              <CardTypography component="div">
-                Tagging
-                <LocalOfferIcon />
-              </CardTypography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </button>
-      <button type="button" onClick={setingComentType(IIIF_TYPE)}>
-        <Card>
-          <CardActionArea>
-            <CardContent>
-              <CardTypography component="div">
-                Manifest IIIF
-                <ArticleIcon />
-              </CardTypography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </button>
+        { templateTypes.map( t =>
+            <Card>
+                <CardActionArea id={t.id} onClick={() =>setCommentType(t.id)}>
+                    <CardContent>
+                        <CardTypography component="div">
+                            {t.label}
+                            {t.icon}
+                        </CardTypography>
+                        <CardTypography component="div">
+                            {t.description}
+                        </CardTypography>
+                    </CardContent>
+                </CardActionArea>
+            </Card>
+        ) }
     </CardContainer>
   );
 }
@@ -123,5 +98,5 @@ const CardTypography = styled(Typography)(({ theme }) => ({
 }));
 
 AnnotationFormTemplateSelector.propTypes = {
-  setCommentType: PropTypes.func.isRequired,
+  setCommentingType: PropTypes.func.isRequired,
 };

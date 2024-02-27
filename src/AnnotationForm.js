@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import PropTypes from 'prop-types';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
+import {template} from './AnnotationFormUtils';
+
 /**
  * Component for submitting a form to create or edit an annotation.
  * */
@@ -12,7 +14,7 @@ export default function AnnotationForm(
     windowId,
   },
 ) {
-  const [commentType, setCommentType] = useState('');
+  const [commentingType, setCommentingType] = useState(null);
 
   return (
     <CompanionWindow
@@ -20,7 +22,13 @@ export default function AnnotationForm(
       windowId={windowId}
       id={id}
     >
-      <AnnotationFormTemplateSelector setCommentType={setCommentType} />
+      { commentingType === null &&
+          <AnnotationFormTemplateSelector
+            setCommentingType={setCommentingType}
+          />
+      }{commentingType === template.TEXT_TYPE && <p>TEXT TYPE</p>}
+
+
     </CompanionWindow>
   );
 }
