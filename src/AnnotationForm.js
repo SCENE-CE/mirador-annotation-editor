@@ -7,6 +7,9 @@ import {
 } from './AnnotationFormUtils';
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormFooter from './annotationForm/AnnotationFormFooter';
+import AnnotationFormBody from "./AnnotationFormBody";
+import {VideosReferences} from "mirador/dist/es/src/plugins/VideosReferences";
+import {OSDReferences} from "mirador/dist/es/src/plugins/OSDReferences";
 /**
  * Component for submitting a form to create or edit an annotation.
  * */
@@ -21,6 +24,8 @@ export default function AnnotationForm(
     config,
     mediaVideo,
     receiveAnnotation,
+    setCurrentTime,
+    setSeekTo
   },
 ) {
   // Initial state setup
@@ -122,6 +127,38 @@ export default function AnnotationForm(
     textEditorStateBustingKey,
     valueTime,
   } = state;
+
+  const mediaIsVideo = mediaVideo !== undefined;
+  if (mediaIsVideo && valueTime) {
+    valueTime[0] = tstart;
+    valueTime[1] = tend;
+  }
+
+  // eslint-disable-next-line no-underscore-dangle
+  const videoDuration = mediaVideo ? mediaVideo.props.canvas.__jsonld.duration : 0;
+  // TODO: L'erreur de "Ref" sur l'ouverture d'une image vient d'ici et plus particulièrement
+  //  du useEffect qui prend en dépedance [overlay.containerWidth, overlay.canvasWidth]
+  const videoref = VideosReferences.get(windowId);
+  const osdref = OSDReferences.get(windowId);
+  let overlay = null;
+  if (videoref) {
+    overlay = videoref.canvasOverlay;
+  } else if (osdref) {
+    console.debug('osdref', osdref);
+    overlay = {
+      canvasHeight: osdref.current.canvas.clientHeight,
+      canvasWidth: osdref.current.canvas.clientWidth,
+      containerHeight: osdref.current.canvas.clientHeight,
+      containerWidth: osdref.current.canvas.clientWidth,
+    };
+  } else {
+    overlay = {
+      canvasHeight: 500,
+      canvasWidth: 1000,
+      containerHeight: 500,
+      containerWidth: 1000,
+    };
+  }
   /**
    * Closes the companion window with the specified ID and position.
    *
@@ -134,6 +171,15 @@ export default function AnnotationForm(
     });
   };
 
+  /**
+   * Updates the `textBody` property of the component's state.
+   */
+  const updateTextBody = (textBody) => {
+    setState((prevState) => ({
+      ...prevState,
+      textBody,
+    }));
+  };
   /**
    * Resets the state after saving, potentially causing a re-render.
    *
@@ -172,7 +218,22 @@ export default function AnnotationForm(
               setCommentingType={setCommentingType}
               templateType={commentingType}
             />
-            <p>TEXT TYPE</p>
+            <AnnotationFormBody
+                commentingType={commentingType}
+                textBody={textBody}
+                textEditorStateBustingKey={textEditorStateBustingKey}
+                updateTextBody={updateTextBody}
+                currentTime={currentTime}
+                mediaIsVideo={mediaIsVideo}
+                setCurrentTime={setCurrentTime}
+                setSeekTo={setSeekTo}
+                setState={setState}
+                tend={tend}
+                tstart={tstart}
+                valueTime={valueTime}
+                videoDuration={videoDuration}
+                windowid={windowId}
+            />
             <AnnotationFormFooter
               annotation={annotation}
               canvases={canvases}
@@ -193,7 +254,7 @@ export default function AnnotationForm(
               setCommentingType={setCommentingType}
               templateType={commentingType}
             />
-            <p>IMAGE TYPE</p>
+
             <AnnotationFormFooter
               annotation={annotation}
               canvases={canvases}
@@ -214,7 +275,6 @@ export default function AnnotationForm(
               setCommentingType={setCommentingType}
               templateType={commentingType}
             />
-            <p>KONVA TYPE</p>
             <AnnotationFormFooter
               annotation={annotation}
               canvases={canvases}
@@ -235,7 +295,6 @@ export default function AnnotationForm(
               setCommentingType={setCommentingType}
               templateType={commentingType}
             />
-            <p>MANIFEST TYPE</p>
             <AnnotationFormFooter
               annotation={annotation}
               canvases={canvases}
@@ -256,7 +315,6 @@ export default function AnnotationForm(
               setCommentingType={setCommentingType}
               templateType={commentingType}
             />
-            <p>TAGGING TYPE</p>
             <AnnotationFormFooter
               annotation={annotation}
               canvases={canvases}
@@ -277,7 +335,6 @@ export default function AnnotationForm(
               setCommentingType={setCommentingType}
               templateType={commentingType}
             />
-            <p>IIIF TYPE</p>
             <AnnotationFormFooter
               annotation={annotation}
               canvases={canvases}
