@@ -1,6 +1,7 @@
 import React from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
 
 /**
  * React component for rendering the header of the annotation form.
@@ -14,13 +15,20 @@ export default function AnnotationFormHeader({ templateType, setCommentingType }
   };
 
   return (
-    <div>
+    <ContainerAnnotationFormHeader>
       <ChevronLeftIcon onClick={goBackToTemplateSelection} />
       {templateType.label}
       {templateType.icon}
-    </div>
+    </ContainerAnnotationFormHeader>
   );
 }
+
+const ContainerAnnotationFormHeader = styled('div')(({ theme }) => ({
+  alignItems: 'center',
+  display: 'flex',
+  justifyContent: 'space-around',
+  marginTop: '10px',
+}));
 
 AnnotationFormHeader.propTypes = {
   setCommentingType: PropTypes.func.isRequired,
