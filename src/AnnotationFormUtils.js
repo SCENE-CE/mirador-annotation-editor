@@ -5,6 +5,7 @@ import HubIcon from '@mui/icons-material/Hub';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import ArticleIcon from '@mui/icons-material/Article';
 import React from 'react';
+import {OVERLAY_TOOL} from "./AnnotationCreationUtils";
 
 export const template = {
   IIIF_TYPE: 'iiif',
@@ -53,3 +54,31 @@ export const templateTypes = [
     label: 'IIIF Manifest',
   },
 ];
+
+/** Extract time information from annotation target */
+export function timeFromAnnoTarget(annotarget) {
+  // TODO w3c media fragments: t=,10 t=5,
+  const r = /t=([0-9.]+),([0-9.]+)/.exec(annotarget);
+  if (!r || r.length !== 3) {
+    return [0, 0];
+  }
+  return [Number(r[1]), Number(r[2])];
+}
+/** Extract xywh from annotation target */
+export function geomFromAnnoTarget(annotarget) {
+  const r = /xywh=((-?[0-9]+,?)+)/.exec(annotarget);
+  if (!r || r.length !== 3) {
+    return '';
+  }
+  return r[1];
+}
+
+export const defaultToolState = {
+  activeTool: OVERLAY_TOOL.EDIT,
+  closedMode: 'closed',
+  fillColor: 'rgba(83,162, 235, 0.5)',
+  image: { id: null },
+  imageEvent: null,
+  strokeColor: 'rgba(20,82,168,1)',
+  strokeWidth: 2,
+};
