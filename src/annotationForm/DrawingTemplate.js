@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import AnnotationDrawing from "./AnnotationDrawing";
 import DrawingTemplateForm from "./DrawingTemplateForm";
 import {OSDReferences} from "mirador/dist/es/src/plugins/OSDReferences";
+import {TARGET_VIEW} from "../AnnotationFormUtils";
 
 export default function DrawingTemplate(
     {
@@ -12,6 +13,34 @@ export default function DrawingTemplate(
     }
 )
 {
+    const [scale, setScale] = useState(1);
+    const [isMouseOverSave, setIsMouseOverSave] = useState(false);
+    const [viewTool, setViewTool] = useState(TARGET_VIEW);
+
+    /** Change scale from container / canva */
+    const updateScale = () => {
+        setScale(overlay.containerWidth / overlay.canvasWidth);
+    };
+
+    const updateGeometry = ({ svg, xywh }) => {
+        setState((prevState) => ({
+            ...prevState,
+            svg,
+            xywh,
+        }));
+    };
+
+    /**
+     * Updates the tool state by merging the current color state with the existing tool state.
+     * @param {object} colorState - The color state to be merged with the tool state.
+     * @returns {void}
+     */
+    const setColorToolFromCurrentShape = (colorState) => {
+        setToolState((prevState) => ({
+            ...prevState,
+            ...colorState,
+        }));
+    };
 
     return(
     <>

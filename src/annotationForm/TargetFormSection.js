@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {template} from "../AnnotationFormUtils";
 import TargetTimeInput from "./TargetTimeInput";
 
@@ -32,15 +32,7 @@ export default function TargetFormSection(
         {
             commentingTypeId !== template.IIIF_TYPE && mediaIsVideo &&(
                 <TargetTimeInput
-                    currentTime={currentTime}
                     mediaIsVideo={mediaIsVideo}
-                    setCurrentTime={setCurrentTime}
-                    setSeekTo={setSeekTo}
-                    setState={setState}
-                    tend={tend}
-                    tstart={tstart}
-                    value={valueTime}
-                    videoDuration={videoDuration}
                     windowId={windowId}
                 />
             )

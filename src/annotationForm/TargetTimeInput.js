@@ -65,14 +65,18 @@ function TargetTimeInput({
   windowId,
   tstart,
   tend,
-  mediaIsVideo,
   setState,
   currentTime,
   setSeekTo,
   setCurrentTime,
+  mediaVideo
 }) {
 
-
+  const mediaIsVideo = mediaVideo !== undefined;
+  if (mediaIsVideo && valueTime) {
+    valueTime[0] = tstart;
+    valueTime[1] = tend;
+  }
   /** set annotation start time to current time */
   const setTstartNow = () => {
     setState((prevState) => ({
