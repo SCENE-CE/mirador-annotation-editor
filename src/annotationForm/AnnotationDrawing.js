@@ -200,7 +200,6 @@ export default function AnnotationDrawing({
       currentShape: shape,
     });
 
-    // props.setShapeProperties(shape); // TODO Check that code ?
     props.setColorToolFromCurrentShape(
       {
         fillColor: shape.fill,

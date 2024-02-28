@@ -5,31 +5,30 @@ import ImageFormField from "./AnnotationFormOverlay/ImageFormField";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import {styled} from "@mui/material/styles";
 import {v4 as uuidv4} from "uuid";
+import TextFormSection from "./TextFormSection";
+import TargetFormSection from "./TargetFormSection";
 
 const StyledDivButtonImage = styled('div')(({ theme }) => ({
     display: 'flex',
     justifyContent: 'flex-end',
     marginTop: '5px',
 }));
-export default function AnnotationImageUrlField(
+export default function ImageCommentTemplate(
     {
         toolState,
-        updateToolState
+        updateToolState,
+        currentTime,
+        mediaIsVideo,
+        setCurrentTime,
+        setSeekTo,
+        setState,
+        tend,
+        tstart,
+        valueTime,
+        videoDuration,
+        windowId,
     })
 {
-
-    const addImage = () => {
-        const data = {
-            id: toolState?.image?.id,
-            uuid: uuidv4(),
-        };
-
-        updateToolState({
-            ...toolState,
-            image: { id: null },
-            imageEvent: data,
-        });
-    };
 
     /** TODO Code duplicate ?? */
     const handleImgChange = (newUrl, imgRef) => {
@@ -48,10 +47,26 @@ export default function AnnotationImageUrlField(
                 <ImageFormField xs={8} value={toolState.image} onChange={handleImgChange} />
             </Grid>
             <StyledDivButtonImage>
-                <Button variant="contained" onClick={addImage}>
+                <Button variant="contained">
                     <AddPhotoAlternateIcon />
                 </Button>
             </StyledDivButtonImage>
+            <TextFormSection
+                textEditorStateBustingKey
+                textBody
+            />
+            <TargetFormSection
+                currentTime={currentTime}
+                mediaIsVideo={mediaIsVideo}
+                setCurrentTime={setCurrentTime}
+                setSeekTo={setSeekTo}
+                setState={setState}
+                tend={tend}
+                tstart={tstart}
+                value={valueTime}
+                videoDuration={videoDuration}
+                windowId={windowId}
+            />
         </>
     )
 }

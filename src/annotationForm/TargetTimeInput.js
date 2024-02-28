@@ -59,7 +59,7 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 }));
 
 /** Form part with time mangement, dual slider + double input. Mange Tstart and Tend value */
-function AnnotationFormTimeTarget({
+function TargetTimeInput({
   videoDuration,
   value,
   windowId,
@@ -235,7 +235,7 @@ function AnnotationFormTimeTarget({
   );
 }
 
-AnnotationFormTimeTarget.propTypes = {
+TargetTimeInput.propTypes = {
   currentTime: PropTypes.number.isRequired,
   mediaIsVideo: PropTypes.bool.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
@@ -248,4 +248,4 @@ AnnotationFormTimeTarget.propTypes = {
   windowId: PropTypes.string.isRequired,
 };
 
-export default AnnotationFormTimeTarget;
+export default TargetTimeInput;

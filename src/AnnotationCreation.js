@@ -11,15 +11,15 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import HubIcon from '@mui/icons-material/Hub';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import AnnotationDrawing from './annotationForm/AnnotationDrawing';
-import AnnotationFormContent from './annotationForm/AnnotationFormContent';
-import AnnotationFormTarget from './annotationForm/AnnotationFormTimeTarget';
+import AnnotationFormContent from './annotationForm/TextCommentTemplate';
+import AnnotationFormTarget from './annotationForm/TargetTimeInput';
 import {
   defaultToolState,
   geomFromAnnoTarget, timeFromAnnoTarget,
 } from './AnnotationCreationUtils';
 import AnnotationFormOverlay from './annotationForm/AnnotationFormOverlay/AnnotationFormOverlay';
 import AnnotationFormFooter from './annotationForm/AnnotationFormFooter';
-import AnnotationFormManifestNetwork from './annotationForm/AnnotationFormManifestNetwork';
+import AnnotationFormManifestNetwork from './annotationForm/NetworkCommentTemplate';
 
 const TARGET_VIEW = 'target';
 const OVERLAY_VIEW = 'layer';

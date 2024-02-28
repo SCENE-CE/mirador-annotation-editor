@@ -3,17 +3,17 @@ import {
     template,
     TARGET_VIEW
 } from './AnnotationFormUtils';
-import AnnotationFormContent from "./annotationForm/AnnotationFormContent";
-import AnnotationImageUrlField from "./annotationForm/AnnotationImageUrlField";
-import AnnotationFormTarget from "./annotationForm/AnnotationFormTarget";
-import AnnotationFormNetwork from "./annotationForm/AnnotationFormManifestNetwork";
+import TextCommentTemplate from "./annotationForm/TextCommentTemplate";
+import ImageCommentTemplate from "./annotationForm/ImageCommentTemplate";
+import TargetFormSection from "./annotationForm/TargetFormSection";
+import NetworkCommentTemplate from "./annotationForm/NetworkCommentTemplate";
 import AnnotationDrawing from "./annotationForm/AnnotationDrawing";
 import {OSDReferences} from "mirador/dist/es/src/plugins/OSDReferences";
+import DrawingTemplate from "./annotationForm/DrawingTemplate";
 export default function AnnotationFormBody(
     {commentingType,
     textBody,
     textEditorStateBustingKey,
-    updateTextBody,
     currentTime,
     mediaIsVideo,
     setCurrentTime,
@@ -27,12 +27,10 @@ export default function AnnotationFormBody(
     toolState,
     updateToolState,
     manifestNetwork,
-    updateManifestNetwork,
     overlay,
     annotation,
     mediaVideo,
     setDrawingState,
-    setShapeProperties,
     setToolState,
     drawingState
     })
@@ -65,28 +63,38 @@ export default function AnnotationFormBody(
             ...colorState,
         }));
     };
-
-    const isCommentingTypeValid = commentingType.id === template.MANIFEST_TYPE ||
-        commentingType.id === template.KONVA_TYPE ||
-        commentingType.id === template.IMAGE_TYPE ||
-        commentingType.id === template.TEXT_TYPE;
-
-    const spatialTarget = commentingType.id === template.TEXT_TYPE ||
-        commentingType.id === template.TAGGING_TYPE
-
     return(
         <div>
             {
-                isCommentingTypeValid && (
-                    <AnnotationFormContent textBody={textBody}
-                                           textEditorStateBustingKey={textEditorStateBustingKey}
-                                           updateTextBody={updateTextBody}
+                commentingType.id === template.TEXT_TYPE && (
+                    <TextCommentTemplate textBody={textBody}
+                                         textEditorStateBustingKey={textEditorStateBustingKey}
+                                         currentTime={currentTime}
+                                         mediaIsVideo={mediaIsVideo}
+                                         setCurrentTime={setCurrentTime}
+                                         setSeekTo={setSeekTo}
+                                         setState={setState}
+                                         tend={tend}
+                                         tstart={tstart}
+                                         valueTime={valueTime}
+                                         videoDuration={videoDuration}
+                                         windowId={windowId}
                     />
                 )
             }
             {
                 commentingType.id === template.IMAGE_TYPE &&(
-                <AnnotationImageUrlField
+                <ImageCommentTemplate
+                currentTime={currentTime}
+                mediaIsVideo={mediaIsVideo}
+                setCurrentTime={setCurrentTime}
+                setSeekTo={setSeekTo}
+                setState={setState}
+                tend={tend}
+                tstart={tstart}
+                valueTime={valueTime}
+                videoDuration={videoDuration}
+                windowId={windowId}
                 toolState={toolState}
                 updateToolState={updateToolState}
                 />
@@ -95,57 +103,30 @@ export default function AnnotationFormBody(
             {
                 commentingType.id === template.KONVA_TYPE &&(
                     <>
-                        <AnnotationDrawing
-                            scale={scale}
-                            activeTool={toolState.activeTool}
-                            annotation={annotation}
-                            fillColor={toolState.fillColor}
-                            strokeColor={toolState.strokeColor}
-                            strokeWidth={toolState.strokeWidth}
-                            closed={toolState.closedMode === 'closed'}
-                            updateGeometry={updateGeometry}
-                            windowId={windowId}
-                            player={mediaIsVideo ? mediaVideo : OSDReferences.get(windowId)}
-                            // we need to pass the width and height of the image to the annotation drawing component
-                            width={overlay ? overlay.containerWidth : 1920}
-                            height={overlay ? overlay.containerHeight : 1080}
-                            originalWidth={overlay ? overlay.canvasWidth : 1920}
-                            originalHeight={overlay ? overlay.canvasHeight : 1080}
-                            setShapeProperties={setShapeProperties}
-                            updateScale={updateScale}
-                            imageEvent={toolState.imageEvent}
-                            setColorToolFromCurrentShape={setColorToolFromCurrentShape}
-                            drawingState={drawingState}
-                            isMouseOverSave={isMouseOverSave}
-                            mediaVideo={mediaVideo}
-                            setDrawingState={setDrawingState}
-                            tabView={viewTool}
-                        />
+                        <DrawingTemplate/>
                     </>
               )
             }
             {
                 commentingType.id === template.MANIFEST_TYPE &&(
-                        <AnnotationFormNetwork
+                        <NetworkCommentTemplate
+                            currentTime={currentTime}
+                            mediaIsVideo={mediaIsVideo}
+                            setCurrentTime={setCurrentTime}
+                            setSeekTo={setSeekTo}
+                            setState={setState}
+                            tend={tend}
+                            tstart={tstart}
+                            valueTime={valueTime}
+                            videoDuration={videoDuration}
+                            windowId={windowId}
+                            textEditorStateBustingKey={textEditorStateBustingKey}
+                            textBody={textBody}
                          manifestNetwork={manifestNetwork}
-                         updateManifestNetwork={updateManifestNetwork}
+
                         />
               )
             }
-            <AnnotationFormTarget
-            spatialTarget={spatialTarget}
-            commentingTypeId={commentingType.id}
-            mediaIsVideo={mediaIsVideo}
-            currentTime={currentTime}
-            setCurrentTime={setCurrentTime}
-            setSeekTo={setSeekTo}
-            setState={setState}
-            tend={tend}
-            tstart={tstart}
-            valueTime={valueTime}
-            videoDuration={videoDuration}
-            windowId={windowId}
-            />
         </div>
     )
 }

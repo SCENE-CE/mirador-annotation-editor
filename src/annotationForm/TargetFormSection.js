@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import {template} from "../AnnotationFormUtils";
-import AnnotationFormTimeTarget from "./AnnotationFormTimeTarget";
+import TargetTimeInput from "./TargetTimeInput";
 
-export default function AnnotationFormTarget(
+export default function TargetFormSection(
     {
         spatialTarget,
         commentingTypeId,
@@ -31,7 +31,7 @@ export default function AnnotationFormTarget(
         }
         {
             commentingTypeId !== template.IIIF_TYPE && mediaIsVideo &&(
-                <AnnotationFormTimeTarget
+                <TargetTimeInput
                     currentTime={currentTime}
                     mediaIsVideo={mediaIsVideo}
                     setCurrentTime={setCurrentTime}
@@ -49,6 +49,6 @@ export default function AnnotationFormTarget(
     )
 }
 
-AnnotationFormTarget.PropType = {
+TargetFormSection.PropType = {
 
 }

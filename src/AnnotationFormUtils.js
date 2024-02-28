@@ -22,6 +22,9 @@ export const templateTypes = [
     icon: <TextFieldsIcon />,
     id: template.TEXT_TYPE,
     label: 'Text Comment',
+    save: function textComentSave(){
+      console.log('TextCommentSave');
+    }
   },
   {
     description: 'mon incroyable description',

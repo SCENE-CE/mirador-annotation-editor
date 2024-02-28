@@ -18,12 +18,9 @@ export default function AnnotationForm(
     annotation,
     id,
     windowId,
-    canvases,
     currentTime,
     closeCompanionWindow,
-    config,
     mediaVideo,
-    receiveAnnotation,
     setCurrentTime,
     setSeekTo
   },
@@ -128,6 +125,7 @@ export default function AnnotationForm(
     valueTime,
   } = state;
 
+  //TODO: Mediaisvideo = ManifestType est n'est plus un booléen mais audio/video/image
   const mediaIsVideo = mediaVideo !== undefined;
   if (mediaIsVideo && valueTime) {
     valueTime[0] = tstart;
@@ -214,21 +212,21 @@ export default function AnnotationForm(
   useLayoutEffect(() => {
   }, [{ height, width }]);
 
-  const setShapeProperties = (options) => new Promise(() => {
-    if (options.fill) {
-      state.fillColor = options.fill;
-    }
-
-    if (options.strokeWidth) {
-      state.strokeWidth = options.strokeWidth;
-    }
-
-    if (options.stroke) {
-      state.strokeColor = options.stroke;
-    }
-
-    setState({ ...state });
-  });
+  // const setShapeProperties = (options) => new Promise(() => {
+  //   if (options.fill) {
+  //     state.fillColor = options.fill;
+  //   }
+  //
+  //   if (options.strokeWidth) {
+  //     state.strokeWidth = options.strokeWidth;
+  //   }
+  //
+  //   if (options.stroke) {
+  //     state.strokeColor = options.stroke;
+  //   }
+  //
+  //   setState({ ...state });
+  // });
 
   /**
    * Closes the companion window with the specified ID and position.
@@ -242,49 +240,11 @@ export default function AnnotationForm(
     });
   };
 
-  /**
-   * Updates the `textBody` property of the component's state.
-   */
-  const updateTextBody = (textBody) => {
-    setState((prevState) => ({
-      ...prevState,
-      textBody,
-    }));
-  };
 
   const handleImgChange = (newUrl) => {
     setToolState({
       ...toolState,
       image: { ...toolState.image, id: newUrl },
-    });
-  };
-
-  /**
-   * Updates the manifest network in the component's state.
-   * @param {Object} manifestNetwork The new manifest network object to update.
-   */
-  const updateManifestNetwork = (manifestNetwork) => {
-    setState((prevState) => ({
-      ...prevState,
-      manifestNetwork,
-    }));
-  };
-  /**
-   * Resets the state after saving, potentially causing a re-render.
-   *
-   * @function resetStateAfterSave
-   * @returns {void}
-   */
-  const resetStateAfterSave = () => {
-    // TODO this create a re-render too soon for react and crash the app
-    setState({
-      image: { id: null },
-      svg: null,
-      tend: 0,
-      textBody: '',
-      textEditorStateBustingKey: textEditorStateBustingKey + 1,
-      tstart: 0,
-      xywh: null,
     });
   };
 
@@ -311,7 +271,6 @@ export default function AnnotationForm(
                 commentingType={commentingType}
                 textBody={textBody}
                 textEditorStateBustingKey={textEditorStateBustingKey}
-                updateTextBody={updateTextBody}
                 currentTime={currentTime}
                 mediaIsVideo={mediaIsVideo}
                 setCurrentTime={setCurrentTime}
@@ -326,25 +285,15 @@ export default function AnnotationForm(
                 toolState={toolState}
                 updateToolState={setToolState}
                 manifestNetwork={manifestNetwork}
-                updateManifestNetwork={updateManifestNetwork}
                 overlay={overlay}
                 annotation={annotation}
                 mediaVideo={mediaVideo}
                 drawingState={drawingState}
                 setDrawingState={setDrawingState}
-                setShapeProperties={setShapeProperties}
                 setToolState={setToolState}
             />
             <AnnotationFormFooter
-              annotation={annotation}
-              canvases={canvases}
               closeFormCompanionWindow={closeFormCompanionWindow}
-              config={config}
-              drawingState={drawingState}
-              receiveAnnotation={receiveAnnotation}
-              resetStateAfterSave={resetStateAfterSave}
-              state={state}
-              windowId={windowId}
             />
           </div>
           )}
@@ -359,7 +308,6 @@ export default function AnnotationForm(
                 commentingType={commentingType}
                 textBody={textBody}
                 textEditorStateBustingKey={textEditorStateBustingKey}
-                updateTextBody={updateTextBody}
                 currentTime={currentTime}
                 mediaIsVideo={mediaIsVideo}
                 setCurrentTime={setCurrentTime}
@@ -374,25 +322,15 @@ export default function AnnotationForm(
                 toolState={toolState}
                 updateToolState={setToolState}
                 manifestNetwork={manifestNetwork}
-                updateManifestNetwork={updateManifestNetwork}
                 overlay={overlay}
                 annotation={annotation}
                 mediaVideo={mediaVideo}
                 drawingState={drawingState}
                 setDrawingState={setDrawingState}
-                setShapeProperties={setShapeProperties}
                 setToolState={setToolState}
             />
             <AnnotationFormFooter
-              annotation={annotation}
-              canvases={canvases}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-              config={config}
-              drawingState={drawingState}
-              receiveAnnotation={receiveAnnotation}
-              resetStateAfterSave={resetStateAfterSave}
-              state={state}
-              windowId={windowId}
+                closeFormCompanionWindow={closeFormCompanionWindow}
             />
           </div>
           )}
@@ -407,7 +345,6 @@ export default function AnnotationForm(
                 commentingType={commentingType}
                 textBody={textBody}
                 textEditorStateBustingKey={textEditorStateBustingKey}
-                updateTextBody={updateTextBody}
                 currentTime={currentTime}
                 mediaIsVideo={mediaIsVideo}
                 setCurrentTime={setCurrentTime}
@@ -422,25 +359,15 @@ export default function AnnotationForm(
                 toolState={toolState}
                 updateToolState={setToolState}
                 manifestNetwork={manifestNetwork}
-                updateManifestNetwork={updateManifestNetwork}
                 overlay={overlay}
                 annotation={annotation}
                 mediaVideo={mediaVideo}
                 drawingState={drawingState}
                 setDrawingState={setDrawingState}
-                setShapeProperties={setShapeProperties}
                 setToolState={setToolState}
             />
             <AnnotationFormFooter
-              annotation={annotation}
-              canvases={canvases}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-              config={config}
-              drawingState={drawingState}
-              receiveAnnotation={receiveAnnotation}
-              resetStateAfterSave={resetStateAfterSave}
-              state={state}
-              windowId={windowId}
+                closeFormCompanionWindow={closeFormCompanionWindow}
             />
           </div>
           )}
@@ -455,7 +382,6 @@ export default function AnnotationForm(
                 commentingType={commentingType}
                 textBody={textBody}
                 textEditorStateBustingKey={textEditorStateBustingKey}
-                updateTextBody={updateTextBody}
                 currentTime={currentTime}
                 mediaIsVideo={mediaIsVideo}
                 setCurrentTime={setCurrentTime}
@@ -470,25 +396,15 @@ export default function AnnotationForm(
                 toolState={toolState}
                 updateToolState={setToolState}
                 manifestNetwork={manifestNetwork}
-                updateManifestNetwork={updateManifestNetwork}
                 overlay={overlay}
                 annotation={annotation}
                 mediaVideo={mediaVideo}
                 drawingState={drawingState}
                 setDrawingState={setDrawingState}
-                setShapeProperties={setShapeProperties}
                 setToolState={setToolState}
             />
             <AnnotationFormFooter
-              annotation={annotation}
-              canvases={canvases}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-              config={config}
-              drawingState={drawingState}
-              receiveAnnotation={receiveAnnotation}
-              resetStateAfterSave={resetStateAfterSave}
-              state={state}
-              windowId={windowId}
+                closeFormCompanionWindow={closeFormCompanionWindow}
             />
           </div>
           )}
@@ -500,15 +416,7 @@ export default function AnnotationForm(
               templateType={commentingType}
             />
             <AnnotationFormFooter
-              annotation={annotation}
-              canvases={canvases}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-              config={config}
-              drawingState={drawingState}
-              receiveAnnotation={receiveAnnotation}
-              resetStateAfterSave={resetStateAfterSave}
-              state={state}
-              windowId={windowId}
+                closeFormCompanionWindow={closeFormCompanionWindow}
             />
           </div>
           )}
@@ -520,15 +428,7 @@ export default function AnnotationForm(
               templateType={commentingType}
             />
             <AnnotationFormFooter
-              annotation={annotation}
-              canvases={canvases}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-              config={config}
-              drawingState={drawingState}
-              receiveAnnotation={receiveAnnotation}
-              resetStateAfterSave={resetStateAfterSave}
-              state={state}
-              windowId={windowId}
+                closeFormCompanionWindow={closeFormCompanionWindow}
             />
           </div>
           )}
