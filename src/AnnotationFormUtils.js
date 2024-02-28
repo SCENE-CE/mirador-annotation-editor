@@ -82,3 +82,8 @@ export const defaultToolState = {
   strokeColor: 'rgba(20,82,168,1)',
   strokeWidth: 2,
 };
+
+export const TARGET_VIEW = 'target';
+export const OVERLAY_VIEW = 'layer';
+export const TAG_VIEW = 'tag';
+export const MANIFEST_LINK_VIEW = 'link';

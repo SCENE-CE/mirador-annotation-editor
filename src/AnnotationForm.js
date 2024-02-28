@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import PropTypes from 'prop-types';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
@@ -159,6 +159,77 @@ export default function AnnotationForm(
       containerWidth: 1000,
     };
   }
+
+  /**
+   * Retrieves the height and width of a media element.
+   * If the media element is a video, returns its dimensions.
+   * If not a video, attempts to retrieve dimensions from a manifest image.
+   * If no dimensions are found, default values are returned.
+   *
+   * @returns {{height: number, width: number}}
+   */
+  const getHeightAndWidth = () => {
+    if (mediaVideo) {
+      return mediaVideo;
+    }
+    // Todo get size from manifest image
+    return {
+      height: 1000,
+      width: 500,
+    };
+  };
+
+  const { height, width } = getHeightAndWidth();
+  // TODO Check the effect to keep and remove the other
+  // Add a state to trigger redraw
+  const [windowSize, setWindowSize] = useState({
+    height: window.innerHeight,
+    width: window.innerWidth,
+  });
+
+  // Listen to window resize event
+  useEffect(() => {
+    /**
+     * Updates the state with the current window size when the window is resized.
+     * @function handleResize
+     * @returns {void}
+     */
+    const handleResize = () => {
+      setWindowSize({
+        height: window.innerHeight,
+        width: window.innerWidth,
+      });
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+
+  }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
+
+  useLayoutEffect(() => {
+  }, [{ height, width }]);
+
+  const setShapeProperties = (options) => new Promise(() => {
+    if (options.fill) {
+      state.fillColor = options.fill;
+    }
+
+    if (options.strokeWidth) {
+      state.strokeWidth = options.strokeWidth;
+    }
+
+    if (options.stroke) {
+      state.strokeColor = options.stroke;
+    }
+
+    setState({ ...state });
+  });
+
   /**
    * Closes the companion window with the specified ID and position.
    *
@@ -178,6 +249,24 @@ export default function AnnotationForm(
     setState((prevState) => ({
       ...prevState,
       textBody,
+    }));
+  };
+
+  const handleImgChange = (newUrl) => {
+    setToolState({
+      ...toolState,
+      image: { ...toolState.image, id: newUrl },
+    });
+  };
+
+  /**
+   * Updates the manifest network in the component's state.
+   * @param {Object} manifestNetwork The new manifest network object to update.
+   */
+  const updateManifestNetwork = (manifestNetwork) => {
+    setState((prevState) => ({
+      ...prevState,
+      manifestNetwork,
     }));
   };
   /**
@@ -232,7 +321,19 @@ export default function AnnotationForm(
                 tstart={tstart}
                 valueTime={valueTime}
                 videoDuration={videoDuration}
-                windowid={windowId}
+                windowId={windowId}
+                handleImgChange={handleImgChange}
+                toolState={toolState}
+                updateToolState={setToolState}
+                manifestNetwork={manifestNetwork}
+                updateManifestNetwork={updateManifestNetwork}
+                overlay={overlay}
+                annotation={annotation}
+                mediaVideo={mediaVideo}
+                drawingState={drawingState}
+                setDrawingState={setDrawingState}
+                setShapeProperties={setShapeProperties}
+                setToolState={setToolState}
             />
             <AnnotationFormFooter
               annotation={annotation}
@@ -254,7 +355,34 @@ export default function AnnotationForm(
               setCommentingType={setCommentingType}
               templateType={commentingType}
             />
-
+            <AnnotationFormBody
+                commentingType={commentingType}
+                textBody={textBody}
+                textEditorStateBustingKey={textEditorStateBustingKey}
+                updateTextBody={updateTextBody}
+                currentTime={currentTime}
+                mediaIsVideo={mediaIsVideo}
+                setCurrentTime={setCurrentTime}
+                setSeekTo={setSeekTo}
+                setState={setState}
+                tend={tend}
+                tstart={tstart}
+                valueTime={valueTime}
+                videoDuration={videoDuration}
+                windowId={windowId}
+                handleImgChange={handleImgChange}
+                toolState={toolState}
+                updateToolState={setToolState}
+                manifestNetwork={manifestNetwork}
+                updateManifestNetwork={updateManifestNetwork}
+                overlay={overlay}
+                annotation={annotation}
+                mediaVideo={mediaVideo}
+                drawingState={drawingState}
+                setDrawingState={setDrawingState}
+                setShapeProperties={setShapeProperties}
+                setToolState={setToolState}
+            />
             <AnnotationFormFooter
               annotation={annotation}
               canvases={canvases}
@@ -275,6 +403,34 @@ export default function AnnotationForm(
               setCommentingType={setCommentingType}
               templateType={commentingType}
             />
+            <AnnotationFormBody
+                commentingType={commentingType}
+                textBody={textBody}
+                textEditorStateBustingKey={textEditorStateBustingKey}
+                updateTextBody={updateTextBody}
+                currentTime={currentTime}
+                mediaIsVideo={mediaIsVideo}
+                setCurrentTime={setCurrentTime}
+                setSeekTo={setSeekTo}
+                setState={setState}
+                tend={tend}
+                tstart={tstart}
+                valueTime={valueTime}
+                videoDuration={videoDuration}
+                windowId={windowId}
+                handleImgChange={handleImgChange}
+                toolState={toolState}
+                updateToolState={setToolState}
+                manifestNetwork={manifestNetwork}
+                updateManifestNetwork={updateManifestNetwork}
+                overlay={overlay}
+                annotation={annotation}
+                mediaVideo={mediaVideo}
+                drawingState={drawingState}
+                setDrawingState={setDrawingState}
+                setShapeProperties={setShapeProperties}
+                setToolState={setToolState}
+            />
             <AnnotationFormFooter
               annotation={annotation}
               canvases={canvases}
@@ -294,6 +450,34 @@ export default function AnnotationForm(
             <AnnotationFormHeader
               setCommentingType={setCommentingType}
               templateType={commentingType}
+            />
+            <AnnotationFormBody
+                commentingType={commentingType}
+                textBody={textBody}
+                textEditorStateBustingKey={textEditorStateBustingKey}
+                updateTextBody={updateTextBody}
+                currentTime={currentTime}
+                mediaIsVideo={mediaIsVideo}
+                setCurrentTime={setCurrentTime}
+                setSeekTo={setSeekTo}
+                setState={setState}
+                tend={tend}
+                tstart={tstart}
+                valueTime={valueTime}
+                videoDuration={videoDuration}
+                windowId={windowId}
+                handleImgChange={handleImgChange}
+                toolState={toolState}
+                updateToolState={setToolState}
+                manifestNetwork={manifestNetwork}
+                updateManifestNetwork={updateManifestNetwork}
+                overlay={overlay}
+                annotation={annotation}
+                mediaVideo={mediaVideo}
+                drawingState={drawingState}
+                setDrawingState={setDrawingState}
+                setShapeProperties={setShapeProperties}
+                setToolState={setToolState}
             />
             <AnnotationFormFooter
               annotation={annotation}

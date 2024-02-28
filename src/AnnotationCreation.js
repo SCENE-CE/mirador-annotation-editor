@@ -12,7 +12,7 @@ import HubIcon from '@mui/icons-material/Hub';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import AnnotationDrawing from './annotationForm/AnnotationDrawing';
 import AnnotationFormContent from './annotationForm/AnnotationFormContent';
-import AnnotationFormTarget from './annotationForm/AnnotationFormTarget';
+import AnnotationFormTarget from './annotationForm/AnnotationFormTimeTarget';
 import {
   defaultToolState,
   geomFromAnnoTarget, timeFromAnnoTarget,
