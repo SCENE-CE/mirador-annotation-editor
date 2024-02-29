@@ -4,10 +4,12 @@ import TextEditor from "../TextEditor";
 
 export default function TextFormSection(
     {
-
+        annoHtml,
+        updateAnnotationBody,
     }
     )
 {
+
     return(
         <Grid>
             <Typography variant="overline">
@@ -15,6 +17,8 @@ export default function TextFormSection(
             </Typography>
             <Grid>
                 <TextEditor
+                    annoHtml={annoHtml}
+                    updateAnnotationBody={updateAnnotationBody}
                 />
             </Grid>
         </Grid>

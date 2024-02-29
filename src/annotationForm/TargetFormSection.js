@@ -1,24 +1,24 @@
-import React from 'react';
-import {template} from "../AnnotationFormUtils";
+import React, {useEffect} from 'react';
+import {manifestTypes, template} from "../AnnotationFormUtils";
 import TargetTimeInput from "./TargetTimeInput";
 
 export default function TargetFormSection(
     {
         spatialTarget,
         commentingTypeId,
-        mediaIsVideo,
         currentTime,
         setCurrentTime,
         setSeekTo,
-        setState,
-        tend,
-        tstart,
-        valueTime,
-        videoDuration,
-        windowId
+        setAnnoState,
+        windowId,
+        manifestType,
+        annoState
     }
 )
 {
+    useEffect(() => {
+        console.log('annoState',annoState)
+    }, []);
 
     return (
     <div>
@@ -30,10 +30,14 @@ export default function TargetFormSection(
             )
         }
         {
-            commentingTypeId !== template.IIIF_TYPE && mediaIsVideo &&(
+            commentingTypeId !== template.IIIF_TYPE && manifestType === manifestTypes.VIDEO &&(
                 <TargetTimeInput
-                    mediaIsVideo={mediaIsVideo}
                     windowId={windowId}
+                    currentTime={currentTime}
+                    setCurrentTime={setCurrentTime}
+                    setSeekTo={setSeekTo}
+                    setAnnoState={setAnnoState}
+                    annoState={annoState}
                 />
             )
         }

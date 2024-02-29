@@ -16,6 +16,12 @@ export const template = {
   TEXT_TYPE: 'text',
 };
 
+export const manifestTypes= {
+  IMAGE : 'image',
+  VIDEO : 'video',
+  AUDIO : 'audio',
+}
+
 export const templateTypes = [
   {
     description: 'mon incroyable description',

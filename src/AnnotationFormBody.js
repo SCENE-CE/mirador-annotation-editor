@@ -7,7 +7,6 @@ import TextCommentTemplate from "./annotationForm/TextCommentTemplate";
 import ImageCommentTemplate from "./annotationForm/ImageCommentTemplate";
 import NetworkCommentTemplate from "./annotationForm/NetworkCommentTemplate";
 import DrawingTemplate from "./annotationForm/DrawingTemplate";
-import {defaultToolState} from "./AnnotationCreationUtils";
 export default function AnnotationFormBody(
     {
     commentingType,
@@ -15,15 +14,13 @@ export default function AnnotationFormBody(
     overlay,
     annotation,
     mediaVideo,
-    currentTime
+    currentTime,
+    setCurrentTime,
+    setSeekTo,
+    manifestType
     })
 {
-    const [toolState, setToolState] = useState(defaultToolState);
-    const [drawingState, setDrawingState] = useState({
-        currentShape: null,
-        isDrawing: false,
-        shapes: [],
-    });
+
     // Initial state setup
     const [state, setState] = useState(() => {
         let tstart;
@@ -75,7 +72,7 @@ export default function AnnotationFormBody(
             }
 
             if (annotation.drawingState) {
-                setDrawingState(JSON.parse(annotation.drawingState));
+                annoState.drawingState = JSON.parse(annotation.drawingState);
             }
             if (annotation.manifestNetwork) {
                 annoState.manifestNetwork = annotation.manifestNetwork;
@@ -97,14 +94,14 @@ export default function AnnotationFormBody(
             }
             annoState.textBody = '';
             annoState.manifestNetwork = '';
+            annoState.valueTime = [0, 1];
+
         }
 
         return {
-            ...toolState,
             mediaVideo,
             ...annoState,
             textEditorStateBustingKey: 0,
-            valueTime: [0, 1],
         };
     });
     const {
@@ -118,60 +115,44 @@ export default function AnnotationFormBody(
 
     //TODO: Mediaisvideo = ManifestType est n'est plus un booléen mais audio/video/image
 
-    let mediaIsVideo =  undefined;
-    if(mediaVideo){
-        mediaIsVideo = mediaVideo
-    }
 
-    if (mediaIsVideo && valueTime) {
-        valueTime[0] = tstart;
-        valueTime[1] = tend;
-    }
+
 
     return(
         <div>
             {
                 commentingType.id === template.TEXT_TYPE && (
                     <TextCommentTemplate
-                                         mediaIsVideo={mediaIsVideo}
-                                         valueTime={valueTime}
-                                         videoDuration={videoDuration}
-                                         windowId={windowId}
+                        annoState={state}
+                        setAnnoState={setState}
+                        setCurrentTime={setCurrentTime}
+                        setSeekTo={setSeekTo}
+                        windowId={windowId}
+                        commentingTypeId={commentingType.id}
+                        manifestType={manifestType}
                     />
                 )
             }
             {
                 commentingType.id === template.IMAGE_TYPE &&(
                 <ImageCommentTemplate
-                    annotation={annotation}
-
                 />
               )
             }
             {
                 commentingType.id === template.KONVA_TYPE &&(
                     <>
-                        <DrawingTemplate/>
+                        <DrawingTemplate
+                        annoState={state}
+                        setAnnoState={setState}
+                        overlay={overlay}
+                        />
                     </>
               )
             }
             {
                 commentingType.id === template.MANIFEST_TYPE &&(
                         <NetworkCommentTemplate
-                            currentTime={currentTime}
-                            mediaIsVideo={mediaIsVideo}
-                            setCurrentTime={setCurrentTime}
-                            setSeekTo={setSeekTo}
-                            setState={setState}
-                            tend={tend}
-                            tstart={tstart}
-                            valueTime={valueTime}
-                            videoDuration={videoDuration}
-                            windowId={windowId}
-                            textEditorStateBustingKey={textEditorStateBustingKey}
-                            textBody={textBody}
-                         manifestNetwork={manifestNetwork}
-
                         />
               )
             }

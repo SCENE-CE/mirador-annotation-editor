@@ -7,6 +7,7 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import HMSInput from '../HMSInput';
+import {VideosReferences} from "mirador/dist/es/src/plugins/VideosReferences";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   display: 'flex',
@@ -60,26 +61,25 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 
 /** Form part with time mangement, dual slider + double input. Mange Tstart and Tend value */
 function TargetTimeInput({
-  videoDuration,
-  value,
   windowId,
-  tstart,
-  tend,
-  setState,
+  setAnnoState,
+  annoState,
   currentTime,
   setSeekTo,
   setCurrentTime,
-  mediaVideo
 }) {
+  useEffect(() => {
+    console.log('annoState',annoState)
+  }, []);
+  const mediaVideo = VideosReferences.get(windowId);
+  const videoDuration = mediaVideo.props.canvas.__jsonld.duration;
 
-  const mediaIsVideo = mediaVideo !== undefined;
-  if (mediaIsVideo && valueTime) {
-    valueTime[0] = tstart;
-    valueTime[1] = tend;
-  }
+  annoState.valueTime[0] = annoState.tstart;
+  annoState.valueTime[1] = annoState.tend;
+
   /** set annotation start time to current time */
   const setTstartNow = () => {
-    setState((prevState) => ({
+    setAnnoState((prevState) => ({
       ...prevState,
       tstart: Math.floor(currentTime),
     }));
@@ -87,7 +87,7 @@ function TargetTimeInput({
 
   /** set annotation end time to current time */
   const setTendNow = () => {
-    setState((prevState) => ({
+    setAnnoState((prevState) => ({
       ...prevState,
       tend: Math.floor(currentTime),
     }));
@@ -97,7 +97,7 @@ function TargetTimeInput({
    * @param {number} newValueTime
    */
   const setValueTime = (newValueTime) => {
-    setState((prevState) => ({
+    setAnnoState((prevState) => ({
       ...prevState,
       valueTime: newValueTime,
     }));
@@ -111,11 +111,11 @@ function TargetTimeInput({
   const handleChangeTime = (event, newValueTime) => {
     const timeStart = newValueTime[0];
     const timeEnd = newValueTime[1];
-    if (timeStart !== tstart) {
+    if (timeStart !== annoState.tstart) {
       updateTstart(timeStart);
       seekToTstart();
     }
-    if (timeEnd !== tend) {
+    if (timeEnd !== annoState.tend) {
       updateTend(timeEnd);
       updateTend(timeEnd);
       seekToTend();
@@ -125,10 +125,10 @@ function TargetTimeInput({
 
   /** Change from Tstart HMS Input */
   const updateTstart = (valueTstart) => {
-    if (valueTstart > tend) {
+    if (valueTstart > annoState.tend) {
       return;
     }
-    setState((prevState) => ({
+    setAnnoState((prevState) => ({
       ...prevState,
       tstart: valueTstart,
       ...setSeekTo(valueTstart),
@@ -139,7 +139,7 @@ function TargetTimeInput({
 
   /** update annotation end time */
   const updateTend = (valueTend) => {
-    setState((prevState) => ({
+    setAnnoState((prevState) => ({
       ...prevState,
       tend: valueTend,
       ...setSeekTo(valueTend),
@@ -151,7 +151,7 @@ function TargetTimeInput({
    * Set the video player to the start of the annotation
     */
   const seekToTstart = () => {
-    setState((prevState) => ({
+    setAnnoState((prevState) => ({
       ...prevState,
       ...setSeekTo(prevState.tstart),
       ...setCurrentTime(prevState.tstart),
@@ -163,7 +163,7 @@ function TargetTimeInput({
    * @function seekToTend
    */
   const seekToTend = () => {
-    setState((prevState) => ({
+    setAnnoState((prevState) => ({
       ...prevState,
       ...setSeekTo(prevState.tend),
       ...setCurrentTime(prevState.tend),
@@ -172,7 +172,6 @@ function TargetTimeInput({
 
   return (
     <>
-      { mediaIsVideo && (
         <StyledPaper>
           <Grid
             item
@@ -184,7 +183,7 @@ function TargetTimeInput({
             <ContainerSlider>
               <StyledSlider
                 size="small"
-                value={value}
+                value={annoState.valueTime}
                 onChange={handleChangeTime}
                 valueLabelDisplay="auto"
                 aria-labelledby="range-slider"
@@ -211,7 +210,7 @@ function TargetTimeInput({
                   <Alarm fontSize="small" />
                 </StyledToggleButton>
               </StyledDivToggleButton>
-              <HMSInput seconds={tstart} onChange={updateTstart} />
+              <HMSInput seconds={setAnnoState.tstart} onChange={updateTstart} />
             </StyledDivTimeSelector>
             <StyledDivTimeSelector>
               <StyledDivToggleButton>
@@ -229,11 +228,10 @@ function TargetTimeInput({
                   <Alarm fontSize="small" />
                 </StyledToggleButton>
               </StyledDivToggleButton>
-              <HMSInput seconds={tend} onChange={updateTend} />
+              <HMSInput seconds={setAnnoState.tend} onChange={updateTend} />
             </StyledDivTimeSelector>
           </StyledDivFormTimeContainer>
         </StyledPaper>
-      )}
     </>
 
   );
@@ -241,14 +239,9 @@ function TargetTimeInput({
 
 TargetTimeInput.propTypes = {
   currentTime: PropTypes.number.isRequired,
-  mediaIsVideo: PropTypes.bool.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   setState: PropTypes.func.isRequired,
-  tend: PropTypes.number.isRequired,
-  tstart: PropTypes.number.isRequired,
-  value: PropTypes.arrayOf(PropTypes.number).isRequired,
-  videoDuration: PropTypes.number.isRequired,
   windowId: PropTypes.string.isRequired,
 };
 
