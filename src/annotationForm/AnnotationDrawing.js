@@ -564,6 +564,8 @@ export default function AnnotationDrawing({
   );
   const osdref = OSDReferences.get(props.windowId);
   const videoref = VideosReferences.get(props.windowId);
+  console.log('videoref',videoref)
+  console.log('osdref',osdref)
   if (!osdref && !videoref) {
     throw new Error("Unknown or missing data player, didn't found OpenSeadragon (image viewer) nor the video player");
   }
@@ -626,10 +628,8 @@ AnnotationDrawing.propTypes = {
   fillColor: PropTypes.string.isRequired,
   originalHeight: PropTypes.number.isRequired,
   originalWidth: PropTypes.number.isRequired,
-  selectedShapeId: PropTypes.string.isRequired,
   strokeColor: PropTypes.string.isRequired,
   strokeWidth: PropTypes.number.isRequired,
-  svg: PropTypes.func.isRequired,
   updateGeometry: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };

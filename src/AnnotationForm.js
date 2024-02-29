@@ -171,73 +171,99 @@ export default function AnnotationForm(
             />
           </div>
           )}
-      {/*{commentingType?.id === template.IMAGE_TYPE*/}
-      {/*    && (*/}
-      {/*    <div>*/}
-      {/*      <AnnotationFormHeader*/}
-      {/*        setCommentingType={setCommentingType}*/}
-      {/*        templateType={commentingType}*/}
-      {/*      />*/}
-      {/*      <AnnotationFormBody*/}
-      {/*      />*/}
-      {/*      <AnnotationFormFooter*/}
-      {/*          closeFormCompanionWindow={closeFormCompanionWindow}*/}
-      {/*      />*/}
-      {/*    </div>*/}
-      {/*    )}*/}
-      {/*{commentingType?.id === template.KONVA_TYPE*/}
-      {/*    && (*/}
-      {/*    <div>*/}
-      {/*      <AnnotationFormHeader*/}
-      {/*        setCommentingType={setCommentingType}*/}
-      {/*        templateType={commentingType}*/}
-      {/*      />*/}
-      {/*      <AnnotationFormBody*/}
-
-      {/*      />*/}
-      {/*      <AnnotationFormFooter*/}
-      {/*          closeFormCompanionWindow={closeFormCompanionWindow}*/}
-      {/*      />*/}
-      {/*    </div>*/}
-      {/*    )}*/}
-      {/*{commentingType?.id === template.MANIFEST_TYPE*/}
-      {/*    && (*/}
-      {/*    <div>*/}
-      {/*      <AnnotationFormHeader*/}
-      {/*        setCommentingType={setCommentingType}*/}
-      {/*        templateType={commentingType}*/}
-      {/*      />*/}
-      {/*      <AnnotationFormBody*/}
-      {/*      />*/}
-      {/*      <AnnotationFormFooter*/}
-      {/*          closeFormCompanionWindow={closeFormCompanionWindow}*/}
-      {/*      />*/}
-      {/*    </div>*/}
-      {/*    )}*/}
-      {/*{commentingType?.id === template.TAGGING_TYPE*/}
-      {/*    && (*/}
-      {/*    <div>*/}
-      {/*      <AnnotationFormHeader*/}
-      {/*        setCommentingType={setCommentingType}*/}
-      {/*        templateType={commentingType}*/}
-      {/*      />*/}
-      {/*      <AnnotationFormFooter*/}
-      {/*          closeFormCompanionWindow={closeFormCompanionWindow}*/}
-      {/*      />*/}
-      {/*    </div>*/}
-      {/*    )}*/}
-      {/*{commentingType?.id === template.IIIF_TYPE*/}
-      {/*    && (*/}
-      {/*    <div>*/}
-      {/*      <AnnotationFormHeader*/}
-      {/*        setCommentingType={setCommentingType}*/}
-      {/*        templateType={commentingType}*/}
-      {/*      />*/}
-      {/*      <AnnotationFormFooter*/}
-      {/*          closeFormCompanionWindow={closeFormCompanionWindow}*/}
-      {/*      />*/}
-      {/*    </div>*/}
-      {/*    )}*/}
+      {commentingType?.id === template.IMAGE_TYPE
+          && (
+          <div>
+            <AnnotationFormHeader
+              setCommentingType={setCommentingType}
+              templateType={commentingType}
+            />
+            <AnnotationFormBody
+                commentingType={commentingType}
+                windowId={windowId}
+                overlay={overlay}
+                annotation={annotation}
+                mediaVideo={mediaVideo}
+                currentTime={currentTime}
+                setCurrentTime={setCurrentTime}
+                setSeekTo={setSeekTo}
+                manifestType={manifestType}
+            />
+            <AnnotationFormFooter
+                closeFormCompanionWindow={closeFormCompanionWindow}
+            />
+          </div>
+          )}
+      {commentingType?.id === template.KONVA_TYPE
+          && (
+          <div>
+            <AnnotationFormHeader
+              setCommentingType={setCommentingType}
+              templateType={commentingType}
+            />
+            <AnnotationFormBody
+                commentingType={commentingType}
+                windowId={windowId}
+                overlay={overlay}
+                annotation={annotation}
+                mediaVideo={mediaVideo}
+                currentTime={currentTime}
+                setCurrentTime={setCurrentTime}
+                setSeekTo={setSeekTo}
+                manifestType={manifestType}
+            />
+            <AnnotationFormFooter
+                closeFormCompanionWindow={closeFormCompanionWindow}
+            />
+          </div>
+          )}
+      {commentingType?.id === template.MANIFEST_TYPE
+          && (
+          <div>
+            <AnnotationFormHeader
+              setCommentingType={setCommentingType}
+              templateType={commentingType}
+            />
+            <AnnotationFormBody
+                commentingType={commentingType}
+                windowId={windowId}
+                overlay={overlay}
+                annotation={annotation}
+                mediaVideo={mediaVideo}
+                currentTime={currentTime}
+                setCurrentTime={setCurrentTime}
+                setSeekTo={setSeekTo}
+                manifestType={manifestType}
+            />
+            <AnnotationFormFooter
+                closeFormCompanionWindow={closeFormCompanionWindow}
+            />
+          </div>
+          )}
+      {commentingType?.id === template.TAGGING_TYPE
+          && (
+          <div>
+            <AnnotationFormHeader
+              setCommentingType={setCommentingType}
+              templateType={commentingType}
+            />
+            <AnnotationFormFooter
+                closeFormCompanionWindow={closeFormCompanionWindow}
+            />
+          </div>
+          )}
+      {commentingType?.id === template.IIIF_TYPE
+          && (
+          <div>
+            <AnnotationFormHeader
+              setCommentingType={setCommentingType}
+              templateType={commentingType}
+            />
+            <AnnotationFormFooter
+                closeFormCompanionWindow={closeFormCompanionWindow}
+            />
+          </div>
+          )}
     </CompanionWindow>
   );
 }

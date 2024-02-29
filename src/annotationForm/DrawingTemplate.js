@@ -12,7 +12,13 @@ export default function DrawingTemplate(
         mediaIsVideo,
         mediaVideo,
         annoState,
-        overlay
+        overlay,
+        setAnnoState,
+        setCurrentTime,
+        setSeekTo,
+        commentingType,
+        manifestType,
+
     }
 )
 {
@@ -40,7 +46,7 @@ export default function DrawingTemplate(
     };
 
     const updateGeometry = ({ svg, xywh }) => {
-        setState((prevState) => ({
+        setAnnoState((prevState) => ({
             ...prevState,
             svg,
             xywh,
@@ -87,18 +93,17 @@ export default function DrawingTemplate(
             tabView={viewTool}
             />
         <DrawingTemplateForm
-            spatialTarget={spatialTarget}
             mediaIsVideo={mediaIsVideo}
-            commentingTypeId={commentingTypeId}
-            currentTime={currentTime}
             setCurrentTime={setCurrentTime}
             setSeekTo={setSeekTo}
-            setState={setState}
-            tend={tend}
-            tstart={tstart}
-            valueTime={valueTime}
-            videoDuration={videoDuration}
+            setAnnoState={setAnnoState}
             windowId={windowId}
+            manifestType={manifestType}
+            commentingType={commentingType}
+            toolState={toolState}
+            setToolState={setToolState}
+            shapes={drawingState.shapes}
+            annoState={annoState}
         />
     </>
     )

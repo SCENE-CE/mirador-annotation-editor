@@ -53,7 +53,7 @@ const objToRgba = (obj = {
 }) => `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
 
 /** All the tools options for the overlay options */
-function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
+function AnnotationFormOverlayToolOptions({ setToolState, toolState }) {
   // set toolOptionsValue
   const [toolOptions, setToolOptions] = useState({
     colorPopoverOpen: false,
@@ -86,7 +86,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
       lineWeightPopoverOpen: false,
       popoverLineWeightAnchorEl: null,
     });
-    updateToolState({
+    setToolState({
       ...toolState,
       strokeWidth: e.currentTarget.value,
     });
@@ -123,7 +123,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
 
   /**  closed mode change */
   const changeClosedMode = (e) => {
-    updateToolState({
+    setToolState({
       ...toolState,
       closedMode: e.currentTarget.value,
     });
@@ -131,7 +131,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
 
   /** Update color : fillColor or strokeColor */
   const updateColor = (color) => {
-    updateToolState({
+    setToolState({
       ...toolState,
       [toolOptions.currentColorType]: objToRgba(color.rgb),
     });
@@ -143,7 +143,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
       uuid: uuidv4(),
     };
 
-    updateToolState({
+    setToolState({
       ...toolState,
       image: { id: null },
       imageEvent: data,
@@ -152,7 +152,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
 
   /** TODO Code duplicate ?? */
   const handleImgChange = (newUrl, imgRef) => {
-    updateToolState({
+    setToolState({
       ...toolState,
       image: { ...toolState.image, id: newUrl },
     });
@@ -249,7 +249,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
               <SketchPicker
                 disableAlpha={false}
                 color={currentColor}
-                onChangeComplete={updateColor}
+                onChangeComplete={setToolState}
               />
             </Popover>
           </Grid>
@@ -306,7 +306,7 @@ AnnotationFormOverlayToolOptions.propTypes = {
     textBody: PropTypes.string,
     updateColor: PropTypes.func.isRequired,
   }).isRequired,
-  updateToolState: PropTypes.func.isRequired,
+  setToolState: PropTypes.func.isRequired,
 };
 
 export default AnnotationFormOverlayToolOptions;

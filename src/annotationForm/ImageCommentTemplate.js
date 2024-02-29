@@ -12,18 +12,13 @@ import ImageFormSection from "./ImageFormSection";
 
 export default function ImageCommentTemplate(
     {
-        toolState,
-        updateToolState,
-        currentTime,
-        mediaIsVideo,
+        annoState,
+        setAnnoState,
         setCurrentTime,
         setSeekTo,
-        setState,
-        tend,
-        tstart,
-        valueTime,
-        videoDuration,
         windowId,
+        commentingType,
+        manifestType,
     })
 {
 
@@ -31,24 +26,21 @@ export default function ImageCommentTemplate(
     return(
         <>
             <ImageFormSection
-            toolState={toolState}
-            updateToolState={updateToolState}
+            annoState={annoState}
+            setAnnoState={setAnnoState}
             />
             <TextFormSection
                 textEditorStateBustingKey
                 textBody
             />
             <TargetFormSection
-                currentTime={currentTime}
-                mediaIsVideo={mediaIsVideo}
+                setAnnoState={setAnnoState}
+                annoState={annoState}
                 setCurrentTime={setCurrentTime}
                 setSeekTo={setSeekTo}
-                setState={setState}
-                tend={tend}
-                tstart={tstart}
-                value={valueTime}
-                videoDuration={videoDuration}
                 windowId={windowId}
+                commentingType={commentingType}
+                manifestType={manifestType}
             />
         </>
     )

@@ -47,11 +47,11 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 
 /** All the form part for the overlay view */
 function AnnotationFormOverlayTool({
-  toolState, updateToolState, currentShape, shapes, deleteShape,
+  toolState, setToolState, currentShape, shapes, deleteShape,
 }) {
   /** Change the active overlay tool */
   const changeTool = (e, tool) => {
-    updateToolState({
+    setToolState({
       ...toolState,
       activeTool: tool,
     });
@@ -59,7 +59,7 @@ function AnnotationFormOverlayTool({
 
   /** Stay in edit mode when a shape is selected */
   const customUpdateToolState = (newState) => {
-    updateToolState({
+    setToolState({
       ...newState,
       activeTool: OVERLAY_TOOL.EDIT,
     });
@@ -178,7 +178,7 @@ function AnnotationFormOverlayTool({
       }
       <AnnotationFormOverlayToolOptions
         toolState={toolState}
-        updateToolState={updateToolState}
+        setToolState={setToolState}
       />
     </>
   );
@@ -199,7 +199,7 @@ AnnotationFormOverlayTool.propTypes = {
     strokeWidth: PropTypes.number.isRequired,
     updateColor: PropTypes.func.isRequired,
   }).isRequired,
-  updateToolState: PropTypes.func.isRequired,
+  setToolState: PropTypes.func.isRequired,
 
 };
 

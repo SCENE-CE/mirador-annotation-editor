@@ -135,6 +135,13 @@ export default function AnnotationFormBody(
             {
                 commentingType.id === template.IMAGE_TYPE &&(
                 <ImageCommentTemplate
+                    annoState={state}
+                    setAnnoState={setState}
+                    setCurrentTime={setCurrentTime}
+                    setSeekTo={setSeekTo}
+                    windowId={windowId}
+                    commentingType={commentingType}
+                    manifestType={manifestType}
                 />
               )
             }
@@ -145,6 +152,12 @@ export default function AnnotationFormBody(
                         annoState={state}
                         setAnnoState={setState}
                         overlay={overlay}
+                        setCurrentTime={setCurrentTime}
+                        setSeekTo={setSeekTo}
+                        windowId={windowId}
+                        commentingType={commentingType}
+                        manifestType={manifestType}
+                        annotation={annotation}
                         />
                     </>
               )
@@ -152,6 +165,13 @@ export default function AnnotationFormBody(
             {
                 commentingType.id === template.MANIFEST_TYPE &&(
                         <NetworkCommentTemplate
+                            annoState={state}
+                            setAnnoState={setState}
+                            setCurrentTime={setCurrentTime}
+                            setSeekTo={setSeekTo}
+                            windowId={windowId}
+                            commentingType={commentingType}
+                            manifestType={manifestType}
                         />
               )
             }

@@ -21,36 +21,32 @@ function ImageFormField({ value: image, onChange }) {
 
   useEffect(() => {
     if (inputRef.current) {
-      setImgIsValid(image.id && inputRef.current.checkValidity());
+      setImgIsValid(image && inputRef.current.checkValidity());
     } else {
-      setImgIsValid(!!image.id);
+      setImgIsValid(!!image);
     }
-  }, [image]);
 
-  const imgUrl = image.id === null ? '' : image.id;
+  }, [image]);
 
   return (
     <StyledRoot>
       <StyledTextField
-        value={imgUrl}
+        value={image}
         onChange={(ev) => onChange(ev.target.value)}
-        error={imgUrl !== '' && !imgIsValid}
+        error={image !== '' && !imgIsValid}
         margin="dense"
         label="Image URL"
         type="url"
         fullWidth
         inputRef={inputRef}
       />
-      {imgIsValid && <img src={image.id} width="100%" height="auto" alt="loading failed" />}
+      {imgIsValid && <img src={image} width="100%" height="auto" alt="loading failed" />}
     </StyledRoot>
   );
 }
 
 ImageFormField.propTypes = {
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.shape({
-    id: PropTypes.string,
-  }).isRequired,
 };
 
 export default ImageFormField;

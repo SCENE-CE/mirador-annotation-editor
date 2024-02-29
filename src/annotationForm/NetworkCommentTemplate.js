@@ -10,20 +10,23 @@ import TargetFormSection from "./TargetFormSection";
 /** Form part for edit annotation content and body */
 function NetworkCommentTemplate(
     {
-        manifestNetwork,
-        textEditorStateBustingKey,
-        textBody,
-        currentTime,
-        mediaIsVideo,
+        annoState,
+        setAnnoState,
         setCurrentTime,
         setSeekTo,
-        setState,
-        tend,
-        tstart,
-        valueTime,
-        videoDuration,
         windowId,
+        commentingType,
+        manifestType
     }) {
+
+    const updateAnnotationTextBody = (newBody) =>
+    {
+        setAnnoState({
+            ...annoState,
+            textBody:newBody,
+        })
+    }
+
   return (
     <Paper style={{ padding: '5px' }}>
       <Typography variant="overline">
@@ -31,17 +34,17 @@ function NetworkCommentTemplate(
       </Typography>
       <Grid>
         <TextField
-          value={manifestNetwork}
+          value={annoState.manifestNetwork}
           label="Manifest URL"
           type="url"
         />
         {
-          isValidUrl(manifestNetwork) ? (
+          isValidUrl(annoState.manifestNetwork) ? (
             <Link
-              href={manifestNetwork}
+              href={annoState.manifestNetwork}
               target="_blank"
             >
-              {manifestNetwork}
+              {annoState.manifestNetwork}
             </Link>
           ) : (
             <Typography variant="caption">
@@ -51,27 +54,23 @@ function NetworkCommentTemplate(
         }
       </Grid>
         <TextFormSection
-            textEditorStateBustingKey={textEditorStateBustingKey}
-            textBody={textBody}
+            annoHtml={annoState.textBody}
+        updateAnnotationBody={updateAnnotationTextBody}
         />
         <TargetFormSection
-            currentTime={currentTime}
-            mediaIsVideo={mediaIsVideo}
+            setAnnoState={setAnnoState}
+            annoState={annoState}
             setCurrentTime={setCurrentTime}
             setSeekTo={setSeekTo}
-            setState={setState}
-            tend={tend}
-            tstart={tstart}
-            value={valueTime}
-            videoDuration={videoDuration}
             windowId={windowId}
+            commentingType={commentingType}
+            manifestType={manifestType}
         />
     </Paper>
   );
 }
 
 NetworkCommentTemplate.propTypes = {
-  manifestNetwork: PropTypes.string.isRequired,
 };
 
 export default NetworkCommentTemplate;

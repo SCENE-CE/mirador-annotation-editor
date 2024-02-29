@@ -32,8 +32,13 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 }));
 
 /** All the stuff to manage to choose the drawing tool */
-function AnnotationFormOverlay({
-  updateToolState, toolState, deleteShape, currentShape, shapes
+function AnnotationFormOverlay(
+    {
+      setToolState,
+      toolState,
+      deleteShape,
+      currentShape,
+      shapes
 }) {
   useEffect(() => {
 
@@ -41,12 +46,12 @@ function AnnotationFormOverlay({
 
   const changeTool = (e, tool) => {
     if (tool === OVERLAY_TOOL.SHAPE) {
-      updateToolState({
+      setToolState({
         ...defaultToolState,
         activeTool: tool,
       });
     } else {
-      updateToolState({
+      setToolState({
         ...toolState,
         activeTool: tool,
       });
@@ -94,7 +99,7 @@ function AnnotationFormOverlay({
             </StyledToggleButtonGroup>
             <AnnotationFormOverlayTool
               toolState={toolState}
-              updateToolState={updateToolState}
+              setToolState={setToolState}
               currentShape={currentShape}
               shapes={shapes}
               deleteShape={deleteShape}
@@ -121,7 +126,7 @@ AnnotationFormOverlay.propTypes = {
     strokeWidth: PropTypes.number.isRequired,
     updateColor: PropTypes.func.isRequired,
   }).isRequired,
-  updateToolState: PropTypes.func.isRequired,
+  setToolState: PropTypes.func.isRequired,
 };
 
 export default AnnotationFormOverlay;

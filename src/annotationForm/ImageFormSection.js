@@ -6,17 +6,17 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import {styled} from "@mui/material/styles";
 export default function ImageFormSection(
     {
-        toolState,
-        updateToolState
+        setAnnoState,
+        annoState
     }
 )
 {
 
     /** TODO Code duplicate ?? */
     const handleImgChange = (newUrl, imgRef) => {
-        updateToolState({
-            ...toolState,
-            image: { ...toolState.image, id: newUrl },
+        setAnnoState({
+            ...annoState,
+            image: { ...annoState.image, id: newUrl },
         });
     };
 
@@ -26,7 +26,7 @@ export default function ImageFormSection(
             Add image from URL
         </Typography>
     <Grid container>
-        <ImageFormField xs={8} value={toolState.image} onChange={handleImgChange} />
+        <ImageFormField xs={8} value={annoState.image} onChange={handleImgChange} />
     </Grid>
     <StyledDivButtonImage>
         <Button variant="contained">
