@@ -7,12 +7,9 @@ import {styled} from "@mui/material/styles";
 import {v4 as uuidv4} from "uuid";
 import TextFormSection from "./TextFormSection";
 import TargetFormSection from "./TargetFormSection";
+import ImageFormSection from "./ImageFormSection";
 
-const StyledDivButtonImage = styled('div')(({ theme }) => ({
-    display: 'flex',
-    justifyContent: 'flex-end',
-    marginTop: '5px',
-}));
+
 export default function ImageCommentTemplate(
     {
         toolState,
@@ -30,27 +27,13 @@ export default function ImageCommentTemplate(
     })
 {
 
-    /** TODO Code duplicate ?? */
-    const handleImgChange = (newUrl, imgRef) => {
-        updateToolState({
-            ...toolState,
-            image: { ...toolState.image, id: newUrl },
-        });
-    };
 
     return(
         <>
-            <Typography variant="overline">
-                Add image from URL
-            </Typography>
-            <Grid container>
-                <ImageFormField xs={8} value={toolState.image} onChange={handleImgChange} />
-            </Grid>
-            <StyledDivButtonImage>
-                <Button variant="contained">
-                    <AddPhotoAlternateIcon />
-                </Button>
-            </StyledDivButtonImage>
+            <ImageFormSection
+            toolState={toolState}
+            updateToolState={updateToolState}
+            />
             <TextFormSection
                 textEditorStateBustingKey
                 textBody
