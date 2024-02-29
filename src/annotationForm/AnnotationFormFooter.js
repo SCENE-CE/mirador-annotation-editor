@@ -2,14 +2,6 @@ import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import React from 'react';
-import { v4 as uuid } from 'uuid';
-import {
-  saveAnnotationInEachCanvas,
-} from '../AnnotationCreationUtils';
-import { removeHTMLTags, secondsToHMS } from '../utils';
-import {
-  getKonvaAsDataURL,
-} from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
 const StyledButtonDivSaveOrCancel = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -24,9 +16,8 @@ function AnnotationFormFooter({
    * Validate form and save annotation
    */
   const submitAnnotationForm = async (e) => {
-    console.log('Vive les gros Cayenne Rouge !')
+    console.log('Vive les gros Cayenne Rouge !');
   };
-
 
   return (
     <StyledButtonDivSaveOrCancel>

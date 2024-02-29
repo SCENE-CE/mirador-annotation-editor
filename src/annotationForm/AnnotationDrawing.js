@@ -564,8 +564,6 @@ export default function AnnotationDrawing({
   );
   const osdref = OSDReferences.get(props.windowId);
   const videoref = VideosReferences.get(props.windowId);
-  console.log('videoref',videoref)
-  console.log('osdref',osdref)
   if (!osdref && !videoref) {
     throw new Error("Unknown or missing data player, didn't found OpenSeadragon (image viewer) nor the video player");
   }

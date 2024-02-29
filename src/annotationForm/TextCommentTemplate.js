@@ -1,49 +1,66 @@
 import React from 'react';
-import { Paper} from '@mui/material';
+import { Paper } from '@mui/material';
 import PropTypes from 'prop-types';
-import TextFormSection from "./TextFormSection";
-import TargetFormSection from "./TargetFormSection";
+import TextFormSection from './TextFormSection';
+import TargetFormSection from './TargetFormSection';
 
 /** Form part for edit annotation content and body */
 function TextCommentTemplate(
-    {
-        setCurrentTime,
-        setSeekTo,
-        setAnnoState,
-        annoState,
-        windowId,
-        commentingType,
-        manifestType
-    }) {
+  {
+    annoState,
+    commentingType,
+    currentTime,
+    manifestType,
+    setAnnoState,
+    setCurrentTime,
+    setSeekTo,
+    windowId,
+  },
+) {
+  /**
+     * Update the annotation's Body
+     * */
+  const updateAnnotationTextBody = (newBody) => {
+    setAnnoState({
+      ...annoState,
+      textBody: newBody,
+    });
+  };
 
-    const updateAnnotationTextBody = (newBody) =>
-    {
-        setAnnoState({
-            ...annoState,
-            textBody:newBody,
-        })
-    }
-
-    return (
-        <Paper style={{padding: '5px'}}>
-            <TextFormSection
-                annoHtml={annoState.textBody}
-                updateAnnotationBody={updateAnnotationTextBody}
-            />
-            <TargetFormSection
-                setAnnoState={setAnnoState}
-                annoState={annoState}
-                setCurrentTime={setCurrentTime}
-                setSeekTo={setSeekTo}
-                windowId={windowId}
-                commentingType={commentingType}
-                manifestType={manifestType}
-            />
-        </Paper>
-    );
+  return (
+    <Paper style={{ padding: '5px' }}>
+      <TextFormSection
+        annoHtml={annoState.textBody}
+        updateAnnotationBody={updateAnnotationTextBody}
+      />
+      <TargetFormSection
+        currentTime={currentTime}
+        setAnnoState={setAnnoState}
+        annoState={annoState}
+        setCurrentTime={setCurrentTime}
+        setSeekTo={setSeekTo}
+        windowId={windowId}
+        commentingType={commentingType}
+        manifestType={manifestType}
+        spatialTarget={false}
+      />
+    </Paper>
+  );
 }
 
 TextCommentTemplate.propTypes = {
+  annoState: PropTypes.shape(
+    {
+      textBody: PropTypes.string,
+    },
+  ).isRequired,
+  commentingType: PropTypes.string.isRequired,
+  currentTime: PropTypes.number.isRequired,
+  manifestType: PropTypes.string.isRequired,
+  setAnnoState: PropTypes.func.isRequired,
+  setCurrentTime: PropTypes.func.isRequired,
+  setSeekTo: PropTypes.func.isRequired,
+  windowId: PropTypes.string.isRequired,
 };
 
 export default TextCommentTemplate;

@@ -4,28 +4,31 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { isValidUrl } from '../utils';
-import TextFormSection from "./TextFormSection";
-import TargetFormSection from "./TargetFormSection";
+import TextFormSection from './TextFormSection';
+import TargetFormSection from './TargetFormSection';
 
 /** Form part for edit annotation content and body */
 function NetworkCommentTemplate(
-    {
-        annoState,
-        setAnnoState,
-        setCurrentTime,
-        setSeekTo,
-        windowId,
-        commentingType,
-        manifestType
-    }) {
-
-    const updateAnnotationTextBody = (newBody) =>
-    {
-        setAnnoState({
-            ...annoState,
-            textBody:newBody,
-        })
-    }
+  {
+    annoState,
+    commentingType,
+    manifestType,
+    setAnnoState,
+    setCurrentTime,
+    setSeekTo,
+    windowId,
+  },
+) {
+  /**
+     * handle Body text update
+     * @param newBody
+     */
+  const updateAnnotationTextBody = (newBody) => {
+    setAnnoState({
+      ...annoState,
+      textBody: newBody,
+    });
+  };
 
   return (
     <Paper style={{ padding: '5px' }}>
@@ -53,24 +56,32 @@ function NetworkCommentTemplate(
           )
         }
       </Grid>
-        <TextFormSection
-            annoHtml={annoState.textBody}
+      <TextFormSection
+        annoHtml={annoState.textBody}
         updateAnnotationBody={updateAnnotationTextBody}
-        />
-        <TargetFormSection
-            setAnnoState={setAnnoState}
-            annoState={annoState}
-            setCurrentTime={setCurrentTime}
-            setSeekTo={setSeekTo}
-            windowId={windowId}
-            commentingType={commentingType}
-            manifestType={manifestType}
-        />
+      />
+      <TargetFormSection
+        setAnnoState={setAnnoState}
+        annoState={annoState}
+        setCurrentTime={setCurrentTime}
+        setSeekTo={setSeekTo}
+        windowId={windowId}
+        commentingType={commentingType}
+        manifestType={manifestType}
+      />
     </Paper>
   );
 }
 
 NetworkCommentTemplate.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  annoState: PropTypes.object.isRequired,
+  commentingType: PropTypes.string.isRequired,
+  manifestType: PropTypes.string.isRequired,
+  setAnnoState: PropTypes.func.isRequired,
+  setCurrentTime: PropTypes.func.isRequired,
+  setSeekTo: PropTypes.func.isRequired,
+  windowId: PropTypes.string.isRequired,
 };
 
 export default NetworkCommentTemplate;

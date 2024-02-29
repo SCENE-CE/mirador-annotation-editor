@@ -5,7 +5,7 @@ import HubIcon from '@mui/icons-material/Hub';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import ArticleIcon from '@mui/icons-material/Article';
 import React from 'react';
-import {OVERLAY_TOOL} from "./AnnotationCreationUtils";
+import { OVERLAY_TOOL } from './AnnotationCreationUtils';
 
 export const template = {
   IIIF_TYPE: 'iiif',
@@ -16,11 +16,11 @@ export const template = {
   TEXT_TYPE: 'text',
 };
 
-export const manifestTypes= {
-  IMAGE : 'image',
-  VIDEO : 'video',
-  AUDIO : 'audio',
-}
+export const manifestTypes = {
+  AUDIO: 'audio',
+  IMAGE: 'image',
+  VIDEO: 'video',
+};
 
 export const templateTypes = [
   {
@@ -28,9 +28,12 @@ export const templateTypes = [
     icon: <TextFieldsIcon />,
     id: template.TEXT_TYPE,
     label: 'Text Comment',
-    save: function textComentSave(){
+    /**
+     * save function for text
+     */
+    save: function textComentSave() {
       console.log('TextCommentSave');
-    }
+    },
   },
   {
     description: 'mon incroyable description',

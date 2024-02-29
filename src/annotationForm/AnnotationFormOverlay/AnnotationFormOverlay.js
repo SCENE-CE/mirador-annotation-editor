@@ -26,24 +26,29 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
-
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: '5px',
 }));
 
 /** All the stuff to manage to choose the drawing tool */
 function AnnotationFormOverlay(
-    {
-      setToolState,
-      toolState,
-      deleteShape,
-      currentShape,
-      shapes
-}) {
+  {
+    setToolState,
+    toolState,
+    deleteShape,
+    currentShape,
+    shapes,
+  },
+) {
   useEffect(() => {
 
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
 
+  /**
+   * Handle tool's change
+   * @param e
+   * @param tool
+   */
   const changeTool = (e, tool) => {
     if (tool === OVERLAY_TOOL.SHAPE) {
       setToolState({
@@ -57,8 +62,6 @@ function AnnotationFormOverlay(
       });
     }
   };
-
-
 
   const {
     activeTool,
@@ -112,9 +115,30 @@ function AnnotationFormOverlay(
 }
 
 AnnotationFormOverlay.propTypes = {
-  currentShape: PropTypes.object.isRequired,
+  currentShape: PropTypes.shape({
+    id: PropTypes.string,
+    rotation: PropTypes.number,
+    scaleX: PropTypes.number,
+    scaleY: PropTypes.number,
+    type: PropTypes.string,
+    url: PropTypes.string,
+    x: PropTypes.number,
+    y: PropTypes.number,
+  }).isRequired,
   deleteShape: PropTypes.func.isRequired,
-  shapes: PropTypes.array.isRequired,
+  setToolState: PropTypes.func.isRequired,
+  shapes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      rotation: PropTypes.number,
+      scaleX: PropTypes.number,
+      scaleY: PropTypes.number,
+      type: PropTypes.string,
+      url: PropTypes.string,
+      x: PropTypes.number,
+      y: PropTypes.number,
+    }),
+  ).isRequired,
   toolState: PropTypes.shape({
     activeTool: PropTypes.string.isRequired,
     closedMode: PropTypes.bool.isRequired,
@@ -126,7 +150,6 @@ AnnotationFormOverlay.propTypes = {
     strokeWidth: PropTypes.number.isRequired,
     updateColor: PropTypes.func.isRequired,
   }).isRequired,
-  setToolState: PropTypes.func.isRequired,
 };
 
 export default AnnotationFormOverlay;

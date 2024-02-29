@@ -3,11 +3,11 @@ import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 import ToggleButton from '@mui/material/ToggleButton';
 import { Alarm } from '@mui/icons-material';
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
+import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import HMSInput from '../HMSInput';
-import {VideosReferences} from "mirador/dist/es/src/plugins/VideosReferences";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   display: 'flex',
@@ -68,12 +68,11 @@ function TargetTimeInput({
   setSeekTo,
   setCurrentTime,
 }) {
-
   const mediaVideo = VideosReferences.get(windowId);
+  // eslint-disable-next-line no-underscore-dangle
   const videoDuration = mediaVideo.props.canvas.__jsonld.duration;
 
-  const[valueTime,setValueTime]  = useState([annoState.tstart,annoState.tend]);
-
+  const [valueTime, setValueTime] = useState([annoState.tstart, annoState.tend]);
 
   /** set annotation start time to current time */
   const setTstartNow = () => {
@@ -159,77 +158,84 @@ function TargetTimeInput({
   };
 
   return (
-    <>
-        <StyledPaper>
-          <Grid
-            item
-            xs={12}
-          >
-            <Typography id="range-slider" variant="overline">
-              Target
-            </Typography>
-            <ContainerSlider>
-              <StyledSlider
-                size="small"
-                value={valueTime}
-                onChange={handleChangeTime}
-                valueLabelDisplay="auto"
-                aria-labelledby="range-slider"
-                max={Math.round(videoDuration)}
-                color="secondary"
-                windowId={windowId}
-              />
-            </ContainerSlider>
-          </Grid>
-          <StyledDivFormTimeContainer>
-            <StyledDivTimeSelector>
-              <StyledDivToggleButton>
-                <div>
-                  <StyledLabelSelector>
-                    Start
-                  </StyledLabelSelector>
-                </div>
-                <StyledToggleButton
-                  value="true"
-                  title="Set current time"
-                  size="small"
-                  onClick={setTstartNow}
-                >
-                  <Alarm fontSize="small" />
-                </StyledToggleButton>
-              </StyledDivToggleButton>
-              <HMSInput seconds={annoState.tstart} onChange={updateTstart} />
-            </StyledDivTimeSelector>
-            <StyledDivTimeSelector>
-              <StyledDivToggleButton>
-                <div>
-                  <StyledLabelSelector>
-                    End
-                  </StyledLabelSelector>
-                </div>
-                <StyledToggleButton
-                  value="true"
-                  title="Set current time"
-                  size="small"
-                  onClick={setTendNow}
-                >
-                  <Alarm fontSize="small" />
-                </StyledToggleButton>
-              </StyledDivToggleButton>
-              <HMSInput seconds={annoState.tend} onChange={updateTend} />
-            </StyledDivTimeSelector>
-          </StyledDivFormTimeContainer>
-        </StyledPaper>
-    </>
+    <StyledPaper>
+      <Grid
+        item
+        xs={12}
+      >
+        <Typography id="range-slider" variant="overline">
+          Target
+        </Typography>
+        <ContainerSlider>
+          <StyledSlider
+            size="small"
+            value={valueTime}
+            onChange={handleChangeTime}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider"
+            max={Math.round(videoDuration)}
+            color="secondary"
+            windowId={windowId}
+          />
+        </ContainerSlider>
+      </Grid>
+      <StyledDivFormTimeContainer>
+        <StyledDivTimeSelector>
+          <StyledDivToggleButton>
+            <div>
+              <StyledLabelSelector>
+                Start
+              </StyledLabelSelector>
+            </div>
+            <StyledToggleButton
+              value="true"
+              title="Set current time"
+              size="small"
+              onClick={setTstartNow}
+            >
+              <Alarm fontSize="small" />
+            </StyledToggleButton>
+          </StyledDivToggleButton>
+          <HMSInput seconds={annoState.tstart} onChange={updateTstart} />
+        </StyledDivTimeSelector>
+        <StyledDivTimeSelector>
+          <StyledDivToggleButton>
+            <div>
+              <StyledLabelSelector>
+                End
+              </StyledLabelSelector>
+            </div>
+            <StyledToggleButton
+              value="true"
+              title="Set current time"
+              size="small"
+              onClick={setTendNow}
+            >
+              <Alarm fontSize="small" />
+            </StyledToggleButton>
+          </StyledDivToggleButton>
+          <HMSInput seconds={annoState.tend} onChange={updateTend} />
+        </StyledDivTimeSelector>
+      </StyledDivFormTimeContainer>
+    </StyledPaper>
 
   );
 }
 
 TargetTimeInput.propTypes = {
+  annoState: PropTypes.shape(
+    {
+      tend: PropTypes.number,
+      textBody: PropTypes.string,
+      tstart: PropTypes.number,
+    },
+  ).isRequired,
   currentTime: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  mediaVideo: PropTypes.object.isRequired,
+  setAnnoState: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
-  setState: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };
 

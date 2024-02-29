@@ -119,6 +119,7 @@ export default function AnnotationFormBody(
                   windowId={windowId}
                   commentingType={commentingType}
                   manifestType={manifestType}
+                  currentTime={currentTime}
                 />
                 )
             }
@@ -132,6 +133,7 @@ export default function AnnotationFormBody(
                   windowId={windowId}
                   commentingType={commentingType}
                   manifestType={manifestType}
+                  currentTime={currentTime}
                 />
                 )
             }
@@ -147,6 +149,8 @@ export default function AnnotationFormBody(
                   commentingType={commentingType}
                   manifestType={manifestType}
                   annotation={annotation}
+                  currentTime={currentTime}
+                  mediaVideo={mediaVideo}
                 />
                 )
             }
@@ -160,6 +164,7 @@ export default function AnnotationFormBody(
                   windowId={windowId}
                   commentingType={commentingType}
                   manifestType={manifestType}
+                  currentTime={currentTime}
                 />
                 )
             }
@@ -180,6 +185,7 @@ AnnotationFormBody.propTypes = {
         [PropTypes.bool, PropTypes.func, PropTypes.number, PropTypes.string],
       ),
     ),
+    drawingState: PropTypes.string,
     manifestNetwork: PropTypes.string,
     target: PropTypes.string,
   }).isRequired,
