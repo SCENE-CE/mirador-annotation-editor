@@ -94,7 +94,6 @@ export default function AnnotationFormBody(
             }
             annoState.textBody = '';
             annoState.manifestNetwork = '';
-            annoState.valueTime = [0, 1];
 
         }
 
@@ -128,7 +127,7 @@ export default function AnnotationFormBody(
                         setCurrentTime={setCurrentTime}
                         setSeekTo={setSeekTo}
                         windowId={windowId}
-                        commentingTypeId={commentingType.id}
+                        commentingType={commentingType}
                         manifestType={manifestType}
                     />
                 )

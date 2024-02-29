@@ -12,7 +12,7 @@ function TextCommentTemplate(
         setAnnoState,
         annoState,
         windowId,
-        commentingTypeId,
+        commentingType,
         manifestType
     }) {
 
@@ -36,7 +36,7 @@ function TextCommentTemplate(
                 setCurrentTime={setCurrentTime}
                 setSeekTo={setSeekTo}
                 windowId={windowId}
-                commentingTypeId={commentingTypeId}
+                commentingType={commentingType}
                 manifestType={manifestType}
             />
         </Paper>

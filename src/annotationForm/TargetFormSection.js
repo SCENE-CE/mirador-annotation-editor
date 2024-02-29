@@ -5,7 +5,7 @@ import TargetTimeInput from "./TargetTimeInput";
 export default function TargetFormSection(
     {
         spatialTarget,
-        commentingTypeId,
+        commentingType,
         currentTime,
         setCurrentTime,
         setSeekTo,
@@ -30,7 +30,7 @@ export default function TargetFormSection(
             )
         }
         {
-            commentingTypeId !== template.IIIF_TYPE && manifestType === manifestTypes.VIDEO &&(
+            commentingType.id !== template.IIIF_TYPE && manifestType === manifestTypes.VIDEO &&(
                 <TargetTimeInput
                     windowId={windowId}
                     currentTime={currentTime}

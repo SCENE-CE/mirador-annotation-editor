@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 import ToggleButton from '@mui/material/ToggleButton';
 import { Alarm } from '@mui/icons-material';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import HMSInput from '../HMSInput';
@@ -68,14 +68,12 @@ function TargetTimeInput({
   setSeekTo,
   setCurrentTime,
 }) {
-  useEffect(() => {
-    console.log('annoState',annoState)
-  }, []);
+
   const mediaVideo = VideosReferences.get(windowId);
   const videoDuration = mediaVideo.props.canvas.__jsonld.duration;
 
-  annoState.valueTime[0] = annoState.tstart;
-  annoState.valueTime[1] = annoState.tend;
+  const[valueTime,setValueTime]  = useState([annoState.tstart,annoState.tend]);
+
 
   /** set annotation start time to current time */
   const setTstartNow = () => {
@@ -94,19 +92,9 @@ function TargetTimeInput({
   };
 
   /**
-   * @param {number} newValueTime
-   */
-  const setValueTime = (newValueTime) => {
-    setAnnoState((prevState) => ({
-      ...prevState,
-      valueTime: newValueTime,
-    }));
-  };
-
-  /**
    * Change from slider
    * @param {Event} event
-   * @param {number} newValueTime
+   * @param {any} newValueTime
    */
   const handleChangeTime = (event, newValueTime) => {
     const timeStart = newValueTime[0];
@@ -183,7 +171,7 @@ function TargetTimeInput({
             <ContainerSlider>
               <StyledSlider
                 size="small"
-                value={annoState.valueTime}
+                value={valueTime}
                 onChange={handleChangeTime}
                 valueLabelDisplay="auto"
                 aria-labelledby="range-slider"
@@ -210,7 +198,7 @@ function TargetTimeInput({
                   <Alarm fontSize="small" />
                 </StyledToggleButton>
               </StyledDivToggleButton>
-              <HMSInput seconds={setAnnoState.tstart} onChange={updateTstart} />
+              <HMSInput seconds={annoState.tstart} onChange={updateTstart} />
             </StyledDivTimeSelector>
             <StyledDivTimeSelector>
               <StyledDivToggleButton>
@@ -228,7 +216,7 @@ function TargetTimeInput({
                   <Alarm fontSize="small" />
                 </StyledToggleButton>
               </StyledDivToggleButton>
-              <HMSInput seconds={setAnnoState.tend} onChange={updateTend} />
+              <HMSInput seconds={annoState.tend} onChange={updateTend} />
             </StyledDivTimeSelector>
           </StyledDivFormTimeContainer>
         </StyledPaper>
