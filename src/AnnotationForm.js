@@ -1,16 +1,16 @@
-import React, {useEffect, useLayoutEffect, useState} from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import PropTypes from 'prop-types';
+import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
+import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
 import {
   manifestTypes,
-  template
+  template,
 } from './AnnotationFormUtils';
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormFooter from './annotationForm/AnnotationFormFooter';
-import AnnotationFormBody from "./AnnotationFormBody";
-import {VideosReferences} from "mirador/dist/es/src/plugins/VideosReferences";
-import {OSDReferences} from "mirador/dist/es/src/plugins/OSDReferences";
+import AnnotationFormBody from './AnnotationFormBody';
 /**
  * Component for submitting a form to create or edit an annotation.
  * */
@@ -23,13 +23,12 @@ export default function AnnotationForm(
     closeCompanionWindow,
     mediaVideo,
     setCurrentTime,
-    setSeekTo
+    setSeekTo,
   },
 ) {
-
   const [commentingType, setCommentingType] = useState(null);
-  let manifestType =  undefined;
-  if(mediaVideo){
+  let manifestType;
+  if (mediaVideo) {
     manifestType = manifestTypes.VIDEO;
   }
 
@@ -103,25 +102,8 @@ export default function AnnotationForm(
     };
   }, []);
 
-
   useLayoutEffect(() => {
   }, [{ height, width }]);
-
-  // const setShapeProperties = (options) => new Promise(() => {
-  //   if (options.fill) {
-  //     state.fillColor = options.fill;
-  //   }
-  //
-  //   if (options.strokeWidth) {
-  //     state.strokeWidth = options.strokeWidth;
-  //   }
-  //
-  //   if (options.stroke) {
-  //     state.strokeColor = options.stroke;
-  //   }
-  //
-  //   setState({ ...state });
-  // });
 
   /**
    * Closes the companion window with the specified ID and position.
@@ -134,7 +116,6 @@ export default function AnnotationForm(
       position: 'right',
     });
   };
-
 
   return (
     <CompanionWindow
@@ -156,15 +137,15 @@ export default function AnnotationForm(
               templateType={commentingType}
             />
             <AnnotationFormBody
-                commentingType={commentingType}
-                windowId={windowId}
-                overlay={overlay}
-                annotation={annotation}
-                mediaVideo={mediaVideo}
-                currentTime={currentTime}
-                setCurrentTime={setCurrentTime}
-                setSeekTo={setSeekTo}
-                manifestType={manifestType}
+              commentingType={commentingType}
+              windowId={windowId}
+              overlay={overlay}
+              annotation={annotation}
+              mediaVideo={mediaVideo}
+              currentTime={currentTime}
+              setCurrentTime={setCurrentTime}
+              setSeekTo={setSeekTo}
+              manifestType={manifestType}
             />
             <AnnotationFormFooter
               closeFormCompanionWindow={closeFormCompanionWindow}
@@ -179,18 +160,18 @@ export default function AnnotationForm(
               templateType={commentingType}
             />
             <AnnotationFormBody
-                commentingType={commentingType}
-                windowId={windowId}
-                overlay={overlay}
-                annotation={annotation}
-                mediaVideo={mediaVideo}
-                currentTime={currentTime}
-                setCurrentTime={setCurrentTime}
-                setSeekTo={setSeekTo}
-                manifestType={manifestType}
+              commentingType={commentingType}
+              windowId={windowId}
+              overlay={overlay}
+              annotation={annotation}
+              mediaVideo={mediaVideo}
+              currentTime={currentTime}
+              setCurrentTime={setCurrentTime}
+              setSeekTo={setSeekTo}
+              manifestType={manifestType}
             />
             <AnnotationFormFooter
-                closeFormCompanionWindow={closeFormCompanionWindow}
+              closeFormCompanionWindow={closeFormCompanionWindow}
             />
           </div>
           )}
@@ -202,18 +183,18 @@ export default function AnnotationForm(
               templateType={commentingType}
             />
             <AnnotationFormBody
-                commentingType={commentingType}
-                windowId={windowId}
-                overlay={overlay}
-                annotation={annotation}
-                mediaVideo={mediaVideo}
-                currentTime={currentTime}
-                setCurrentTime={setCurrentTime}
-                setSeekTo={setSeekTo}
-                manifestType={manifestType}
+              commentingType={commentingType}
+              windowId={windowId}
+              overlay={overlay}
+              annotation={annotation}
+              mediaVideo={mediaVideo}
+              currentTime={currentTime}
+              setCurrentTime={setCurrentTime}
+              setSeekTo={setSeekTo}
+              manifestType={manifestType}
             />
             <AnnotationFormFooter
-                closeFormCompanionWindow={closeFormCompanionWindow}
+              closeFormCompanionWindow={closeFormCompanionWindow}
             />
           </div>
           )}
@@ -225,18 +206,18 @@ export default function AnnotationForm(
               templateType={commentingType}
             />
             <AnnotationFormBody
-                commentingType={commentingType}
-                windowId={windowId}
-                overlay={overlay}
-                annotation={annotation}
-                mediaVideo={mediaVideo}
-                currentTime={currentTime}
-                setCurrentTime={setCurrentTime}
-                setSeekTo={setSeekTo}
-                manifestType={manifestType}
+              commentingType={commentingType}
+              windowId={windowId}
+              overlay={overlay}
+              annotation={annotation}
+              mediaVideo={mediaVideo}
+              currentTime={currentTime}
+              setCurrentTime={setCurrentTime}
+              setSeekTo={setSeekTo}
+              manifestType={manifestType}
             />
             <AnnotationFormFooter
-                closeFormCompanionWindow={closeFormCompanionWindow}
+              closeFormCompanionWindow={closeFormCompanionWindow}
             />
           </div>
           )}
@@ -248,7 +229,7 @@ export default function AnnotationForm(
               templateType={commentingType}
             />
             <AnnotationFormFooter
-                closeFormCompanionWindow={closeFormCompanionWindow}
+              closeFormCompanionWindow={closeFormCompanionWindow}
             />
           </div>
           )}
@@ -260,7 +241,7 @@ export default function AnnotationForm(
               templateType={commentingType}
             />
             <AnnotationFormFooter
-                closeFormCompanionWindow={closeFormCompanionWindow}
+              closeFormCompanionWindow={closeFormCompanionWindow}
             />
           </div>
           )}
@@ -285,12 +266,6 @@ AnnotationForm.propTypes = {
     }),
     PropTypes.string,
   ]),
-  canvases: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      index: PropTypes.number,
-    }),
-  ),
   closeCompanionWindow: PropTypes.func,
   config: PropTypes.shape({
     annotation: PropTypes.shape({
@@ -306,14 +281,14 @@ AnnotationForm.propTypes = {
   id: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   mediaVideo: PropTypes.object.isRequired,
-  receiveAnnotation: PropTypes.func.isRequired,
+  setCurrentTime: PropTypes.func.isRequired,
+  setSeekTo: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 
 };
 
 AnnotationForm.defaultProps = {
   annotation: null,
-  canvases: [],
   closeCompanionWindow: () => {
   },
   currentTime: null,
