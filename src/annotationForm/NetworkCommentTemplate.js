@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { isValidUrl } from '../utils';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
+import ManifestNetworkFormSection from './ManifestNetworkFormSection';
 
 /** Form part for edit annotation content and body */
 function NetworkCommentTemplate(
@@ -30,32 +31,23 @@ function NetworkCommentTemplate(
     });
   };
 
+  /**
+     * Updates the manifest network in annoState.
+     * @param {Object} manifestNetwork The new manifest network object to update.
+     */
+  const updateManifestNetwork = (manifestNetwork) => {
+    setAnnoState((prevState) => ({
+      ...prevState,
+      manifestNetwork,
+    }));
+  };
+
   return (
     <div style={{ padding: '5px' }}>
-      <Typography variant="overline">
-        Network
-      </Typography>
-      <Grid>
-        <TextField
-          value={annoState.manifestNetwork}
-          label="Manifest URL"
-          type="url"
-        />
-        {
-          isValidUrl(annoState.manifestNetwork) ? (
-            <Link
-              href={annoState.manifestNetwork}
-              target="_blank"
-            >
-              {annoState.manifestNetwork}
-            </Link>
-          ) : (
-            <Typography variant="caption">
-              Not a valid URL
-            </Typography>
-          )
-        }
-      </Grid>
+      <ManifestNetworkFormSection
+        manifestNetwork={annoState.manifestNetwork}
+        onChange={updateManifestNetwork}
+      />
       <TextFormSection
         annoHtml={annoState.textBody}
         updateAnnotationBody={updateAnnotationTextBody}
