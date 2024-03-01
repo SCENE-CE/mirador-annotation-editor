@@ -70,7 +70,7 @@ function AnnotationFormOverlay(
    * @param TabIndex
    */
   const tabHandler = (event, TabIndex) => {
-    setViewTool(TabIndex);
+    return setViewTool(TabIndex);
   };
   const {
     activeTool,
@@ -133,6 +133,7 @@ AnnotationFormOverlay.propTypes = {
   }).isRequired,
   deleteShape: PropTypes.func.isRequired,
   setToolState: PropTypes.func.isRequired,
+  setViewTool: PropTypes.func.isRequired,
   shapes: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,

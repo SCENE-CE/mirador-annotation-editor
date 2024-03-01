@@ -18,7 +18,7 @@ function AccordionShapes({ shapes, deleteShape, currentShapeId }) {
             aria-controls="panel1-content"
             id="panel1-header"
           >
-            {shape.id}
+            {shape.type}
           </AccordionSummary>
           <AccordionDetails>
             <ul>

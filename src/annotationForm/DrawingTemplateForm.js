@@ -111,6 +111,7 @@ DrawingTemplateForm.propTypes = {
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   setToolState: PropTypes.func.isRequired,
+  setViewTool: PropTypes.func.isRequired,
   shapes: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
