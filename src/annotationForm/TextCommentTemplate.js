@@ -8,7 +8,7 @@ import TargetFormSection from './TargetFormSection';
 function TextCommentTemplate(
   {
     annoState,
-    commentingType,
+    templateType,
     currentTime,
     manifestType,
     setAnnoState,
@@ -40,7 +40,7 @@ function TextCommentTemplate(
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
         windowId={windowId}
-        commentingType={commentingType}
+        commentingType={templateType}
         manifestType={manifestType}
         spatialTarget={false}
       />
@@ -54,7 +54,7 @@ TextCommentTemplate.propTypes = {
       textBody: PropTypes.string,
     },
   ).isRequired,
-  commentingType: PropTypes.string.isRequired,
+  templateType: PropTypes.string.isRequired,
   currentTime: PropTypes.number.isRequired,
   manifestType: PropTypes.string.isRequired,
   setAnnoState: PropTypes.func.isRequired,

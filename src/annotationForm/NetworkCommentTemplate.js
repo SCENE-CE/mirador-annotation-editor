@@ -11,7 +11,7 @@ import TargetFormSection from './TargetFormSection';
 function NetworkCommentTemplate(
   {
     annoState,
-    commentingType,
+    templateType,
     manifestType,
     setAnnoState,
     setCurrentTime,
@@ -66,7 +66,7 @@ function NetworkCommentTemplate(
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
         windowId={windowId}
-        commentingType={commentingType}
+        commentingType={templateType}
         manifestType={manifestType}
       />
     </Paper>
@@ -76,7 +76,7 @@ function NetworkCommentTemplate(
 NetworkCommentTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   annoState: PropTypes.object.isRequired,
-  commentingType: PropTypes.string.isRequired,
+  templateType: PropTypes.string.isRequired,
   manifestType: PropTypes.string.isRequired,
   setAnnoState: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,

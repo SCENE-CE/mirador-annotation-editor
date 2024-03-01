@@ -6,7 +6,7 @@ import DrawingTemplateForm from './DrawingTemplateForm';
 import { manifestTypes, TARGET_VIEW } from '../AnnotationFormUtils';
 import { defaultToolState } from '../AnnotationCreationUtils';
 /**
- * Template for Kanvas annotations
+ * Template for Konva annotations (drawing)
  * @param annotation
  * @param currentTime
  * @param windowId
@@ -25,7 +25,7 @@ export default function DrawingTemplate(
   {
     annoState,
     annotation,
-    commentingType,
+    templateType,
     currentTime,
     manifestType,
     mediaVideo,
@@ -109,6 +109,9 @@ export default function DrawingTemplate(
 
   return (
     <>
+      {/* Rename AnnotationDrawing in Drawing Stage */}
+      {/* Check the useless props : annotation ?
+      Check the width height originalW originalW*/}
       <AnnotationDrawing
         scale={scale}
         activeTool={toolState.activeTool}
@@ -141,7 +144,7 @@ export default function DrawingTemplate(
         setAnnoState={setAnnoState}
         windowId={windowId}
         manifestType={manifestType}
-        commentingType={commentingType}
+        commentingType={templateType}
         toolState={toolState}
         setToolState={setToolState}
         shapes={drawingState.shapes}
@@ -174,7 +177,7 @@ DrawingTemplate.propTypes = {
     }),
     PropTypes.string,
   ]).isRequired,
-  commentingType: PropTypes.string.isRequired,
+  templateType: PropTypes.string.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   manifestType: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types

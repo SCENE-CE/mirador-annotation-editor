@@ -15,7 +15,7 @@ import DrawingTemplate from './annotationForm/DrawingTemplate';
 export default function AnnotationFormBody(
   {
     annotation,
-    commentingType,
+    templateType,
     currentTime,
     manifestType,
     mediaVideo,
@@ -107,67 +107,72 @@ export default function AnnotationFormBody(
     };
   });
 
+  // TODO At this end we must only have annoSTate, setAnnoState, templateType, manifestType, windowId in XTemplateProps
+  // TODO Search where overlay is used. Only in Konva ?
+  // TODO setSeekTo, setCurrentTime, overlay, currentTime, mediaVideo must be get only in TargetFormSection
+  // TODO annotation is it usefeul in XTemplateProps ?
+
   return (
     <div>
       {
-                commentingType.id === template.TEXT_TYPE && (
-                <TextCommentTemplate
-                  annoState={state}
-                  setAnnoState={setState}
-                  setCurrentTime={setCurrentTime}
-                  setSeekTo={setSeekTo}
-                  windowId={windowId}
-                  commentingType={commentingType}
-                  manifestType={manifestType}
-                  currentTime={currentTime}
-                />
-                )
-            }
+        templateType.id === template.TEXT_TYPE && (
+          <TextCommentTemplate
+            annoState={state}
+            setAnnoState={setState}
+            setCurrentTime={setCurrentTime}
+            setSeekTo={setSeekTo}
+            windowId={windowId}
+            templateType={templateType}
+            manifestType={manifestType}
+            currentTime={currentTime}
+          />
+        )
+      }
       {
-                commentingType.id === template.IMAGE_TYPE && (
-                <ImageCommentTemplate
-                  annoState={state}
-                  setAnnoState={setState}
-                  setCurrentTime={setCurrentTime}
-                  setSeekTo={setSeekTo}
-                  windowId={windowId}
-                  commentingType={commentingType}
-                  manifestType={manifestType}
-                  currentTime={currentTime}
-                />
-                )
-            }
+        templateType.id === template.IMAGE_TYPE && (
+          <ImageCommentTemplate
+            annoState={state}
+            setAnnoState={setState}
+            setCurrentTime={setCurrentTime}
+            setSeekTo={setSeekTo}
+            windowId={windowId}
+            templateType={templateType}
+            manifestType={manifestType}
+            currentTime={currentTime}
+          />
+        )
+      }
       {
-                commentingType.id === template.KONVA_TYPE && (
-                <DrawingTemplate
-                  annoState={state}
-                  setAnnoState={setState}
-                  overlay={overlay}
-                  setCurrentTime={setCurrentTime}
-                  setSeekTo={setSeekTo}
-                  windowId={windowId}
-                  commentingType={commentingType}
-                  manifestType={manifestType}
-                  annotation={annotation}
-                  currentTime={currentTime}
-                  mediaVideo={mediaVideo}
-                />
-                )
-            }
+        templateType.id === template.KONVA_TYPE && (
+          <DrawingTemplate
+            annoState={state}
+            setAnnoState={setState}
+            overlay={overlay}
+            setCurrentTime={setCurrentTime}
+            setSeekTo={setSeekTo}
+            windowId={windowId}
+            templateType={templateType}
+            manifestType={manifestType}
+            annotation={annotation}
+            currentTime={currentTime}
+            mediaVideo={mediaVideo}
+          />
+        )
+      }
       {
-                commentingType.id === template.MANIFEST_TYPE && (
-                <NetworkCommentTemplate
-                  annoState={state}
-                  setAnnoState={setState}
-                  setCurrentTime={setCurrentTime}
-                  setSeekTo={setSeekTo}
-                  windowId={windowId}
-                  commentingType={commentingType}
-                  manifestType={manifestType}
-                  currentTime={currentTime}
-                />
-                )
-            }
+        templateType.id === template.MANIFEST_TYPE && (
+          <NetworkCommentTemplate
+            annoState={state}
+            setAnnoState={setState}
+            setCurrentTime={setCurrentTime}
+            setSeekTo={setSeekTo}
+            windowId={windowId}
+            templateType={templateType}
+            manifestType={manifestType}
+            currentTime={currentTime}
+          />
+        )
+      }
     </div>
   );
 }
@@ -189,15 +194,15 @@ AnnotationFormBody.propTypes = {
     manifestNetwork: PropTypes.string,
     target: PropTypes.string,
   }).isRequired,
-  commentingType: PropTypes.string.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   manifestType: PropTypes.string.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   mediaVideo: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
+  templateType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 
 };
