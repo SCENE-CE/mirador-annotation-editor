@@ -18,14 +18,14 @@ import { defaultToolState } from '../AnnotationFormUtils';
 export default function ImageFormSection(
   {
     annoState,
-    setAnnoState,
+    onChange,
   },
 ) {
-  const [imageState, setimageState] = useState(defaultToolState.image);
+  const [imageState, setImageState] = useState(defaultToolState.image);
 
   /** TODO Code duplicate ?? */
   const handleImgChange = (newUrl) => {
-    setimageState( { id: newUrl });
+    setImageState({ id: newUrl });
   };
     /**
      * handleImageAdd button click
@@ -35,12 +35,8 @@ export default function ImageFormSection(
       id: imageState?.image?.id,
       uuid: uuidv4(),
     };
-
-    setAnnoState({
-      ...imageState,
-      image: { id: null },
-      imageEvent: data,
-    });
+    // TODO: Qu'est ce que doit être data ? l'url de l'image ?
+    onChange(data);
   };
 
   return (
@@ -49,7 +45,7 @@ export default function ImageFormSection(
         Add image from URL
       </Typography>
       <Grid container>
-        <ImageFormField xs={8} image={imageState} onChange={handleImgChange} />
+        <ImageFormField xs={8} imageUrl={imageState.id} onChange={handleImgChange} />
       </Grid>
       <StyledDivButtonImage>
         <Button onClick={addImage} variant="contained">
@@ -69,5 +65,5 @@ const StyledDivButtonImage = styled('div')(({ theme }) => ({
 ImageFormSection.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   annoState: PropTypes.object.isRequired,
-  setAnnoState: PropTypes.func.isRequired,
+  onChange: PropTypes.string.isRequired,
 };

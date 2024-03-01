@@ -32,7 +32,6 @@ export default function AnnotationFormHeader({ templateType, setCommentingType }
 const ContainerAnnotationFormHeader = styled('div')(({ theme }) => ({
   alignItems: 'center',
   display: 'flex',
-  margin: '5px',
 }));
 
 const TitleLogoContainer = styled('div')(({ theme }) => ({

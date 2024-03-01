@@ -44,11 +44,22 @@ export default function ImageCommentTemplate(
       textBody: newBody,
     });
   };
+
+  /**
+     * Update Annotation state with the image URL
+     * @param newImage
+     */
+  const updateAnnotationImage = (newImage) => {
+    setAnnoState({
+      ...annoState,
+      image: newImage,
+    });
+  };
   return (
     <>
       <ImageFormSection
         annoState={annoState}
-        setAnnoState={setAnnoState}
+        onChange={updateAnnotationImage}
       />
       <TextFormSection
         annoHtml={annoState.textBody}

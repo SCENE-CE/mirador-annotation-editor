@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { manifestTypes, template } from '../AnnotationFormUtils';
 import TargetTimeInput from './TargetTimeInput';
+import {Grid} from "@mui/material";
 
 /**
  * Section of Time and Space Target
@@ -35,7 +36,7 @@ export default function TargetFormSection(
   }, []);
 
   return (
-    <div>
+    <Grid>
       {
             spatialTarget && (
             <p>PLACE HOLDER SPATIAL TARGET</p>
@@ -53,7 +54,7 @@ export default function TargetFormSection(
             />
             )
         }
-    </div>
+    </Grid>
   );
 }
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Paper } from '@mui/material';
 import PropTypes from 'prop-types';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
@@ -28,7 +27,7 @@ function TextCommentTemplate(
   };
 
   return (
-    <Paper style={{ padding: '5px' }}>
+    <div style={{ padding: '5px' }}>
       <TextFormSection
         annoHtml={annoState.textBody}
         updateAnnotationBody={updateAnnotationTextBody}
@@ -44,7 +43,7 @@ function TextCommentTemplate(
         manifestType={manifestType}
         spatialTarget={false}
       />
-    </Paper>
+    </div>
   );
 }
 

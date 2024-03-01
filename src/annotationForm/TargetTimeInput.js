@@ -9,7 +9,7 @@ import { styled } from '@mui/material/styles';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import HMSInput from '../HMSInput';
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
+const StyledDiv = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: '10px',
@@ -17,8 +17,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const ContainerSlider = styled('div')(({ theme }) => ({
-  paddingLeft: '20px',
-  paddingRight: '20px',
+  padding: '15px',
 }));
 
 const StyledSlider = styled(Slider)(({ theme }) => ({
@@ -95,6 +94,8 @@ function TargetTimeInput({
    * @param {Event} event
    * @param {any} newValueTime
    */
+  // TODO: Décomposer cette fonction pour que la maj des state se face au onChange et l'appelle a seekToTstart /
+  // end se face au 'onChangeCommitted' mui propriété afin d'éviter l'effet indésiré sur la vidéo
   const handleChangeTime = (event, newValueTime) => {
     const timeStart = newValueTime[0];
     const timeEnd = newValueTime[1];
@@ -158,7 +159,7 @@ function TargetTimeInput({
   };
 
   return (
-    <StyledPaper>
+    <StyledDiv>
       <Grid
         item
         xs={12}
@@ -217,7 +218,7 @@ function TargetTimeInput({
           <HMSInput seconds={annoState.tend} onChange={updateTend} />
         </StyledDivTimeSelector>
       </StyledDivFormTimeContainer>
-    </StyledPaper>
+    </StyledDiv>
 
   );
 }
