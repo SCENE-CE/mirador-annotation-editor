@@ -14,7 +14,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../../icons/Cursor';
 import AnnotationFormOverlayTool from './AnnotationFormOverlayTool';
 import { defaultToolState, OVERLAY_TOOL } from '../../AnnotationCreationUtils';
-import {OVERLAY_VIEW, TARGET_VIEW} from "../../AnnotationFormUtils";
+import { OVERLAY_VIEW, TARGET_VIEW } from '../../AnnotationFormUtils';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
@@ -27,8 +27,9 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
-const StyledDiv = styled("div")(({ theme }) => ({
-  padding: '5px',
+const OverlayIconAndTitleContainer = styled(Grid)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
 }));
 
 /** All the stuff to manage to choose the drawing tool */
@@ -69,15 +70,13 @@ function AnnotationFormOverlay(
    * @param event
    * @param TabIndex
    */
-  const tabHandler = (event, TabIndex) => {
-    return setViewTool(TabIndex);
-  };
+  const tabHandler = (event, TabIndex) => setViewTool(TabIndex);
   const {
     activeTool,
   } = toolState;
 
   return (
-    <StyledDiv>
+    <div>
       <div>
         <Grid container>
           <Grid item xs={12}>
@@ -85,7 +84,7 @@ function AnnotationFormOverlay(
               Overlay
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          <OverlayIconAndTitleContainer item xs={12}>
             <StyledToggleButtonGroup
               value={activeTool} // State or props ?
               exclusive
@@ -113,10 +112,10 @@ function AnnotationFormOverlay(
               shapes={shapes}
               deleteShape={deleteShape}
             />
-          </Grid>
+          </OverlayIconAndTitleContainer>
         </Grid>
       </div>
-    </StyledDiv>
+    </div>
   );
 }
 

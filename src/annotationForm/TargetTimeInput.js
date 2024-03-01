@@ -1,4 +1,4 @@
-import { Grid, Paper } from '@mui/material';
+import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 import ToggleButton from '@mui/material/ToggleButton';
