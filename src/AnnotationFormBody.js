@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
 import {
   geomFromAnnoTarget,
   template, timeFromAnnoTarget,
@@ -8,8 +9,6 @@ import TextCommentTemplate from './annotationForm/TextCommentTemplate';
 import ImageCommentTemplate from './annotationForm/ImageCommentTemplate';
 import NetworkCommentTemplate from './annotationForm/NetworkCommentTemplate';
 import DrawingTemplate from './annotationForm/DrawingTemplate';
-import {styled} from "@mui/material/styles";
-import ReactQuill from "react-quill";
 
 /**
  * This function contain the logic for loading annotation and render proper template type

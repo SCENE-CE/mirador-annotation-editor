@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  Grid, Paper, TextField, Typography, Link,
-} from '@mui/material';
 import PropTypes from 'prop-types';
-import { isValidUrl } from '../utils';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import ManifestNetworkFormSection from './ManifestNetworkFormSection';
@@ -12,6 +8,7 @@ import ManifestNetworkFormSection from './ManifestNetworkFormSection';
 function NetworkCommentTemplate(
   {
     annoState,
+    currentTime,
     templateType,
     manifestType,
     setAnnoState,
@@ -60,6 +57,8 @@ function NetworkCommentTemplate(
         windowId={windowId}
         commentingType={templateType}
         manifestType={manifestType}
+        currentTime={currentTime}
+        spatialTarget={false}
       />
     </div>
   );
@@ -68,11 +67,12 @@ function NetworkCommentTemplate(
 NetworkCommentTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   annoState: PropTypes.object.isRequired,
-  templateType: PropTypes.string.isRequired,
+  currentTime: PropTypes.number.isRequired,
   manifestType: PropTypes.string.isRequired,
   setAnnoState: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
+  templateType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 };
 
