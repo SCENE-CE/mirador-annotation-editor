@@ -26,7 +26,7 @@ import ImageFormSection from './ImageFormSection';
 export default function ImageCommentTemplate(
   {
     annoState,
-    commentingType,
+    templateType,
     currentTime,
     manifestType,
     setAnnoState,
@@ -60,7 +60,7 @@ export default function ImageCommentTemplate(
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
         windowId={windowId}
-        commentingType={commentingType}
+        commentingType={templateType}
         manifestType={manifestType}
         currentTime={currentTime}
         spatialTarget={false}
@@ -75,7 +75,7 @@ ImageCommentTemplate.propTypes = {
       textBody: PropTypes.string,
     },
   ).isRequired,
-  commentingType: PropTypes.string.isRequired,
+  templateType: PropTypes.string.isRequired,
   currentTime: PropTypes.number.isRequired,
   manifestType: PropTypes.string.isRequired,
   setAnnoState: PropTypes.func.isRequired,

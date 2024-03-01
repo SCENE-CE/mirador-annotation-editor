@@ -189,15 +189,15 @@ AnnotationFormBody.propTypes = {
     manifestNetwork: PropTypes.string,
     target: PropTypes.string,
   }).isRequired,
-  templateType: PropTypes.string.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   manifestType: PropTypes.string.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   mediaVideo: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
+  templateType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 
 };

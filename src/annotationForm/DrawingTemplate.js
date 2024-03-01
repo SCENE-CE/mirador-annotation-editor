@@ -25,7 +25,7 @@ export default function DrawingTemplate(
   {
     annoState,
     annotation,
-    commentingType,
+    templateType,
     currentTime,
     manifestType,
     mediaVideo,
@@ -141,7 +141,7 @@ export default function DrawingTemplate(
         setAnnoState={setAnnoState}
         windowId={windowId}
         manifestType={manifestType}
-        commentingType={commentingType}
+        commentingType={templateType}
         toolState={toolState}
         setToolState={setToolState}
         shapes={drawingState.shapes}
@@ -173,7 +173,7 @@ DrawingTemplate.propTypes = {
     }),
     PropTypes.string,
   ]).isRequired,
-  commentingType: PropTypes.string.isRequired,
+  templateType: PropTypes.string.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   manifestType: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
