@@ -22,6 +22,10 @@ export const manifestTypes = {
   VIDEO: 'video',
 };
 
+/**
+ * List of the template types supported
+ * @type {[{icon: JSX.Element, save: save, description: string, id: string, label: string},{icon: JSX.Element, description: string, id: string, label: string},{icon: JSX.Element, description: string, id: string, label: string},{icon: JSX.Element, description: string, id: string, label: string},{icon: JSX.Element, description: string, id: string, label: string},null]}
+ */
 export const templateTypes = [
   {
     description: 'mon incroyable description',

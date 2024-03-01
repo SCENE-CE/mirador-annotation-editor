@@ -6,7 +6,7 @@ import DrawingTemplateForm from './DrawingTemplateForm';
 import { manifestTypes, TARGET_VIEW } from '../AnnotationFormUtils';
 import { defaultToolState } from '../AnnotationCreationUtils';
 /**
- * Template for Kanvas annotations
+ * Template for Konva annotations (drawing)
  * @param annotation
  * @param currentTime
  * @param windowId
@@ -109,6 +109,9 @@ export default function DrawingTemplate(
 
   return (
     <>
+      {/* Rename AnnotationDrawing in Drawing Stage */}
+      {/* Check the useless props : annotation ?
+      Check the width height originalW originalW*/}
       <AnnotationDrawing
         scale={scale}
         activeTool={toolState.activeTool}
