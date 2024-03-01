@@ -2,6 +2,8 @@ import React from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
+import { MiradorMenuButton } from 'mirador/dist/es/src/components/MiradorMenuButton';
+import Typography from '@mui/material/Typography';
 
 /**
  * React component for rendering the header of the annotation form.
@@ -16,9 +18,13 @@ export default function AnnotationFormHeader({ templateType, setCommentingType }
 
   return (
     <ContainerAnnotationFormHeader>
-      <ChevronLeftIcon onClick={goBackToTemplateSelection} />
-      {templateType.label}
-      {templateType.icon}
+      <MiradorMenuButton>
+        <ChevronLeftIcon onClick={goBackToTemplateSelection} />
+      </MiradorMenuButton>
+      <TitleLogoContainer>
+        <StyledTitle>{templateType.label}</StyledTitle>
+        {templateType.icon}
+      </TitleLogoContainer>
     </ContainerAnnotationFormHeader>
   );
 }
@@ -26,9 +32,18 @@ export default function AnnotationFormHeader({ templateType, setCommentingType }
 const ContainerAnnotationFormHeader = styled('div')(({ theme }) => ({
   alignItems: 'center',
   display: 'flex',
-  justifyContent: 'space-around',
-  marginTop: '10px',
+  margin: '5px',
 }));
+
+const TitleLogoContainer = styled('div')(({ theme }) => ({
+  alignItems: 'center',
+  display: 'flex',
+  justifyContent: 'space-evenly',
+  width: '100%',
+}));
+
+const StyledTitle = styled(Typography, { name: 'CompanionWindow', slot: 'title' })({});
+
 
 AnnotationFormHeader.propTypes = {
   setCommentingType: PropTypes.func.isRequired,

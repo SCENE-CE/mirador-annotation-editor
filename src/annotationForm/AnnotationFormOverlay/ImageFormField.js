@@ -15,37 +15,40 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 /** Image input field for the annotation form */
-function ImageFormField({ value: image, onChange }) {
+function ImageFormField({ image, onChange }) {
   const inputRef = useRef(null);
   const [imgIsValid, setImgIsValid] = useState(false);
 
+  const imgUrl = image.id === null ? '' : image.id;
   useEffect(() => {
     if (inputRef.current) {
-      setImgIsValid(image && inputRef.current.checkValidity());
+      setImgIsValid(image.id && inputRef.current.checkValidity());
     } else {
-      setImgIsValid(!!image);
+      setImgIsValid(!!image.id);
     }
-
   }, [image]);
 
   return (
     <StyledRoot>
       <StyledTextField
-        value={image}
+        value={imgUrl}
         onChange={(ev) => onChange(ev.target.value)}
-        error={image !== '' && !imgIsValid}
+        error={imgUrl !== '' && !imgIsValid}
         margin="dense"
         label="Image URL"
         type="url"
         fullWidth
         inputRef={inputRef}
       />
-      {imgIsValid && <img src={image} width="100%" height="auto" alt="loading failed" />}
+      {imgIsValid && <img src={image.id} width="100%" height="auto" alt="loading failed" />}
     </StyledRoot>
   );
 }
 
 ImageFormField.propTypes = {
+  image: PropTypes.shape({
+    id: PropTypes.string,
+  }).isRequired,
   onChange: PropTypes.func.isRequired,
 };
 

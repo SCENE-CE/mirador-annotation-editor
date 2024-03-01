@@ -24,7 +24,6 @@ export const manifestTypes = {
 
 /**
  * List of the template types supported
- * @type {[{icon: JSX.Element, save: save, description: string, id: string, label: string},{icon: JSX.Element, description: string, id: string, label: string},{icon: JSX.Element, description: string, id: string, label: string},{icon: JSX.Element, description: string, id: string, label: string},{icon: JSX.Element, description: string, id: string, label: string},null]}
  */
 export const templateTypes = [
   {
@@ -41,31 +40,31 @@ export const templateTypes = [
   },
   {
     description: 'mon incroyable description',
-    icon: <ImageIcon />,
+    icon: <ImageIcon fontSize="small" />,
     id: template.IMAGE_TYPE,
     label: 'Image Comment',
   },
   {
     description: 'mon incroyable description',
-    icon: <CategoryIcon />,
+    icon: <CategoryIcon fontSize="small" />,
     id: template.KONVA_TYPE,
     label: 'Konva Comment',
   },
   {
     description: 'mon incroyable description',
-    icon: <HubIcon />,
+    icon: <HubIcon fontSize="small" />,
     id: template.MANIFEST_TYPE,
     label: 'Manifest Comment',
   },
   {
     description: 'mon incroyable description',
-    icon: <LocalOfferIcon />,
+    icon: <LocalOfferIcon fontSize="small" />,
     id: template.TAGGING_TYPE,
     label: 'Tagging Comment',
   },
   {
     description: 'mon incroyable description',
-    icon: <ArticleIcon />,
+    icon: <ArticleIcon fontSize="small" />,
     id: template.IIIF_TYPE,
     label: 'IIIF Manifest',
   },
@@ -93,7 +92,7 @@ export const defaultToolState = {
   activeTool: OVERLAY_TOOL.EDIT,
   closedMode: 'closed',
   fillColor: 'rgba(83,162, 235, 0.5)',
-  image: { id: null },
+  image: { id: '' },
   imageEvent: null,
   strokeColor: 'rgba(20,82,168,1)',
   strokeWidth: 2,

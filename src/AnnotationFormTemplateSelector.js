@@ -20,13 +20,13 @@ export default function AnnotationFormTemplateSelector({ setCommentingType }) {
         <Card>
           <CardActionArea id={t.id} onClick={() => setCommentType(t)}>
             <CardContent>
-              <CardTypography component="div">
+              <CardTypography variant="h6" component="div">
                 {t.label}
                 {t.icon}
               </CardTypography>
-              <CardTypography component="div">
+              <DescriptionCardTypography component="div" variant="body2">
                 {t.description}
-              </CardTypography>
+              </DescriptionCardTypography>
             </CardContent>
           </CardActionArea>
         </Card>
@@ -43,10 +43,18 @@ const CardContainer = styled('div')(({
   margin: '10px',
 }));
 
-const CardTypography = styled(Typography)(({ theme }) => ({
+const CardTypography = styled(Typography, { name: 'CompanionWindow', slot: 'body1Next' })({
   display: 'flex',
   justifyContent: 'space-between',
-}));
+});
+
+const DescriptionCardTypography = styled(Typography, { name: 'CompanionWindow', slot: 'body1Next' })({
+  color: '#adabab',
+  display: 'flex',
+  justifyContent: 'space-between',
+});
+
+const StyledTitle = styled(Typography, { name: 'CompanionWindow', slot: 'title' })({});
 
 AnnotationFormTemplateSelector.propTypes = {
   setCommentingType: PropTypes.func.isRequired,
