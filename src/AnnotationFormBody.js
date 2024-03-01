@@ -9,7 +9,7 @@ import TextCommentTemplate from './annotationForm/TextCommentTemplate';
 import ImageCommentTemplate from './annotationForm/ImageCommentTemplate';
 import NetworkCommentTemplate from './annotationForm/NetworkCommentTemplate';
 import DrawingTemplate from './annotationForm/DrawingTemplate';
-
+import IIIFTemplate from './annotationForm/IIIFTemplate';
 /**
  * This function contain the logic for loading annotation and render proper template type
  * * */
@@ -173,6 +173,13 @@ export default function AnnotationFormBody(
             templateType={templateType}
             manifestType={manifestType}
             currentTime={currentTime}
+          />
+        )
+      }
+      {
+        templateType.id === template.IIIF_TYPE && (
+          <IIIFTemplate
+            annotation={annotation}
           />
         )
       }
