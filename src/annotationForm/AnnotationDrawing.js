@@ -9,7 +9,6 @@ import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
-import SpatialTarget from './AnnotationFormOverlay/KonvaDrawing/SpatialTarget';
 
 /** All the stuff to draw on the canvas */
 export default function AnnotationDrawing({
@@ -251,30 +250,6 @@ export default function AnnotationDrawing({
       ...drawingState,
       currentShape: drawingState.shapes.find((s) => s.id === modifiedshape.id),
     });
-  };
-
-  /**
-   * Handles the transformation event on a surface element.
-   * @param {Event} evt - The transformation event object.
-   */
-  const onSurfaceTransform = (evt) => {
-    const modifiedshape = evt.target.attrs;
-    const shape = surfacedata;
-    Object.assign(shape, modifiedshape);
-    setSurfaceData({ ...shape });
-  };
-
-  /**
-   * Handles the drag event on a surface element.
-   * Updates the surface data with the new position.
-   * @param {Event} evt - The drag event object.
-   */
-  const handleSurfaceDrag = (evt) => {
-    const modifiedshape = evt.currentTarget.attrs;
-    const shape = { ...surfacedata };
-    shape.x = modifiedshape.x;
-    shape.y = modifiedshape.y;
-    setSurfaceData({ ...shape });
   };
 
   /** */
@@ -537,15 +512,6 @@ export default function AnnotationDrawing({
       onMouseMove={handleMouseMove}
       id={props.windowId}
     >
-      <SpatialTarget
-        shape={surfacedata}
-        onTransform={onSurfaceTransform}
-        handleDrag={handleSurfaceDrag}
-        showTransformer={props.tabView === 'target'}
-        width={width}
-        height={height}
-        scale={props.scale}
-      />
       <ParentComponent
         shapes={drawingState.shapes}
         onShapeClick={onShapeClick}

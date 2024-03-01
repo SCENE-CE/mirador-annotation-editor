@@ -14,6 +14,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../../icons/Cursor';
 import AnnotationFormOverlayTool from './AnnotationFormOverlayTool';
 import { defaultToolState, OVERLAY_TOOL } from '../../AnnotationCreationUtils';
+import {OVERLAY_VIEW, TARGET_VIEW} from "../../AnnotationFormUtils";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
@@ -37,6 +38,7 @@ function AnnotationFormOverlay(
     toolState,
     deleteShape,
     currentShape,
+    setViewTool,
     shapes,
   },
 ) {
@@ -62,7 +64,14 @@ function AnnotationFormOverlay(
       });
     }
   };
-
+  /**
+   * Handle Tab change to set the shapes focusable
+   * @param event
+   * @param TabIndex
+   */
+  const tabHandler = (event, TabIndex) => {
+    setViewTool(TabIndex);
+  };
   const {
     activeTool,
   } = toolState;
@@ -84,19 +93,16 @@ function AnnotationFormOverlay(
               aria-label="tool selection"
               size="small"
             >
-              <ToggleButton value={OVERLAY_TOOL.EDIT} aria-label="select cursor">
+              <ToggleButton value={OVERLAY_TOOL.EDIT} aria-label="select cursor" onClick={tabHandler(TARGET_VIEW)}>
                 <CursorIcon />
               </ToggleButton>
-              <ToggleButton value={OVERLAY_TOOL.SHAPE} aria-label="select cursor">
+              <ToggleButton value={OVERLAY_TOOL.SHAPE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
                 <CategoryIcon />
               </ToggleButton>
-              <ToggleButton value={OVERLAY_TOOL.IMAGE} aria-label="select cursor">
-                <ImageIcon />
-              </ToggleButton>
-              <ToggleButton value={OVERLAY_TOOL.TEXT} aria-label="select text">
+              <ToggleButton value={OVERLAY_TOOL.TEXT} aria-label="select text" onClick={tabHandler(OVERLAY_VIEW)}>
                 <TitleIcon />
               </ToggleButton>
-              <ToggleButton value={OVERLAY_TOOL.DELETE} aria-label="select cursor">
+              <ToggleButton value={OVERLAY_TOOL.DELETE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
                 <DeleteIcon />
               </ToggleButton>
             </StyledToggleButtonGroup>

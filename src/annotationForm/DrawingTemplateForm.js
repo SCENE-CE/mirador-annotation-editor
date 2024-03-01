@@ -34,6 +34,7 @@ export default function DrawingTemplateForm(
     setCurrentTime,
     setSeekTo,
     setToolState,
+    setViewTool,
     shapes,
     toolState,
     windowId,
@@ -56,6 +57,7 @@ export default function DrawingTemplateForm(
         setToolState={setToolState}
         shapes={shapes}
         currentShape={currentShape}
+        setViewTool={setViewTool}
       />
       <TextFormSection
         annoHtml={annoState.textBody}

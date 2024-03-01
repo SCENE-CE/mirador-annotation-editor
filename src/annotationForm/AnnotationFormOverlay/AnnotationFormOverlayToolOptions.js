@@ -25,12 +25,6 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
 }));
 
-const StyledDivButtonImage = styled('div')(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'flex-end',
-  marginTop: '5px',
-}));
-
 /** Utils functions to convert string to object */
 const rgbaToObj = (rgba = 'rgba(255,255,255,0.5)') => {
   const rgbaArray = rgba.split(',');
@@ -137,27 +131,6 @@ function AnnotationFormOverlayToolOptions({ setToolState, toolState }) {
     });
   };
 
-  const addImage = () => {
-    const data = {
-      id: toolState?.image?.id,
-      uuid: uuidv4(),
-    };
-
-    setToolState({
-      ...toolState,
-      image: { id: null },
-      imageEvent: data,
-    });
-  };
-
-  /** TODO Code duplicate ?? */
-  const handleImgChange = (newUrl, imgRef) => {
-    setToolState({
-      ...toolState,
-      image: { ...toolState.image, id: newUrl },
-    });
-  };
-
   return (
     <div>
       {
@@ -256,23 +229,6 @@ function AnnotationFormOverlayToolOptions({ setToolState, toolState }) {
         )
       }
       {
-          toolState.activeTool === OVERLAY_TOOL.IMAGE && (
-          <>
-            <Typography variant="overline">
-              Add image from URL
-            </Typography>
-            <Grid container>
-              <ImageFormField xs={8} value={toolState.image} onChange={handleImgChange} />
-            </Grid>
-            <StyledDivButtonImage>
-              <Button variant="contained" onClick={addImage}>
-                <AddPhotoAlternateIcon />
-              </Button>
-            </StyledDivButtonImage>
-          </>
-          )
-      }
-      {
           toolState.activeTool === 'text' && (
           <>
             <Typography variant="overline">
@@ -294,6 +250,7 @@ function AnnotationFormOverlayToolOptions({ setToolState, toolState }) {
 }
 
 AnnotationFormOverlayToolOptions.propTypes = {
+  setToolState: PropTypes.func.isRequired,
   toolState: PropTypes.shape({
     activeTool: PropTypes.string.isRequired,
     closedMode: PropTypes.bool.isRequired,
@@ -306,7 +263,6 @@ AnnotationFormOverlayToolOptions.propTypes = {
     textBody: PropTypes.string,
     updateColor: PropTypes.func.isRequired,
   }).isRequired,
-  setToolState: PropTypes.func.isRequired,
 };
 
 export default AnnotationFormOverlayToolOptions;

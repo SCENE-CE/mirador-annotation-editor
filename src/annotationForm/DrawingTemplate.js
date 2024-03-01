@@ -149,6 +149,7 @@ export default function DrawingTemplate(
         currentTime={currentTime}
         currentShape={drawingState.currentShape}
         deleteShape={deleteShape}
+        setViewTool={setViewTool}
       />
     </>
   );
