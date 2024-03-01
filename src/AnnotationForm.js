@@ -5,7 +5,7 @@ import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
 import {
   manifestTypes,
-  template,
+  template, templateTypes,
 } from './AnnotationFormUtils';
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormFooter from './annotationForm/AnnotationFormFooter';
@@ -27,6 +27,12 @@ export default function AnnotationForm(
   },
 ) {
   const [templateType, setTemplateType] = useState(null);
+
+  // TODO must be improved when parsing annotation
+  if (!templateType && annotation) {
+    setTemplateType(templateTypes.find((t) => t.id === template.IIIF_TYPE));
+    console.log('annotationAF', annotation);
+  }
   let manifestType;
   if (mediaVideo) {
     manifestType = manifestTypes.VIDEO;
