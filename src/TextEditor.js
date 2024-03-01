@@ -26,6 +26,7 @@ function TextEditor({ annoHtml, updateAnnotationBody }) {
       <StyledReactQuill
         value={editorHtml}
         onChange={handleChange}
+        placeholder="Your text here"
       />
     </div>
   );

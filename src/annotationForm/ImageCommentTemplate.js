@@ -1,11 +1,5 @@
 import React from 'react';
-import Typography from '@mui/material/Typography';
-import { Button, Grid } from '@mui/material';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { styled } from '@mui/material/styles';
-import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
-import ImageFormField from './AnnotationFormOverlay/ImageFormField';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import ImageFormSection from './ImageFormSection';

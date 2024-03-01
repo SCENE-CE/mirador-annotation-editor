@@ -31,7 +31,7 @@ function NetworkCommentTemplate(
   };
 
   return (
-    <Paper style={{ padding: '5px' }}>
+    <div style={{ padding: '5px' }}>
       <Typography variant="overline">
         Network
       </Typography>
@@ -69,7 +69,7 @@ function NetworkCommentTemplate(
         commentingType={templateType}
         manifestType={manifestType}
       />
-    </Paper>
+    </div>
   );
 }
 

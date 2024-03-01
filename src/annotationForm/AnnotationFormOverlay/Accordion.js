@@ -10,7 +10,7 @@ import DeleteIcon from '@mui/icons-material/DeleteForever';
 
 function AccordionShapes({ shapes, deleteShape, currentShapeId }) {
   return (
-    <Paper>
+    <div>
       {shapes.map((shape) => (
         <Accordion style={shape.id === currentShapeId ? { fontWeight: 'bold' } : {}}>
           <AccordionSummary
@@ -43,7 +43,7 @@ function AccordionShapes({ shapes, deleteShape, currentShapeId }) {
         </Accordion>
 
       ))}
-    </Paper>
+    </div>
   );
 }
 

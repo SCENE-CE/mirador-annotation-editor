@@ -27,7 +27,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
+const StyledDiv = styled("div")(({ theme }) => ({
   padding: '5px',
 }));
 
@@ -77,7 +77,7 @@ function AnnotationFormOverlay(
   } = toolState;
 
   return (
-    <StyledPaper>
+    <StyledDiv>
       <div>
         <Grid container>
           <Grid item xs={12}>
@@ -116,7 +116,7 @@ function AnnotationFormOverlay(
           </Grid>
         </Grid>
       </div>
-    </StyledPaper>
+    </StyledDiv>
   );
 }
 

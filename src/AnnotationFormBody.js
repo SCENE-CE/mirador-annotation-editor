@@ -8,6 +8,8 @@ import TextCommentTemplate from './annotationForm/TextCommentTemplate';
 import ImageCommentTemplate from './annotationForm/ImageCommentTemplate';
 import NetworkCommentTemplate from './annotationForm/NetworkCommentTemplate';
 import DrawingTemplate from './annotationForm/DrawingTemplate';
+import {styled} from "@mui/material/styles";
+import ReactQuill from "react-quill";
 
 /**
  * This function contain the logic for loading annotation and render proper template type
@@ -113,7 +115,7 @@ export default function AnnotationFormBody(
   // TODO annotation is it usefeul in XTemplateProps ?
 
   return (
-    <div>
+    <TemplateContainer>
       {
         templateType.id === template.TEXT_TYPE && (
           <TextCommentTemplate
@@ -173,10 +175,12 @@ export default function AnnotationFormBody(
           />
         )
       }
-    </div>
+    </TemplateContainer>
   );
 }
-
+const TemplateContainer = styled('div')(({ theme }) => ({
+  padding: theme.spacing(1),
+}));
 AnnotationFormBody.propTypes = {
   annotation: PropTypes.shape({
     adapter: PropTypes.func,
@@ -196,6 +200,7 @@ AnnotationFormBody.propTypes = {
   }).isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   manifestType: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   mediaVideo: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,

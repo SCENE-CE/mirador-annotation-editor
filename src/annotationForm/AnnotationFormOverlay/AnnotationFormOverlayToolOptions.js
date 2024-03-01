@@ -195,7 +195,7 @@ function AnnotationFormOverlayToolOptions({ setToolState, toolState }) {
               open={toolOptions.lineWeightPopoverOpen}
               anchorEl={toolOptions.popoverLineWeightAnchorEl}
             >
-              <Paper>
+              <div>
                 <ClickAwayListener onClickAway={handleCloseLineWeight}>
                   <MenuList autoFocus role="listbox">
                     {defaultLineWeightChoices.map((option, index) => (
@@ -212,7 +212,7 @@ function AnnotationFormOverlayToolOptions({ setToolState, toolState }) {
                     ))}
                   </MenuList>
                 </ClickAwayListener>
-              </Paper>
+              </div>
             </Popover>
             <Popover
               open={toolOptions.colorPopoverOpen}
@@ -222,7 +222,7 @@ function AnnotationFormOverlayToolOptions({ setToolState, toolState }) {
               <SketchPicker
                 disableAlpha={false}
                 color={currentColor}
-                onChangeComplete={setToolState}
+                onChangeComplete={updateColor}
               />
             </Popover>
           </Grid>

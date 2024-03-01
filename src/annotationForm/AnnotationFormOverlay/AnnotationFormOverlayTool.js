@@ -72,7 +72,7 @@ function AnnotationFormOverlayTool({
           <>
             {
             currentShape && (
-            <Paper>
+            <div>
               <Typography variant="overline">
                 Selected object
               </Typography>
@@ -105,7 +105,7 @@ function AnnotationFormOverlayTool({
                 updateToolState={customUpdateToolState}
 
               />
-            </Paper>
+            </div>
             )
             }
             {
