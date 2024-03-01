@@ -8,15 +8,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { Button, Paper } from '@mui/material';
+import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from '@mui/material/Typography';
 import AnnotationFormOverlayToolOptions from './AnnotationFormOverlayToolOptions';
 import {
-  defaultToolState,
   isShapesTool,
   OVERLAY_TOOL,
-  SHAPES_TOOL
+  SHAPES_TOOL,
 } from '../../AnnotationCreationUtils';
 import AccordionShapes from './Accordion';
 
@@ -185,8 +184,11 @@ function AnnotationFormOverlayTool({
 }
 
 AnnotationFormOverlayTool.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
   currentShape: PropTypes.object.isRequired,
   deleteShape: PropTypes.func.isRequired,
+  setToolState: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   shapes: PropTypes.array.isRequired,
   toolState: PropTypes.shape({
     activeTool: PropTypes.string.isRequired,
@@ -199,7 +201,6 @@ AnnotationFormOverlayTool.propTypes = {
     strokeWidth: PropTypes.number.isRequired,
     updateColor: PropTypes.func.isRequired,
   }).isRequired,
-  setToolState: PropTypes.func.isRequired,
 
 };
 

@@ -53,12 +53,12 @@ TextCommentTemplate.propTypes = {
       textBody: PropTypes.string,
     },
   ).isRequired,
-  templateType: PropTypes.string.isRequired,
   currentTime: PropTypes.number.isRequired,
   manifestType: PropTypes.string.isRequired,
   setAnnoState: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
+  templateType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 };
 

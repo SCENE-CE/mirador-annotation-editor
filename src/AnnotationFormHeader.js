@@ -43,7 +43,6 @@ const TitleLogoContainer = styled('div')(({ theme }) => ({
 
 const StyledTitle = styled(Typography, { name: 'CompanionWindow', slot: 'title' })({});
 
-
 AnnotationFormHeader.propTypes = {
   setCommentingType: PropTypes.func.isRequired,
   templateType: PropTypes.arrayOf(PropTypes.shape(

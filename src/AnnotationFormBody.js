@@ -108,9 +108,11 @@ export default function AnnotationFormBody(
     };
   });
 
-  // TODO At this end we must only have annoSTate, setAnnoState, templateType, manifestType, windowId in XTemplateProps
+  // TODO At this end we must only have annoSTate, setAnnoState, templateType,
+  //  manifestType, windowId in XTemplateProps
   // TODO Search where overlay is used. Only in Konva ?
-  // TODO setSeekTo, setCurrentTime, overlay, currentTime, mediaVideo must be get only in TargetFormSection
+  // TODO setSeekTo, setCurrentTime, overlay, currentTime,
+  //  mediaVideo must be get only in TargetFormSection
   // TODO annotation is it usefeul in XTemplateProps ?
 
   return (

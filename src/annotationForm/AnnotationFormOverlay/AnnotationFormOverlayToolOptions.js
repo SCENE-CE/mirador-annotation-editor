@@ -257,9 +257,10 @@ AnnotationFormOverlayToolOptions.propTypes = {
     fillColor: PropTypes.string.isRequired,
     image: PropTypes.shape({
       id: PropTypes.string,
-    }).isRequired,
+    }),
     strokeColor: PropTypes.string.isRequired,
     strokeWidth: PropTypes.number.isRequired,
+    text: PropTypes.string,
     textBody: PropTypes.string,
     updateColor: PropTypes.func.isRequired,
   }).isRequired,

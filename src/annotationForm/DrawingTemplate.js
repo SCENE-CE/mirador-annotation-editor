@@ -111,7 +111,7 @@ export default function DrawingTemplate(
     <>
       {/* Rename AnnotationDrawing in Drawing Stage */}
       {/* Check the useless props : annotation ?
-      Check the width height originalW originalW*/}
+      Check the width height originalW originalW */}
       <AnnotationDrawing
         scale={scale}
         activeTool={toolState.activeTool}
@@ -177,7 +177,6 @@ DrawingTemplate.propTypes = {
     }),
     PropTypes.string,
   ]).isRequired,
-  templateType: PropTypes.string.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   manifestType: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
@@ -187,5 +186,6 @@ DrawingTemplate.propTypes = {
   setAnnoState: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
+  templateType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 };

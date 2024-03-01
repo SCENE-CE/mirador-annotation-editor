@@ -8,6 +8,15 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 
+
+/**
+ * Accordion presentation of shapes
+ * @param shapes
+ * @param deleteShape
+ * @param currentShapeId
+ * @returns {Element}
+ * @constructor
+ */
 function AccordionShapes({ shapes, deleteShape, currentShapeId }) {
   return (
     <div>

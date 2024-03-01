@@ -14,6 +14,10 @@ const StyledReactQuill = styled(ReactQuill)(({ theme }) => ({
 function TextEditor({ annoHtml, updateAnnotationBody }) {
   const [editorHtml, setEditorHtml] = useState(annoHtml);
 
+  /**
+   * Handle Change On ReactQuil Editor
+   * @param html
+   */
   const handleChange = (html) => {
     setEditorHtml(html);
     if (updateAnnotationBody) {

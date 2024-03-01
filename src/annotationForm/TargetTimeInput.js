@@ -89,13 +89,14 @@ function TargetTimeInput({
     }));
   };
 
+  // TODO: Décomposer cette fonction pour que la maj des
+  //  state se face au onChange et l'appelle a seekToTstart /
+  // end se face au 'onChangeCommitted' mui propriété afin d'éviter l'effet indésiré sur la vidéo
   /**
    * Change from slider
    * @param {Event} event
    * @param {any} newValueTime
    */
-  // TODO: Décomposer cette fonction pour que la maj des state se face au onChange et l'appelle a seekToTstart /
-  // end se face au 'onChangeCommitted' mui propriété afin d'éviter l'effet indésiré sur la vidéo
   const handleChangeTime = (event, newValueTime) => {
     const timeStart = newValueTime[0];
     const timeEnd = newValueTime[1];
@@ -232,8 +233,6 @@ TargetTimeInput.propTypes = {
     },
   ).isRequired,
   currentTime: PropTypes.number.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  mediaVideo: PropTypes.object.isRequired,
   setAnnoState: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
