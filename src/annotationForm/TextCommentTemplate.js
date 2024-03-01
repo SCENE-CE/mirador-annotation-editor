@@ -14,6 +14,7 @@ function TextCommentTemplate(
     setCurrentTime,
     setSeekTo,
     windowId,
+    setSaveFunction,
   },
 ) {
   /**

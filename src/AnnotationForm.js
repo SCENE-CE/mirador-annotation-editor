@@ -28,6 +28,8 @@ export default function AnnotationForm(
 ) {
   const [templateType, setTemplateType] = useState(null);
 
+  const [saveFunction, setSaveFunction] = useState(null);
+
   // TODO must be improved when parsing annotation
   if (!templateType && annotation) {
     setTemplateType(templateTypes.find((t) => t.id === template.IIIF_TYPE));
@@ -129,6 +131,10 @@ export default function AnnotationForm(
     });
   };
 
+  const callSaveFunction = () => {
+    saveFunction();
+  }
+
   return (
     <CompanionWindow
       title={annotation ? 'Edit annotation' : 'New annotation'}
@@ -157,9 +163,11 @@ export default function AnnotationForm(
               setCurrentTime={setCurrentTime}
               setSeekTo={setSeekTo}
               manifestType={manifestType}
+              setSaveFunction={setSaveFunction}
             />
             <AnnotationFormFooter
               closeFormCompanionWindow={closeFormCompanionWindow}
+              saveFunction={callSaveFunction}
             />
           </>
         )}

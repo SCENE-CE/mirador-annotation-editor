@@ -6,6 +6,7 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import ArticleIcon from '@mui/icons-material/Article';
 import React from 'react';
 import { OVERLAY_TOOL } from './AnnotationCreationUtils';
+import TextCommentTemplate from './annotationForm/TextCommentTemplate';
 
 export const template = {
   IIIF_TYPE: 'iiif',
@@ -31,12 +32,6 @@ export const templateTypes = [
     icon: <TextFieldsIcon />,
     id: template.TEXT_TYPE,
     label: 'Text Comment',
-    /**
-     * save function for text
-     */
-    save: function textComentSave() {
-      console.log('TextCommentSave');
-    },
   },
   {
     description: 'mon incroyable description',

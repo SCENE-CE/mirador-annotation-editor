@@ -24,6 +24,7 @@ export default function AnnotationFormBody(
     setCurrentTime,
     setSeekTo,
     windowId,
+    setSaveFunction,
   },
 ) {
   // Initial state setup
@@ -128,6 +129,7 @@ export default function AnnotationFormBody(
             templateType={templateType}
             manifestType={manifestType}
             currentTime={currentTime}
+            setSaveFunction={setSaveFunction}
           />
         )
       }
@@ -180,6 +182,7 @@ export default function AnnotationFormBody(
         templateType.id === template.IIIF_TYPE && (
           <IIIFTemplate
             annotation={annotation}
+            setSaveFunction={setSaveFunction}
           />
         )
       }

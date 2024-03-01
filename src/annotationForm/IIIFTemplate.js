@@ -11,8 +11,19 @@ import 'brace/theme/github';
  * @param annotation
  * @returns {JSX.Element}
  */
-export default function IIIFTemplate({ annotation }) {
-  console.log(annotation);
+export default function IIIFTemplate({ annotation, setSaveFunction }) {
+
+  /**
+   * Save function for the annotation
+   * @returns {Object}
+   */
+  const saveFunction = () => {
+    // We return annotation to save it
+    console.log('Save function in IIIF');
+    return annotation;
+  }
+
+  setSaveFunction(saveFunction);
 
   return (
     <Editor
@@ -38,4 +49,5 @@ IIIFTemplate.propTypes = {
     motivation: PropTypes.string,
     target: PropTypes.string,
   }).isRequired,
+  setSaveFunction: PropTypes.func.isRequired,
 };

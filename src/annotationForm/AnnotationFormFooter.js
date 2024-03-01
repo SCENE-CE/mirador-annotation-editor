@@ -11,12 +11,14 @@ const StyledButtonDivSaveOrCancel = styled('div')(({ theme }) => ({
 /** Annotation form footer, save or cancel the edition/creation of an annotation */
 function AnnotationFormFooter({
   closeFormCompanionWindow,
+  saveAnnotation,
 }) {
   /**
    * Validate form and save annotation
    */
   const submitAnnotationForm = async (e) => {
     console.log('Vive les gros Cayenne Rouge !');
+    saveAnnotation();
   };
 
   return (
@@ -37,6 +39,7 @@ function AnnotationFormFooter({
 }
 AnnotationFormFooter.propTypes = {
   closeFormCompanionWindow: PropTypes.func.isRequired,
+  saveAnnotation: PropTypes.func.isRequired,
 };
 
 export default AnnotationFormFooter;
