@@ -10,6 +10,7 @@ import {
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormFooter from './annotationForm/AnnotationFormFooter';
 import AnnotationFormBody from './AnnotationFormBody';
+
 /**
  * Component for submitting a form to create or edit an annotation.
  * */
@@ -25,7 +26,7 @@ export default function AnnotationForm(
     setSeekTo,
   },
 ) {
-  const [commentingType, setCommentingType] = useState(null);
+  const [templateType, setTemplateType] = useState(null);
   let manifestType;
   if (mediaVideo) {
     manifestType = manifestTypes.VIDEO;
@@ -73,7 +74,10 @@ export default function AnnotationForm(
     };
   };
 
-  const { height, width } = getHeightAndWidth();
+  const {
+    height,
+    width,
+  } = getHeightAndWidth();
   // TODO Check the effect to keep and remove the other
   // Add a state to trigger redraw
   const [windowSize, setWindowSize] = useState({
@@ -102,7 +106,10 @@ export default function AnnotationForm(
   }, []);
 
   useLayoutEffect(() => {
-  }, [{ height, width }]);
+  }, [{
+    height,
+    width,
+  }]);
 
   /**
    * Closes the companion window with the specified ID and position.
@@ -122,21 +129,20 @@ export default function AnnotationForm(
       windowId={windowId}
       id={id}
     >
-      { commentingType === null
-          && (
+      {templateType === null
+        ? (
           <AnnotationFormTemplateSelector
-            setCommentingType={setCommentingType}
+            setCommentingType={setTemplateType}
           />
-          )}
-      {commentingType?.id === template.TEXT_TYPE
-          && (
-          <div>
+        )
+        : (
+          <>
             <AnnotationFormHeader
-              setCommentingType={setCommentingType}
-              templateType={commentingType}
+              setCommentingType={setTemplateType}
+              templateType={templateType}
             />
             <AnnotationFormBody
-              commentingType={commentingType}
+              templateType={templateType}
               windowId={windowId}
               overlay={overlay}
               annotation={annotation}
@@ -149,101 +155,8 @@ export default function AnnotationForm(
             <AnnotationFormFooter
               closeFormCompanionWindow={closeFormCompanionWindow}
             />
-          </div>
-          )}
-      {commentingType?.id === template.IMAGE_TYPE
-          && (
-          <div>
-            <AnnotationFormHeader
-              setCommentingType={setCommentingType}
-              templateType={commentingType}
-            />
-            <AnnotationFormBody
-              commentingType={commentingType}
-              windowId={windowId}
-              overlay={overlay}
-              annotation={annotation}
-              mediaVideo={mediaVideo}
-              currentTime={currentTime}
-              setCurrentTime={setCurrentTime}
-              setSeekTo={setSeekTo}
-              manifestType={manifestType}
-            />
-            <AnnotationFormFooter
-              closeFormCompanionWindow={closeFormCompanionWindow}
-            />
-          </div>
-          )}
-      {commentingType?.id === template.KONVA_TYPE
-          && (
-          <div>
-            <AnnotationFormHeader
-              setCommentingType={setCommentingType}
-              templateType={commentingType}
-            />
-            <AnnotationFormBody
-              commentingType={commentingType}
-              windowId={windowId}
-              overlay={overlay}
-              annotation={annotation}
-              mediaVideo={mediaVideo}
-              currentTime={currentTime}
-              setCurrentTime={setCurrentTime}
-              setSeekTo={setSeekTo}
-              manifestType={manifestType}
-            />
-            <AnnotationFormFooter
-              closeFormCompanionWindow={closeFormCompanionWindow}
-            />
-          </div>
-          )}
-      {commentingType?.id === template.MANIFEST_TYPE
-          && (
-          <div>
-            <AnnotationFormHeader
-              setCommentingType={setCommentingType}
-              templateType={commentingType}
-            />
-            <AnnotationFormBody
-              commentingType={commentingType}
-              windowId={windowId}
-              overlay={overlay}
-              annotation={annotation}
-              mediaVideo={mediaVideo}
-              currentTime={currentTime}
-              setCurrentTime={setCurrentTime}
-              setSeekTo={setSeekTo}
-              manifestType={manifestType}
-            />
-            <AnnotationFormFooter
-              closeFormCompanionWindow={closeFormCompanionWindow}
-            />
-          </div>
-          )}
-      {commentingType?.id === template.TAGGING_TYPE
-          && (
-          <div>
-            <AnnotationFormHeader
-              setCommentingType={setCommentingType}
-              templateType={commentingType}
-            />
-            <AnnotationFormFooter
-              closeFormCompanionWindow={closeFormCompanionWindow}
-            />
-          </div>
-          )}
-      {commentingType?.id === template.IIIF_TYPE
-          && (
-          <div>
-            <AnnotationFormHeader
-              setCommentingType={setCommentingType}
-              templateType={commentingType}
-            />
-            <AnnotationFormFooter
-              closeFormCompanionWindow={closeFormCompanionWindow}
-            />
-          </div>
-          )}
+          </>
+        )}
     </CompanionWindow>
   );
 }

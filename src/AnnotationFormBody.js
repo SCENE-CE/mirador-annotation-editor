@@ -15,7 +15,7 @@ import DrawingTemplate from './annotationForm/DrawingTemplate';
 export default function AnnotationFormBody(
   {
     annotation,
-    commentingType,
+    templateType,
     currentTime,
     manifestType,
     mediaVideo,
@@ -110,35 +110,35 @@ export default function AnnotationFormBody(
   return (
     <div>
       {
-                commentingType.id === template.TEXT_TYPE && (
+                templateType.id === template.TEXT_TYPE && (
                 <TextCommentTemplate
                   annoState={state}
                   setAnnoState={setState}
                   setCurrentTime={setCurrentTime}
                   setSeekTo={setSeekTo}
                   windowId={windowId}
-                  commentingType={commentingType}
+                  templateType={templateType}
                   manifestType={manifestType}
                   currentTime={currentTime}
                 />
                 )
             }
       {
-                commentingType.id === template.IMAGE_TYPE && (
+                templateType.id === template.IMAGE_TYPE && (
                 <ImageCommentTemplate
                   annoState={state}
                   setAnnoState={setState}
                   setCurrentTime={setCurrentTime}
                   setSeekTo={setSeekTo}
                   windowId={windowId}
-                  commentingType={commentingType}
+                  templateType={templateType}
                   manifestType={manifestType}
                   currentTime={currentTime}
                 />
                 )
             }
       {
-                commentingType.id === template.KONVA_TYPE && (
+                templateType.id === template.KONVA_TYPE && (
                 <DrawingTemplate
                   annoState={state}
                   setAnnoState={setState}
@@ -146,7 +146,7 @@ export default function AnnotationFormBody(
                   setCurrentTime={setCurrentTime}
                   setSeekTo={setSeekTo}
                   windowId={windowId}
-                  commentingType={commentingType}
+                  templateType={templateType}
                   manifestType={manifestType}
                   annotation={annotation}
                   currentTime={currentTime}
@@ -155,14 +155,14 @@ export default function AnnotationFormBody(
                 )
             }
       {
-                commentingType.id === template.MANIFEST_TYPE && (
+                templateType.id === template.MANIFEST_TYPE && (
                 <NetworkCommentTemplate
                   annoState={state}
                   setAnnoState={setState}
                   setCurrentTime={setCurrentTime}
                   setSeekTo={setSeekTo}
                   windowId={windowId}
-                  commentingType={commentingType}
+                  templateType={templateType}
                   manifestType={manifestType}
                   currentTime={currentTime}
                 />
@@ -189,7 +189,7 @@ AnnotationFormBody.propTypes = {
     manifestNetwork: PropTypes.string,
     target: PropTypes.string,
   }).isRequired,
-  commentingType: PropTypes.string.isRequired,
+  templateType: PropTypes.string.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   manifestType: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
