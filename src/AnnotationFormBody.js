@@ -110,64 +110,64 @@ export default function AnnotationFormBody(
   return (
     <div>
       {
-                templateType.id === template.TEXT_TYPE && (
-                <TextCommentTemplate
-                  annoState={state}
-                  setAnnoState={setState}
-                  setCurrentTime={setCurrentTime}
-                  setSeekTo={setSeekTo}
-                  windowId={windowId}
-                  templateType={templateType}
-                  manifestType={manifestType}
-                  currentTime={currentTime}
-                />
-                )
-            }
+        templateType.id === template.TEXT_TYPE && (
+          <TextCommentTemplate
+            annoState={state}
+            setAnnoState={setState}
+            setCurrentTime={setCurrentTime}
+            setSeekTo={setSeekTo}
+            windowId={windowId}
+            templateType={templateType}
+            manifestType={manifestType}
+            currentTime={currentTime}
+          />
+        )
+      }
       {
-                templateType.id === template.IMAGE_TYPE && (
-                <ImageCommentTemplate
-                  annoState={state}
-                  setAnnoState={setState}
-                  setCurrentTime={setCurrentTime}
-                  setSeekTo={setSeekTo}
-                  windowId={windowId}
-                  templateType={templateType}
-                  manifestType={manifestType}
-                  currentTime={currentTime}
-                />
-                )
-            }
+        templateType.id === template.IMAGE_TYPE && (
+          <ImageCommentTemplate
+            annoState={state}
+            setAnnoState={setState}
+            setCurrentTime={setCurrentTime}
+            setSeekTo={setSeekTo}
+            windowId={windowId}
+            templateType={templateType}
+            manifestType={manifestType}
+            currentTime={currentTime}
+          />
+        )
+      }
       {
-                templateType.id === template.KONVA_TYPE && (
-                <DrawingTemplate
-                  annoState={state}
-                  setAnnoState={setState}
-                  overlay={overlay}
-                  setCurrentTime={setCurrentTime}
-                  setSeekTo={setSeekTo}
-                  windowId={windowId}
-                  templateType={templateType}
-                  manifestType={manifestType}
-                  annotation={annotation}
-                  currentTime={currentTime}
-                  mediaVideo={mediaVideo}
-                />
-                )
-            }
+        templateType.id === template.KONVA_TYPE && (
+          <DrawingTemplate
+            annoState={state}
+            setAnnoState={setState}
+            overlay={overlay}
+            setCurrentTime={setCurrentTime}
+            setSeekTo={setSeekTo}
+            windowId={windowId}
+            templateType={templateType}
+            manifestType={manifestType}
+            annotation={annotation}
+            currentTime={currentTime}
+            mediaVideo={mediaVideo}
+          />
+        )
+      }
       {
-                templateType.id === template.MANIFEST_TYPE && (
-                <NetworkCommentTemplate
-                  annoState={state}
-                  setAnnoState={setState}
-                  setCurrentTime={setCurrentTime}
-                  setSeekTo={setSeekTo}
-                  windowId={windowId}
-                  templateType={templateType}
-                  manifestType={manifestType}
-                  currentTime={currentTime}
-                />
-                )
-            }
+        templateType.id === template.MANIFEST_TYPE && (
+          <NetworkCommentTemplate
+            annoState={state}
+            setAnnoState={setState}
+            setCurrentTime={setCurrentTime}
+            setSeekTo={setSeekTo}
+            windowId={windowId}
+            templateType={templateType}
+            manifestType={manifestType}
+            currentTime={currentTime}
+          />
+        )
+      }
     </div>
   );
 }
