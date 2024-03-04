@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 /** Extract time information from annotation target */
 export function timeFromAnnoTarget(annotarget) {
   // TODO w3c media fragments: t=,10 t=5,
@@ -48,7 +50,7 @@ export async function saveAnnotationInStorageAdapter(
   receiveAnnotation,
   annotation,
 ) {
-  const isNewAnnotation = annotation.id === undefined;
+  const isNewAnnotation = annotation.id === null;
   console.log('Annotation to save', annotation);
   console.log('isNewAnnotation', isNewAnnotation);
   if (!isNewAnnotation) {
@@ -57,6 +59,7 @@ export async function saveAnnotationInStorageAdapter(
         receiveAnnotation(canvasId, storageAdapter.annotationPageId, annoPage);
       });
   } else {
+    annotation.id = uuidv4();
     storageAdapter.create(annotation)
       .then((annoPage) => {
         receiveAnnotation(canvasId, storageAdapter.annotationPageId, annoPage);

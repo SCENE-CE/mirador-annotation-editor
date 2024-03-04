@@ -9,10 +9,9 @@ import uuid from 'draft-js/lib/uuid';
 /** Form part for edit annotation content and body */
 function TextCommentTemplate(
   {
-    annoState,
+    annotation,
     currentTime,
     manifestType,
-    setAnnoState,
     setCurrentTime,
     setSeekTo,
     windowId,
@@ -20,6 +19,8 @@ function TextCommentTemplate(
     closeFormCompanionWindow,
   },
 ) {
+
+  console.log('annotation', annotation);
 
   let maeAnnotation = annotation;
 
@@ -63,19 +64,19 @@ function TextCommentTemplate(
   return (
     <div style={{ padding: '5px' }}>
       <TextFormSection
-        annoHtml={annoState.textBody}
+        annoHtml={annotationState.body.value}
         updateAnnotationBody={updateAnnotationTextBody}
       />
       <TargetFormSection
-        onChange={updateTargetState}
         currentTime={currentTime}
-        setAnnoState={setAnnoState}
-        annoState={annoState}
+        onChange={updateTargetState}
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
-        windowId={windowId}
         spatialTarget={false}
-        timeTarget={manifestType === manifestTypes.VIDEO}
+        target={targetState}
+        //timeTarget={manifestType === manifestTypes.VIDEO}
+        timeTarget={false}
+        windowId={windowId}
       />
       <AnnotationFormFooter
         closeFormCompanionWindow={closeFormCompanionWindow}
@@ -86,17 +87,10 @@ function TextCommentTemplate(
 }
 
 TextCommentTemplate.propTypes = {
-  annoState: PropTypes.shape(
-    {
-      textBody: PropTypes.string,
-    },
-  ).isRequired,
   currentTime: PropTypes.number.isRequired,
   manifestType: PropTypes.string.isRequired,
-  setAnnoState: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
-  templateType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,

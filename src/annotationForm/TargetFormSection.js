@@ -2,15 +2,14 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { manifestTypes, template } from '../AnnotationFormUtils';
 import TargetTimeInput from './TargetTimeInput';
-import {Grid} from "@mui/material";
+import { Grid, Typography } from '@mui/material';
+
 
 /**
  * Section of Time and Space Target
- * @param annoState
  * @param templateType
  * @param currentTime
  * @param manifestType
- * @param setAnnoState
  * @param setCurrentTime
  * @param setSeekTo
  * @param spatialTarget
@@ -20,37 +19,36 @@ import {Grid} from "@mui/material";
  */
 export default function TargetFormSection(
   {
-    annoState,
-    commentingType: templateType,
     currentTime,
-    manifestType,
-    setAnnoState,
+    onChange,
     setCurrentTime,
     setSeekTo,
     spatialTarget,
+    target,
+    timeTarget,
     windowId,
   },
 ) {
-  useEffect(() => {
-    console.log('annoState', annoState);
-  }, []);
+
 
   return (
     <Grid>
+      <Typography variant="overline">
+        Target
+      </Typography>
       {
             spatialTarget && (
-            <p>PLACE HOLDER SPATIAL TARGET</p>
+            <TargetSpatialInput />
             )
         }
       {
-            templateType.id !== template.IIIF_TYPE && manifestType === manifestTypes.VIDEO && (
+            timeTarget && (
             <TargetTimeInput
               windowId={windowId}
               currentTime={currentTime}
               setCurrentTime={setCurrentTime}
               setSeekTo={setSeekTo}
-              setAnnoState={setAnnoState}
-              annoState={annoState}
+
             />
             )
         }
@@ -59,15 +57,9 @@ export default function TargetFormSection(
 }
 
 TargetFormSection.propTypes = {
-  annoState: PropTypes.shape(
-    {
-      textBody: PropTypes.string,
-    },
-  ).isRequired,
   commentingType: PropTypes.string.isRequired,
   currentTime: PropTypes.number.isRequired,
   manifestType: PropTypes.string.isRequired,
-  setAnnoState: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   spatialTarget: PropTypes.string.isRequired,

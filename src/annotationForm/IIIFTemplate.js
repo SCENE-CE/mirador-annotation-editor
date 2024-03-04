@@ -22,11 +22,21 @@ export default function IIIFTemplate({
   canvases,
 
 }) {
-  const maeAnnotation = annotation;
-  if (!annotation?.maeData) {
+  let maeAnnotation = annotation;
+  if (!annotation.id) {
     // If the annotation does not have maeData, the annotation was not created with mae
-    maeAnnotation.maeData = {
-      templateType: template.IIIF_TYPE,
+    maeAnnotation = {
+      id: null,
+      motivation: '',
+      target: '',
+      body: {
+        id: '',
+        type: '',
+        value: '',
+      },
+      maeData: {
+        templateType: template.IIIF_TYPE,
+      },
     };
   }
 
@@ -46,6 +56,7 @@ export default function IIIFTemplate({
       // annotation.target = `${canvas.id}#xywh=${target.xywh}&t=${target.t}`;
       saveAnnotation(annotationState, canvas.id);
     });
+    closeFormCompanionWindow();
   };
 
   return (
@@ -69,9 +80,6 @@ export default function IIIFTemplate({
   );
 }
 
-const StyledEditor = styled(Editor)(({ theme }) => ({
-  minHeight: '500px !important',
-}));
 
 IIIFTemplate.propTypes = {
   annotation: PropTypes.shape({

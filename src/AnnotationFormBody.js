@@ -136,12 +136,10 @@ export default function AnnotationFormBody(
       {
         templateType.id === template.TEXT_TYPE && (
           <TextCommentTemplate
-            annoState={state}
-            setAnnoState={setState}
+            annotation={annotation}
             setCurrentTime={setCurrentTime}
             setSeekTo={setSeekTo}
             windowId={windowId}
-            templateType={templateType}
             manifestType={manifestType}
             currentTime={currentTime}
             closeFormCompanionWindow={closeFormCompanionWindow}
