@@ -8,9 +8,18 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 
+
+/**
+ * Accordion presentation of shapes
+ * @param shapes
+ * @param deleteShape
+ * @param currentShapeId
+ * @returns {Element}
+ * @constructor
+ */
 function AccordionShapes({ shapes, deleteShape, currentShapeId }) {
   return (
-    <Paper>
+    <div>
       {shapes.map((shape) => (
         <Accordion style={shape.id === currentShapeId ? { fontWeight: 'bold' } : {}}>
           <AccordionSummary
@@ -18,7 +27,7 @@ function AccordionShapes({ shapes, deleteShape, currentShapeId }) {
             aria-controls="panel1-content"
             id="panel1-header"
           >
-            {shape.id}
+            {shape.type}
           </AccordionSummary>
           <AccordionDetails>
             <ul>
@@ -43,7 +52,7 @@ function AccordionShapes({ shapes, deleteShape, currentShapeId }) {
         </Accordion>
 
       ))}
-    </Paper>
+    </div>
   );
 }
 

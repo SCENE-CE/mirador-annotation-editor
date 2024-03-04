@@ -14,6 +14,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../../icons/Cursor';
 import AnnotationFormOverlayTool from './AnnotationFormOverlayTool';
 import { defaultToolState, OVERLAY_TOOL } from '../../AnnotationCreationUtils';
+import { OVERLAY_VIEW, TARGET_VIEW } from '../../AnnotationFormUtils';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
@@ -26,41 +27,56 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  padding: '5px',
+const OverlayIconAndTitleContainer = styled(Grid)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
 }));
 
 /** All the stuff to manage to choose the drawing tool */
-function AnnotationFormOverlay({
-  updateToolState, toolState, deleteShape, currentShape, shapes
-}) {
+function AnnotationFormOverlay(
+  {
+    setToolState,
+    toolState,
+    deleteShape,
+    currentShape,
+    setViewTool,
+    shapes,
+  },
+) {
   useEffect(() => {
 
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
 
+  /**
+   * Handle tool's change
+   * @param e
+   * @param tool
+   */
   const changeTool = (e, tool) => {
     if (tool === OVERLAY_TOOL.SHAPE) {
-      updateToolState({
+      setToolState({
         ...defaultToolState,
         activeTool: tool,
       });
     } else {
-      updateToolState({
+      setToolState({
         ...toolState,
         activeTool: tool,
       });
     }
   };
-
-
-
+  /**
+   * Handle Tab change to set the shapes focusable
+   * @param event
+   * @param TabIndex
+   */
+  const tabHandler = (event, TabIndex) => setViewTool(TabIndex);
   const {
     activeTool,
   } = toolState;
 
   return (
-    <StyledPaper>
+    <div>
       <div>
         <Grid container>
           <Grid item xs={12}>
@@ -68,7 +84,7 @@ function AnnotationFormOverlay({
               Overlay
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          <OverlayIconAndTitleContainer item xs={12}>
             <StyledToggleButtonGroup
               value={activeTool} // State or props ?
               exclusive
@@ -76,40 +92,59 @@ function AnnotationFormOverlay({
               aria-label="tool selection"
               size="small"
             >
-              <ToggleButton value={OVERLAY_TOOL.EDIT} aria-label="select cursor">
+              <ToggleButton value={OVERLAY_TOOL.EDIT} aria-label="select cursor" onClick={tabHandler(TARGET_VIEW)}>
                 <CursorIcon />
               </ToggleButton>
-              <ToggleButton value={OVERLAY_TOOL.SHAPE} aria-label="select cursor">
+              <ToggleButton value={OVERLAY_TOOL.SHAPE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
                 <CategoryIcon />
               </ToggleButton>
-              <ToggleButton value={OVERLAY_TOOL.IMAGE} aria-label="select cursor">
-                <ImageIcon />
-              </ToggleButton>
-              <ToggleButton value={OVERLAY_TOOL.TEXT} aria-label="select text">
+              <ToggleButton value={OVERLAY_TOOL.TEXT} aria-label="select text" onClick={tabHandler(OVERLAY_VIEW)}>
                 <TitleIcon />
               </ToggleButton>
-              <ToggleButton value={OVERLAY_TOOL.DELETE} aria-label="select cursor">
+              <ToggleButton value={OVERLAY_TOOL.DELETE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
                 <DeleteIcon />
               </ToggleButton>
             </StyledToggleButtonGroup>
             <AnnotationFormOverlayTool
               toolState={toolState}
-              updateToolState={updateToolState}
+              setToolState={setToolState}
               currentShape={currentShape}
               shapes={shapes}
               deleteShape={deleteShape}
             />
-          </Grid>
+          </OverlayIconAndTitleContainer>
         </Grid>
       </div>
-    </StyledPaper>
+    </div>
   );
 }
 
 AnnotationFormOverlay.propTypes = {
-  currentShape: PropTypes.object.isRequired,
+  currentShape: PropTypes.shape({
+    id: PropTypes.string,
+    rotation: PropTypes.number,
+    scaleX: PropTypes.number,
+    scaleY: PropTypes.number,
+    type: PropTypes.string,
+    url: PropTypes.string,
+    x: PropTypes.number,
+    y: PropTypes.number,
+  }).isRequired,
   deleteShape: PropTypes.func.isRequired,
-  shapes: PropTypes.array.isRequired,
+  setToolState: PropTypes.func.isRequired,
+  setViewTool: PropTypes.func.isRequired,
+  shapes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      rotation: PropTypes.number,
+      scaleX: PropTypes.number,
+      scaleY: PropTypes.number,
+      type: PropTypes.string,
+      url: PropTypes.string,
+      x: PropTypes.number,
+      y: PropTypes.number,
+    }),
+  ).isRequired,
   toolState: PropTypes.shape({
     activeTool: PropTypes.string.isRequired,
     closedMode: PropTypes.bool.isRequired,
@@ -121,7 +156,6 @@ AnnotationFormOverlay.propTypes = {
     strokeWidth: PropTypes.number.isRequired,
     updateColor: PropTypes.func.isRequired,
   }).isRequired,
-  updateToolState: PropTypes.func.isRequired,
 };
 
 export default AnnotationFormOverlay;

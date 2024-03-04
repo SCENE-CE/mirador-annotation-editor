@@ -25,12 +25,6 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
 }));
 
-const StyledDivButtonImage = styled('div')(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'flex-end',
-  marginTop: '5px',
-}));
-
 /** Utils functions to convert string to object */
 const rgbaToObj = (rgba = 'rgba(255,255,255,0.5)') => {
   const rgbaArray = rgba.split(',');
@@ -53,7 +47,7 @@ const objToRgba = (obj = {
 }) => `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
 
 /** All the tools options for the overlay options */
-function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
+function AnnotationFormOverlayToolOptions({ setToolState, toolState }) {
   // set toolOptionsValue
   const [toolOptions, setToolOptions] = useState({
     colorPopoverOpen: false,
@@ -86,7 +80,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
       lineWeightPopoverOpen: false,
       popoverLineWeightAnchorEl: null,
     });
-    updateToolState({
+    setToolState({
       ...toolState,
       strokeWidth: e.currentTarget.value,
     });
@@ -123,7 +117,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
 
   /**  closed mode change */
   const changeClosedMode = (e) => {
-    updateToolState({
+    setToolState({
       ...toolState,
       closedMode: e.currentTarget.value,
     });
@@ -131,30 +125,9 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
 
   /** Update color : fillColor or strokeColor */
   const updateColor = (color) => {
-    updateToolState({
+    setToolState({
       ...toolState,
       [toolOptions.currentColorType]: objToRgba(color.rgb),
-    });
-  };
-
-  const addImage = () => {
-    const data = {
-      id: toolState?.image?.id,
-      uuid: uuidv4(),
-    };
-
-    updateToolState({
-      ...toolState,
-      image: { id: null },
-      imageEvent: data,
-    });
-  };
-
-  /** TODO Code duplicate ?? */
-  const handleImgChange = (newUrl, imgRef) => {
-    updateToolState({
-      ...toolState,
-      image: { ...toolState.image, id: newUrl },
     });
   };
 
@@ -222,7 +195,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
               open={toolOptions.lineWeightPopoverOpen}
               anchorEl={toolOptions.popoverLineWeightAnchorEl}
             >
-              <Paper>
+              <div>
                 <ClickAwayListener onClickAway={handleCloseLineWeight}>
                   <MenuList autoFocus role="listbox">
                     {defaultLineWeightChoices.map((option, index) => (
@@ -239,7 +212,7 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
                     ))}
                   </MenuList>
                 </ClickAwayListener>
-              </Paper>
+              </div>
             </Popover>
             <Popover
               open={toolOptions.colorPopoverOpen}
@@ -254,23 +227,6 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
             </Popover>
           </Grid>
         )
-      }
-      {
-          toolState.activeTool === OVERLAY_TOOL.IMAGE && (
-          <>
-            <Typography variant="overline">
-              Add image from URL
-            </Typography>
-            <Grid container>
-              <ImageFormField xs={8} value={toolState.image} onChange={handleImgChange} />
-            </Grid>
-            <StyledDivButtonImage>
-              <Button variant="contained" onClick={addImage}>
-                <AddPhotoAlternateIcon />
-              </Button>
-            </StyledDivButtonImage>
-          </>
-          )
       }
       {
           toolState.activeTool === 'text' && (
@@ -294,19 +250,20 @@ function AnnotationFormOverlayToolOptions({ updateToolState, toolState }) {
 }
 
 AnnotationFormOverlayToolOptions.propTypes = {
+  setToolState: PropTypes.func.isRequired,
   toolState: PropTypes.shape({
     activeTool: PropTypes.string.isRequired,
     closedMode: PropTypes.bool.isRequired,
     fillColor: PropTypes.string.isRequired,
     image: PropTypes.shape({
       id: PropTypes.string,
-    }).isRequired,
+    }),
     strokeColor: PropTypes.string.isRequired,
     strokeWidth: PropTypes.number.isRequired,
+    text: PropTypes.string,
     textBody: PropTypes.string,
     updateColor: PropTypes.func.isRequired,
   }).isRequired,
-  updateToolState: PropTypes.func.isRequired,
 };
 
 export default AnnotationFormOverlayToolOptions;

@@ -14,20 +14,19 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   marginTop: '0',
 }));
 
-/** Image input field for the annotation form */
-function ImageFormField({ value: image, onChange }) {
+/** imageUrl input field for the annotation form */
+function ImageFormField({ imageUrl, onChange }) {
   const inputRef = useRef(null);
   const [imgIsValid, setImgIsValid] = useState(false);
 
+  const imgUrl = imageUrl === null ? '' : imageUrl;
   useEffect(() => {
     if (inputRef.current) {
-      setImgIsValid(image.id && inputRef.current.checkValidity());
+      setImgIsValid(imageUrl && inputRef.current.checkValidity());
     } else {
-      setImgIsValid(!!image.id);
+      setImgIsValid(!!imageUrl);
     }
-  }, [image]);
-
-  const imgUrl = image.id === null ? '' : image.id;
+  }, [imageUrl]);
 
   return (
     <StyledRoot>
@@ -36,21 +35,19 @@ function ImageFormField({ value: image, onChange }) {
         onChange={(ev) => onChange(ev.target.value)}
         error={imgUrl !== '' && !imgIsValid}
         margin="dense"
-        label="Image URL"
+        label="imageUrl URL"
         type="url"
         fullWidth
         inputRef={inputRef}
       />
-      {imgIsValid && <img src={image.id} width="100%" height="auto" alt="loading failed" />}
+      {imgIsValid && <img src={imageUrl} width="100%" height="auto" alt="loading failed" />}
     </StyledRoot>
   );
 }
 
 ImageFormField.propTypes = {
+  imageUrl: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.shape({
-    id: PropTypes.string,
-  }).isRequired,
 };
 
 export default ImageFormField;
