@@ -7,7 +7,7 @@ import {Grid} from "@mui/material";
 /**
  * Section of Time and Space Target
  * @param annoState
- * @param commentingType
+ * @param templateType
  * @param currentTime
  * @param manifestType
  * @param setAnnoState
@@ -21,7 +21,7 @@ import {Grid} from "@mui/material";
 export default function TargetFormSection(
   {
     annoState,
-    commentingType,
+    commentingType: templateType,
     currentTime,
     manifestType,
     setAnnoState,
@@ -43,7 +43,7 @@ export default function TargetFormSection(
             )
         }
       {
-            commentingType.id !== template.IIIF_TYPE && manifestType === manifestTypes.VIDEO && (
+            templateType.id !== template.IIIF_TYPE && manifestType === manifestTypes.VIDEO && (
             <TargetTimeInput
               windowId={windowId}
               currentTime={currentTime}

@@ -6,7 +6,6 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import ArticleIcon from '@mui/icons-material/Article';
 import React from 'react';
 import { OVERLAY_TOOL } from './AnnotationCreationUtils';
-import TextCommentTemplate from './annotationForm/TextCommentTemplate';
 
 export const template = {
   IIIF_TYPE: 'iiif',
