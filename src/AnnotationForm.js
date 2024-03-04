@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
 import {
+  getTemplateType,
   manifestTypes,
   template, templateTypes,
 } from './AnnotationFormUtils';
 import AnnotationFormHeader from './AnnotationFormHeader';
-import AnnotationFormFooter from './annotationForm/AnnotationFormFooter';
 import AnnotationFormBody from './AnnotationFormBody';
+import { saveAnnotationInStorageAdapter } from './AnnotationCreationUtils';
 
 /**
  * Component for submitting a form to create or edit an annotation.
@@ -24,17 +25,27 @@ export default function AnnotationForm(
     mediaVideo,
     setCurrentTime,
     setSeekTo,
+    canvases,
+    receiveAnnotation,
+    config,
   },
 ) {
   const [templateType, setTemplateType] = useState(null);
 
-  const [saveFunction, setSaveFunction] = useState(null);
-
   // TODO must be improved when parsing annotation
-  if (!templateType && annotation) {
-    setTemplateType(templateTypes.find((t) => t.id === template.IIIF_TYPE));
-    console.log('annotationAF', annotation);
+  if (!templateType) {
+    if (annotation.id) {
+      if (annotation.maeData && annotation.maeData.templateType) {
+        // Annotation has been created with MAE
+        setTemplateType(getTemplateType(annotation.maeData.templateType));
+      } else {
+        // Annotation has been created with other IIIF annotation editor
+        setTemplateType(getTemplateType(template.IIIF_TYPE));
+      }
+    }
   }
+
+  console.log('templateType', templateType);
   let manifestType;
   if (mediaVideo) {
     manifestType = manifestTypes.VIDEO;
@@ -131,13 +142,15 @@ export default function AnnotationForm(
     });
   };
 
-  const callSaveFunction = () => {
-    saveFunction();
-  }
+  const saveAnnotation = (annotationToSaved, canvasId) => {
+    const storageAdapter = config.annotation.adapter(canvasId);
+    saveAnnotationInStorageAdapter(canvasId, storageAdapter, receiveAnnotation, annotationToSaved)
+      .then(console.log('Annotation saved'));
+  };
 
   return (
     <CompanionWindow
-      title={annotation ? 'Edit annotation' : 'New annotation'}
+      title={annotation.id ? 'Edit annotation' : 'New annotation'}
       windowId={windowId}
       id={id}
     >
@@ -163,11 +176,9 @@ export default function AnnotationForm(
               setCurrentTime={setCurrentTime}
               setSeekTo={setSeekTo}
               manifestType={manifestType}
-              setSaveFunction={setSaveFunction}
-            />
-            <AnnotationFormFooter
               closeFormCompanionWindow={closeFormCompanionWindow}
-              saveFunction={callSaveFunction}
+              saveAnnotation={saveAnnotation}
+              canvases={canvases}
             />
           </>
         )}

@@ -23,6 +23,10 @@ export const manifestTypes = {
   VIDEO: 'video',
 };
 
+export const getTemplateType = (templateType) => {
+  return templateTypes.find((type) => type.id === templateType);
+};
+
 /**
  * List of the template types supported
  */

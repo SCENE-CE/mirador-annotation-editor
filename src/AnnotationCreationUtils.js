@@ -42,22 +42,24 @@ export function isShapesTool(activeTool) {
 }
 
 /** Save annotation in the storage adapter */
-export async function saveAnnotation(
-  canvas,
+export async function saveAnnotationInStorageAdapter(
+  canvasId,
   storageAdapter,
   receiveAnnotation,
   annotation,
-  isNewAnnotation,
 ) {
+  const isNewAnnotation = annotation.id === undefined;
+  console.log('Annotation to save', annotation);
+  console.log('isNewAnnotation', isNewAnnotation);
   if (!isNewAnnotation) {
     storageAdapter.update(annotation)
       .then((annoPage) => {
-        receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
+        receiveAnnotation(canvasId, storageAdapter.annotationPageId, annoPage);
       });
   } else {
     storageAdapter.create(annotation)
       .then((annoPage) => {
-        receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
+        receiveAnnotation(canvasId, storageAdapter.annotationPageId, annoPage);
       });
   }
 }
@@ -76,7 +78,7 @@ export async function saveAnnotationInEachCanvas(
     // eslint-disable-next-line no-param-reassign
     annotation.target = `${canvas.id}#xywh=${target.xywh}&t=${target.t}`;
     const storageAdapter = config.annotation.adapter(canvas.id);
-    saveAnnotation(canvas, storageAdapter, receiveAnnotation, annotation, isNewAnnotation);
+    saveAnnotationInStorageAdapter(canvas, storageAdapter, receiveAnnotation, annotation, isNewAnnotation);
   });
 }
 

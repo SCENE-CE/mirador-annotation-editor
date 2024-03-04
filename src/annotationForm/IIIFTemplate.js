@@ -1,17 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { JsonEditor as Editor } from 'jsoneditor-react';
 import PropTypes from 'prop-types';
 import 'jsoneditor-react/es/editor.min.css';
 import ace from 'brace';
 import 'brace/mode/json';
 import 'brace/theme/github';
+import { styled } from '@mui/system';
+import { Paper } from '@mui/material';
+import AnnotationFormFooter from './AnnotationFormFooter';
+import { template } from '../AnnotationFormUtils';
 
 /**
  * IIIFTemplate component
  * @param annotation
  * @returns {JSX.Element}
  */
-export default function IIIFTemplate({ annotation, setSaveFunction }) {
+export default function IIIFTemplate({
+  annotation,
+  saveAnnotation,
+  closeFormCompanionWindow,
+  canvases,
+
+}) {
+  const maeAnnotation = annotation;
+  if (!annotation?.maeData) {
+    // If the annotation does not have maeData, the annotation was not created with mae
+    maeAnnotation.maeData = {
+      templateType: template.IIIF_TYPE,
+    };
+  }
+
+  const [annotationState, setAnnotationState] = useState(maeAnnotation);
+
+  console.log('annotationState', annotationState);
 
   /**
    * Save function for the annotation
@@ -19,22 +40,39 @@ export default function IIIFTemplate({ annotation, setSaveFunction }) {
    */
   const saveFunction = () => {
     // We return annotation to save it
-    console.log('Save function in IIIF');
-    return annotation;
-  }
-
-  setSaveFunction(saveFunction);
+    canvases.forEach(async (canvas) => {
+      // Adapt target to the canvas
+      // eslint-disable-next-line no-param-reassign
+      // annotation.target = `${canvas.id}#xywh=${target.xywh}&t=${target.t}`;
+      saveAnnotation(annotationState, canvas.id);
+    });
+  };
 
   return (
-    <Editor
-      value={annotation}
-      ace={ace}
-      theme="ace/theme/github"
-      onChange={() => {
-      }}
-    />
+    <>
+      <Paper
+        elevation={0}
+        style={{ minHeight: '300px' }}
+      >
+        <Editor
+          value={annotationState}
+          ace={ace}
+          theme="ace/theme/github"
+          onChange={setAnnotationState}
+        />
+      </Paper>
+      <AnnotationFormFooter
+        closeFormCompanionWindow={closeFormCompanionWindow}
+        saveAnnotation={saveFunction}
+      />
+    </>
   );
 }
+
+const StyledEditor = styled(Editor)(({ theme }) => ({
+  minHeight: '500px !important',
+}));
+
 IIIFTemplate.propTypes = {
   annotation: PropTypes.shape({
     body: PropTypes.shape({
@@ -45,9 +83,12 @@ IIIFTemplate.propTypes = {
     }),
     drawingState: PropTypes.string,
     id: PropTypes.string,
+    maeData: PropTypes.object,
     manifestNetwork: PropTypes.string,
     motivation: PropTypes.string,
     target: PropTypes.string,
   }).isRequired,
-  setSaveFunction: PropTypes.func.isRequired,
+  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
+  closeFormCompanionWindow: PropTypes.func.isRequired,
+  saveAnnotation: PropTypes.func.isRequired,
 };

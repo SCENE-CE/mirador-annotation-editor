@@ -24,15 +24,21 @@ export default function AnnotationFormBody(
     setCurrentTime,
     setSeekTo,
     windowId,
-    setSaveFunction,
+    closeFormCompanionWindow,
+    saveAnnotation,
+    canvases,
   },
 ) {
+
+
+  console.log('afb annotation', annotation);
+  console.log('afb templateType', templateType);
   // Initial state setup
   const [state, setState] = useState(() => {
     let tstart;
     let tend;
     const annoState = {};
-    if (annotation) {
+    if (annotation.id) {
       // annotation body
       if (Array.isArray(annotation.body)) {
         annoState.tags = [];
@@ -109,6 +115,15 @@ export default function AnnotationFormBody(
     };
   });
 
+  const updateAnnotation = (newAnnoState) => {
+    console.log('newAnnoState', newAnnoState);
+    setState((prevState) => ({
+      ...prevState,
+      ...newAnnoState,
+    }
+    ));
+  };
+
   // TODO At this end we must only have annoSTate, setAnnoState, templateType,
   //  manifestType, windowId in XTemplateProps
   // TODO Search where overlay is used. Only in Konva ?
@@ -129,7 +144,8 @@ export default function AnnotationFormBody(
             templateType={templateType}
             manifestType={manifestType}
             currentTime={currentTime}
-            setSaveFunction={setSaveFunction}
+            closeFormCompanionWindow={closeFormCompanionWindow}
+            canvases={canvases}
           />
         )
       }
@@ -156,7 +172,6 @@ export default function AnnotationFormBody(
             setCurrentTime={setCurrentTime}
             setSeekTo={setSeekTo}
             windowId={windowId}
-            templateType={templateType}
             manifestType={manifestType}
             annotation={annotation}
             currentTime={currentTime}
@@ -172,7 +187,6 @@ export default function AnnotationFormBody(
             setCurrentTime={setCurrentTime}
             setSeekTo={setSeekTo}
             windowId={windowId}
-            templateType={templateType}
             manifestType={manifestType}
             currentTime={currentTime}
           />
@@ -182,7 +196,10 @@ export default function AnnotationFormBody(
         templateType.id === template.IIIF_TYPE && (
           <IIIFTemplate
             annotation={annotation}
-            setSaveFunction={setSaveFunction}
+            updateAnnotation={updateAnnotation}
+            closeFormCompanionWindow={closeFormCompanionWindow}
+            saveAnnotation={saveAnnotation}
+            canvases={canvases}
           />
         )
       }
@@ -220,5 +237,8 @@ AnnotationFormBody.propTypes = {
   setSeekTo: PropTypes.func.isRequired,
   templateType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
+  saveAnnotation: PropTypes.func.isRequired,
+  closeFormCompanionWindow: PropTypes.func.isRequired,
+  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
 
 };
