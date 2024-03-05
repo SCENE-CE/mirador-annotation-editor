@@ -61,32 +61,31 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 /** Form part with time mangement, dual slider + double input. Mange Tstart and Tend value */
 function TargetTimeInput({
   windowId,
-  setAnnoState,
-  annoState,
   currentTime,
   setSeekTo,
   setCurrentTime,
+  tstart,
+  tend,
+  onChange,
 }) {
   const mediaVideo = VideosReferences.get(windowId);
   // eslint-disable-next-line no-underscore-dangle
   const videoDuration = mediaVideo.props.canvas.__jsonld.duration;
 
-  const [valueTime, setValueTime] = useState([annoState.tstart, annoState.tend]);
+  const [valueTime, setValueTime] = useState([tstart, tend]);
 
   /** set annotation start time to current time */
   const setTstartNow = () => {
-    setAnnoState((prevState) => ({
-      ...prevState,
+    onChange({
       tstart: Math.floor(currentTime),
-    }));
+    });
   };
 
   /** set annotation end time to current time */
   const setTendNow = () => {
-    setAnnoState((prevState) => ({
-      ...prevState,
+    onChange({
       tend: Math.floor(currentTime),
-    }));
+    });
   };
 
   // TODO: Décomposer cette fonction pour que la maj des
@@ -100,11 +99,11 @@ function TargetTimeInput({
   const handleChangeTime = (event, newValueTime) => {
     const timeStart = newValueTime[0];
     const timeEnd = newValueTime[1];
-    if (timeStart !== annoState.tstart) {
+    if (timeStart !== tstart) {
       updateTstart(timeStart);
       seekToTstart();
     }
-    if (timeEnd !== annoState.tend) {
+    if (timeEnd !== tend) {
       updateTend(timeEnd);
       updateTend(timeEnd);
       seekToTend();

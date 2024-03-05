@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography } from '@mui/material';
+import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import {
   geomFromAnnoTarget,
   manifestTypes,
@@ -9,7 +10,6 @@ import {
 } from '../AnnotationFormUtils';
 import TargetTimeInput from './TargetTimeInput';
 import { TargetSpatialInput } from './TargetSpatialInput';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences'
 
 /**
  * Section of Time and Space Target
@@ -47,30 +47,32 @@ export default function TargetFormSection(
   };
 
   // Can be, String, SVGSelector, Array[SVGSelector,FragmentSelector]
-  const [targetType, setTargetType] = useState(null);
-
   let svg;
   let xywh;
   let tstart;
   let tend;
-  let mediaVideo
+  let mediaVideo;
 
-  if(manifestType === manifestTypes.VIDEO) {
+
+
+  if (manifestType === manifestTypes.VIDEO) {
     mediaVideo = VideosReferences.get(windowId);
   }
 
-  if(target) {
+  let targetType;
+
+  if (target) {
     // We have an existing annotation
 
     // First check target type
     if (target.selector) {
       if (Array.isArray(target.selector)) {
-        setTargetType(targetTypes.MULTI);
+        targetType = targetTypes.MULTI;
       } else {
-        setTargetType(targetTypes.SVG_SELECTOR);
+        targetType = targetTypes.SVG_SELECTOR;
       }
     } else if (typeof target === 'string') {
-      setTargetType(targetTypes.STRING);
+      targetType = targetTypes.STRING;
     }
 
     // Set spatial target if necessary
@@ -145,6 +147,7 @@ export default function TargetFormSection(
           break;
       }
     }
+    targetType=targetTypes.STRING;
   }
   const onChangeXywh = (newXywh) => {
     console.log('TODO in development');
@@ -155,7 +158,6 @@ export default function TargetFormSection(
       t: time,
     });
   };
-
 
   return (
     <Grid>
@@ -195,6 +197,7 @@ TargetFormSection.propTypes = {
   manifestType: PropTypes.string.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
-  spatialTarget: PropTypes.string.isRequired,
+  spatialTarget: PropTypes.bool.isRequired,
+  timeTarget: PropTypes.bool.isRequired,
   windowId: PropTypes.string.isRequired,
 };

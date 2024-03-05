@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import uuid from 'draft-js/lib/uuid';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { manifestTypes, template } from '../AnnotationFormUtils';
-import uuid from 'draft-js/lib/uuid';
 
 /** Form part for edit annotation content and body */
 function TextCommentTemplate(
@@ -19,7 +19,6 @@ function TextCommentTemplate(
     closeFormCompanionWindow,
   },
 ) {
-
   console.log('annotation', annotation);
 
   let maeAnnotation = annotation;
@@ -37,14 +36,12 @@ function TextCommentTemplate(
       maeData: {
         templateType: template.TEXT_TYPE,
       },
+      target: null,
     };
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
-  const [targetState, setTargetState] = useState({
-    t: '0,20',
-    xywh: '0,0,100,100',
-  });
+  const [targetState, setTargetState] = useState(maeAnnotation.target);
 
   /**
      * Update the annotation's Body
@@ -67,7 +64,7 @@ function TextCommentTemplate(
     canvases.forEach(async (canvas) => {
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
-      annotationState.target = `${canvas.id}#xywh=${targetState.xywh}&t=${targetState.t}`;
+      annotationState.target = `${canvas.id}#xywh=${targetState.xywh}&t=${targetState.tstart},${targetState.tend}`;
       saveAnnotation(annotationState, canvas.id);
     });
     closeFormCompanionWindow();
@@ -86,8 +83,9 @@ function TextCommentTemplate(
         setSeekTo={setSeekTo}
         spatialTarget={false}
         target={targetState}
-        timeTarget={manifestType === manifestTypes.VIDEO}
+        timeTarget={true}
         windowId={windowId}
+        manifestType={manifestType}
       />
       <AnnotationFormFooter
         closeFormCompanionWindow={closeFormCompanionWindow}
@@ -105,6 +103,7 @@ TextCommentTemplate.propTypes = {
   windowId: PropTypes.string.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
+  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default TextCommentTemplate;
