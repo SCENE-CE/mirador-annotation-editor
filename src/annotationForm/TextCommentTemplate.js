@@ -41,7 +41,10 @@ function TextCommentTemplate(
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
-  const [targetState, setTargetState] = useState({});
+  const [targetState, setTargetState] = useState({
+    t: '0,20',
+    xywh: '0,0,100,100',
+  });
 
   /**
      * Update the annotation's Body
@@ -54,12 +57,21 @@ function TextCommentTemplate(
   };
 
   const updateTargetState = (newTarget) => {
-    setTargetState(newTarget);
-  }
+    setTargetState((prevState) => ({
+      ...prevState,
+      ...newTarget,
+    }));
+  };
 
   const saveFunction = () => {
-    saveAnnotation(annotationState);
-  }
+    canvases.forEach(async (canvas) => {
+      // Adapt target to the canvas
+      // eslint-disable-next-line no-param-reassign
+      annotationState.target = `${canvas.id}#xywh=${targetState.xywh}&t=${targetState.t}`;
+      saveAnnotation(annotationState, canvas.id);
+    });
+    closeFormCompanionWindow();
+  };
 
   return (
     <div style={{ padding: '5px' }}>
@@ -74,8 +86,7 @@ function TextCommentTemplate(
         setSeekTo={setSeekTo}
         spatialTarget={false}
         target={targetState}
-        //timeTarget={manifestType === manifestTypes.VIDEO}
-        timeTarget={false}
+        timeTarget={manifestType === manifestTypes.VIDEO}
         windowId={windowId}
       />
       <AnnotationFormFooter

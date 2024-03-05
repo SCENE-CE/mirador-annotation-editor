@@ -61,27 +61,7 @@ export default function AnnotationFormBody(
         annoState.image = annotation.body;
       }
       // drawing position
-      if (annotation.target.selector) {
-        if (Array.isArray(annotation.target.selector)) {
-          annotation.target.selector.forEach((selector) => {
-            if (selector.type === 'SvgSelector') {
-              annoState.svg = selector.value;
-            } else if (selector.type === 'FragmentSelector') {
-              // TODO proper fragment selector extraction
-              annoState.xywh = geomFromAnnoTarget(selector.value);
-              [tstart, tend] = timeFromAnnoTarget(selector.value);
-            }
-          });
-        } else {
-          annoState.svg = annotation.target.selector.value;
-          // TODO does this happen ? when ? where are fragments selectors ?
-        }
-      } else if (typeof annotation.target === 'string') {
-        annoState.xywh = geomFromAnnoTarget(annotation.target);
-        [tstart, tend] = timeFromAnnoTarget(annotation.target);
-        annoState.tstart = tstart;
-        annoState.tend = tend;
-      }
+
 
       if (annotation.drawingState) {
         annoState.drawingState = JSON.parse(annotation.drawingState);
