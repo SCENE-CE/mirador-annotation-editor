@@ -4,7 +4,7 @@ import uuid from 'draft-js/lib/uuid';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { manifestTypes, template } from '../AnnotationFormUtils';
+import { extractTargetFromAnnotation, manifestTypes, template } from '../AnnotationFormUtils';
 
 /** Form part for edit annotation content and body */
 function TextCommentTemplate(
@@ -41,7 +41,10 @@ function TextCommentTemplate(
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
-  const [targetState, setTargetState] = useState(maeAnnotation.target);
+
+
+  // Target State contains the svg, xywh, tstart and tend
+  const [targetState, setTargetState] = useState(extractTargetFromAnnotation(maeAnnotation.target));
 
   /**
      * Update the annotation's Body
@@ -78,7 +81,7 @@ function TextCommentTemplate(
       />
       <TargetFormSection
         currentTime={currentTime}
-        onChange={updateTargetState}
+        onChangeTarget={updateTargetState}
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
         spatialTarget={false}
