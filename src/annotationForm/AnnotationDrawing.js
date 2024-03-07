@@ -12,32 +12,37 @@ import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
 
 /** All the stuff to draw on the canvas */
 export default function AnnotationDrawing({
-  drawingState, originalWidth, orignalHeight, setDrawingState, height, width, imageEvent, overlay, updateScale, ...props
+  drawingState, originalWidth, orignalHeight, setDrawingState, height, width, imageEvent, overlay, updateScale, scale, ...props
 }) {
   const [isDrawing, setIsDrawing] = useState(false);
   // TODO target from the annotation
   const [surfacedata, setSurfaceData] = useState({
-    height: height / props.scale,
+    height: height / scale,
     scaleX: 1,
     scaleY: 1,
-    width: width / props.scale,
+    width: width / scale,
     x: 1,
     y: 1,
   });
+
+  console.log('width', width);
+  console.log('height', height);
+  console.log('scale', scale);
+
 
   useEffect(() => {
     if (overlay) {
       updateScale(overlay.containerWidth / overlay.canvasWidth);
     }
     const newSurfaceData = { ...surfacedata };
-    newSurfaceData.width = overlay.width / props.scale;
-    newSurfaceData.height = overlay.height / props.scale;
+    newSurfaceData.width = overlay.canvasWidth;
+    newSurfaceData.height = overlay.canvasHeight;
     // compare newSurfaceData and surfacedata, if different, update surfacedata
     // eslint-disable-next-line max-len
     if (newSurfaceData.width !== surfacedata.width || newSurfaceData.height !== surfacedata.height) {
       setSurfaceData(newSurfaceData);
     }
-  }, [ height, width ]);
+  }, [{ width }]);
 
   useEffect(() => {
     // TODO clean
@@ -251,8 +256,8 @@ export default function AnnotationDrawing({
   const handleMouseDown = (e) => {
     try {
       const pos = e.target.getStage().getRelativePointerPosition();
-      pos.x /= props.scale;
-      pos.y /= props.scale;
+      pos.x /= scale;
+      pos.y /= scale;
       let shape = null;
       switch (props.activeTool) {
         case SHAPES_TOOL.RECTANGLE:
@@ -406,8 +411,8 @@ export default function AnnotationDrawing({
         return;
       }
       const pos = e.target.getStage().getRelativePointerPosition();
-      pos.x /= props.scale;
-      pos.y /= props.scale;
+      pos.x /= scale;
+      pos.y /= scale;
 
       switch (props.activeTool) {
         case SHAPES_TOOL.RECTANGLE:
@@ -512,7 +517,7 @@ export default function AnnotationDrawing({
         onShapeClick={onShapeClick}
         activeTool={props.activeTool}
         selectedShapeId={drawingState.currentShape?.id}
-        scale={props.scale}
+        scale={scale}
         width={originalWidth}
         height={orignalHeight}
         onTransform={onTransform}

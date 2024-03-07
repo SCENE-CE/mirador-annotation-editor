@@ -124,6 +124,7 @@ export default function AnnotationForm(
     };
   }, []);
 
+  // TODO Useless ?
   useLayoutEffect(() => {
   }, [{
     height,
