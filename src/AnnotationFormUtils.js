@@ -35,12 +35,12 @@ export const templateTypes = [
     id: template.TEXT_TYPE,
     label: 'Text Comment',
   },
-  {
-    description: 'mon incroyable description',
-    icon: <ImageIcon fontSize="small" />,
-    id: template.IMAGE_TYPE,
-    label: 'Image Comment',
-  },
+  // {
+  //   description: 'mon incroyable description',
+  //   icon: <ImageIcon fontSize="small" />,
+  //   id: template.IMAGE_TYPE,
+  //   label: 'Image Comment',
+  // },
   {
     description: 'mon incroyable description',
     icon: <CategoryIcon fontSize="small" />,

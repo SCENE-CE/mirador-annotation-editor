@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { JsonEditor as Editor } from 'jsoneditor-react';
 import ace from 'brace';
+import ToggleButton from '@mui/material/ToggleButton';
+import { Paper } from '@mui/material';
 import {
   geomFromAnnoTarget,
   template, timeFromAnnoTarget,
@@ -12,8 +14,6 @@ import ImageCommentTemplate from './annotationForm/ImageCommentTemplate';
 import NetworkCommentTemplate from './annotationForm/NetworkCommentTemplate';
 import DrawingTemplate from './annotationForm/DrawingTemplate';
 import IIIFTemplate from './annotationForm/IIIFTemplate';
-import ToggleButton from '@mui/material/ToggleButton';
-import { Paper } from '@mui/material';
 /**
  * This function contain the logic for loading annotation and render proper template type
  * * */
