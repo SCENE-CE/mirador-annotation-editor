@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
+import { JsonEditor as Editor } from 'jsoneditor-react';
+import ace from 'brace';
 import {
   geomFromAnnoTarget,
   template, timeFromAnnoTarget,
@@ -10,6 +12,8 @@ import ImageCommentTemplate from './annotationForm/ImageCommentTemplate';
 import NetworkCommentTemplate from './annotationForm/NetworkCommentTemplate';
 import DrawingTemplate from './annotationForm/DrawingTemplate';
 import IIIFTemplate from './annotationForm/IIIFTemplate';
+import ToggleButton from '@mui/material/ToggleButton';
+import { Paper } from '@mui/material';
 /**
  * This function contain the logic for loading annotation and render proper template type
  * * */
@@ -29,8 +33,6 @@ export default function AnnotationFormBody(
     canvases,
   },
 ) {
-
-
   console.log('afb annotation', annotation);
   console.log('afb templateType', templateType);
   // Initial state setup
@@ -61,7 +63,6 @@ export default function AnnotationFormBody(
         annoState.image = annotation.body;
       }
       // drawing position
-
 
       if (annotation.drawingState) {
         annoState.drawingState = JSON.parse(annotation.drawingState);
@@ -111,78 +112,101 @@ export default function AnnotationFormBody(
   //  mediaVideo must be get only in TargetFormSection
   // TODO annotation is it usefeul in XTemplateProps ?
 
+  const [showDebug, setShowDebug] = useState(false);
+
   return (
-    <TemplateContainer>
-      {
-        templateType.id === template.TEXT_TYPE && (
-          <TextCommentTemplate
-            annotation={annotation}
-            setCurrentTime={setCurrentTime}
-            setSeekTo={setSeekTo}
-            windowId={windowId}
-            manifestType={manifestType}
-            currentTime={currentTime}
-            closeFormCompanionWindow={closeFormCompanionWindow}
-            saveAnnotation={saveAnnotation}
-            canvases={canvases}
-          />
-        )
-      }
-      {
-        templateType.id === template.IMAGE_TYPE && (
-          <ImageCommentTemplate
-            annoState={state}
-            setAnnoState={setState}
-            setCurrentTime={setCurrentTime}
-            setSeekTo={setSeekTo}
-            windowId={windowId}
-            templateType={templateType}
-            manifestType={manifestType}
-            currentTime={currentTime}
-          />
-        )
-      }
-      {
-        templateType.id === template.KONVA_TYPE && (
-          <DrawingTemplate
-            annoState={state}
-            setAnnoState={setState}
-            overlay={overlay}
-            setCurrentTime={setCurrentTime}
-            setSeekTo={setSeekTo}
-            windowId={windowId}
-            manifestType={manifestType}
-            annotation={annotation}
-            currentTime={currentTime}
-            mediaVideo={mediaVideo}
-          />
-        )
-      }
-      {
-        templateType.id === template.MANIFEST_TYPE && (
-          <NetworkCommentTemplate
-            annoState={state}
-            setAnnoState={setState}
-            setCurrentTime={setCurrentTime}
-            setSeekTo={setSeekTo}
-            windowId={windowId}
-            manifestType={manifestType}
-            currentTime={currentTime}
-          />
-        )
-      }
-      {
-        templateType.id === template.IIIF_TYPE && (
-          <IIIFTemplate
-            annotation={annotation}
-            updateAnnotation={updateAnnotation}
-            closeFormCompanionWindow={closeFormCompanionWindow}
-            saveAnnotation={saveAnnotation}
-            canvases={canvases}
-          />
-        )
-      }
-    </TemplateContainer>
+    <>
+      { !showDebug && (
+        <TemplateContainer>
+          {
+          templateType.id === template.TEXT_TYPE && (
+            <TextCommentTemplate
+              annotation={annotation}
+              setCurrentTime={setCurrentTime}
+              setSeekTo={setSeekTo}
+              windowId={windowId}
+              manifestType={manifestType}
+              currentTime={currentTime}
+              closeFormCompanionWindow={closeFormCompanionWindow}
+              saveAnnotation={saveAnnotation}
+              canvases={canvases}
+            />
+          )
+        }
+          {
+          templateType.id === template.IMAGE_TYPE && (
+            <ImageCommentTemplate
+              annoState={state}
+              setAnnoState={setState}
+              setCurrentTime={setCurrentTime}
+              setSeekTo={setSeekTo}
+              windowId={windowId}
+              templateType={templateType}
+              manifestType={manifestType}
+              currentTime={currentTime}
+            />
+          )
+        }
+          {
+          templateType.id === template.KONVA_TYPE && (
+            <DrawingTemplate
+              annoState={state}
+              setAnnoState={setState}
+              overlay={overlay}
+              setCurrentTime={setCurrentTime}
+              setSeekTo={setSeekTo}
+              windowId={windowId}
+              manifestType={manifestType}
+              annotation={annotation}
+              currentTime={currentTime}
+              mediaVideo={mediaVideo}
+            />
+          )
+        }
+          {
+          templateType.id === template.MANIFEST_TYPE && (
+            <NetworkCommentTemplate
+              annoState={state}
+              setAnnoState={setState}
+              setCurrentTime={setCurrentTime}
+              setSeekTo={setSeekTo}
+              windowId={windowId}
+              manifestType={manifestType}
+              currentTime={currentTime}
+            />
+          )
+        }
+          {
+          templateType.id === template.IIIF_TYPE && (
+            <IIIFTemplate
+              annotation={annotation}
+              updateAnnotation={updateAnnotation}
+              closeFormCompanionWindow={closeFormCompanionWindow}
+              saveAnnotation={saveAnnotation}
+              canvases={canvases}
+            />
+          )
+        }
+        </TemplateContainer>
+      )}
+      <Paper>
+        <ToggleButton
+          value={showDebug}
+          onChange={() => setShowDebug(!showDebug)}
+        >
+          {showDebug ? 'Hide' : 'Show'}
+          {' '}
+          Debug
+        </ToggleButton>
+        {showDebug && (
+        <Editor
+          value={annotation}
+          ace={ace}
+          theme="ace/theme/github"
+        />
+        )}
+      </Paper>
+    </>
   );
 }
 const TemplateContainer = styled('div')(({ theme }) => ({
