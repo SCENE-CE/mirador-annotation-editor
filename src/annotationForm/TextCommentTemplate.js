@@ -26,16 +26,12 @@ function TextCommentTemplate(
     canvases,
   },
 ) {
-  console.log('annotation', annotation);
 
   let maeAnnotation = annotation;
 
-  if (maeAnnotation.id) {
-
-  } else {
+  if (!maeAnnotation.id) {
     // If the annotation does not have maeData, the annotation was not created with mae
     maeAnnotation = {
-      motivation: 'commenting',
       body: {
         id: uuid(),
         type: 'TextualBody',
@@ -45,6 +41,7 @@ function TextCommentTemplate(
         templateType: template.TEXT_TYPE,
         target: null,
       },
+      motivation: 'commenting',
       target: null,
     };
   }
@@ -95,6 +92,7 @@ function TextCommentTemplate(
       />
       <TargetFormSection
         currentTime={currentTime}
+        manifestType={manifestType}
         onChangeTarget={updateTargetState}
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
@@ -102,7 +100,6 @@ function TextCommentTemplate(
         target={annotationState.maeData.target}
         timeTarget
         windowId={windowId}
-        manifestType={manifestType}
       />
       <AnnotationFormFooter
         closeFormCompanionWindow={closeFormCompanionWindow}
@@ -113,14 +110,17 @@ function TextCommentTemplate(
 }
 
 TextCommentTemplate.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  annotation: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
+  closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.number.isRequired,
   manifestType: PropTypes.string.isRequired,
+  saveAnnotation: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
-  saveAnnotation: PropTypes.func.isRequired,
-  closeFormCompanionWindow: PropTypes.func.isRequired,
-  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default TextCommentTemplate;
