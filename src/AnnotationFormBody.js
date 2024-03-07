@@ -166,13 +166,15 @@ export default function AnnotationFormBody(
           {
           templateType.id === template.MANIFEST_TYPE && (
             <NetworkCommentTemplate
-              annoState={state}
-              setAnnoState={setState}
+              annotation={annotation}
+              canvases={canvases}
+              closeFormCompanionWindow={closeFormCompanionWindow}
+              currentTime={currentTime}
+              manifestType={manifestType}
+              saveAnnotation={saveAnnotation}
               setCurrentTime={setCurrentTime}
               setSeekTo={setSeekTo}
               windowId={windowId}
-              manifestType={manifestType}
-              currentTime={currentTime}
             />
           )
         }

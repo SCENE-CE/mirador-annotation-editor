@@ -1,64 +1,117 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import ManifestNetworkFormSection from './ManifestNetworkFormSection';
+import uuid from 'draft-js/lib/uuid';
+import { maeTargetToIiifTarget, template } from '../AnnotationFormUtils';
+import AnnotationFormFooter from './AnnotationFormFooter';
 
 /** Form part for edit annotation content and body */
 function NetworkCommentTemplate(
   {
-    annoState,
+    annotation,
     currentTime,
-    templateType,
     manifestType,
-    setAnnoState,
     setCurrentTime,
     setSeekTo,
     windowId,
+    saveAnnotation,
+    closeFormCompanionWindow,
+    canvases,
   },
 ) {
-  /**
-     * handle Body text update
-     * @param newBody
-     */
-  const updateAnnotationTextBody = (newBody) => {
-    setAnnoState({
-      ...annoState,
-      textBody: newBody,
+
+
+  let maeAnnotation = annotation;
+
+  if (!maeAnnotation.id) {
+    // If the annotation does not have maeData, the annotation was not created with mae
+    maeAnnotation = {
+      body: {
+        id: uuid(),
+        type: 'TextualBody',
+        value: '',
+      },
+      maeData: {
+        manifestNetwork: '',
+        target: null,
+        templateType: template.MANIFEST_TYPE,
+      },
+      motivation: 'commenting',
+      target: null,
+    };
+  }
+
+  const [annotationState, setAnnotationState] = useState(maeAnnotation);
+
+
+  const updateManifestNetwork = (manifestNetwork) => {
+    // TODO probably can be simplified
+    const newMaeData = annotationState.maeData;
+    newMaeData.manifestNetwork = manifestNetwork;
+    setAnnotationState({
+      ...annotationState,
+      maeData: newMaeData,
     });
   };
 
   /**
-     * Updates the manifest network in annoState.
-     * @param {Object} manifestNetwork The new manifest network object to update.
-     */
-  const updateManifestNetwork = (manifestNetwork) => {
-    setAnnoState((prevState) => ({
-      ...prevState,
-      manifestNetwork,
-    }));
+   * Update the annotation's Body
+   * */
+  const updateAnnotationTextBody = (newTextValue) => {
+    const newBody = annotationState.body;
+    newBody.value = newTextValue;
+    setAnnotationState({
+      ...annotationState,
+      body: newBody,
+    });
+  };
+
+  const updateTargetState = (target) => {
+    const newMaeData = annotationState.maeData;
+    newMaeData.target = target;
+    setAnnotationState({
+      ...annotationState,
+      maeData: newMaeData,
+    });
+  };
+
+  const saveFunction = () => {
+    canvases.forEach(async (canvas) => {
+      // Adapt target to the canvas
+      // eslint-disable-next-line no-param-reassign
+      annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
+      //delete annotationState.maeData.target;
+      saveAnnotation(annotationState, canvas.id);
+    });
+    closeFormCompanionWindow();
   };
 
   return (
     <div style={{ padding: '5px' }}>
       <ManifestNetworkFormSection
-        manifestNetwork={annoState.manifestNetwork}
+        manifestNetwork={annotation.maeData.manifestNetwork}
         onChange={updateManifestNetwork}
       />
       <TextFormSection
-        annoHtml={annoState.textBody}
+        annoHtml={annotationState.body.value}
         updateAnnotationBody={updateAnnotationTextBody}
       />
       <TargetFormSection
-        setAnnoState={setAnnoState}
-        annoState={annoState}
+        currentTime={currentTime}
+        manifestType={manifestType}
+        onChangeTarget={updateTargetState}
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
-        windowId={windowId}
-        commentingType={templateType}
-        manifestType={manifestType}
-        currentTime={currentTime}
         spatialTarget={false}
+        target={annotationState.maeData.target}
+        timeTarget
+        windowId={windowId}
+      />
+      <AnnotationFormFooter
+        closeFormCompanionWindow={closeFormCompanionWindow}
+        saveAnnotation={saveFunction}
       />
     </div>
   );
@@ -66,7 +119,7 @@ function NetworkCommentTemplate(
 
 NetworkCommentTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  annoState: PropTypes.object.isRequired,
+  annotation: PropTypes.object.isRequired,
   currentTime: PropTypes.number.isRequired,
   manifestType: PropTypes.string.isRequired,
   setAnnoState: PropTypes.func.isRequired,
