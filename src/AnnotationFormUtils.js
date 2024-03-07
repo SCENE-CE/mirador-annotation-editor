@@ -5,6 +5,7 @@ import HubIcon from '@mui/icons-material/Hub';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import ArticleIcon from '@mui/icons-material/Article';
 import React from 'react';
+import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { OVERLAY_TOOL } from './AnnotationCreationUtils';
 
 export const template = {
@@ -112,7 +113,7 @@ const targetTypes = {
  * @param timeTarget boolean
  * @param spatialTarget boolean
  */
-export const extractTargetFromAnnotation = (target, manifestType, timeTarget, spatialTarget) => {
+export const extractTargetFromAnnotation = (target, manifestType, timeTarget, spatialTarget, additionalParams) => {
   // Can be, String, SVGSelector, Array[SVGSelector,FragmentSelector]
   const maeTarget = {};
   let targetType;
@@ -150,8 +151,9 @@ export const extractTargetFromAnnotation = (target, manifestType, timeTarget, sp
             }
           });
           break;
-        default:
+        default: {
           break;
+        }
       }
     }
 
@@ -178,19 +180,32 @@ export const extractTargetFromAnnotation = (target, manifestType, timeTarget, sp
           break;
       }
     }
-  } else {
-    // new annotation
+    return maeTarget;
+  }
+  return null;
+};
+
+
+export const iiifTargetToMaeTarget = (iiifTarget) => {
+  let target = extractTargetFromAnnotation(iiifTarget, manifestType, timeTarget, spatialTarget);
+  if(!target) {
+    const defaultTarget = {
+      tend: 0,
+      tstart: 0,
+      xywh: '0,0,500,1000',
+    };
+
     if (spatialTarget) {
       switch (manifestType) {
         case manifestTypes.IMAGE:
-          maeTarget.xywh = '0,0,500,1000';
+          defaultTarget.xywh = '0,0,500,1000';
           break;
         case manifestTypes.VIDEO:
           // eslint-disable-next-line no-case-declarations
           const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
           // eslint-disable-next-line no-case-declarations
           const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
-          maeTarget.xywh = `0,0,${targetWidth},${targetHeigth}`;
+          defaultTarget.xywh = `0,0,${targetWidth},${targetHeigth}`;
           break;
         default:
           break;
@@ -199,15 +214,15 @@ export const extractTargetFromAnnotation = (target, manifestType, timeTarget, sp
     if (timeTarget) {
       switch (manifestType) {
         case manifestTypes.VIDEO:
-          maeTarget.tstart = currentTime ? Math.floor(currentTime) : 0;
+          defaultTarget.tstart = currentTime ? Math.floor(currentTime) : 0;
           // eslint-disable-next-line no-underscore-dangle
-          maeTarget.tend = mediaVideo ? mediaVideo.props.canvas.__jsonld.duration : 0;
+          defaultTarget.tend = mediaVideo ? mediaVideo.props.canvas.__jsonld.duration : 0;
           break;
         default:
           break;
       }
     }
+    return defaultTarget;
   }
-
-  return maeTarget;
-};
+  return target;
+}

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import uuid from 'draft-js/lib/uuid';
+import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
@@ -17,6 +18,7 @@ function TextCommentTemplate(
     windowId,
     saveAnnotation,
     closeFormCompanionWindow,
+    canvases,
   },
 ) {
   console.log('annotation', annotation);
@@ -28,6 +30,7 @@ function TextCommentTemplate(
   } else {
     // If the annotation does not have maeData, the annotation was not created with mae
     maeAnnotation = {
+      motivation: 'commenting',
       body: {
         id: uuid(),
         type: 'TextualBody',
@@ -42,32 +45,32 @@ function TextCommentTemplate(
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
 
-
-  // Target State contains the svg, xywh, tstart and tend
-  const [targetState, setTargetState] = useState(extractTargetFromAnnotation(maeAnnotation.target));
-
   /**
-     * Update the annotation's Body
-     * */
-  const updateAnnotationTextBody = (newBody) => {
+   * Update the annotation's Body
+   * */
+  const updateAnnotationTextualBodyValue = (newTextValue) => {
+    const newBody = annotationState.body;
+    newBody.value = newTextValue;
     setAnnotationState({
       ...annotationState,
-      textBody: newBody,
+      body: newBody,
     });
   };
 
   const updateTargetState = (newTarget) => {
-    setTargetState((prevState) => ({
-      ...prevState,
-      ...newTarget,
-    }));
+    setAnnotationState({
+      ...annotationState,
+      maeTarget: newTarget,
+    });
   };
 
   const saveFunction = () => {
     canvases.forEach(async (canvas) => {
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
-      annotationState.target = `${canvas.id}#xywh=${targetState.xywh}&t=${targetState.tstart},${targetState.tend}`;
+      // annotationState.target = `${canvas.id}#xywh=${annotationState.maeTarget.xywh}&t=${annotationState.maeTarget.tstart},${annotationState.maeTarget.tend}`;
+      annotationState.target = `${canvas.id}#xywh=0,0,100,100&t=10,20`;
+      //delete annotationState.maeTarget;
       saveAnnotation(annotationState, canvas.id);
     });
     closeFormCompanionWindow();
@@ -77,19 +80,19 @@ function TextCommentTemplate(
     <div style={{ padding: '5px' }}>
       <TextFormSection
         annoHtml={annotationState.body.value}
-        updateAnnotationBody={updateAnnotationTextBody}
+        updateAnnotationBody={updateAnnotationTextualBodyValue}
       />
-      <TargetFormSection
+      {/*   <TargetFormSection
         currentTime={currentTime}
         onChangeTarget={updateTargetState}
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
         spatialTarget={false}
-        target={targetState}
+        iiifTarget={maeAnnotation.target}
         timeTarget={true}
         windowId={windowId}
         manifestType={manifestType}
-      />
+      /> */}
       <AnnotationFormFooter
         closeFormCompanionWindow={closeFormCompanionWindow}
         saveAnnotation={saveFunction}

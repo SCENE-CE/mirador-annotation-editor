@@ -50,10 +50,8 @@ export async function saveAnnotationInStorageAdapter(
   receiveAnnotation,
   annotation,
 ) {
-  const isNewAnnotation = annotation.id === null;
   console.log('Annotation to save', annotation);
-  console.log('isNewAnnotation', isNewAnnotation);
-  if (!isNewAnnotation) {
+  if (annotation.id) {
     storageAdapter.update(annotation)
       .then((annoPage) => {
         receiveAnnotation(canvasId, storageAdapter.annotationPageId, annoPage);

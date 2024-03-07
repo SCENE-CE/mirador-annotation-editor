@@ -72,8 +72,6 @@ function TargetTimeInput({
   // eslint-disable-next-line no-underscore-dangle
   const videoDuration = mediaVideo.props.canvas.__jsonld.duration;
 
-  const [valueTime, setValueTime] = useState([tstart, tend]);
-
   /** set annotation start time to current time */
   const setTstartNow = () => {
     onChange({
@@ -105,10 +103,8 @@ function TargetTimeInput({
     }
     if (timeEnd !== tend) {
       updateTend(timeEnd);
-      updateTend(timeEnd);
       seekToTend();
     }
-    setValueTime(newValueTime);
   };
 
   /** Change from Tstart HMS Input */
@@ -120,7 +116,7 @@ function TargetTimeInput({
       tstart: valueTstart,
       ...setSeekTo(valueTstart),
       ...setCurrentTime(valueTstart),
-    })
+    });
   };
 
   /** update annotation end time */
@@ -162,7 +158,7 @@ function TargetTimeInput({
         <ContainerSlider>
           <StyledSlider
             size="small"
-            value={valueTime}
+            value={[tstart, tend]}
             onChange={handleChangeTime}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"

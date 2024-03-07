@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import { Grid, Typography } from '@mui/material';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import {
-  geomFromAnnoTarget,
+  extractTargetFromAnnotation,
   manifestTypes,
-  template,
-  timeFromAnnoTarget,
 } from '../AnnotationFormUtils';
 import TargetTimeInput from './TargetTimeInput';
 import { TargetSpatialInput } from './TargetSpatialInput';
@@ -25,25 +23,60 @@ import { TargetSpatialInput } from './TargetSpatialInput';
  */
 export default function TargetFormSection(
   {
+    target,
     currentTime,
     onChangeTarget,
     setCurrentTime,
     setSeekTo,
     spatialTarget,
-    target,
     timeTarget,
     windowId,
     manifestType,
   },
 ) {
-  // TODO implement spatial target
-  // eslint-disable-next-line no-param-reassign
 
-  console.log('targetFormSection target', target);
 
-  const onChangeXywh = (newXywh) => {
-    console.log('TODO in development');
+
+  let additionnalParams = {};
+
+  if(manifestType === manifestTypes.VIDEO) {
+    const mediaVideo = VideosReferences.get(windowId);
+    if(!target.tstart){
+      target.tstart = mediaVideo.currentTime;
+    }
+    if(!target.tend){
+      target.tend = mediaVideo.props.canvas.__jsonld.duration
+    }
+  }
+
+  if(spatialTarget) {
+    switch (manifestType) {
+      case manifestTypes.IMAGE:
+        // TODO set default xywh
+        target.xywh = '0,0,500,1000';
+        break;
+      case manifestTypes.VIDEO:
+        const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
+        const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
+        target.xywh = `0,0,${targetWidth},${targetHeigth}`;
+        break;
+      default:
+        break;
+    }
+  }
+
+
+
+
+
+  const initTarget = () => {
+
   };
+
+  useEffect(() => {
+    onChangeTarget(initTarget());
+  }, []);
+
 
   const onChangeTargetInput = (newData) => {
     onChangeTarget(newData);
@@ -91,8 +124,5 @@ TargetFormSection.propTypes = {
   timeTarget: PropTypes.bool.isRequired,
   windowId: PropTypes.string.isRequired,
   onChangeTarget: PropTypes.func.isRequired,
-  target: PropTypes.shape({
-    t: PropTypes.number,
-    xywh: PropTypes.string,
-  }).isRequired,
+  target: PropTypes.object.isRequired,
 };

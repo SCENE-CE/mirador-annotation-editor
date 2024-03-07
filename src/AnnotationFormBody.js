@@ -123,6 +123,7 @@ export default function AnnotationFormBody(
             manifestType={manifestType}
             currentTime={currentTime}
             closeFormCompanionWindow={closeFormCompanionWindow}
+            saveAnnotation={saveAnnotation}
             canvases={canvases}
           />
         )
