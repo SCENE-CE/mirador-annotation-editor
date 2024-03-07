@@ -38,8 +38,8 @@ function TextCommentTemplate(
         value: '',
       },
       maeData: {
-        templateType: template.TEXT_TYPE,
         target: null,
+        templateType: template.TEXT_TYPE,
       },
       motivation: 'commenting',
       target: null,

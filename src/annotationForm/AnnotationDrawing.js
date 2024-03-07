@@ -12,7 +12,7 @@ import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
 
 /** All the stuff to draw on the canvas */
 export default function AnnotationDrawing({
-  drawingState, originalWidth, orignalHeight, setDrawingState, height, width, imageEvent, ...props
+  drawingState, originalWidth, orignalHeight, setDrawingState, height, width, imageEvent, overlay, updateScale, ...props
 }) {
   const [isDrawing, setIsDrawing] = useState(false);
   // TODO target from the annotation
@@ -26,13 +26,8 @@ export default function AnnotationDrawing({
   });
 
   useEffect(() => {
-    // TODO add proper difference between mediaVideo and mediaImage
-    if (!props.mediaVideo) {
-      return;
-    }
-    const overlay = props.mediaVideo ? props.mediaVideo.ref.current : null;
     if (overlay) {
-      props.updateScale(overlay.containerWidth / overlay.canvasWidth);
+      updateScale(overlay.containerWidth / overlay.canvasWidth);
     }
     const newSurfaceData = { ...surfacedata };
     newSurfaceData.width = overlay.width / props.scale;
@@ -42,7 +37,7 @@ export default function AnnotationDrawing({
     if (newSurfaceData.width !== surfacedata.width || newSurfaceData.height !== surfacedata.height) {
       setSurfaceData(newSurfaceData);
     }
-  }, [{ height, width }]);
+  }, [ height, width ]);
 
   useEffect(() => {
     // TODO clean
@@ -594,6 +589,5 @@ AnnotationDrawing.propTypes = {
   originalWidth: PropTypes.number.isRequired,
   strokeColor: PropTypes.string.isRequired,
   strokeWidth: PropTypes.number.isRequired,
-  updateGeometry: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };

@@ -51,29 +51,7 @@ export default function DrawingTemplateForm(
   };
   return (
     <>
-      <AnnotationFormOverlay
-        toolState={toolState}
-        deleteShape={deleteShape}
-        setToolState={setToolState}
-        shapes={shapes}
-        currentShape={currentShape}
-        setViewTool={setViewTool}
-      />
-      <TextFormSection
-        annoHtml={annoState.textBody}
-        updateAnnotationBody={updateAnnotationTextBody}
-      />
-      <TargetFormSection
-        setAnnoState={setAnnoState}
-        annoState={annoState}
-        setCurrentTime={setCurrentTime}
-        setSeekTo={setSeekTo}
-        windowId={windowId}
-        commentingType={commentingType}
-        manifestType={manifestType}
-        currentTime={currentTime}
-        spatialTarget={false}
-      />
+
     </>
   );
 }

@@ -3,8 +3,14 @@ import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import PropTypes from 'prop-types';
 import AnnotationDrawing from './AnnotationDrawing';
 import DrawingTemplateForm from './DrawingTemplateForm';
-import { manifestTypes, TARGET_VIEW } from '../AnnotationFormUtils';
+import { manifestTypes, TARGET_VIEW, template } from '../AnnotationFormUtils';
 import { defaultToolState } from '../AnnotationCreationUtils';
+import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
+import TextFormSection from './TextFormSection';
+import TargetFormSection from './TargetFormSection';
+import uuid from 'draft-js/lib/uuid';
+import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
+
 /**
  * Template for Konva annotations (drawing)
  * @param annotation
@@ -23,19 +29,66 @@ import { defaultToolState } from '../AnnotationCreationUtils';
  */
 export default function DrawingTemplate(
   {
-    annoState,
     annotation,
-    templateType,
     currentTime,
     manifestType,
-    mediaVideo,
-    overlay,
-    setAnnoState,
     setCurrentTime,
     setSeekTo,
     windowId,
+    saveAnnotation,
+    closeFormCompanionWindow,
+    canvases,
+    overlay
   },
 ) {
+
+  // TODO Do something with this
+  /****************************************
+   *  Form stuff
+   ****************************************/
+
+  let maeAnnotation = annotation;
+
+  if (!maeAnnotation.id) {
+    // If the annotation does not have maeData, the annotation was not created with mae
+    maeAnnotation = {
+      body: {
+        id: uuid(),
+        type: 'TextualBody',
+        value: '',
+      },
+      maeData: {
+        target: null, // Add full target
+        templateType: template.KONVA_TYPE,
+        drawingState: null,
+      },
+      motivation: 'commenting',
+      target: null,
+    };
+  }
+
+  const [annotationState, setAnnotationState] = useState(maeAnnotation);
+
+  const updateTargetState = (target) => {
+    const newMaeData = annotationState.maeData;
+    newMaeData.target = target;
+    setAnnotationState({
+      ...annotationState,
+      maeData: newMaeData,
+    });
+  };
+
+  let player;
+  if(manifestType === manifestTypes.VIDEO) {
+    player = VideosReferences.get(windowId);
+  }
+  if(manifestType === manifestTypes.IMAGE) {
+    player = OSDReferences.get(windowId);
+  }
+
+  /******************************************
+   * Drawing stuff
+   ******************************************/
   const [toolState, setToolState] = useState(defaultToolState);
   const [drawingState, setDrawingState] = useState({
     currentShape: null,
@@ -43,8 +96,8 @@ export default function DrawingTemplate(
     shapes: [],
   });
 
-  if (annoState.drawingState) {
-    setDrawingState(annoState.drawingState);
+  if (annotationState.drawingState) {
+    setDrawingState(annotationState.drawingState);
   }
   const [scale, setScale] = useState(1);
   const [isMouseOverSave, setIsMouseOverSave] = useState(false);
@@ -59,18 +112,20 @@ export default function DrawingTemplate(
     setScale(overlay.containerWidth / overlay.canvasWidth);
   };
 
-  /**
+  // TODO Check how to use it
+
+/*   /!**
      * Update annoState with the svg and position of kanva item
      * @param svg
      * @param xywh
-     */
+     *!/
   const updateGeometry = ({ svg, xywh }) => {
     setAnnoState((prevState) => ({
       ...prevState,
       svg,
       xywh,
     }));
-  };
+  }; */
 
   /**
      * Updates the tool state by merging the current color state with the existing tool state.
@@ -107,6 +162,7 @@ export default function DrawingTemplate(
     }
   };
 
+
   return (
     <>
       {/* Rename AnnotationDrawing in Drawing Stage */}
@@ -120,9 +176,8 @@ export default function DrawingTemplate(
         strokeColor={toolState.strokeColor}
         strokeWidth={toolState.strokeWidth}
         closed={toolState.closedMode === 'closed'}
-        updateGeometry={updateGeometry}
         windowId={windowId}
-        player={manifestType === manifestTypes.VIDEO ? mediaVideo : OSDReferences.get(windowId)}
+        player={player}
             // we need to pass the width and height of the image to the annotation drawing component
         width={overlay ? overlay.containerWidth : 1920}
         height={overlay ? overlay.containerHeight : 1080}
@@ -133,26 +188,32 @@ export default function DrawingTemplate(
         setColorToolFromCurrentShape={setColorToolFromCurrentShape}
         drawingState={drawingState}
         isMouseOverSave={isMouseOverSave}
-        mediaVideo={mediaVideo}
+        overlay={overlay}
         setDrawingState={setDrawingState}
         tabView={viewTool}
       />
-      <DrawingTemplateForm
-        mediaIsVideo={manifestType === manifestTypes.VIDEO}
-        setCurrentTime={setCurrentTime}
-        setSeekTo={setSeekTo}
-        setAnnoState={setAnnoState}
-        windowId={windowId}
-        manifestType={manifestType}
-        commentingType={templateType}
+      <AnnotationFormOverlay
         toolState={toolState}
+        deleteShape={deleteShape}
         setToolState={setToolState}
         shapes={drawingState.shapes}
-        annoState={annoState}
-        currentTime={currentTime}
         currentShape={drawingState.currentShape}
-        deleteShape={deleteShape}
         setViewTool={setViewTool}
+      />
+      <TextFormSection
+        annoHtml={annotationState.body.value}
+        updateAnnotationBody={console.log}
+      />
+      <TargetFormSection
+        currentTime={currentTime}
+        manifestType={manifestType}
+        onChangeTarget={updateTargetState}
+        setCurrentTime={setCurrentTime}
+        setSeekTo={setSeekTo}
+        spatialTarget={false}
+        target={annotationState.maeData.target}
+        timeTarget
+        windowId={windowId}
       />
     </>
   );
