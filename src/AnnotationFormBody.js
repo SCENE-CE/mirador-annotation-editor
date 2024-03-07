@@ -33,77 +33,7 @@ export default function AnnotationFormBody(
     canvases,
   },
 ) {
-  console.log('afb annotation', annotation);
-  console.log('afb templateType', templateType);
-  // Initial state setup
-  const [state, setState] = useState(() => {
-    let tstart;
-    let tend;
-    const annoState = {};
-    if (annotation.id) {
-      // annotation body
-      if (Array.isArray(annotation.body)) {
-        annoState.tags = [];
-        annotation.body.forEach((body) => {
-          if (body.purpose === 'tagging' && body.type === 'TextualBody') {
-            annoState.tags.push(body.value);
-          } else if (body.type === 'TextualBody') {
-            annoState.textBody = body.value;
-          } else if (body.type === 'Image') {
-            annoState.textBody = body.value; // why text body here ???
-            // annoState.image = body;
-          } else if (body.type === 'AnnotationTitle') {
-            annoState.title = body;
-          }
-        });
-      } else if (annotation.body.type === 'TextualBody') {
-        annoState.textBody = annotation.body.value;
-      } else if (annotation.body.type === 'Image') {
-        annoState.textBody = annotation.body.value; // why text body here ???
-        annoState.image = annotation.body;
-      }
-      // drawing position
 
-      if (annotation.drawingState) {
-        annoState.drawingState = JSON.parse(annotation.drawingState);
-      }
-      if (annotation.manifestNetwork) {
-        annoState.manifestNetwork = annotation.manifestNetwork;
-      }
-    } else {
-      if (mediaVideo) {
-        // Time target
-        annoState.tstart = currentTime ? Math.floor(currentTime) : 0;
-        // eslint-disable-next-line no-underscore-dangle
-        const annotJson = mediaVideo.props.canvas.__jsonld;
-        annoState.tend = mediaVideo ? annotJson.duration : 0;
-
-        // Geometry target
-        const targetHeigth = mediaVideo ? annotJson.height : 1000;
-        const targetWidth = mediaVideo ? annotJson.width : 500;
-        annoState.xywh = `0,0,${targetWidth},${targetHeigth}`;
-      } else {
-        // TODO image and audio case
-      }
-      annoState.textBody = '';
-      annoState.manifestNetwork = '';
-    }
-
-    return {
-      mediaVideo,
-      ...annoState,
-      textEditorStateBustingKey: 0,
-    };
-  });
-
-  const updateAnnotation = (newAnnoState) => {
-    console.log('newAnnoState', newAnnoState);
-    setState((prevState) => ({
-      ...prevState,
-      ...newAnnoState,
-    }
-    ));
-  };
 
   // TODO At this end we must only have annoSTate, setAnnoState, templateType,
   //  manifestType, windowId in XTemplateProps
@@ -136,8 +66,9 @@ export default function AnnotationFormBody(
           {
           templateType.id === template.IMAGE_TYPE && (
             <ImageCommentTemplate
-              annoState={state}
-              setAnnoState={setState}
+              annotation={annotation}
+              canvases={canvases}
+              closeFormCompanionWindow={closeFormCompanionWindow}
               setCurrentTime={setCurrentTime}
               setSeekTo={setSeekTo}
               windowId={windowId}
