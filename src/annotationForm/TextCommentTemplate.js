@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import uuid from 'draft-js/lib/uuid';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import {
-  extractTargetFromAnnotation,
   maeTargetToIiifTarget,
-  manifestTypes,
   template,
 } from '../AnnotationFormUtils';
 

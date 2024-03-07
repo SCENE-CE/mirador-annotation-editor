@@ -122,14 +122,14 @@ export default function AnnotationFormBody(
           templateType.id === template.TEXT_TYPE && (
             <TextCommentTemplate
               annotation={annotation}
+              canvases={canvases}
+              closeFormCompanionWindow={closeFormCompanionWindow}
+              currentTime={currentTime}
+              manifestType={manifestType}
+              saveAnnotation={saveAnnotation}
               setCurrentTime={setCurrentTime}
               setSeekTo={setSeekTo}
               windowId={windowId}
-              manifestType={manifestType}
-              currentTime={currentTime}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-              saveAnnotation={saveAnnotation}
-              canvases={canvases}
             />
           )
         }
@@ -150,16 +150,16 @@ export default function AnnotationFormBody(
           {
           templateType.id === template.KONVA_TYPE && (
             <DrawingTemplate
-              annoState={state}
-              setAnnoState={setState}
+              annotation={annotation}
+              canvases={canvases}
+              closeFormCompanionWindow={closeFormCompanionWindow}
+              currentTime={currentTime}
+              manifestType={manifestType}
               overlay={overlay}
+              saveAnnotation={saveAnnotation}
               setCurrentTime={setCurrentTime}
               setSeekTo={setSeekTo}
               windowId={windowId}
-              manifestType={manifestType}
-              annotation={annotation}
-              currentTime={currentTime}
-              mediaVideo={mediaVideo}
             />
           )
         }

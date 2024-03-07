@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import PropTypes from 'prop-types';
+import uuid from 'draft-js/lib/uuid';
+import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import AnnotationDrawing from './AnnotationDrawing';
 import DrawingTemplateForm from './DrawingTemplateForm';
-import { manifestTypes, TARGET_VIEW, template } from '../AnnotationFormUtils';
+import {
+  maeTargetToIiifTarget,
+  manifestTypes,
+  TARGET_VIEW,
+  template,
+} from '../AnnotationFormUtils';
 import { defaultToolState } from '../AnnotationCreationUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
-import uuid from 'draft-js/lib/uuid';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
+import AnnotationFormFooter from './AnnotationFormFooter';
 
 /**
  * Template for Konva annotations (drawing)
@@ -38,14 +44,13 @@ export default function DrawingTemplate(
     saveAnnotation,
     closeFormCompanionWindow,
     canvases,
-    overlay
+    overlay,
   },
 ) {
-
   // TODO Do something with this
-  /****************************************
+  /** **************************************
    *  Form stuff
-   ****************************************/
+   *************************************** */
 
   let maeAnnotation = annotation;
 
@@ -79,26 +84,54 @@ export default function DrawingTemplate(
   };
 
   let player;
-  if(manifestType === manifestTypes.VIDEO) {
+  if (manifestType === manifestTypes.VIDEO) {
     player = VideosReferences.get(windowId);
   }
-  if(manifestType === manifestTypes.IMAGE) {
+  if (manifestType === manifestTypes.IMAGE) {
     player = OSDReferences.get(windowId);
   }
 
-  /******************************************
-   * Drawing stuff
-   ******************************************/
-  const [toolState, setToolState] = useState(defaultToolState);
-  const [drawingState, setDrawingState] = useState({
-    currentShape: null,
-    isDrawing: false,
-    shapes: [],
-  });
+  const saveFunction = () => {
+    canvases.forEach(async (canvas) => {
+      // Adapt target to the canvas
+      // eslint-disable-next-line no-param-reassign
+      annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
+      annotationState.maeData.drawingState = JSON.stringify(drawingState);
+      // delete annotationState.maeData.target;
+      saveAnnotation(annotationState, canvas.id);
+    });
+    closeFormCompanionWindow();
+  };
 
-  if (annotationState.drawingState) {
-    setDrawingState(annotationState.drawingState);
+  const updateAnnotationTextualBodyValue = (newTextValue) => {
+    const newBody = annotationState.body;
+    newBody.value = newTextValue;
+    setAnnotationState({
+      ...annotationState,
+      body: newBody,
+    });
+  };
+
+  /** ****************************************
+   * Drawing stuff
+   ***************************************** */
+  const [toolState, setToolState] = useState(defaultToolState);
+
+  const initDrawingState = () => {
+    if (annotationState.maeData.drawingState) {
+      return JSON.parse(annotationState.maeData.drawingState);
+    } else {
+      return {
+        currentShape: null,
+        isDrawing: false,
+        shapes: [],
+      };
+    }
   }
+
+  const [drawingState, setDrawingState] = useState(initDrawingState());
+
+
   const [scale, setScale] = useState(1);
   const [isMouseOverSave, setIsMouseOverSave] = useState(false);
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
@@ -114,7 +147,7 @@ export default function DrawingTemplate(
 
   // TODO Check how to use it
 
-/*   /!**
+  /*   /!**
      * Update annoState with the svg and position of kanva item
      * @param svg
      * @param xywh
@@ -162,7 +195,6 @@ export default function DrawingTemplate(
     }
   };
 
-
   return (
     <>
       {/* Rename AnnotationDrawing in Drawing Stage */}
@@ -202,7 +234,7 @@ export default function DrawingTemplate(
       />
       <TextFormSection
         annoHtml={annotationState.body.value}
-        updateAnnotationBody={console.log}
+        updateAnnotationBody={updateAnnotationTextualBodyValue}
       />
       <TargetFormSection
         currentTime={currentTime}
@@ -215,13 +247,16 @@ export default function DrawingTemplate(
         timeTarget
         windowId={windowId}
       />
+      <AnnotationFormFooter
+        closeFormCompanionWindow={closeFormCompanionWindow}
+        saveAnnotation={saveFunction}
+      />
     </>
   );
 }
 
 DrawingTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  annoState: PropTypes.object.isRequired,
   annotation: PropTypes.oneOfType([
     PropTypes.shape({
       body: PropTypes.shape({
@@ -241,10 +276,7 @@ DrawingTemplate.propTypes = {
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   manifestType: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  mediaVideo: PropTypes.object.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,
-  setAnnoState: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   templateType: PropTypes.string.isRequired,
