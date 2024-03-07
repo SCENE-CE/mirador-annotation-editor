@@ -82,7 +82,6 @@ function NetworkCommentTemplate(
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
       annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
-      //delete annotationState.maeData.target;
       saveAnnotation(annotationState, canvas.id);
     });
     closeFormCompanionWindow();
@@ -122,11 +121,13 @@ NetworkCommentTemplate.propTypes = {
   annotation: PropTypes.object.isRequired,
   currentTime: PropTypes.number.isRequired,
   manifestType: PropTypes.string.isRequired,
-  setAnnoState: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
-  templateType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
+  saveAnnotation: PropTypes.func.isRequired,
+  closeFormCompanionWindow: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default NetworkCommentTemplate;

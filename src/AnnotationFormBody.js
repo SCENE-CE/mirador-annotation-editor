@@ -23,7 +23,6 @@ export default function AnnotationFormBody(
     templateType,
     currentTime,
     manifestType,
-    mediaVideo,
     overlay,
     setCurrentTime,
     setSeekTo,
@@ -33,7 +32,6 @@ export default function AnnotationFormBody(
     canvases,
   },
 ) {
-
 
   // TODO At this end we must only have annoSTate, setAnnoState, templateType,
   //  manifestType, windowId in XTemplateProps
@@ -113,7 +111,6 @@ export default function AnnotationFormBody(
           templateType.id === template.IIIF_TYPE && (
             <IIIFTemplate
               annotation={annotation}
-              updateAnnotation={updateAnnotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
               saveAnnotation={saveAnnotation}
               canvases={canvases}
