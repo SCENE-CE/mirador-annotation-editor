@@ -185,10 +185,9 @@ export const extractTargetFromAnnotation = (target, manifestType, timeTarget, sp
   return null;
 };
 
-
 export const iiifTargetToMaeTarget = (iiifTarget) => {
-  let target = extractTargetFromAnnotation(iiifTarget, manifestType, timeTarget, spatialTarget);
-  if(!target) {
+  const target = extractTargetFromAnnotation(iiifTarget, manifestType, timeTarget, spatialTarget);
+  if (!target) {
     const defaultTarget = {
       tend: 0,
       tstart: 0,
@@ -225,9 +224,6 @@ export const iiifTargetToMaeTarget = (iiifTarget) => {
     return defaultTarget;
   }
   return target;
-}
+};
 
-
-export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
-  return `${canvasId}#xywh=0,0,100,100&t=10,20`;
-}
+export const maeTargetToIiifTarget = (maeTarget, canvasId) => `${canvasId}#xywh=0,0,100,100&t=${maeTarget.tstart},${maeTarget.tend}`;

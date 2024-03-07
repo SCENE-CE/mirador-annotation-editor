@@ -9,7 +9,7 @@ import {
   extractTargetFromAnnotation,
   maeTargetToIiifTarget,
   manifestTypes,
-  template
+  template,
 } from '../AnnotationFormUtils';
 
 /** Form part for edit annotation content and body */
@@ -76,7 +76,7 @@ function TextCommentTemplate(
     canvases.forEach(async (canvas) => {
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
-      annotationState.target = maeTargetToIiifTarget(annotationState.maeTarget, canvas.id);
+      annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
       delete annotationState.maeTarget;
       saveAnnotation(annotationState, canvas.id);
     });
@@ -93,14 +93,14 @@ function TextCommentTemplate(
         annoHtml={annotationState.body.value}
         updateAnnotationBody={updateAnnotationTextualBodyValue}
       />
-        <TargetFormSection
+      <TargetFormSection
         currentTime={currentTime}
         onChangeTarget={updateTargetState}
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
         spatialTarget={false}
         target={annotationState.maeData.target}
-        timeTarget={true}
+        timeTarget
         windowId={windowId}
         manifestType={manifestType}
       />
