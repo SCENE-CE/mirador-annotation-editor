@@ -95,15 +95,15 @@ function TargetTimeInput({
    * @param {any} newValueTime
    */
   const handleChangeTime = (event, newValueTime) => {
+    console.debug('hct event', event);
+    console.debug('hct handleChangeTime', newValueTime);
     const timeStart = newValueTime[0];
     const timeEnd = newValueTime[1];
     if (timeStart !== tstart) {
       updateTstart(timeStart);
-      seekToTstart();
     }
     if (timeEnd !== tend) {
       updateTend(timeEnd);
-      seekToTend();
     }
   };
 
@@ -125,27 +125,6 @@ function TargetTimeInput({
       tend: valueTend,
       ...setSeekTo(valueTend),
       ...setCurrentTime(valueTend),
-    })
-  };
-
-  /**
-   * Set the video player to the start of the annotation
-    */
-  const seekToTstart = () => {
-    onChange({
-      ...setSeekTo(tstart),
-      ...setCurrentTime(tstart),
-    });
-  };
-
-  /**
-   * Seeks to the tend time and updates state accordingly.
-   * @function seekToTend
-   */
-  const seekToTend = () => {
-    onChange({
-      ...setSeekTo(tend),
-      ...setCurrentTime(tend),
     });
   };
 
@@ -212,12 +191,12 @@ function TargetTimeInput({
 }
 
 TargetTimeInput.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  tend: PropTypes.number.isRequired,
-  tstart: PropTypes.number.isRequired,
   currentTime: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
+  tend: PropTypes.number.isRequired,
+  tstart: PropTypes.number.isRequired,
   windowId: PropTypes.string.isRequired,
 };
 

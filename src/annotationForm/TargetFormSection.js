@@ -73,6 +73,7 @@ export default function TargetFormSection(
   // }, []);
 
   const onChangeTimeTargetInput = (newData) => {
+    console.log('newData', newData);
     onChangeTarget({
       ...target,
       ...newData,
