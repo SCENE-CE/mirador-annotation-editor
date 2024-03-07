@@ -226,3 +226,8 @@ export const iiifTargetToMaeTarget = (iiifTarget) => {
   }
   return target;
 }
+
+
+export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
+  return `${canvasId}#xywh=0,0,100,100&t=10,20`;
+}

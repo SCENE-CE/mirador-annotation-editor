@@ -5,7 +5,12 @@ import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { extractTargetFromAnnotation, manifestTypes, template } from '../AnnotationFormUtils';
+import {
+  extractTargetFromAnnotation,
+  maeTargetToIiifTarget,
+  manifestTypes,
+  template
+} from '../AnnotationFormUtils';
 
 /** Form part for edit annotation content and body */
 function TextCommentTemplate(
@@ -38,6 +43,7 @@ function TextCommentTemplate(
       },
       maeData: {
         templateType: template.TEXT_TYPE,
+        target: null,
       },
       target: null,
     };
@@ -57,10 +63,12 @@ function TextCommentTemplate(
     });
   };
 
-  const updateTargetState = (newTarget) => {
+  const updateTargetState = (target) => {
+    const newMaeData = annotationState.maeData;
+    newMaeData.target = target;
     setAnnotationState({
       ...annotationState,
-      maeTarget: newTarget,
+      maeData: newMaeData,
     });
   };
 
@@ -68,13 +76,16 @@ function TextCommentTemplate(
     canvases.forEach(async (canvas) => {
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
-      // annotationState.target = `${canvas.id}#xywh=${annotationState.maeTarget.xywh}&t=${annotationState.maeTarget.tstart},${annotationState.maeTarget.tend}`;
-      annotationState.target = `${canvas.id}#xywh=0,0,100,100&t=10,20`;
-      //delete annotationState.maeTarget;
+      annotationState.target = maeTargetToIiifTarget(annotationState.maeTarget, canvas.id);
+      delete annotationState.maeTarget;
       saveAnnotation(annotationState, canvas.id);
     });
     closeFormCompanionWindow();
   };
+
+  useEffect(() => {
+
+  }, [annotationState.maeData.target]);
 
   return (
     <div style={{ padding: '5px' }}>
@@ -82,17 +93,17 @@ function TextCommentTemplate(
         annoHtml={annotationState.body.value}
         updateAnnotationBody={updateAnnotationTextualBodyValue}
       />
-      {/*   <TargetFormSection
+        <TargetFormSection
         currentTime={currentTime}
         onChangeTarget={updateTargetState}
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
         spatialTarget={false}
-        iiifTarget={maeAnnotation.target}
+        target={annotationState.maeData.target}
         timeTarget={true}
         windowId={windowId}
         manifestType={manifestType}
-      /> */}
+      />
       <AnnotationFormFooter
         closeFormCompanionWindow={closeFormCompanionWindow}
         saveAnnotation={saveFunction}
