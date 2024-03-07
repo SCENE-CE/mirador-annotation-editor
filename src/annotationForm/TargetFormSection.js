@@ -34,35 +34,33 @@ export default function TargetFormSection(
     manifestType,
   },
 ) {
-
-
   console.log('targetFS', target);
-    if (!target) {
-      target = {};
-      if (manifestType === manifestTypes.VIDEO) {
-        const mediaVideo = VideosReferences.get(windowId);
-        target.tstart = currentTime ? currentTime : 0;
-        target.tend = mediaVideo.props.canvas.__jsonld.duration ? mediaVideo.props.canvas.__jsonld.duration : 0;
-      }
-
-      if (spatialTarget) {
-        switch (manifestType) {
-          case manifestTypes.IMAGE:
-            // TODO set default xywh
-            target.xywh = '0,0,500,1000';
-            break;
-          case manifestTypes.VIDEO:
-            const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
-            const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
-            target.xywh = `0,0,${targetWidth},${targetHeigth}`;
-            break;
-          default:
-            break;
-        }
-      }
-
-      onChangeTarget(target);
+  if (!target) {
+    target = {};
+    if (manifestType === manifestTypes.VIDEO) {
+      const mediaVideo = VideosReferences.get(windowId);
+      target.tstart = currentTime || 0;
+      target.tend = mediaVideo.props.canvas.__jsonld.duration ? mediaVideo.props.canvas.__jsonld.duration : 0;
     }
+
+    if (spatialTarget) {
+      switch (manifestType) {
+        case manifestTypes.IMAGE:
+          // TODO set default xywh
+          target.xywh = '0,0,500,1000';
+          break;
+        case manifestTypes.VIDEO:
+          const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
+          const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
+          target.xywh = `0,0,${targetWidth},${targetHeigth}`;
+          break;
+        default:
+          break;
+      }
+    }
+
+    onChangeTarget(target);
+  }
 
   // const initTarget = () => {
   //

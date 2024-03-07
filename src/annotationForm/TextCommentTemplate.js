@@ -77,7 +77,7 @@ function TextCommentTemplate(
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
       annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
-      delete annotationState.maeTarget;
+      //delete annotationState.maeData.target;
       saveAnnotation(annotationState, canvas.id);
     });
     closeFormCompanionWindow();
