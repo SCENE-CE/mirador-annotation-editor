@@ -226,4 +226,4 @@ export const iiifTargetToMaeTarget = (iiifTarget) => {
   return target;
 };
 
-export const maeTargetToIiifTarget = (maeTarget, canvasId) => `${canvasId}#xywh=0,0,100,100&t=${maeTarget.tstart},${maeTarget.tend}`;
+export const maeTargetToIiifTarget = (maeTarget, canvasId) => `${canvasId}#xywh=${maeTarget.xywh}&t=${maeTarget.tstart},${maeTarget.tend}`;

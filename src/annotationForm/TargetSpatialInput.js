@@ -72,42 +72,49 @@ export function TargetSpatialInput({
     });
   }, [drawingState]);
 
+  const showSVGSelector = false;
+
   return (
     <>
-      <Typography>XYWH</Typography>
-      <p>{xywh}</p>
-      <Typography>SVG selection</Typography>
-      <AnnotationDrawing
-        scale={scale}
-        activeTool={toolState.activeTool}
-        fillColor={toolState.fillColor}
-        strokeColor={toolState.strokeColor}
-        strokeWidth={toolState.strokeWidth}
-        closed={toolState.closedMode === 'closed'}
-        windowId={windowId}
-        player={player}
-        // we need to pass the width and height of the image to the annotation drawing component
-        width={overlay ? overlay.containerWidth : 1920}
-        height={overlay ? overlay.containerHeight : 1080}
-        originalWidth={overlay ? overlay.canvasWidth : 1920}
-        originalHeight={overlay ? overlay.canvasHeight : 1080}
-        updateScale={updateScale}
-        imageEvent={toolState.imageEvent}
-        setColorToolFromCurrentShape={() => {}}
-        drawingState={drawingState}
-        overlay={overlay}
-        setDrawingState={setDrawingState}
-        tabView="edit" // TODO change
-      />
-      <AnnotationFormOverlay
-        toolState={toolState}
-        deleteShape={deleteShape}
-        setToolState={setToolState}
-        shapes={drawingState.shapes}
-        currentShape={drawingState.currentShape}
-        setViewTool={setViewTool}
-        showStyleTools={false}
-      />
+      <Typography>Fragment</Typography>
+      <input type="text" value={xywh} onChange={(event) => onChange({ xywh : event.target.value})} />
+
+      { showSVGSelector && (
+        <>
+          <Typography>SVG selection</Typography>
+          <AnnotationDrawing
+            scale={scale}
+            activeTool={toolState.activeTool}
+            fillColor={toolState.fillColor}
+            strokeColor={toolState.strokeColor}
+            strokeWidth={toolState.strokeWidth}
+            closed={toolState.closedMode === 'closed'}
+            windowId={windowId}
+            player={player}
+            // we need to pass the width and height of the image to the annotation drawing component
+            width={overlay ? overlay.containerWidth : 1920}
+            height={overlay ? overlay.containerHeight : 1080}
+            originalWidth={overlay ? overlay.canvasWidth : 1920}
+            originalHeight={overlay ? overlay.canvasHeight : 1080}
+            updateScale={updateScale}
+            imageEvent={toolState.imageEvent}
+            setColorToolFromCurrentShape={() => {}}
+            drawingState={drawingState}
+            overlay={overlay}
+            setDrawingState={setDrawingState}
+            tabView="edit" // TODO change
+          />
+          <AnnotationFormOverlay
+            toolState={toolState}
+            deleteShape={deleteShape}
+            setToolState={setToolState}
+            shapes={drawingState.shapes}
+            currentShape={drawingState.currentShape}
+            setViewTool={setViewTool}
+            showStyleTools={false}
+          />
+        </>
+      )}
     </>
 
   );
