@@ -32,6 +32,8 @@ export default function TargetFormSection(
     timeTarget,
     windowId,
     manifestType,
+    targetDrawingStateForSVG,
+    setTargetDrawingStateForSVG,
   },
 ) {
   console.log('targetFS', target);
@@ -85,10 +87,6 @@ export default function TargetFormSection(
     });
   };
 
-  spatialTarget = false;
-
-  console.log('target', target);
-
   return (
     <Grid>
       <Typography variant="overline">
@@ -99,7 +97,9 @@ export default function TargetFormSection(
             <TargetSpatialInput
               xywh={target.xywh}
               svg={target.svg}
-              setXywh={onChangeSpatialTargetInput}
+              onChange={onChangeSpatialTargetInput}
+
+
             />
             )
         }

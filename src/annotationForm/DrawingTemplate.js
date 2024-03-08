@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import uuid from 'draft-js/lib/uuid';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import AnnotationDrawing from './AnnotationDrawing';
-import DrawingTemplateForm from './DrawingTemplateForm';
+
 import {
   maeTargetToIiifTarget,
   manifestTypes,

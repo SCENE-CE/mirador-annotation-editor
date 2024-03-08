@@ -92,3 +92,14 @@ export const defaultToolState = {
   strokeColor: 'rgba(20,82,168,1)',
   strokeWidth: 2,
 };
+
+export const targetSVGToolState = {
+  activeTool: OVERLAY_TOOL.EDIT,
+  closedMode: 'closed',
+  fillColor: 'rgba(255,0, 0, 0.5)',
+  image: { id: null },
+  imageEvent: null,
+  strokeColor: 'rgba(255,0, 0, 0.5)',
+  strokeWidth: 2,
+};
+
