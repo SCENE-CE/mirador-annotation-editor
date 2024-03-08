@@ -65,7 +65,7 @@ export default function TargetFormSection(
   }
 
   // const initTarget = () => {
-  //h
+  // h
   // };
   //
   // useEffect(() => {
@@ -107,18 +107,17 @@ export default function TargetFormSection(
             )
         }
       {
-            timeTarget && (
-            <TargetTimeInput
-              tstart={target.tstart}
-              tend={target.tend}
-              onChange={onChangeTimeTargetInput}
-              windowId={windowId}
-              currentTime={currentTime}
-              setCurrentTime={setCurrentTime}
-              setSeekTo={setSeekTo}
-
-            />
-            )
+        (timeTarget && manifestType !== manifestTypes.IMAGE) && (
+        <TargetTimeInput
+          tstart={target.tstart}
+          tend={target.tend}
+          onChange={onChangeTimeTargetInput}
+          windowId={windowId}
+          currentTime={currentTime}
+          setCurrentTime={setCurrentTime}
+          setSeekTo={setSeekTo}
+        />
+        )
         }
     </Grid>
   );

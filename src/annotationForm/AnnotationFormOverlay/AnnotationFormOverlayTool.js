@@ -90,7 +90,6 @@ function AnnotationFormOverlayTool({
               {/*     )) */}
               {/*   } */}
               {/* </ul> */}
-              { showStyleTools && (
                 <AnnotationFormOverlayToolOptions
                   toolState={{
                     ...toolState,
@@ -103,13 +102,13 @@ function AnnotationFormOverlayTool({
                     text: currentShape.text,
                   }}
                   updateToolState={customUpdateToolState}
+                  showStyleTools={showStyleTools}
                 />
-              )}
             </div>
             )
             }
             {
-              shapes.length > 0 && (
+              (showStyleTools && shapes.length > 0) && (
                 <>
                   <Typography variant="overline">
                     Object lists
@@ -176,12 +175,11 @@ function AnnotationFormOverlayTool({
         </>
         )
       }
-      { showStyleTools && (
-        <AnnotationFormOverlayToolOptions
-          toolState={toolState}
-          setToolState={setToolState}
-        />
-      )}
+      <AnnotationFormOverlayToolOptions
+        toolState={toolState}
+        setToolState={setToolState}
+        showStyleTools={showStyleTools}
+      />
     </>
   );
 }

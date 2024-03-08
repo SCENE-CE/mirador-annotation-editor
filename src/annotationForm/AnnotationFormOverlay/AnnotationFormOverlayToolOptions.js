@@ -47,7 +47,7 @@ const objToRgba = (obj = {
 }) => `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
 
 /** All the tools options for the overlay options */
-function AnnotationFormOverlayToolOptions({ setToolState, toolState }) {
+function AnnotationFormOverlayToolOptions({ setToolState, toolState, showStyleTools }) {
   // set toolOptionsValue
   const [toolOptions, setToolOptions] = useState({
     colorPopoverOpen: false,
@@ -134,7 +134,7 @@ function AnnotationFormOverlayToolOptions({ setToolState, toolState }) {
   return (
     <div>
       {
-        isShapesTool(toolState.activeTool) && (
+        (showStyleTools && isShapesTool(toolState.activeTool)) && (
           <Grid container>
             <Grid item xs={12}>
               <Typography variant="overline">

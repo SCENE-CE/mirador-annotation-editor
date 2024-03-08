@@ -134,6 +134,7 @@ function TargetTimeInput({
         item
         xs={12}
       >
+        <Typography>Time</Typography>
         <ContainerSlider>
           <StyledSlider
             size="small"

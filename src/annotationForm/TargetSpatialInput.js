@@ -72,7 +72,7 @@ export function TargetSpatialInput({
     });
   }, [drawingState]);
 
-  const showSVGSelector = false;
+  const showSVGSelector = true;
 
   return (
     <>

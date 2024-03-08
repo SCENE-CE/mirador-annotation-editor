@@ -34,7 +34,7 @@ export function secondsToHMSarray(secs) {
  * @returns {boolean} - Returns true if the string is a valid URL, otherwise false.
  */
 export const isValidUrl = (string) => {
-  if (string === '') {
+  if (string === '' || string === undefined || string === null) {
     return true;
   }
   try {

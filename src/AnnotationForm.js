@@ -49,7 +49,10 @@ export default function AnnotationForm(
   let manifestType;
   if (mediaVideo) {
     manifestType = manifestTypes.VIDEO;
+  } else {
+    manifestType = manifestTypes.IMAGE;
   }
+  // TODO add check to other type of manifest
 
   // eslint-disable-next-line no-underscore-dangle
   // TODO: L'erreur de "Ref" sur l'ouverture d'une image vient d'ici et plus particulièrement

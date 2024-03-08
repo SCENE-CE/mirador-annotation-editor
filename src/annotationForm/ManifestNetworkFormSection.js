@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Grid, TextField, Typography,
+  Grid, Link, TextField, Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { isValidUrl } from '../utils';
@@ -18,6 +18,8 @@ export default function ManifestNetworkFormSection(
     onChange,
   },
 ) {
+  console.log('manifestNetwork', manifestNetwork);
+
   return (
     <>
       <Typography variant="overline">
@@ -31,6 +33,21 @@ export default function ManifestNetworkFormSection(
           type="url"
           error={!isValidUrl(manifestNetwork)}
         />
+        {
+          isValidUrl(manifestNetwork) && (
+            // Add a link
+            <Link href={manifestNetwork} target="_blank" rel="noreferrer">
+              {manifestNetwork}
+            </Link>
+          )
+        }
+        {
+          !isValidUrl(manifestNetwork) && (
+            <Typography variant="caption" color="error">
+              Invalid URL
+            </Typography>
+          )
+        }
       </Grid>
     </>
   );
