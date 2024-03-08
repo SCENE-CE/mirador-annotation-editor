@@ -21,9 +21,9 @@ function TextCommentTemplate(
     saveAnnotation,
     closeFormCompanionWindow,
     canvases,
+    overlay,
   },
 ) {
-
   let maeAnnotation = annotation;
 
   if (!maeAnnotation.id) {
@@ -71,7 +71,7 @@ function TextCommentTemplate(
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
       annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
-      //delete annotationState.maeData.target;
+      // delete annotationState.maeData.target;
       saveAnnotation(annotationState, canvas.id);
     });
     closeFormCompanionWindow();
@@ -93,10 +93,11 @@ function TextCommentTemplate(
         onChangeTarget={updateTargetState}
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
-        spatialTarget={false}
+        spatialTarget
         target={annotationState.maeData.target}
         timeTarget
         windowId={windowId}
+        overlay={overlay}
       />
       <AnnotationFormFooter
         closeFormCompanionWindow={closeFormCompanionWindow}

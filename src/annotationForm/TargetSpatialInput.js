@@ -66,13 +66,17 @@ export function TargetSpatialInput({
   }
 
   // TODO save drawing state on change
+  useEffect(() => {
+    onChange({
+      drawingState: JSON.stringify(drawingState),
+    });
+  }, [drawingState]);
 
   return (
     <>
-      <p>TargetSpatialInput</p>
-      ;
+      <Typography>XYWH</Typography>
       <p>{xywh}</p>
-      <Typography variant="h6">Target SVG</Typography>
+      <Typography>SVG selection</Typography>
       <AnnotationDrawing
         scale={scale}
         activeTool={toolState.activeTool}
@@ -102,6 +106,7 @@ export function TargetSpatialInput({
         shapes={drawingState.shapes}
         currentShape={drawingState.currentShape}
         setViewTool={setViewTool}
+        showStyleTools={false}
       />
     </>
 

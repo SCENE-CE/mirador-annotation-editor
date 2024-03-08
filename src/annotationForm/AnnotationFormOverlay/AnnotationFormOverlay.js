@@ -41,6 +41,7 @@ function AnnotationFormOverlay(
     currentShape,
     setViewTool,
     shapes,
+    showStyleTools
   },
 ) {
   useEffect(() => {
@@ -79,11 +80,6 @@ function AnnotationFormOverlay(
     <div>
       <div>
         <Grid container>
-          <Grid item xs={12}>
-            <Typography variant="overline">
-              Overlay
-            </Typography>
-          </Grid>
           <OverlayIconAndTitleContainer item xs={12}>
             <StyledToggleButtonGroup
               value={activeTool} // State or props ?
@@ -105,12 +101,14 @@ function AnnotationFormOverlay(
                 <DeleteIcon />
               </ToggleButton>
             </StyledToggleButtonGroup>
+
             <AnnotationFormOverlayTool
               toolState={toolState}
               setToolState={setToolState}
               currentShape={currentShape}
               shapes={shapes}
               deleteShape={deleteShape}
+              showStyleTools={showStyleTools}
             />
           </OverlayIconAndTitleContainer>
         </Grid>

@@ -58,6 +58,7 @@ export default function AnnotationFormBody(
               setCurrentTime={setCurrentTime}
               setSeekTo={setSeekTo}
               windowId={windowId}
+              overlay={overlay}
             />
           )
         }

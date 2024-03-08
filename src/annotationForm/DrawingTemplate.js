@@ -120,17 +120,15 @@ export default function DrawingTemplate(
   const initDrawingState = () => {
     if (annotationState.maeData.drawingState) {
       return JSON.parse(annotationState.maeData.drawingState);
-    } else {
-      return {
-        currentShape: null,
-        isDrawing: false,
-        shapes: [],
-      };
     }
-  }
+    return {
+      currentShape: null,
+      isDrawing: false,
+      shapes: [],
+    };
+  };
 
   const [drawingState, setDrawingState] = useState(initDrawingState());
-
 
   const [scale, setScale] = useState(1);
   const [isMouseOverSave, setIsMouseOverSave] = useState(false);
@@ -231,6 +229,7 @@ export default function DrawingTemplate(
         shapes={drawingState.shapes}
         currentShape={drawingState.currentShape}
         setViewTool={setViewTool}
+        showStyleTools
       />
       <TextFormSection
         annoHtml={annotationState.body.value}

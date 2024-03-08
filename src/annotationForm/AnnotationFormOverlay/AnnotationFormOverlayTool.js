@@ -46,7 +46,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 
 /** All the form part for the overlay view */
 function AnnotationFormOverlayTool({
-  toolState, setToolState, currentShape, shapes, deleteShape,
+  toolState, setToolState, currentShape, shapes, deleteShape, showStyleTools,
 }) {
   /** Change the active overlay tool */
   const changeTool = (e, tool) => {
@@ -90,20 +90,21 @@ function AnnotationFormOverlayTool({
               {/*     )) */}
               {/*   } */}
               {/* </ul> */}
-              <AnnotationFormOverlayToolOptions
-                toolState={{
-                  ...toolState,
-                  activeTool: currentShape.type,
-                  closedMode: currentShape.closedMode,
-                  fillColor: currentShape.fill,
-                  image: { id: currentShape.url },
-                  strokeColor: currentShape.stroke,
-                  strokeWidth: currentShape.strokeWidth,
-                  text: currentShape.text,
-                }}
-                updateToolState={customUpdateToolState}
-
-              />
+              { showStyleTools && (
+                <AnnotationFormOverlayToolOptions
+                  toolState={{
+                    ...toolState,
+                    activeTool: currentShape.type,
+                    closedMode: currentShape.closedMode,
+                    fillColor: currentShape.fill,
+                    image: { id: currentShape.url },
+                    strokeColor: currentShape.stroke,
+                    strokeWidth: currentShape.strokeWidth,
+                    text: currentShape.text,
+                  }}
+                  updateToolState={customUpdateToolState}
+                />
+              )}
             </div>
             )
             }
@@ -129,7 +130,7 @@ function AnnotationFormOverlayTool({
         isShapesTool(toolState.activeTool) && (
         <>
           <Typography variant="overline">
-            Drawing tool
+            Shapes
           </Typography>
           <StyledToggleButtonGroup
             value={toolState.activeTool} // State or props ?
@@ -175,10 +176,12 @@ function AnnotationFormOverlayTool({
         </>
         )
       }
-      <AnnotationFormOverlayToolOptions
-        toolState={toolState}
-        setToolState={setToolState}
-      />
+      { showStyleTools && (
+        <AnnotationFormOverlayToolOptions
+          toolState={toolState}
+          setToolState={setToolState}
+        />
+      )}
     </>
   );
 }

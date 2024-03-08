@@ -32,8 +32,7 @@ export default function TargetFormSection(
     timeTarget,
     windowId,
     manifestType,
-    targetDrawingStateForSVG,
-    setTargetDrawingStateForSVG,
+    overlay,
   },
 ) {
   console.log('targetFS', target);
@@ -52,6 +51,7 @@ export default function TargetFormSection(
           target.xywh = '0,0,500,1000';
           break;
         case manifestTypes.VIDEO:
+          const mediaVideo = VideosReferences.get(windowId);
           const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
           const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
           target.xywh = `0,0,${targetWidth},${targetHeigth}`;
@@ -65,7 +65,7 @@ export default function TargetFormSection(
   }
 
   // const initTarget = () => {
-  //
+  //h
   // };
   //
   // useEffect(() => {
@@ -98,7 +98,10 @@ export default function TargetFormSection(
               xywh={target.xywh}
               svg={target.svg}
               onChange={onChangeSpatialTargetInput}
-
+              windowId={windowId}
+              manifestType={manifestType}
+              targetDrawingState={target.drawingState}
+              overlay={overlay}
 
             />
             )
