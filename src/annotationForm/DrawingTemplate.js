@@ -193,6 +193,26 @@ export default function DrawingTemplate(
     }
   };
 
+  const updateCurrentShapeInShapes = (currentShape) => {
+    const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
+
+    if (index !== -1) {
+      // eslint-disable-next-line max-len
+      const updatedShapes = drawingState.shapes.map((shape, i) => (i === index ? currentShape : shape));
+      setDrawingState({
+        ...drawingState,
+        currentShape,
+        shapes: updatedShapes,
+      });
+    } else {
+      setDrawingState({
+        ...drawingState,
+        currentShape,
+        shapes: [...drawingState.shapes, currentShape],
+      });
+    }
+  };
+
   return (
     <>
       {/* Rename AnnotationDrawing in Drawing Stage */}
@@ -222,6 +242,7 @@ export default function DrawingTemplate(
         setDrawingState={setDrawingState}
         showFragmentSelector={false}
         tabView={viewTool}
+        updateCurrentShapeInShapes={updateCurrentShapeInShapes}
       />
       <AnnotationFormOverlay
         toolState={toolState}
@@ -230,6 +251,7 @@ export default function DrawingTemplate(
         shapes={drawingState.shapes}
         currentShape={drawingState.currentShape}
         setViewTool={setViewTool}
+        updateCurrentShapeInShapes={updateCurrentShapeInShapes}
         showStyleTools
       />
       <TextFormSection

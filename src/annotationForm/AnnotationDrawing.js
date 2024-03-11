@@ -22,6 +22,7 @@ export default function AnnotationDrawing({
   scale,
   showFragmentSelector,
   setDrawingState,
+  updateCurrentShapeInShapes,
   updateScale,
   width,
   ...props
@@ -36,10 +37,6 @@ export default function AnnotationDrawing({
     x: 1,
     y: 1,
   });
-
-  console.log('width', width);
-  console.log('height', height);
-  console.log('scale', scale);
 
 
   useEffect(() => {
@@ -81,25 +78,7 @@ export default function AnnotationDrawing({
   const { fillColor, strokeColor, strokeWidth } = props;
 
   /** */
-  const updateCurrentShapeInShapes = (currentShape) => {
-    const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
 
-    if (index !== -1) {
-      // eslint-disable-next-line max-len
-      const updatedShapes = drawingState.shapes.map((shape, i) => (i === index ? currentShape : shape));
-      setDrawingState({
-        ...drawingState,
-        currentShape,
-        shapes: updatedShapes,
-      });
-    } else {
-      setDrawingState({
-        ...drawingState,
-        currentShape,
-        shapes: [...drawingState.shapes, currentShape],
-      });
-    }
-  };
 
   /** */
   useEffect(() => {

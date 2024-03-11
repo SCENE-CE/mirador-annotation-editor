@@ -17,7 +17,7 @@ import {
   OVERLAY_TOOL,
   SHAPES_TOOL,
 } from '../../AnnotationCreationUtils';
-import AccordionShapes from './Accordion';
+import ShapesList from './ShapesList';
 
 const StyledLi = styled('li')(({ theme }) => ({
   display: 'flex',
@@ -46,7 +46,13 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 
 /** All the form part for the overlay view */
 function AnnotationFormOverlayTool({
-  toolState, setToolState, currentShape, shapes, deleteShape, showStyleTools,
+  toolState,
+  setToolState,
+  currentShape,
+  updateCurrentShapeInShapes,
+  shapes,
+  deleteShape,
+  showStyleTools,
 }) {
   /** Change the active overlay tool */
   const changeTool = (e, tool) => {
@@ -113,10 +119,11 @@ function AnnotationFormOverlayTool({
                   <Typography variant="overline">
                     Object lists
                   </Typography>
-                  <AccordionShapes
+                  <ShapesList
                     currentShapeId={currentShape?.id}
                     shapes={shapes}
                     deleteShape={deleteShape}
+                    updateCurrentShapeInShapes={updateCurrentShapeInShapes}
                   />
                 </>
               )

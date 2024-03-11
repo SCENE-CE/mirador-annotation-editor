@@ -39,9 +39,10 @@ function AnnotationFormOverlay(
     toolState,
     deleteShape,
     currentShape,
+    updateCurrentShapeInShapes,
     setViewTool,
     shapes,
-    showStyleTools
+    showStyleTools,
   },
 ) {
   useEffect(() => {
@@ -109,6 +110,7 @@ function AnnotationFormOverlay(
               shapes={shapes}
               deleteShape={deleteShape}
               showStyleTools={showStyleTools}
+              updateCurrentShapeInShapes={updateCurrentShapeInShapes}
             />
           </OverlayIconAndTitleContainer>
         </Grid>
