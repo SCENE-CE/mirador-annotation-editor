@@ -33,7 +33,13 @@ function ShapesList({shapes, deleteShape, currentShapeId,updateCurrentShapeInSha
           <div>
           <ListItemContent sx={{padding:0}}>
             <div>
-            <Typography  onClick={()=> updateCurrentShapeInShapes(shape)} sx={{color: 'black'}} >{shape.type}</Typography>
+            <Typography
+                style={shape.id === currentShapeId ? { fontWeight: 'bold' } : {}}
+                onClick={()=> updateCurrentShapeInShapes(shape)}
+                sx={{color: 'black', cursor: 'pointer'}}
+            >
+              {shape.type}
+            </Typography>
             </div>
           <IconButton
               onClick={() => deleteShape(shape.id)}

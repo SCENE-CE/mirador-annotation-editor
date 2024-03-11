@@ -36,12 +36,12 @@ export const templateTypes = [
     id: template.TEXT_TYPE,
     label: 'Note',
   },
-  // {
-  //   description: 'mon incroyable description',
-  //   icon: <ImageIcon fontSize="small" />,
-  //   id: template.IMAGE_TYPE,
-  //   label: 'Image Comment',
-  // },
+  {
+    description: 'Image in overlay with a note',
+    icon: <ImageIcon fontSize="small" />,
+    id: template.IMAGE_TYPE,
+    label: 'Image',
+  },
   {
     description: 'Drawings and text in overlay',
     icon: <CategoryIcon fontSize="small" />,
