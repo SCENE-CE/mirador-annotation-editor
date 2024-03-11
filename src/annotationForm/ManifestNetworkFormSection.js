@@ -23,7 +23,7 @@ export default function ManifestNetworkFormSection(
   return (
     <>
       <Typography variant="overline">
-        Network
+        Document
       </Typography>
       <Grid>
         <TextField

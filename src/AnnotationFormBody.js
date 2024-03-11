@@ -14,6 +14,7 @@ import ImageCommentTemplate from './annotationForm/ImageCommentTemplate';
 import NetworkCommentTemplate from './annotationForm/NetworkCommentTemplate';
 import DrawingTemplate from './annotationForm/DrawingTemplate';
 import IIIFTemplate from './annotationForm/IIIFTemplate';
+import TaggingTemplate from "./annotationForm/TaggingTemplate";
 /**
  * This function contain the logic for loading annotation and render proper template type
  * * */
@@ -118,6 +119,20 @@ export default function AnnotationFormBody(
             />
           )
         }
+            {templateType.id === template.TAGGING_TYPE && (
+            <TaggingTemplate
+                canvases={canvases}
+                saveAnnotation={saveAnnotation}
+                closeFormCompanionWindow={closeFormCompanionWindow}
+                currentTime={currentTime}
+                manifestType={manifestType}
+                setCurrentTime={setCurrentTime}
+                setSeekTo={setSeekTo}
+                windowId={windowId}
+                overlay={overlay}
+                annotation={annotation}
+                />
+            )}
         </TemplateContainer>
       )}
       <Paper>
