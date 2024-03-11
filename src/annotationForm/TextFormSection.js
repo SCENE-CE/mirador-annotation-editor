@@ -19,7 +19,7 @@ export default function TextFormSection(
   return (
     <Grid>
       <Typography variant="overline">
-        Infos
+        Note
       </Typography>
       <Grid>
         <TextEditor

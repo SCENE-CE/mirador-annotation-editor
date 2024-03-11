@@ -3,6 +3,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import CategoryIcon from '@mui/icons-material/Category';
 import HubIcon from '@mui/icons-material/Hub';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import DataObjectIcon from '@mui/icons-material/DataObject';
 import ArticleIcon from '@mui/icons-material/Article';
 import React from 'react';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
@@ -30,10 +31,10 @@ export const getTemplateType = (templateType) => templateTypes.find((type) => ty
  */
 export const templateTypes = [
   {
-    description: 'mon incroyable description',
+    description: 'Textual note with target',
     icon: <TextFieldsIcon />,
     id: template.TEXT_TYPE,
-    label: 'Text Comment',
+    label: 'Note',
   },
   // {
   //   description: 'mon incroyable description',
@@ -42,28 +43,28 @@ export const templateTypes = [
   //   label: 'Image Comment',
   // },
   {
-    description: 'mon incroyable description',
+    description: 'Drawings and text in overlay',
     icon: <CategoryIcon fontSize="small" />,
     id: template.KONVA_TYPE,
-    label: 'Konva Comment',
+    label: 'Overlay',
   },
   {
-    description: 'mon incroyable description',
+    description: 'Link target to a manifest',
     icon: <HubIcon fontSize="small" />,
     id: template.MANIFEST_TYPE,
-    label: 'Manifest Comment',
+    label: 'Document',
   },
   {
-    description: 'mon incroyable description',
+    description: 'Tag with target',
     icon: <LocalOfferIcon fontSize="small" />,
     id: template.TAGGING_TYPE,
-    label: 'Tagging Comment',
+    label: 'Tag',
   },
   {
-    description: 'mon incroyable description',
-    icon: <ArticleIcon fontSize="small" />,
+    description: 'Edit directly the IIIF json code',
+    icon: <DataObjectIcon fontSize="small" />,
     id: template.IIIF_TYPE,
-    label: 'IIIF Manifest',
+    label: 'Expert mode',
   },
 ];
 
