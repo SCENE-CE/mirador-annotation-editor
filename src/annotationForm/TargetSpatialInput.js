@@ -11,24 +11,10 @@ import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay
 import CursorIcon from '../icons/Cursor';
 
 export function TargetSpatialInput({
-  xywh, setXywh, svg, overlay, windowId, manifestType, onChange, targetDrawingState,
+  xywh, setXywh, svg, overlay, windowId, manifestType, drawingState, setDrawingState,
 }) {
   const [toolState, setToolState] = useState(targetSVGToolState);
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
-
-  const initDrawingState = () => {
-    if (targetDrawingState) {
-      return JSON.parse(targetDrawingState);
-    }
-
-    return {
-      currentShape: null,
-      isDrawing: false,
-      shapes: [],
-    };
-  };
-
-  const [drawingState, setDrawingState] = useState(initDrawingState());
 
   const [scale, setScale] = useState(1);
   /** Change scale from container / canva */
@@ -66,15 +52,29 @@ export function TargetSpatialInput({
   if (manifestType === manifestTypes.IMAGE) {
     player = OSDReferences.get(windowId);
   }
+  const updateCurrentShapeInShapes = (currentShape) => {
+    const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
 
-  // TODO save drawing state on change
-  useEffect(() => {
-    onChange({
-      drawingState: JSON.stringify(drawingState),
-    });
-  }, [drawingState]);
+    if (index !== -1) {
+      // eslint-disable-next-line max-len
+      const updatedShapes = drawingState.shapes.map((shape, i) => (i === index ? currentShape : shape));
+      setDrawingState({
+        ...drawingState,
+        currentShape,
+        shapes: updatedShapes,
+      });
+    } else {
+      setDrawingState({
+        ...drawingState,
+        currentShape,
+        shapes: [...drawingState.shapes, currentShape],
+      });
+    }
+  };
 
   const showSVGSelector = true;
+
+  const TARGET_MODE = 'target';
 
   return (
     <>
@@ -99,6 +99,7 @@ export function TargetSpatialInput({
             setColorToolFromCurrentShape={() => {}}
             drawingState={drawingState}
             overlay={overlay}
+            updateCurrentShapeInShapes={updateCurrentShapeInShapes}
             setDrawingState={setDrawingState}
             tabView="edit" // TODO change
             showStyleTools
@@ -111,6 +112,8 @@ export function TargetSpatialInput({
             currentShape={drawingState.currentShape}
             setViewTool={setViewTool}
             showStyleTools={false}
+            displayMode={TARGET_MODE}
+            updateCurrentShapeInShapes={updateCurrentShapeInShapes}
           />
         </>
       )}

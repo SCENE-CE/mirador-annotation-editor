@@ -41,6 +41,8 @@ function TextCommentTemplate(
       motivation: 'commenting',
       target: null,
     };
+  } else if (maeAnnotation.maeData.target.drawingState) {
+    maeAnnotation.maeData.target.drawingState = JSON.parse(maeAnnotation.maeData.target.drawingState);
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);

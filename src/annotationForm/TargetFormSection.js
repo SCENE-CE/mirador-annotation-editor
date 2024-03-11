@@ -16,7 +16,7 @@ import { TargetSpatialInput } from './TargetSpatialInput';
  * @param manifestType
  * @param setCurrentTime
  * @param setSeekTo
- * @param spatialTarget
+ * @param showSpatialTarget
  * @param windowId
  * @returns {Element}
  * @constructor
@@ -28,7 +28,7 @@ export default function TargetFormSection(
     onChangeTarget,
     setCurrentTime,
     setSeekTo,
-    spatialTarget,
+    spatialTarget: showSpatialTarget,
     timeTarget,
     windowId,
     manifestType,
@@ -44,36 +44,34 @@ export default function TargetFormSection(
       target.tend = mediaVideo.props.canvas.__jsonld.duration ? mediaVideo.props.canvas.__jsonld.duration : 0;
     }
 
-    if (spatialTarget) {
-      switch (manifestType) {
-        case manifestTypes.IMAGE:
-          // TODO set default xywh
-          target.xywh = '0,0,500,1000';
-          break;
-        case manifestTypes.VIDEO:
-          const mediaVideo = VideosReferences.get(windowId);
-          const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
-          const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
-          target.xywh = `0,0,${targetWidth},${targetHeigth}`;
-          break;
-        default:
-          break;
-      }
+
+
+    // TODO Check if its possible to use overlay ?
+    switch (manifestType) {
+      case manifestTypes.IMAGE:
+        // TODO set default xywh
+        target.fullCanvaXYWH = '0,0,500,1000';
+        break;
+      case manifestTypes.VIDEO:
+        const mediaVideo = VideosReferences.get(windowId);
+        const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
+        const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
+        target.fullCanvaXYWH = `0,0,${targetWidth},${targetHeigth}`;
+        break;
+      default:
+        break;
     }
+
+    target.drawingState = {
+      currentShape: null,
+      isDrawing: false,
+      shapes: [],
+    };
 
     onChangeTarget(target);
   }
 
-  // const initTarget = () => {
-  // h
-  // };
-  //
-  // useEffect(() => {
-  //   onChangeTarget(initTarget());
-  // }, []);
-
   const onChangeTimeTargetInput = (newData) => {
-    console.log('newData', newData);
     onChangeTarget({
       ...target,
       ...newData,
@@ -93,16 +91,13 @@ export default function TargetFormSection(
         Target
       </Typography>
       {
-            spatialTarget && (
+            showSpatialTarget && (
             <TargetSpatialInput
-              xywh={target.xywh}
-              svg={target.svg}
-              onChange={onChangeSpatialTargetInput}
+              setDrawingState={onChangeSpatialTargetInput}
               windowId={windowId}
               manifestType={manifestType}
-              targetDrawingState={target.drawingState}
+              drawingState={target.drawingState}
               overlay={overlay}
-
             />
             )
         }
