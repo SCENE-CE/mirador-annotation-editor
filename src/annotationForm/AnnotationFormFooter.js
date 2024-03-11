@@ -17,7 +17,6 @@ function AnnotationFormFooter({
    * Validate form and save annotation
    */
   const submitAnnotationForm = async (e) => {
-    console.log('Vive les gros Cayenne Rouge !');
     saveAnnotation();
   };
 

@@ -18,8 +18,6 @@ export default function ManifestNetworkFormSection(
     onChange,
   },
 ) {
-  console.log('manifestNetwork', manifestNetwork);
-
   return (
     <>
       <Typography variant="overline">

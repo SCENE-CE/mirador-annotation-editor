@@ -70,7 +70,9 @@ function TextCommentTemplate(
     canvases.forEach(async (canvas) => {
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
+      console.log(annotation.maeData);
       annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
+      console.log('annotationState', annotationState.target);
       // delete annotationState.maeData.target;
       saveAnnotation(annotationState, canvas.id);
     });
