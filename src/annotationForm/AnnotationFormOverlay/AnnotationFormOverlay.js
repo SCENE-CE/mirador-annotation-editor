@@ -15,6 +15,7 @@ import CursorIcon from '../../icons/Cursor';
 import AnnotationFormOverlayTool from './AnnotationFormOverlayTool';
 import { defaultToolState, OVERLAY_TOOL } from '../../AnnotationCreationUtils';
 import { OVERLAY_VIEW, TARGET_VIEW } from '../../AnnotationFormUtils';
+import { KONVA_MODE } from './KonvaDrawing/KonvaUtils';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
@@ -35,6 +36,7 @@ const OverlayIconAndTitleContainer = styled(Grid)(({ theme }) => ({
 /** All the stuff to manage to choose the drawing tool */
 function AnnotationFormOverlay(
   {
+    displayMode,
     setToolState,
     toolState,
     deleteShape,
@@ -95,9 +97,13 @@ function AnnotationFormOverlay(
               <ToggleButton value={OVERLAY_TOOL.SHAPE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
                 <CategoryIcon />
               </ToggleButton>
-              <ToggleButton value={OVERLAY_TOOL.TEXT} aria-label="select text" onClick={tabHandler(OVERLAY_VIEW)}>
-                <TitleIcon />
-              </ToggleButton>
+              {
+                displayMode === KONVA_MODE.DRAW && (
+                  <ToggleButton value={OVERLAY_TOOL.TEXT} aria-label="select text" onClick={tabHandler(OVERLAY_VIEW)}>
+                    <TitleIcon />
+                  </ToggleButton>
+                )
+              }
               <ToggleButton value={OVERLAY_TOOL.DELETE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
                 <DeleteIcon />
               </ToggleButton>

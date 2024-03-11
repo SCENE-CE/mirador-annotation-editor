@@ -16,6 +16,7 @@ import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
+import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
 /**
  * Template for Konva annotations (drawing)
@@ -252,6 +253,7 @@ export default function DrawingTemplate(
         setViewTool={setViewTool}
         updateCurrentShapeInShapes={updateCurrentShapeInShapes}
         showStyleTools
+        displayMode={KONVA_MODE.DRAW}
       />
       <TextFormSection
         annoHtml={annotationState.body.value}

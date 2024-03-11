@@ -21,3 +21,9 @@ export async function getKonvaAsDataURL(windowId) {
 }
 
 export const defaultLineWeightChoices = [0, 2, 5, 10, 20, 50];
+
+export const KONVA_MODE = {
+  DRAW: 'draw',
+  IMAGE: 'image',
+  TARGET: 'target',
+};
