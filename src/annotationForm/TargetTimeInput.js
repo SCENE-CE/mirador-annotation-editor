@@ -134,7 +134,7 @@ function TargetTimeInput({
         item
         xs={12}
       >
-        <Typography>Time</Typography>
+        <Typography variant="subFormSectionTitle">Time</Typography>
         <ContainerSlider>
           <StyledSlider
             size="small"

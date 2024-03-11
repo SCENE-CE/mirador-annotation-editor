@@ -18,7 +18,7 @@ export default function TextFormSection(
 ) {
   return (
     <Grid>
-      <Typography variant="overline">
+      <Typography variant="formSectionTitle">
         Note
       </Typography>
       <Grid>

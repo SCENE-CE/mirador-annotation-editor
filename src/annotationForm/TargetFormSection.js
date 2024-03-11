@@ -89,7 +89,7 @@ export default function TargetFormSection(
 
   return (
     <Grid>
-      <Typography variant="overline">
+      <Typography variant="formSectionTitle">
         Target
       </Typography>
       {

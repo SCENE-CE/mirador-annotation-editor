@@ -81,8 +81,8 @@ export function TargetSpatialInput({
   // TODO disable svg selector if showFragmentSelector is true
 
   return (
-    <>
-      <Typography>Fragment</Typography>
+    <div>
+      <Typography variant="subFormSectionTitle">Fragment</Typography>
       <input type="text" value={xywh} onChange={(event) => onChange({ xywh: event.target.value })} />
       <ToggleButton value={showFragmentSelector} aria-label="select cursor"  onChange={() => {
         setShowFragmentSelector(!showFragmentSelector);
@@ -90,8 +90,8 @@ export function TargetSpatialInput({
         <CursorIcon />
       </ToggleButton>
       { showSVGSelector && (
-        <>
-          <Typography>SVG selection</Typography>
+        <div>
+          <Typography variant="subFormSectionTitle">SVG selection</Typography>
           <AnnotationDrawing
             scale={scale}
             activeTool={toolState.activeTool}
@@ -125,9 +125,9 @@ export function TargetSpatialInput({
             setViewTool={setViewTool}
             showStyleTools={false}
           />
-        </>
+        </div>
       )}
-    </>
+    </div>
 
   );
 }
