@@ -1,14 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { MiradorMenuButton } from 'mirador/dist/es/src/components/MiradorMenuButton';
 import Typography from '@mui/material/Typography';
+import {template} from "./AnnotationFormUtils";
 
 /**
  * React component for rendering the header of the annotation form.
  * */
-export default function AnnotationFormHeader({ templateType, setCommentingType }) {
+export default function AnnotationFormHeader({ templateType, setCommentingType, annotation }) {
   /**
      * Function to navigate back to the template selection.
      */
@@ -18,9 +19,12 @@ export default function AnnotationFormHeader({ templateType, setCommentingType }
 
   return (
     <ContainerAnnotationFormHeader>
-      <MiradorMenuButton>
+          {annotation.id == null ?
+              <MiradorMenuButton>
         <ChevronLeftIcon onClick={goBackToTemplateSelection} />
-      </MiradorMenuButton>
+      </MiradorMenuButton> :
+              <></>
+          }
       <TitleLogoContainer>
         <StyledTitle>{templateType.label}</StyledTitle>
         {templateType.icon}

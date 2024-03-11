@@ -169,6 +169,7 @@ export default function AnnotationForm(
             <AnnotationFormHeader
               setCommentingType={setTemplateType}
               templateType={templateType}
+              annotation={annotation}
             />
             <AnnotationFormBody
               templateType={templateType}
