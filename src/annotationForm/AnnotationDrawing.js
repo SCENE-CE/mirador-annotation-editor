@@ -9,10 +9,22 @@ import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
+import FragmentSelector from './AnnotationFormOverlay/KonvaDrawing/FragmentSelector';
 
 /** All the stuff to draw on the canvas */
 export default function AnnotationDrawing({
-  drawingState, originalWidth, orignalHeight, setDrawingState, height, width, imageEvent, overlay, updateScale, scale, ...props
+  drawingState,
+  height,
+  imageEvent,
+  originalWidth,
+  originalHeight,
+  overlay,
+  scale,
+  showFragmentSelector,
+  setDrawingState,
+  updateScale,
+  width,
+  ...props
 }) {
   const [isDrawing, setIsDrawing] = useState(false);
   // TODO target from the annotation
@@ -492,6 +504,34 @@ export default function AnnotationDrawing({
     });
   };
 
+  /***************************************
+   * Fragment selector related functions *
+   * *************************************/
+
+  /**
+   * Handles the transformation event on a fragment selector
+   * @param {Event} evt - The transformation event object.
+   */
+  const onFragmentSelectorTransform = (evt) => {
+    const modifiedshape = evt.target.attrs;
+    const shape = surfacedata;
+    Object.assign(shape, modifiedshape);
+    setSurfaceData({ ...shape });
+  };
+
+  /**
+   * Handles the drag event on a fragment selector.
+   * Updates the fragment selector data with the new position.
+   * @param {Event} evt - The drag event object.
+   */
+  const onFragmentSelectorDrag = (evt) => {
+    const modifiedshape = evt.currentTarget.attrs;
+    const shape = { ...surfacedata };
+    shape.x = modifiedshape.x;
+    shape.y = modifiedshape.y;
+    setSurfaceData({ ...shape });
+  };
+
   /** */
   const drawKonvas = () => (
     <Stage
@@ -512,6 +552,17 @@ export default function AnnotationDrawing({
       onMouseMove={handleMouseMove}
       id={props.windowId}
     >
+      { showFragmentSelector && (
+        <FragmentSelector
+          shape={surfacedata}
+          onTransform={onFragmentSelectorTransform}
+          handleDrag={onFragmentSelectorDrag}
+          showTransformer
+          width={width}
+          height={height}
+          scale={props.scale}
+        />
+      )}
       <ParentComponent
         shapes={drawingState.shapes}
         onShapeClick={onShapeClick}
@@ -519,7 +570,7 @@ export default function AnnotationDrawing({
         selectedShapeId={drawingState.currentShape?.id}
         scale={scale}
         width={originalWidth}
-        height={orignalHeight}
+        height={originalHeight}
         onTransform={onTransform}
         handleDragEnd={handleDragEnd}
         handleDragStart={handleDragStart}

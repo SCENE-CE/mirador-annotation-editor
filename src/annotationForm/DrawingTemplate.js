@@ -220,6 +220,7 @@ export default function DrawingTemplate(
         isMouseOverSave={isMouseOverSave}
         overlay={overlay}
         setDrawingState={setDrawingState}
+        showFragmentSelector={false}
         tabView={viewTool}
       />
       <AnnotationFormOverlay

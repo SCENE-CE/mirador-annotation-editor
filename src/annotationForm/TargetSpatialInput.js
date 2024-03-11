@@ -3,19 +3,21 @@ import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
+import ToggleButton from '@mui/material/ToggleButton';
 import AnnotationDrawing from './AnnotationDrawing';
-import { defaultToolState, targetSVGToolState } from '../AnnotationCreationUtils';
+import { defaultToolState, OVERLAY_TOOL, targetSVGToolState } from '../AnnotationCreationUtils';
 import { manifestTypes, TARGET_VIEW } from '../AnnotationFormUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
+import CursorIcon from '../icons/Cursor';
 
 export function TargetSpatialInput({
-  xywh, setXywh, svg, overlay, windowId, manifestType, onChange, targetDrawingState
+  xywh, setXywh, svg, overlay, windowId, manifestType, onChange, targetDrawingState,
 }) {
   const [toolState, setToolState] = useState(targetSVGToolState);
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
 
   const initDrawingState = () => {
-    if(targetDrawingState) {
+    if (targetDrawingState) {
       return JSON.parse(targetDrawingState);
     }
 
@@ -74,11 +76,19 @@ export function TargetSpatialInput({
 
   const showSVGSelector = true;
 
+  const [showFragmentSelector, setShowFragmentSelector] = useState(false);
+
+  // TODO disable svg selector if showFragmentSelector is true
+
   return (
     <>
       <Typography>Fragment</Typography>
-      <input type="text" value={xywh} onChange={(event) => onChange({ xywh : event.target.value})} />
-
+      <input type="text" value={xywh} onChange={(event) => onChange({ xywh: event.target.value })} />
+      <ToggleButton value={showFragmentSelector} aria-label="select cursor"  onChange={() => {
+        setShowFragmentSelector(!showFragmentSelector);
+      }}>
+        <CursorIcon />
+      </ToggleButton>
       { showSVGSelector && (
         <>
           <Typography>SVG selection</Typography>
@@ -103,6 +113,8 @@ export function TargetSpatialInput({
             overlay={overlay}
             setDrawingState={setDrawingState}
             tabView="edit" // TODO change
+            showStyleTools
+            showFragmentSelector={showFragmentSelector}
           />
           <AnnotationFormOverlay
             toolState={toolState}
