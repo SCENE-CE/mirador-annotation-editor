@@ -76,10 +76,6 @@ export function TargetSpatialInput({
 
   const showSVGSelector = true;
 
-  const [showFragmentSelector, setShowFragmentSelector] = useState(false);
-
-  // TODO disable svg selector if showFragmentSelector is true
-
   return (
     <>
       { showSVGSelector && (
@@ -106,7 +102,6 @@ export function TargetSpatialInput({
             setDrawingState={setDrawingState}
             tabView="edit" // TODO change
             showStyleTools
-            showFragmentSelector={showFragmentSelector}
           />
           <AnnotationFormOverlay
             toolState={toolState}
