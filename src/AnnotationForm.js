@@ -44,8 +44,6 @@ export default function AnnotationForm(
       }
     }
   }
-
-  console.log('templateType', templateType);
   let manifestType;
   if (mediaVideo) {
     manifestType = manifestTypes.VIDEO;

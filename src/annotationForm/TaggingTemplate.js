@@ -61,12 +61,10 @@ export default function TaggingTemplate(
 return(
         <div>
             <TextField
-                id="standard-multiline-static"
+                id="outlined-basic"
                 label="Your tag here :"
-                multiline
-                rows={4}
                 defaultValue=""
-                variant="standard"
+                variant="outlined"
             />
             <TargetFormSection
                 currentTime={currentTime}
