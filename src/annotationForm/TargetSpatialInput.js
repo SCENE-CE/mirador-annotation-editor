@@ -82,16 +82,8 @@ export function TargetSpatialInput({
 
   return (
     <>
-      <Typography>Fragment</Typography>
-      <input type="text" value={xywh} onChange={(event) => onChange({ xywh: event.target.value })} />
-      <ToggleButton value={showFragmentSelector} aria-label="select cursor"  onChange={() => {
-        setShowFragmentSelector(!showFragmentSelector);
-      }}>
-        <CursorIcon />
-      </ToggleButton>
       { showSVGSelector && (
         <>
-          <Typography>SVG selection</Typography>
           <AnnotationDrawing
             scale={scale}
             activeTool={toolState.activeTool}
