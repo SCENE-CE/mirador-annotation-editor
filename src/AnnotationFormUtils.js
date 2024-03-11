@@ -248,7 +248,7 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
         },
         {
           type: 'FragmentSelector',
-          value: `t=${maeTarget.tstart},${maeTarget.tend}&xywh=${maeTarget.fullCanvaXYWH}`,
+          value: `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}`,
         },
       ],
       source: canvasId,

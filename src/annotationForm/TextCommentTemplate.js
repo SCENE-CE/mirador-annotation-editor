@@ -8,6 +8,7 @@ import {
   maeTargetToIiifTarget,
   template,
 } from '../AnnotationFormUtils';
+import { getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
 /** Form part for edit annotation content and body */
 function TextCommentTemplate(
@@ -41,7 +42,7 @@ function TextCommentTemplate(
       motivation: 'commenting',
       target: null,
     };
-  } else if (maeAnnotation.maeData.target.drawingState) {
+  } else if (maeAnnotation.maeData.target.drawingState && typeof maeAnnotation.maeData.target.drawingState === 'string') {
     maeAnnotation.maeData.target.drawingState = JSON.parse(maeAnnotation.maeData.target.drawingState);
   }
 
@@ -73,7 +74,10 @@ function TextCommentTemplate(
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
       console.log(annotation.maeData);
+      annotationState.maeData.target.svg = await getSvg(windowId);
       annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
+      annotationState.maeData.target.drawingState = JSON.stringify(annotationState.maeData.target.drawingState);
+      annotationState.maeData.target.svg = JSON.stringify(annotationState.maeData.target);
       console.log('annotationState', annotationState.target);
       // delete annotationState.maeData.target;
       saveAnnotation(annotationState, canvas.id);

@@ -11,7 +11,7 @@ import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay
 import CursorIcon from '../icons/Cursor';
 
 export function TargetSpatialInput({
-  xywh, setXywh, svg, overlay, windowId, manifestType, drawingState, setDrawingState,
+  xywh, setXywh, svg, overlay, windowId, manifestType, targetDrawingState, setTargetDrawingState,
 }) {
   const [toolState, setToolState] = useState(targetSVGToolState);
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
@@ -21,6 +21,12 @@ export function TargetSpatialInput({
   const updateScale = () => {
     setScale(overlay.containerWidth / overlay.canvasWidth);
   };
+
+  const [drawingState, setDrawingState] = useState(targetDrawingState);
+
+  useEffect(() => {
+    setTargetDrawingState({ drawingState : drawingState});
+  }, [drawingState.shapes]);
 
   /**
    * Deletes a shape from the drawing state based on its ID.

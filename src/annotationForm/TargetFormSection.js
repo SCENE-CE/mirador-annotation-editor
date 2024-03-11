@@ -93,10 +93,10 @@ export default function TargetFormSection(
       {
             showSpatialTarget && (
             <TargetSpatialInput
-              setDrawingState={onChangeSpatialTargetInput}
+              setTargetDrawingState={onChangeSpatialTargetInput}
               windowId={windowId}
               manifestType={manifestType}
-              drawingState={target.drawingState}
+              targetDrawingState={target.drawingState}
               overlay={overlay}
             />
             )
