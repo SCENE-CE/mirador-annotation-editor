@@ -76,22 +76,10 @@ export function TargetSpatialInput({
 
   const showSVGSelector = true;
 
-  const [showFragmentSelector, setShowFragmentSelector] = useState(false);
-
-  // TODO disable svg selector if showFragmentSelector is true
-
   return (
     <>
-      <Typography>Fragment</Typography>
-      <input type="text" value={xywh} onChange={(event) => onChange({ xywh: event.target.value })} />
-      <ToggleButton value={showFragmentSelector} aria-label="select cursor"  onChange={() => {
-        setShowFragmentSelector(!showFragmentSelector);
-      }}>
-        <CursorIcon />
-      </ToggleButton>
       { showSVGSelector && (
         <>
-          <Typography>SVG selection</Typography>
           <AnnotationDrawing
             scale={scale}
             activeTool={toolState.activeTool}
@@ -114,7 +102,6 @@ export function TargetSpatialInput({
             setDrawingState={setDrawingState}
             tabView="edit" // TODO change
             showStyleTools
-            showFragmentSelector={showFragmentSelector}
           />
           <AnnotationFormOverlay
             toolState={toolState}
