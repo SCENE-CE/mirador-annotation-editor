@@ -9,6 +9,7 @@ import { defaultToolState, OVERLAY_TOOL, targetSVGToolState } from '../Annotatio
 import { manifestTypes, TARGET_VIEW } from '../AnnotationFormUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import CursorIcon from '../icons/Cursor';
+import {Grid, TextField} from "@mui/material";
 
 export function TargetSpatialInput({
   xywh, setXywh, svg, overlay, windowId, manifestType, onChange, targetDrawingState,
@@ -81,16 +82,24 @@ export function TargetSpatialInput({
   // TODO disable svg selector if showFragmentSelector is true
 
   return (
-    <div>
-      <Typography variant="subFormSectionTitle">Fragment</Typography>
-      <input type="text" value={xywh} onChange={(event) => onChange({ xywh: event.target.value })} />
-      <ToggleButton value={showFragmentSelector} aria-label="select cursor"  onChange={() => {
-        setShowFragmentSelector(!showFragmentSelector);
-      }}>
-        <CursorIcon />
-      </ToggleButton>
+      <Grid container direction="column" spacing={1}>
+        <Grid item xs={12} container direction="column" spacing={1}>
+          <Grid item>
+            <Typography variant="subFormSectionTitle">Fragment</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <TextField type="text" value={xywh} onChange={(event) => onChange({ xywh: event.target.value })} />
+          </Grid>
+          <Grid item xs={4}>
+            <ToggleButton value={showFragmentSelector} aria-label="select cursor" onChange={() => {
+              setShowFragmentSelector(!showFragmentSelector);
+            }}>
+              <CursorIcon />
+            </ToggleButton>
+          </Grid>
+        </Grid>
       { showSVGSelector && (
-        <div>
+        <Grid item container direction="c">
           <Typography variant="subFormSectionTitle">SVG selection</Typography>
           <AnnotationDrawing
             scale={scale}
@@ -125,9 +134,9 @@ export function TargetSpatialInput({
             setViewTool={setViewTool}
             showStyleTools={false}
           />
-        </div>
+        </Grid>
       )}
-    </div>
+    </Grid>
 
   );
 }

@@ -16,6 +16,7 @@ import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
+import {Grid} from "@mui/material";
 
 /**
  * Template for Konva annotations (drawing)
@@ -214,10 +215,12 @@ export default function DrawingTemplate(
   };
 
   return (
-    <>
+    <Grid container direction="column"  spacing={2}>
       {/* Rename AnnotationDrawing in Drawing Stage */}
       {/* Check the useless props : annotation ?
       Check the width height originalW originalW */}
+      <Grid item>
+
       <AnnotationDrawing
         scale={scale}
         activeTool={toolState.activeTool}
@@ -244,6 +247,8 @@ export default function DrawingTemplate(
         tabView={viewTool}
         updateCurrentShapeInShapes={updateCurrentShapeInShapes}
       />
+      </Grid>
+      <Grid item>
       <AnnotationFormOverlay
         toolState={toolState}
         deleteShape={deleteShape}
@@ -254,10 +259,13 @@ export default function DrawingTemplate(
         updateCurrentShapeInShapes={updateCurrentShapeInShapes}
         showStyleTools
       />
+      </Grid>
+      <Grid item>
       <TextFormSection
         annoHtml={annotationState.body.value}
         updateAnnotationBody={updateAnnotationTextualBodyValue}
       />
+      </Grid>
       <TargetFormSection
         currentTime={currentTime}
         manifestType={manifestType}
@@ -269,11 +277,15 @@ export default function DrawingTemplate(
         timeTarget
         windowId={windowId}
       />
+        <Grid item>
+
       <AnnotationFormFooter
         closeFormCompanionWindow={closeFormCompanionWindow}
         saveAnnotation={saveFunction}
       />
-    </>
+        </Grid>
+
+    </Grid>
   );
 }
 

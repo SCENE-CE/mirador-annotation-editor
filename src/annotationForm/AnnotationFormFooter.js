@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import {Button, Grid} from '@mui/material';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import React from 'react';
@@ -22,7 +22,7 @@ function AnnotationFormFooter({
   };
 
   return (
-    <StyledButtonDivSaveOrCancel>
+    <Grid container item spacing={1} justifyContent="flex-end">
       <Button onClick={closeFormCompanionWindow}>
         Cancel
       </Button>
@@ -34,7 +34,7 @@ function AnnotationFormFooter({
       >
         Save
       </Button>
-    </StyledButtonDivSaveOrCancel>
+    </Grid>
   );
 }
 AnnotationFormFooter.propTypes = {

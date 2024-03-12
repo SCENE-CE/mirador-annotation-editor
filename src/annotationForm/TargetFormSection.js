@@ -88,12 +88,16 @@ export default function TargetFormSection(
   };
 
   return (
-    <Grid>
+    <Grid  item container direction='column' spacing={1}>
+      <Grid item>
       <Typography variant="formSectionTitle">
         Target
       </Typography>
+      </Grid>
+      <Grid item container direction="column">
       {
             spatialTarget && (
+              <Grid item >
             <TargetSpatialInput
               xywh={target.xywh}
               svg={target.svg}
@@ -102,8 +106,8 @@ export default function TargetFormSection(
               manifestType={manifestType}
               targetDrawingState={target.drawingState}
               overlay={overlay}
-
             />
+          </Grid>
             )
         }
       {
@@ -119,6 +123,7 @@ export default function TargetFormSection(
         />
         )
         }
+      </Grid>
     </Grid>
   );
 }

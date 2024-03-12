@@ -6,6 +6,7 @@ import ManifestNetworkFormSection from './ManifestNetworkFormSection';
 import uuid from 'draft-js/lib/uuid';
 import { maeTargetToIiifTarget, template } from '../AnnotationFormUtils';
 import AnnotationFormFooter from './AnnotationFormFooter';
+import {Grid} from "@mui/material";
 
 /** Form part for edit annotation content and body */
 function NetworkCommentTemplate(
@@ -88,15 +89,21 @@ function NetworkCommentTemplate(
   };
 
   return (
-    <div style={{ padding: '5px' }}>
+    <Grid container direction="column"  spacing={2}>
+        <Grid item>
+
       <ManifestNetworkFormSection
         manifestNetwork={annotation.maeData.manifestNetwork}
         onChange={updateManifestNetwork}
       />
+        </Grid>
+        <Grid item>
+
       <TextFormSection
         annoHtml={annotationState.body.value}
         updateAnnotationBody={updateAnnotationTextBody}
       />
+        </Grid>
       <TargetFormSection
         currentTime={currentTime}
         manifestType={manifestType}
@@ -108,11 +115,14 @@ function NetworkCommentTemplate(
         timeTarget
         windowId={windowId}
       />
+        <Grid item>
+
       <AnnotationFormFooter
         closeFormCompanionWindow={closeFormCompanionWindow}
         saveAnnotation={saveFunction}
       />
-    </div>
+        </Grid>
+    </Grid>
   );
 }
 

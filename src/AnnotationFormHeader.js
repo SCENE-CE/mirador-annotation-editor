@@ -22,7 +22,7 @@ export default function AnnotationFormHeader({ templateType, setCommentingType, 
         container
         alignItems="center"
     >
-      <Grid container item xs={2}>
+      <Grid item xs={2}>
         {annotation.id == null
         && (
           <MiradorMenuButton>
@@ -32,29 +32,19 @@ export default function AnnotationFormHeader({ templateType, setCommentingType, 
       </Grid>
       <Grid
           justifyContent="space-between"
+          item xs={10}
           container
-          item xs={10}>
+          >
+        <Grid item xs={10}>
         <Typography>{templateType.label}</Typography>
+        </Grid>
+        <Grid item xs={2}>
         {templateType.icon}
+        </Grid>
       </Grid>
     </Grid>
   );
 }
-
-const ContainerAnnotationFormHeader = styled(Grid)(({ theme }) => ({
-  alignItems: 'center',
-  display: 'flex',
-  padding: '10px',
-  width: '100%',
-}));
-
-const TitleLogoContainer = styled(Grid)(({ theme }) => ({
-  alignItems: 'center',
-  display: 'flex',
-  justifyContent: 'space-between',
-  width: '100%',
-}));
-
 AnnotationFormHeader.propTypes = {
   setCommentingType: PropTypes.func.isRequired,
   templateType: PropTypes.arrayOf(PropTypes.shape(

@@ -16,27 +16,21 @@ const StyledDiv = styled('div')(({ theme }) => ({
   padding: '5px',
 }));
 
-const ContainerSlider = styled('div')(({ theme }) => ({
-  padding: '15px',
-}));
-
 const StyledSlider = styled(Slider)(({ theme }) => ({
   color: 'rgba(1, 0, 0, 0.38)',
 }));
 
-const StyledDivFormTimeContainer = styled('div')(({ theme }) => ({
-  alignContent: 'center',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '5px',
+const StyledGridFormTimeContainer = styled(Grid)(({ theme }) => ({
+  padding:"5px",
 }));
-const StyledDivTimeSelector = styled('div')(({ theme }) => ({
+const StyledGridTimeSelector = styled(Grid)(({ theme }) => ({
   border: '1px solid rgba(0, 0, 0, 0.12)',
   borderRadius: '4px',
   display: 'flex',
   flexWrap: 'nowrap',
   justifyContent: 'center',
   padding: '5px',
+  background:"blue"
 }));
 
 const StyledDivToggleButton = styled('div')(({ theme }) => ({
@@ -129,14 +123,19 @@ function TargetTimeInput({
   };
 
   return (
-    <StyledDiv>
+    <Grid container direction="column" spacing={1} >
       <Grid
         item
-        xs={12}
+        container
+        direction="column"
+        spacing={1}
       >
+        <Grid item>
         <Typography variant="subFormSectionTitle">Time</Typography>
-        <ContainerSlider>
+        </Grid>
+        <Grid container item >
           <StyledSlider
+            sx={{width:'90%', marginLeft:"5px"}}
             size="small"
             value={[tstart, tend]}
             onChange={handleChangeTime}
@@ -146,16 +145,20 @@ function TargetTimeInput({
             color="secondary"
             windowId={windowId}
           />
-        </ContainerSlider>
+        </Grid>
       </Grid>
-      <StyledDivFormTimeContainer>
-        <StyledDivTimeSelector>
-          <StyledDivToggleButton>
-            <div>
+      <Grid item container spacing={2} direction="column">
+        <Grid item container>
+          <Grid item container direction="column" xs={3}>
+            <Grid
+                item
+                alignItems="center"
+            >
               <StyledLabelSelector>
                 Start
               </StyledLabelSelector>
-            </div>
+            </Grid>
+            <Grid item>
             <StyledToggleButton
               value="true"
               title="Set current time"
@@ -164,16 +167,23 @@ function TargetTimeInput({
             >
               <Alarm fontSize="small" />
             </StyledToggleButton>
-          </StyledDivToggleButton>
+            </Grid>
+          </Grid>
           <HMSInput seconds={tstart} onChange={updateTstart} />
-        </StyledDivTimeSelector>
-        <StyledDivTimeSelector>
-          <StyledDivToggleButton>
-            <div>
+        </Grid>
+        <Grid item container>
+          <Grid
+              item container
+              direction="column" xs={3}>
+            <Grid
+                item
+                alignItems="center"
+            >
               <StyledLabelSelector>
                 End
               </StyledLabelSelector>
-            </div>
+            </Grid>
+            <Grid item>
             <StyledToggleButton
               value="true"
               title="Set current time"
@@ -182,11 +192,12 @@ function TargetTimeInput({
             >
               <Alarm fontSize="small" />
             </StyledToggleButton>
-          </StyledDivToggleButton>
+            </Grid>
+          </Grid>
           <HMSInput seconds={tend} onChange={updateTend} />
-        </StyledDivTimeSelector>
-      </StyledDivFormTimeContainer>
-    </StyledDiv>
+        </Grid>
+      </Grid>
+    </Grid>
 
   );
 }

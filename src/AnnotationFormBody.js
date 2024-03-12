@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import { JsonEditor as Editor } from 'jsoneditor-react';
 import ace from 'brace';
 import ToggleButton from '@mui/material/ToggleButton';
-import { Paper } from '@mui/material';
+import {Grid, Paper} from '@mui/material';
 import {
   geomFromAnnoTarget,
   template, timeFromAnnoTarget,
@@ -44,9 +44,9 @@ export default function AnnotationFormBody(
   const [showDebug, setShowDebug] = useState(false);
 
   return (
-    <>
+    <Grid container  direction="column">
       { !showDebug && (
-        <TemplateContainer>
+        <TemplateContainer item>
           {
           templateType.id === template.TEXT_TYPE && (
             <TextCommentTemplate
@@ -135,7 +135,7 @@ export default function AnnotationFormBody(
             )}
         </TemplateContainer>
       )}
-      <Paper>
+      <Grid item>
         <ToggleButton
           value={showDebug}
           onChange={() => setShowDebug(!showDebug)}
@@ -151,13 +151,15 @@ export default function AnnotationFormBody(
           theme="ace/theme/github"
         />
         )}
-      </Paper>
-    </>
+      </Grid>
+    </Grid>
   );
 }
-const TemplateContainer = styled('div')(({ theme }) => ({
-  padding: theme.spacing(1),
-}));
+
+const TemplateContainer = styled(Grid)({
+    margin: "0 10px",
+});
+
 AnnotationFormBody.propTypes = {
   annotation: PropTypes.shape({
     adapter: PropTypes.func,

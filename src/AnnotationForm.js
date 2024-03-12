@@ -166,14 +166,14 @@ export default function AnnotationForm(
         )
         : (
           <Grid container direction="column" spacing={1}>
-            <Grid container item>
+            <Grid item>
               <AnnotationFormHeader
                 setCommentingType={setTemplateType}
                 templateType={templateType}
                 annotation={annotation}
               />
             </Grid>
-            <Grid container item>
+            <Grid item>
               <AnnotationFormBody
                 templateType={templateType}
                 windowId={windowId}

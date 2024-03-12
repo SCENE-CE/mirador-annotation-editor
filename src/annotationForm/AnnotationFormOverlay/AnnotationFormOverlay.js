@@ -78,8 +78,7 @@ function AnnotationFormOverlay(
   } = toolState;
 
   return (
-    <div>
-      <div>
+
         <Grid container>
           <OverlayIconAndTitleContainer item xs={12}>
             <StyledToggleButtonGroup
@@ -114,8 +113,6 @@ function AnnotationFormOverlay(
             />
           </OverlayIconAndTitleContainer>
         </Grid>
-      </div>
-    </div>
   );
 }
 

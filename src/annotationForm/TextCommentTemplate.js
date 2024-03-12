@@ -8,6 +8,7 @@ import {
   maeTargetToIiifTarget,
   template,
 } from '../AnnotationFormUtils';
+import {Grid} from "@mui/material";
 
 /** Form part for edit annotation content and body */
 function TextCommentTemplate(
@@ -82,12 +83,17 @@ function TextCommentTemplate(
   }, [annotationState.maeData.target]);
 
   return (
-    <div style={{ padding: '5px' }}>
+    <Grid container direction="column"  spacing={2}>
+        <Grid item>
+
       <TextFormSection
         annoHtml={annotationState.body.value}
         updateAnnotationBody={updateAnnotationTextualBodyValue}
       />
-      <TargetFormSection
+        </Grid>
+        <Grid item>
+
+            <TargetFormSection
         currentTime={currentTime}
         manifestType={manifestType}
         onChangeTarget={updateTargetState}
@@ -99,11 +105,15 @@ function TextCommentTemplate(
         windowId={windowId}
         overlay={overlay}
       />
+        </Grid>
+        <Grid item>
+
       <AnnotationFormFooter
         closeFormCompanionWindow={closeFormCompanionWindow}
         saveAnnotation={saveFunction}
       />
-    </div>
+        </Grid>
+    </Grid>
   );
 }
 
