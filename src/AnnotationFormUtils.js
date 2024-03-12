@@ -241,7 +241,7 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
       return `xywh=${x},${y},${width},${height}&t=${maeTarget.tstart},${maeTarget.tend}`;
     }
     return {
-      selectors: [
+      selector: [
         {
           type: 'SvgSelector',
           value: maeTarget.svg,
