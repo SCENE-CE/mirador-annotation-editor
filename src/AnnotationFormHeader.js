@@ -19,8 +19,8 @@ export default function AnnotationFormHeader({ templateType, setCommentingType, 
 
   return (
     <Grid
-        container
-        alignItems="center"
+      container
+      alignItems="center"
     >
       <Grid item xs={2}>
         {annotation.id == null
@@ -31,15 +31,16 @@ export default function AnnotationFormHeader({ templateType, setCommentingType, 
         )}
       </Grid>
       <Grid
-          justifyContent="space-between"
-          item xs={10}
-          container
-          >
+        justifyContent="space-between"
+        item
+        xs={10}
+        container
+      >
         <Grid item xs={10}>
-        <Typography>{templateType.label}</Typography>
+          <Typography>{templateType.label}</Typography>
         </Grid>
         <Grid item xs={2}>
-        {templateType.icon}
+          {templateType.icon}
         </Grid>
       </Grid>
     </Grid>

@@ -4,17 +4,16 @@ import { styled } from '@mui/material/styles';
 import { JsonEditor as Editor } from 'jsoneditor-react';
 import ace from 'brace';
 import ToggleButton from '@mui/material/ToggleButton';
-import {Grid, Paper} from '@mui/material';
+import { Grid } from '@mui/material';
 import {
-  geomFromAnnoTarget,
-  template, timeFromAnnoTarget,
+  template,
 } from './AnnotationFormUtils';
 import TextCommentTemplate from './annotationForm/TextCommentTemplate';
 import ImageCommentTemplate from './annotationForm/ImageCommentTemplate';
 import NetworkCommentTemplate from './annotationForm/NetworkCommentTemplate';
 import DrawingTemplate from './annotationForm/DrawingTemplate';
 import IIIFTemplate from './annotationForm/IIIFTemplate';
-import TaggingTemplate from "./annotationForm/TaggingTemplate";
+import TaggingTemplate from './annotationForm/TaggingTemplate';
 /**
  * This function contain the logic for loading annotation and render proper template type
  * * */
@@ -33,7 +32,6 @@ export default function AnnotationFormBody(
     canvases,
   },
 ) {
-
   // TODO At this end we must only have annoSTate, setAnnoState, templateType,
   //  manifestType, windowId in XTemplateProps
   // TODO Search where overlay is used. Only in Konva ?
@@ -44,7 +42,7 @@ export default function AnnotationFormBody(
   const [showDebug, setShowDebug] = useState(false);
 
   return (
-    <Grid container  direction="column">
+    <Grid container direction="column">
       { !showDebug && (
         <TemplateContainer item>
           {
@@ -121,17 +119,17 @@ export default function AnnotationFormBody(
         }
             {templateType.id === template.TAGGING_TYPE && (
             <TaggingTemplate
-                canvases={canvases}
-                saveAnnotation={saveAnnotation}
-                closeFormCompanionWindow={closeFormCompanionWindow}
-                currentTime={currentTime}
-                manifestType={manifestType}
-                setCurrentTime={setCurrentTime}
-                setSeekTo={setSeekTo}
-                windowId={windowId}
-                overlay={overlay}
-                annotation={annotation}
-                />
+              canvases={canvases}
+              saveAnnotation={saveAnnotation}
+              closeFormCompanionWindow={closeFormCompanionWindow}
+              currentTime={currentTime}
+              manifestType={manifestType}
+              setCurrentTime={setCurrentTime}
+              setSeekTo={setSeekTo}
+              windowId={windowId}
+              overlay={overlay}
+              annotation={annotation}
+            />
             )}
         </TemplateContainer>
       )}
@@ -157,7 +155,7 @@ export default function AnnotationFormBody(
 }
 
 const TemplateContainer = styled(Grid)({
-    margin: "0 10px",
+  margin: '0 10px',
 });
 
 AnnotationFormBody.propTypes = {

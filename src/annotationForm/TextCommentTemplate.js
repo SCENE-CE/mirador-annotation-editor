@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import uuid from 'draft-js/lib/uuid';
+import { Grid } from '@mui/material';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
@@ -8,7 +9,6 @@ import {
   maeTargetToIiifTarget,
   template,
 } from '../AnnotationFormUtils';
-import {Grid} from "@mui/material";
 
 /** Form part for edit annotation content and body */
 function TextCommentTemplate(
@@ -83,36 +83,36 @@ function TextCommentTemplate(
   }, [annotationState.maeData.target]);
 
   return (
-    <Grid container direction="column"  spacing={2}>
-        <Grid item>
+    <Grid container direction="column" spacing={2}>
+      <Grid item>
 
-      <TextFormSection
-        annoHtml={annotationState.body.value}
-        updateAnnotationBody={updateAnnotationTextualBodyValue}
-      />
-        </Grid>
-        <Grid item>
+        <TextFormSection
+          annoHtml={annotationState.body.value}
+          updateAnnotationBody={updateAnnotationTextualBodyValue}
+        />
+      </Grid>
+      <Grid item>
 
-            <TargetFormSection
-        currentTime={currentTime}
-        manifestType={manifestType}
-        onChangeTarget={updateTargetState}
-        setCurrentTime={setCurrentTime}
-        setSeekTo={setSeekTo}
-        spatialTarget
-        target={annotationState.maeData.target}
-        timeTarget
-        windowId={windowId}
-        overlay={overlay}
-      />
-        </Grid>
-        <Grid item>
+        <TargetFormSection
+          currentTime={currentTime}
+          manifestType={manifestType}
+          onChangeTarget={updateTargetState}
+          setCurrentTime={setCurrentTime}
+          setSeekTo={setSeekTo}
+          spatialTarget
+          target={annotationState.maeData.target}
+          timeTarget
+          windowId={windowId}
+          overlay={overlay}
+        />
+      </Grid>
+      <Grid item>
 
-      <AnnotationFormFooter
-        closeFormCompanionWindow={closeFormCompanionWindow}
-        saveAnnotation={saveFunction}
-      />
-        </Grid>
+        <AnnotationFormFooter
+          closeFormCompanionWindow={closeFormCompanionWindow}
+          saveAnnotation={saveFunction}
+        />
+      </Grid>
     </Grid>
   );
 }

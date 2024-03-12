@@ -145,6 +145,7 @@ export default function AnnotationForm(
     });
   };
 
+  /** Save function * */
   const saveAnnotation = (annotationToSaved, canvasId) => {
     const storageAdapter = config.annotation.adapter(canvasId);
     saveAnnotationInStorageAdapter(canvasId, storageAdapter, receiveAnnotation, annotationToSaved)

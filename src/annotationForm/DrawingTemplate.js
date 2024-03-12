@@ -3,6 +3,7 @@ import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import PropTypes from 'prop-types';
 import uuid from 'draft-js/lib/uuid';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
+import { Grid } from '@mui/material';
 import AnnotationDrawing from './AnnotationDrawing';
 
 import {
@@ -16,7 +17,6 @@ import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import {Grid} from "@mui/material";
 
 /**
  * Template for Konva annotations (drawing)
@@ -37,15 +37,15 @@ import {Grid} from "@mui/material";
 export default function DrawingTemplate(
   {
     annotation,
+    canvases,
+    closeFormCompanionWindow,
     currentTime,
     manifestType,
+    overlay,
+    saveAnnotation,
     setCurrentTime,
     setSeekTo,
     windowId,
-    saveAnnotation,
-    closeFormCompanionWindow,
-    canvases,
-    overlay,
   },
 ) {
   // TODO Do something with this
@@ -91,7 +91,7 @@ export default function DrawingTemplate(
   if (manifestType === manifestTypes.IMAGE) {
     player = OSDReferences.get(windowId);
   }
-
+  /** save Function * */
   const saveFunction = () => {
     canvases.forEach(async (canvas) => {
       // Adapt target to the canvas
@@ -215,56 +215,56 @@ export default function DrawingTemplate(
   };
 
   return (
-    <Grid container direction="column"  spacing={2}>
+    <Grid container direction="column" spacing={2}>
       {/* Rename AnnotationDrawing in Drawing Stage */}
       {/* Check the useless props : annotation ?
       Check the width height originalW originalW */}
       <Grid item>
 
-      <AnnotationDrawing
-        scale={scale}
-        activeTool={toolState.activeTool}
-        annotation={annotation}
-        fillColor={toolState.fillColor}
-        strokeColor={toolState.strokeColor}
-        strokeWidth={toolState.strokeWidth}
-        closed={toolState.closedMode === 'closed'}
-        windowId={windowId}
-        player={player}
+        <AnnotationDrawing
+          scale={scale}
+          activeTool={toolState.activeTool}
+          annotation={annotation}
+          fillColor={toolState.fillColor}
+          strokeColor={toolState.strokeColor}
+          strokeWidth={toolState.strokeWidth}
+          closed={toolState.closedMode === 'closed'}
+          windowId={windowId}
+          player={player}
             // we need to pass the width and height of the image to the annotation drawing component
-        width={overlay ? overlay.containerWidth : 1920}
-        height={overlay ? overlay.containerHeight : 1080}
-        originalWidth={overlay ? overlay.canvasWidth : 1920}
-        originalHeight={overlay ? overlay.canvasHeight : 1080}
-        updateScale={updateScale}
-        imageEvent={toolState.imageEvent}
-        setColorToolFromCurrentShape={setColorToolFromCurrentShape}
-        drawingState={drawingState}
-        isMouseOverSave={isMouseOverSave}
-        overlay={overlay}
-        setDrawingState={setDrawingState}
-        showFragmentSelector={false}
-        tabView={viewTool}
-        updateCurrentShapeInShapes={updateCurrentShapeInShapes}
-      />
+          width={overlay ? overlay.containerWidth : 1920}
+          height={overlay ? overlay.containerHeight : 1080}
+          originalWidth={overlay ? overlay.canvasWidth : 1920}
+          originalHeight={overlay ? overlay.canvasHeight : 1080}
+          updateScale={updateScale}
+          imageEvent={toolState.imageEvent}
+          setColorToolFromCurrentShape={setColorToolFromCurrentShape}
+          drawingState={drawingState}
+          isMouseOverSave={isMouseOverSave}
+          overlay={overlay}
+          setDrawingState={setDrawingState}
+          showFragmentSelector={false}
+          tabView={viewTool}
+          updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+        />
       </Grid>
       <Grid item>
-      <AnnotationFormOverlay
-        toolState={toolState}
-        deleteShape={deleteShape}
-        setToolState={setToolState}
-        shapes={drawingState.shapes}
-        currentShape={drawingState.currentShape}
-        setViewTool={setViewTool}
-        updateCurrentShapeInShapes={updateCurrentShapeInShapes}
-        showStyleTools
-      />
+        <AnnotationFormOverlay
+          toolState={toolState}
+          deleteShape={deleteShape}
+          setToolState={setToolState}
+          shapes={drawingState.shapes}
+          currentShape={drawingState.currentShape}
+          setViewTool={setViewTool}
+          updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+          showStyleTools
+        />
       </Grid>
       <Grid item>
-      <TextFormSection
-        annoHtml={annotationState.body.value}
-        updateAnnotationBody={updateAnnotationTextualBodyValue}
-      />
+        <TextFormSection
+          annoHtml={annotationState.body.value}
+          updateAnnotationBody={updateAnnotationTextualBodyValue}
+        />
       </Grid>
       <TargetFormSection
         currentTime={currentTime}
@@ -277,13 +277,13 @@ export default function DrawingTemplate(
         timeTarget
         windowId={windowId}
       />
-        <Grid item>
+      <Grid item>
 
-      <AnnotationFormFooter
-        closeFormCompanionWindow={closeFormCompanionWindow}
-        saveAnnotation={saveFunction}
-      />
-        </Grid>
+        <AnnotationFormFooter
+          closeFormCompanionWindow={closeFormCompanionWindow}
+          saveAnnotation={saveFunction}
+        />
+      </Grid>
 
     </Grid>
   );

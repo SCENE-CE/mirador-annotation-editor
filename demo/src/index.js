@@ -23,42 +23,42 @@ const config = {
   ],
   themes: {
     light: {
-      palette:{
-        primary:{
-          main:'#5A8264',
+      palette: {
+        primary: {
+          main: '#5A8264',
         },
       },
       typography: {
         formSectionTitle: {
-          fontSize: "1rem",
-          fontWeight: 600,
-          letterSpacing: "0.1em",
-          textTransform: "uppercase",
+          fontSize: '1.215rem',
+          letterSpacing: '0.007em',
+          lineHeight: '1.45em',
         },
         subFormSectionTitle: {
-          fontSize: "0.8rem",
-          fontWeight: 500,
-          textTransform: "uppercase",
+          fontSize: '0.937rem',
+          fontWeight: 300,
+          letterSpacing: '0.015em',
+          lineHeight: '1.6em',
         },
       },
     },
-    dark:{
+    dark: {
       typography: {
         formSectionTitle: {
-          fontSize: "1rem",
+          fontSize: '1rem',
           fontWeight: 600,
-          letterSpacing: "0.1em",
-          textTransform: "uppercase",
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase',
         },
         subFormSectionTitle: {
-          fontSize: "1.383rem",
+          fontSize: '1.383rem',
           fontWeight: 300,
-          letterSpacing: "0em",
-          lineHeight: "1.33em",
-          textTransform: "uppercase",
+          letterSpacing: '0em',
+          lineHeight: '1.33em',
+          textTransform: 'uppercase',
         },
       },
-    }
+    },
   },
 };
 

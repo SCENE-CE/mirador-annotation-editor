@@ -3,39 +3,14 @@ import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 import ToggleButton from '@mui/material/ToggleButton';
 import { Alarm } from '@mui/icons-material';
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import HMSInput from '../HMSInput';
 
-const StyledDiv = styled('div')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '10px',
-  padding: '5px',
-}));
-
 const StyledSlider = styled(Slider)(({ theme }) => ({
   color: 'rgba(1, 0, 0, 0.38)',
-}));
-
-const StyledGridFormTimeContainer = styled(Grid)(({ theme }) => ({
-  padding:"5px",
-}));
-const StyledGridTimeSelector = styled(Grid)(({ theme }) => ({
-  border: '1px solid rgba(0, 0, 0, 0.12)',
-  borderRadius: '4px',
-  display: 'flex',
-  flexWrap: 'nowrap',
-  justifyContent: 'center',
-  padding: '5px',
-  background:"blue"
-}));
-
-const StyledDivToggleButton = styled('div')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
 }));
 
 const StyledLabelSelector = styled('p')(({ theme }) => ({
@@ -123,7 +98,7 @@ function TargetTimeInput({
   };
 
   return (
-    <Grid container direction="column" spacing={1} >
+    <Grid container direction="column" spacing={1}>
       <Grid
         item
         container
@@ -131,11 +106,14 @@ function TargetTimeInput({
         spacing={1}
       >
         <Grid item>
-        <Typography variant="subFormSectionTitle">Time</Typography>
+          <Typography variant="subFormSectionTitle">Time</Typography>
         </Grid>
-        <Grid container item >
+        <Grid container item>
           <StyledSlider
-            sx={{width:'90%', marginLeft:"5px"}}
+            sx={{
+              marginLeft: '5px',
+              width: '90%',
+            }}
             size="small"
             value={[tstart, tend]}
             onChange={handleChangeTime}
@@ -151,47 +129,50 @@ function TargetTimeInput({
         <Grid item container>
           <Grid item container direction="column" xs={3}>
             <Grid
-                item
-                alignItems="center"
+              item
+              alignItems="center"
             >
               <StyledLabelSelector>
                 Start
               </StyledLabelSelector>
             </Grid>
             <Grid item>
-            <StyledToggleButton
-              value="true"
-              title="Set current time"
-              size="small"
-              onClick={setTstartNow}
-            >
-              <Alarm fontSize="small" />
-            </StyledToggleButton>
+              <StyledToggleButton
+                value="true"
+                title="Set current time"
+                size="small"
+                onClick={setTstartNow}
+              >
+                <Alarm fontSize="small" />
+              </StyledToggleButton>
             </Grid>
           </Grid>
           <HMSInput seconds={tstart} onChange={updateTstart} />
         </Grid>
         <Grid item container>
           <Grid
-              item container
-              direction="column" xs={3}>
+            item
+            container
+            direction="column"
+            xs={3}
+          >
             <Grid
-                item
-                alignItems="center"
+              item
+              alignItems="center"
             >
               <StyledLabelSelector>
                 End
               </StyledLabelSelector>
             </Grid>
             <Grid item>
-            <StyledToggleButton
-              value="true"
-              title="Set current time"
-              size="small"
-              onClick={setTendNow}
-            >
-              <Alarm fontSize="small" />
-            </StyledToggleButton>
+              <StyledToggleButton
+                value="true"
+                title="Set current time"
+                size="small"
+                onClick={setTendNow}
+              >
+                <Alarm fontSize="small" />
+              </StyledToggleButton>
             </Grid>
           </Grid>
           <HMSInput seconds={tend} onChange={updateTend} />

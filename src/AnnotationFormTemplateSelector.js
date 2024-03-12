@@ -17,9 +17,7 @@ export default function AnnotationFormTemplateSelector({ setCommentingType, mani
   return (
     <CardContainer>
       { templateTypes.map((t) => (
-//TODO: Implement is comp to render only the wanted manifest template choice (see utils):
-         ( t.isCompatibleWithTemplate(manifestType) && (
-
+        ( t.isCompatibleWithTemplate(manifestType) && (
         <Card>
           <CardActionArea id={t.id} onClick={() => setCommentType(t)}>
             <CardContent>
@@ -58,8 +56,6 @@ const DescriptionCardTypography = styled(Typography, { name: 'CompanionWindow', 
   display: 'flex',
   justifyContent: 'space-between',
 });
-
-const StyledTitle = styled(Typography, { name: 'CompanionWindow', slot: 'title' })({});
 
 AnnotationFormTemplateSelector.propTypes = {
   setCommentingType: PropTypes.func.isRequired,

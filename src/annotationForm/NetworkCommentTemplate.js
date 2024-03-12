@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import uuid from 'draft-js/lib/uuid';
+import { Grid } from '@mui/material';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import ManifestNetworkFormSection from './ManifestNetworkFormSection';
-import uuid from 'draft-js/lib/uuid';
 import { maeTargetToIiifTarget, template } from '../AnnotationFormUtils';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import {Grid} from "@mui/material";
 
 /** Form part for edit annotation content and body */
 function NetworkCommentTemplate(
@@ -22,8 +22,6 @@ function NetworkCommentTemplate(
     canvases,
   },
 ) {
-
-
   let maeAnnotation = annotation;
 
   if (!maeAnnotation.id) {
@@ -45,7 +43,6 @@ function NetworkCommentTemplate(
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
-
 
   const updateManifestNetwork = (manifestNetwork) => {
     // TODO probably can be simplified
@@ -89,21 +86,20 @@ function NetworkCommentTemplate(
   };
 
   return (
-    <Grid container direction="column"  spacing={2}>
-        <Grid item>
+    <Grid container direction="column" spacing={2}>
+      <Grid item>
+        <ManifestNetworkFormSection
+          manifestNetwork={annotation.maeData.manifestNetwork}
+          onChange={updateManifestNetwork}
+        />
+      </Grid>
+      <Grid item>
 
-      <ManifestNetworkFormSection
-        manifestNetwork={annotation.maeData.manifestNetwork}
-        onChange={updateManifestNetwork}
-      />
-        </Grid>
-        <Grid item>
-
-      <TextFormSection
-        annoHtml={annotationState.body.value}
-        updateAnnotationBody={updateAnnotationTextBody}
-      />
-        </Grid>
+        <TextFormSection
+          annoHtml={annotationState.body.value}
+          updateAnnotationBody={updateAnnotationTextBody}
+        />
+      </Grid>
       <TargetFormSection
         currentTime={currentTime}
         manifestType={manifestType}
@@ -115,13 +111,13 @@ function NetworkCommentTemplate(
         timeTarget
         windowId={windowId}
       />
-        <Grid item>
+      <Grid item>
 
-      <AnnotationFormFooter
-        closeFormCompanionWindow={closeFormCompanionWindow}
-        saveAnnotation={saveFunction}
-      />
-        </Grid>
+        <AnnotationFormFooter
+          closeFormCompanionWindow={closeFormCompanionWindow}
+          saveAnnotation={saveFunction}
+        />
+      </Grid>
     </Grid>
   );
 }

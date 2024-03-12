@@ -21,12 +21,12 @@ export default function ManifestNetworkFormSection(
   console.log('manifestNetwork', manifestNetwork);
 
   return (
-    <Grid item container direction="column"  spacing={1}>
-        <Grid item>
-      <Typography variant="formSectionTitle">
-        Document
-      </Typography>
-        </Grid>
+    <Grid item container direction="column" spacing={1}>
+      <Grid item>
+        <Typography variant="formSectionTitle">
+          Document
+        </Typography>
+      </Grid>
       <Grid item>
         <TextField
           value={manifestNetwork}
@@ -36,7 +36,7 @@ export default function ManifestNetworkFormSection(
           error={!isValidUrl(manifestNetwork)}
         />
       </Grid>
-        <Grid item>
+      <Grid item>
         {
           isValidUrl(manifestNetwork) && (
             // Add a link
@@ -45,8 +45,8 @@ export default function ManifestNetworkFormSection(
             </Link>
           )
         }
-        </Grid>
-        <Grid item>
+      </Grid>
+      <Grid item>
         {
           !isValidUrl(manifestNetwork) && (
             <Typography variant="caption" color="error">
@@ -54,7 +54,7 @@ export default function ManifestNetworkFormSection(
             </Typography>
           )
         }
-        </Grid>
+      </Grid>
     </Grid>
   );
 }
