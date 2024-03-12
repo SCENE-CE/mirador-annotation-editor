@@ -42,8 +42,6 @@ export default function IIIFTemplate({
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
 
-  console.log('annotationState', annotationState);
-
   /**
    * Save function for the annotation
    * @returns {Object}

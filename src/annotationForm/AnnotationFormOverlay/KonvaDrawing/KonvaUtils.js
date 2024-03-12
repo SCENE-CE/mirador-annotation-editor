@@ -6,7 +6,8 @@ import { exportStageSVG } from 'react-konva-to-svg';
  */
 export async function getSvg(windowId) {
   const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
-  const svg = await exportStageSVG(stage, false); // TODO clean
+  let svg = await exportStageSVG(stage, false); // TODO clean
+  svg = svg.replaceAll('"', "'");
   return svg;
 }
 
@@ -21,3 +22,9 @@ export async function getKonvaAsDataURL(windowId) {
 }
 
 export const defaultLineWeightChoices = [0, 2, 5, 10, 20, 50];
+
+export const KONVA_MODE = {
+  DRAW: 'draw',
+  IMAGE: 'image',
+  TARGET: 'target',
+};

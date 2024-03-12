@@ -227,4 +227,32 @@ export const iiifTargetToMaeTarget = (iiifTarget) => {
   return target;
 };
 
-export const maeTargetToIiifTarget = (maeTarget, canvasId) => `${canvasId}#xywh=${maeTarget.xywh}&t=${maeTarget.tstart},${maeTarget.tend}`;
+export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
+  if (maeTarget.drawingState) {
+    if (maeTarget.drawingState.shapes.length == 0) {
+      console.info('Implement target as string on fullSizeCanvas');
+      return `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}`;
+    }
+    if (maeTarget.drawingState.shapes.length === 1 && (maeTarget.drawingState.shapes[0].type === 'rectangle')) {
+      const {
+        x, y, width, height,
+      } = maeTarget.drawingState.shapes[0];
+      console.info('Implement target as string with one shape (reactangle or image)');
+      return `xywh=${x},${y},${width},${height}&t=${maeTarget.tstart},${maeTarget.tend}`;
+    }
+    return {
+      selector: [
+        {
+          type: 'SvgSelector',
+          value: maeTarget.svg,
+        },
+        {
+          type: 'FragmentSelector',
+          value: `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}`,
+        },
+      ],
+      source: canvasId,
+    };
+  }
+  return `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}`;
+};
