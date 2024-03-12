@@ -8,7 +8,7 @@ import { templateTypes } from './AnnotationFormUtils';
  * A component that renders a selection of annotation
  * form templates for different types of comments.
  */
-export default function AnnotationFormTemplateSelector({ setCommentingType }) {
+export default function AnnotationFormTemplateSelector({ setCommentingType, manifestType }) {
   /**
      * Sets the comment type for the application.
      */
@@ -17,12 +17,16 @@ export default function AnnotationFormTemplateSelector({ setCommentingType }) {
   return (
     <CardContainer>
       { templateTypes.map((t) => (
+//TODO: Implement is comp to render only the wanted manifest template choice (see utils):
+         ( t.isCompatibleWithTemplate(manifestType) && (
+
         <Card>
           <CardActionArea id={t.id} onClick={() => setCommentType(t)}>
             <CardContent>
               <CardTypography variant="h6" component="div">
                 {t.label}
                 {t.icon}
+                {t.isCompatibleWithTemplate(manifestType)}
               </CardTypography>
               <DescriptionCardTypography component="div" variant="body2">
                 {t.description}
@@ -30,7 +34,8 @@ export default function AnnotationFormTemplateSelector({ setCommentingType }) {
             </CardContent>
           </CardActionArea>
         </Card>
-      )) }
+        ))
+      ))}
     </CardContainer>
   );
 }

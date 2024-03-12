@@ -38,7 +38,6 @@ const config = {
         subFormSectionTitle: {
           fontSize: "0.8rem",
           fontWeight: 500,
-          letterSpacing: "0.1em",
           textTransform: "uppercase",
         },
       },

@@ -17,11 +17,13 @@ export default function TextFormSection(
   },
 ) {
   return (
-    <Grid>
-      <Typography variant="formSectionTitle">
-        Note
-      </Typography>
-      <Grid>
+    <Grid container direction="column" spacing={1}>
+      <Grid container item>
+        <Typography variant="formSectionTitle">
+          Note
+        </Typography>
+      </Grid>
+      <Grid container item>
         <TextEditor
           annoHtml={annoHtml}
           updateAnnotationBody={updateAnnotationBody}

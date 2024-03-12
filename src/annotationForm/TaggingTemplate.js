@@ -4,6 +4,7 @@ import {maeTargetToIiifTarget, template} from "../AnnotationFormUtils";
 import {TextField} from "@mui/material";
 import TargetFormSection from "./TargetFormSection";
 import uuid from "draft-js/lib/uuid";
+import Typography from "@mui/material/Typography";
 export default function TaggingTemplate(
     {
     canvases,
@@ -60,6 +61,7 @@ export default function TaggingTemplate(
 
 return(
         <div>
+            <Typography variant="formSectionTitle">Tag</Typography>
             <TextField
                 id="outlined-basic"
                 label="Your tag here :"

@@ -26,6 +26,76 @@ export const manifestTypes = {
 
 export const getTemplateType = (templateType) => templateTypes.find((type) => type.id === templateType);
 
+/** Check compatibility between templates and manifest type*/
+const isManifestCompatibleWithDrawing = (manifestType) =>{
+  if( manifestType === manifestTypes.VIDEO){
+    return true
+  }
+  if( manifestType === manifestTypes.IMAGE) {
+    return false
+  }
+  if( manifestType === manifestTypes.AUDIO){
+    return false
+  }
+}
+
+const isManifestCompatibleWithText = (manifestType) =>{
+  if( manifestType === manifestTypes.VIDEO){
+    return true
+  }
+  if( manifestType === manifestTypes.IMAGE) {
+    return true
+  }
+  if( manifestType === manifestTypes.AUDIO){
+    return false
+  }
+}
+const isManifestCompatibleWithImage = (manifestType) =>{
+  if( manifestType === manifestTypes.VIDEO){
+    return true
+  }
+  if( manifestType === manifestTypes.IMAGE) {
+    return true
+  }
+  if( manifestType === manifestTypes.AUDIO){
+    return false
+  }
+}
+const isManifestCompatibleWithManifest = (manifestType) =>{
+  if( manifestType === manifestTypes.VIDEO){
+    return true
+  }
+  if( manifestType === manifestTypes.IMAGE) {
+    return true
+  }
+  if( manifestType === manifestTypes.AUDIO){
+    return true
+  }
+}
+const isManifestCompatibleWithTag = (manifestType) =>{
+  if( manifestType === manifestTypes.VIDEO){
+    return true
+  }
+  if( manifestType === manifestTypes.IMAGE) {
+    return true
+  }
+  if( manifestType === manifestTypes.AUDIO){
+    return true
+  }
+}
+
+const isManifestCompatibleWithIIIFJson = (manifestType) =>{
+  if( manifestType === manifestTypes.VIDEO){
+    return true
+  }
+  if( manifestType === manifestTypes.IMAGE) {
+    return true
+  }
+  if( manifestType === manifestTypes.AUDIO){
+    return true
+  }
+}
+
 /**
  * List of the template types supported
  */
@@ -35,38 +105,105 @@ export const templateTypes = [
     icon: <TextFieldsIcon />,
     id: template.TEXT_TYPE,
     label: 'Note',
+    isCompatibleWithTemplate: (manifestType) =>{
+      if( manifestType === manifestTypes.VIDEO){
+        return true
+      }
+      if( manifestType === manifestTypes.IMAGE) {
+        return true
+      }
+      if( manifestType === manifestTypes.AUDIO){
+        return false
+      }
+    }
   },
   {
     description: 'Image in overlay with a note',
     icon: <ImageIcon fontSize="small" />,
     id: template.IMAGE_TYPE,
     label: 'Image',
+    isCompatibleWithTemplate: (manifestType) =>{
+      if( manifestType === manifestTypes.VIDEO){
+        return true
+      }
+      if( manifestType === manifestTypes.IMAGE) {
+        return false
+      }
+      if( manifestType === manifestTypes.AUDIO){
+        return false
+      }
+    },
   },
   {
     description: 'Drawings and text in overlay',
     icon: <CategoryIcon fontSize="small" />,
     id: template.KONVA_TYPE,
     label: 'Overlay',
+    isCompatibleWithTemplate: (manifestType) =>{
+      if( manifestType === manifestTypes.VIDEO){
+        return true
+      }
+      if( manifestType === manifestTypes.IMAGE) {
+        return false
+      }
+      if( manifestType === manifestTypes.AUDIO){
+        return false
+      }
+    },
   },
   {
     description: 'Link target to a manifest',
     icon: <HubIcon fontSize="small" />,
     id: template.MANIFEST_TYPE,
     label: 'Document',
+    isCompatibleWithTemplate: (manifestType) =>{
+      if( manifestType === manifestTypes.VIDEO){
+        return true
+      }
+      if( manifestType === manifestTypes.IMAGE) {
+        return true
+      }
+      if( manifestType === manifestTypes.AUDIO){
+        return true
+      }
+    },
   },
   {
     description: 'Tag with target',
     icon: <LocalOfferIcon fontSize="small" />,
     id: template.TAGGING_TYPE,
     label: 'Tag',
+    isCompatibleWithTemplate: (manifestType) =>{
+      if( manifestType === manifestTypes.VIDEO){
+        return true
+      }
+      if( manifestType === manifestTypes.IMAGE) {
+        return true
+      }
+      if( manifestType === manifestTypes.AUDIO){
+        return false
+      }
+    },
   },
   {
     description: 'Edit directly the IIIF json code',
     icon: <DataObjectIcon fontSize="small" />,
     id: template.IIIF_TYPE,
     label: 'Expert mode',
+    isCompatibleWithTemplate: (manifestType) =>{
+      if( manifestType === manifestTypes.VIDEO){
+        return true
+      }
+      if( manifestType === manifestTypes.IMAGE) {
+        return true
+      }
+      if( manifestType === manifestTypes.AUDIO){
+        return true
+      }
+    },
   },
 ];
+
 
 /** Extract time information from annotation target */
 export function timeFromAnnoTarget(annotarget) {

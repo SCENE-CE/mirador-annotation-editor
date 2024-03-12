@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import PropTypes from 'prop-types';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
+import { Grid } from '@mui/material';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
 import {
   getTemplateType,
@@ -160,30 +161,35 @@ export default function AnnotationForm(
         ? (
           <AnnotationFormTemplateSelector
             setCommentingType={setTemplateType}
+            manifestType={manifestType}
           />
         )
         : (
-          <>
-            <AnnotationFormHeader
-              setCommentingType={setTemplateType}
-              templateType={templateType}
-              annotation={annotation}
-            />
-            <AnnotationFormBody
-              templateType={templateType}
-              windowId={windowId}
-              overlay={overlay}
-              annotation={annotation}
-              mediaVideo={mediaVideo}
-              currentTime={currentTime}
-              setCurrentTime={setCurrentTime}
-              setSeekTo={setSeekTo}
-              manifestType={manifestType}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-              saveAnnotation={saveAnnotation}
-              canvases={canvases}
-            />
-          </>
+          <Grid container direction="column" spacing={1}>
+            <Grid container item>
+              <AnnotationFormHeader
+                setCommentingType={setTemplateType}
+                templateType={templateType}
+                annotation={annotation}
+              />
+            </Grid>
+            <Grid container item>
+              <AnnotationFormBody
+                templateType={templateType}
+                windowId={windowId}
+                overlay={overlay}
+                annotation={annotation}
+                mediaVideo={mediaVideo}
+                currentTime={currentTime}
+                setCurrentTime={setCurrentTime}
+                setSeekTo={setSeekTo}
+                manifestType={manifestType}
+                closeFormCompanionWindow={closeFormCompanionWindow}
+                saveAnnotation={saveAnnotation}
+                canvases={canvases}
+              />
+            </Grid>
+          </Grid>
         )}
     </CompanionWindow>
   );
