@@ -75,6 +75,7 @@ export default function AnnotationFormBody(
               templateType={templateType}
               mediaType={mediaType}
               currentTime={currentTime}
+              overlay={overlay}
             />
           )
         }
@@ -107,6 +108,7 @@ export default function AnnotationFormBody(
               setSeekTo={setSeekTo}
               windowId={windowId}
               getMediaAudio={getMediaAudio}
+              overlay={overlay}
             />
           )
         }

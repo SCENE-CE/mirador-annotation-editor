@@ -61,7 +61,6 @@ function TargetTimeInput({
     }
     duration = audioDuration;
     audioElement = document.querySelector('audio');
-    console.log('audioElement', audioElement);
   }
   // eslint-disable-next-line no-underscore-dangle
 

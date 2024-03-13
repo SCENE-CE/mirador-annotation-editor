@@ -20,7 +20,8 @@ function NetworkCommentTemplate(
     saveAnnotation,
     closeFormCompanionWindow,
     canvases,
-    getMediaAudio
+    getMediaAudio,
+    overlay,
   },
 ) {
   let maeAnnotation = annotation;
@@ -112,6 +113,7 @@ function NetworkCommentTemplate(
         windowId={windowId}
         closeFormCompanionWindow={closeFormCompanionWindow}
         getMediaAudio={getMediaAudio}
+        overlay={overlay}
       />
       <Grid item>
         <AnnotationFormFooter

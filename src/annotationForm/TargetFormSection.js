@@ -85,6 +85,7 @@ export default function TargetFormSection(
       ...newData,
     });
   };
+
   let timeTarget;
   let spatialTarget;
 

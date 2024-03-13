@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Grid, Link, TextField, Typography,
 } from '@mui/material';
@@ -18,7 +18,12 @@ export default function ManifestNetworkFormSection(
     onChange,
   },
 ) {
-  console.log('manifestNetwork', manifestNetwork);
+    const [manifestUrl, setManifestUrl] = useState('');
+
+    const handlOnChange = (value) =>{
+        setManifestUrl(value)
+        onChange(value)
+    }
 
   return (
     <Grid item container direction="column" spacing={1}>
@@ -30,12 +35,15 @@ export default function ManifestNetworkFormSection(
       <Grid item>
         <TextField
           value={manifestNetwork}
-          onChange={(event) => onChange(event.target.value.trim())}
+          onChange={(event) => handlOnChange(event.target.value.trim())}
           label="Manifest URL"
           type="url"
           error={!isValidUrl(manifestNetwork)}
         />
       </Grid>
+        <Grid item>
+            <Link href={manifestUrl}>{manifestUrl}</Link>
+        </Grid>
       <Grid item>
         {
           isValidUrl(manifestNetwork) && (

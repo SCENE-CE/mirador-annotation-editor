@@ -71,6 +71,7 @@ export default function AnnotationForm(
   // Listen to window resize event
   useEffect(() => {
     setTemplateType(null);
+    setMediaType(canvases[0].__jsonld.items[0].items[0].body.type);
   }, [canvases[0].index]);
 
   /**
