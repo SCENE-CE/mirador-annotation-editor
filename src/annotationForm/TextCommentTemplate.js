@@ -23,6 +23,7 @@ function TextCommentTemplate(
     closeFormCompanionWindow,
     canvases,
     overlay,
+    getMediaAudio,
   },
 ) {
   let maeAnnotation = annotation;
@@ -103,6 +104,7 @@ function TextCommentTemplate(
           windowId={windowId}
           overlay={overlay}
           closeFormCompanionWindow={closeFormCompanionWindow}
+          getMediaAudio={getMediaAudio}
         />
       </Grid>
       <Grid item>

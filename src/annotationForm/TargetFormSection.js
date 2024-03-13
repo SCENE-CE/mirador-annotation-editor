@@ -32,6 +32,7 @@ export default function TargetFormSection(
     mediaType,
     overlay,
     closeFormCompanionWindow,
+      getMediaAudio,
   },
 ) {
   if (!target) {
@@ -138,6 +139,9 @@ if(mediaType === manifestTypes.AUDIO){
           currentTime={currentTime}
           setCurrentTime={setCurrentTime}
           setSeekTo={setSeekTo}
+          getMediaAudio={getMediaAudio}
+          mediaType={mediaType}
+          closeFormCompanionWindow={closeFormCompanionWindow}
         />
         )
         }

@@ -30,6 +30,7 @@ export default function AnnotationFormBody(
     closeFormCompanionWindow,
     saveAnnotation,
     canvases,
+    getMediaAudio,
   },
 ) {
   // TODO At this end we must only have annoSTate, setAnnoState, templateType,
@@ -58,6 +59,7 @@ export default function AnnotationFormBody(
               setSeekTo={setSeekTo}
               windowId={windowId}
               overlay={overlay}
+              getMediaAudio={getMediaAudio}
             />
           )
         }

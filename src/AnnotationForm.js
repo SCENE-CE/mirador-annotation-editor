@@ -28,6 +28,7 @@ export default function AnnotationForm(
     receiveAnnotation,
     config,
     osdref,
+    getMediaAudio,
   },
 ) {
   const [templateType, setTemplateType] = useState(null);
@@ -64,6 +65,12 @@ export default function AnnotationForm(
       containerWidth: 1000,
     };
   }
+
+
+  // Listen to window resize event
+  useEffect(() => {
+    setTemplateType(null)
+  }, [canvases[0].index]);
 
   /**
    * Retrieves the height and width of a media element.
@@ -178,6 +185,7 @@ export default function AnnotationForm(
                 saveAnnotation={saveAnnotation}
                 canvases={canvases}
                 osdref={osdref}
+                getMediaAudio={getMediaAudio}
               />
             </Grid>
           </Grid>
