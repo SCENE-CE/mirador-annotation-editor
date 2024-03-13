@@ -96,7 +96,7 @@ export default function TargetFormSection(
 
   if (mediaType === manifestTypes.VIDEO) {
     timeTarget = true;
-    spatialTarget = true;
+    spatialTarget = false;
   }
 
   if (mediaType === manifestTypes.AUDIO) {

@@ -47,8 +47,8 @@ export default function AnnotationDrawing({
       updateScale(overlay.containerWidth / overlay.canvasWidth);
     }
     const newSurfaceData = { ...surfacedata };
-    newSurfaceData.width = originalWidth;
-    newSurfaceData.height = originalHeight;
+    newSurfaceData.width = overlay.width;
+    newSurfaceData.height = overlay.height;
     // compare newSurfaceData and surfacedata, if different, update surfacedata
     // eslint-disable-next-line max-len
     if (newSurfaceData.width !== surfacedata.width || newSurfaceData.height !== surfacedata.height) {
