@@ -18,7 +18,7 @@ export default function TaggingTemplate(
     canvases,
     closeFormCompanionWindow,
     saveAnnotation,
-      getMediaAudio
+    getMediaAudio,
   },
 ) {
   let maeAnnotation = annotation;
@@ -51,7 +51,7 @@ export default function TaggingTemplate(
     });
   };
 
-  /**Save function **/
+  /** Save function * */
   const saveFunction = () => {
     canvases.forEach(async (canvas) => {
       // Adapt target to the canvas

@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import HMSInput from '../HMSInput';
-import {manifestTypes} from '../AnnotationFormUtils';
+import { manifestTypes } from '../AnnotationFormUtils';
 
 const StyledSlider = styled(Slider)(({ theme }) => ({
   color: 'rgba(1, 0, 0, 0.38)',
@@ -39,46 +39,44 @@ function TargetTimeInput({
   onChange,
   getMediaAudio,
   mediaType,
-                           closeFormCompanionWindow,
+  closeFormCompanionWindow,
 }) {
-let duration;
+  let duration;
 
-  if(mediaType === manifestTypes.VIDEO){
-  const  mediaVideo = VideosReferences.get(windowId);
-  const videoDuration = mediaVideo.props.canvas.__jsonld.duration;
-   duration =videoDuration;
+  if (mediaType === manifestTypes.VIDEO) {
+    const mediaVideo = VideosReferences.get(windowId);
+    const videoDuration = mediaVideo.props.canvas.__jsonld.duration;
+    duration = videoDuration;
   }
 
   let audioDuration;
   let audioElement;
 
-  if(mediaType === manifestTypes.AUDIO){
+  if (mediaType === manifestTypes.AUDIO) {
     const audio = getMediaAudio;
-    if(audio[0]){
-    audioDuration = audio[0].__jsonld.duration
-    }else{
+    if (audio[0]) {
+      audioDuration = audio[0].__jsonld.duration;
+    } else {
       closeFormCompanionWindow();
     }
     duration = audioDuration;
     audioElement = document.querySelector('audio');
-    console.log('audioElement',audioElement);
+    console.log('audioElement', audioElement);
   }
   // eslint-disable-next-line no-underscore-dangle
 
   /** set annotation start time to current time */
   const setTstartNow = () => {
-      onChange({
-        tstart: Math.floor(currentTime),
-      });
-
+    onChange({
+      tstart: Math.floor(currentTime),
+    });
   };
 
   /** set annotation end time to current time */
   const setTendNow = () => {
-      onChange({
-        tend: Math.floor(currentTime),
-      });
-
+    onChange({
+      tend: Math.floor(currentTime),
+    });
   };
 
   // TODO: Décomposer cette fonction pour que la maj des
@@ -107,23 +105,22 @@ let duration;
     if (valueTstart > tend) {
       return;
     }
-    if(audioElement){
+    if (audioElement) {
       audioElement.currentTime = valueTstart;
-      console.log('toto')
+      console.log('toto');
     }
     onChange({
       tstart: valueTstart,
       ...setSeekTo(valueTstart),
       ...setCurrentTime(valueTstart),
     });
-
   };
 
   /** update annotation end time */
   const updateTend = (valueTend) => {
-    if(audioElement){
+    if (audioElement) {
       audioElement.currentTime = valueTend;
-      console.log('toto')
+      console.log('toto');
     }
     onChange({
       tend: valueTend,

@@ -32,7 +32,7 @@ export default function TargetFormSection(
     mediaType,
     overlay,
     closeFormCompanionWindow,
-      getMediaAudio,
+    getMediaAudio,
   },
 ) {
   if (!target) {
@@ -85,51 +85,51 @@ export default function TargetFormSection(
       ...newData,
     });
   };
-let timeTarget;
-let spatialTarget;
+  let timeTarget;
+  let spatialTarget;
 
-if(mediaType === manifestTypes.IMAGE){
-    timeTarget=false;
-    spatialTarget=true;
-}
+  if (mediaType === manifestTypes.IMAGE) {
+    timeTarget = false;
+    spatialTarget = true;
+  }
 
-if(mediaType === manifestTypes.VIDEO){
-    timeTarget=true;
-    spatialTarget=true;
-}
+  if (mediaType === manifestTypes.VIDEO) {
+    timeTarget = true;
+    spatialTarget = true;
+  }
 
-if(mediaType === manifestTypes.AUDIO){
-    timeTarget=true;
-    spatialTarget=false;
-}
+  if (mediaType === manifestTypes.AUDIO) {
+    timeTarget = true;
+    spatialTarget = false;
+  }
 
-    return (
-    <Grid  item container direction='column' spacing={1}>
+  return (
+    <Grid item container direction="column" spacing={1}>
       <Grid item>
-          {spatialTarget === true || timeTarget === true?  (
-              <Typography variant="formSectionTitle">
-                  Target
-              </Typography>
-          ) : ( <></>)}
+        {spatialTarget === true || timeTarget === true ? (
+          <Typography variant="formSectionTitle">
+            Target
+          </Typography>
+        ) : (<></>)}
       </Grid>
       <Grid item container direction="column">
-      {
+        {
             spatialTarget === true && (
-              <Grid item >
-            <TargetSpatialInput
-              xywh={target.xywh}
-              svg={target.svg}
-              onChange={onChangeSpatialTargetInput}
-              windowId={windowId}
-              mediaType={mediaType}
-              targetDrawingState={target.drawingState}
-              overlay={overlay}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-            />
-          </Grid>
+              <Grid item>
+                <TargetSpatialInput
+                  xywh={target.xywh}
+                  svg={target.svg}
+                  onChange={onChangeSpatialTargetInput}
+                  windowId={windowId}
+                  mediaType={mediaType}
+                  targetDrawingState={target.drawingState}
+                  overlay={overlay}
+                  closeFormCompanionWindow={closeFormCompanionWindow}
+                />
+              </Grid>
             )
         }
-      {
+        {
         (timeTarget === true) && (
         <TargetTimeInput
           tstart={target.tstart}

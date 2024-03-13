@@ -1,11 +1,11 @@
 import * as actions from 'mirador/dist/es/src/state/actions';
 import { getCompanionWindow } from 'mirador/dist/es/src/state/selectors/companionWindows';
 import { getWindowCurrentTime, getWindowPausedStatus } from 'mirador/dist/es/src/state/selectors/window';
-import {getVisibleCanvasAudioResources, getVisibleCanvases} from 'mirador/dist/es/src/state/selectors/canvases';
+import { getVisibleCanvasAudioResources, getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
 import { getPresentAnnotationsOnSelectedCanvases } from 'mirador/dist/es/src/state/selectors/annotations';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
+import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import annotationForm from '../AnnotationForm';
-import {OSDReferences} from "mirador/dist/es/src/plugins/OSDReferences";
 /** */
 const mapDispatchToProps = (dispatch, { id, windowId }) => ({
   closeCompanionWindow: () => dispatch(
@@ -47,9 +47,9 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
     currentTime,
     mediaVideo,
     osdref,
-    getMediaAudio :getVisibleCanvasAudioResources(state, { windowId }),
+    getMediaAudio: getVisibleCanvasAudioResources(state, { windowId }),
     paused: getWindowPausedStatus(state, { windowId }),
-    getVisibleCanvase: getVisibleCanvases(state,{windowId})
+    getVisibleCanvase: getVisibleCanvases(state, { windowId }),
   };
 }
 

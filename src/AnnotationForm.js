@@ -1,6 +1,8 @@
-import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import React, {
+  useEffect, useLayoutEffect, useRef, useState,
+} from 'react';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
-import PropTypes, {string} from 'prop-types';
+import PropTypes, { string } from 'prop-types';
 import { Grid } from '@mui/material';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
 import {
@@ -32,7 +34,7 @@ export default function AnnotationForm(
   },
 ) {
   const [templateType, setTemplateType] = useState(null);
-  const [mediaType, setMediaType ] = useState(canvases[0].__jsonld.items[0].items[0].body.type)
+  const [mediaType, setMediaType] = useState(canvases[0].__jsonld.items[0].items[0].body.type);
 
   // TODO must be improved when parsing annotation
   if (!templateType) {
@@ -66,10 +68,9 @@ export default function AnnotationForm(
     };
   }
 
-
   // Listen to window resize event
   useEffect(() => {
-    setTemplateType(null)
+    setTemplateType(null);
   }, [canvases[0].index]);
 
   /**
