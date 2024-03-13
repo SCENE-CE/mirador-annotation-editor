@@ -50,6 +50,7 @@ let duration;
   }
 
   let audioDuration;
+  let audioElement;
 
   if(mediaType === manifestTypes.AUDIO){
     const audio = getMediaAudio;
@@ -59,21 +60,25 @@ let duration;
       closeFormCompanionWindow();
     }
     duration = audioDuration;
+    audioElement = document.querySelector('audio');
+    console.log('audioElement',audioElement);
   }
   // eslint-disable-next-line no-underscore-dangle
 
   /** set annotation start time to current time */
   const setTstartNow = () => {
-    onChange({
-      tstart: Math.floor(currentTime),
-    });
+      onChange({
+        tstart: Math.floor(currentTime),
+      });
+
   };
 
   /** set annotation end time to current time */
   const setTendNow = () => {
-    onChange({
-      tend: Math.floor(currentTime),
-    });
+      onChange({
+        tend: Math.floor(currentTime),
+      });
+
   };
 
   // TODO: Décomposer cette fonction pour que la maj des
@@ -102,15 +107,24 @@ let duration;
     if (valueTstart > tend) {
       return;
     }
+    if(audioElement){
+      audioElement.currentTime = valueTstart;
+      console.log('toto')
+    }
     onChange({
       tstart: valueTstart,
       ...setSeekTo(valueTstart),
       ...setCurrentTime(valueTstart),
     });
+
   };
 
   /** update annotation end time */
   const updateTend = (valueTend) => {
+    if(audioElement){
+      audioElement.currentTime = valueTend;
+      console.log('toto')
+    }
     onChange({
       tend: valueTend,
       ...setSeekTo(valueTend),
