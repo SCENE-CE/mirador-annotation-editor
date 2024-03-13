@@ -270,15 +270,15 @@ export default function DrawingTemplate(
         />
       </Grid>
       <TargetFormSection
-        currentTime={currentTime}
-        mediaType={mediaType}
-        onChangeTarget={updateTargetState}
-        setCurrentTime={setCurrentTime}
-        setSeekTo={setSeekTo}
-        spatialTarget={false}
-        target={annotationState.maeData.target}
-        timeTarget
-        windowId={windowId}
+          currentTime={currentTime}
+          mediaType={mediaType}
+          onChangeTarget={updateTargetState}
+          setCurrentTime={setCurrentTime}
+          setSeekTo={setSeekTo}
+          target={annotationState.maeData.target}
+          windowId={windowId}
+          overlay={overlay}
+          closeFormCompanionWindow={closeFormCompanionWindow}
       />
       <Grid item>
 
