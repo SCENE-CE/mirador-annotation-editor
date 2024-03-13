@@ -28,8 +28,6 @@ export default function TargetFormSection(
     onChangeTarget,
     setCurrentTime,
     setSeekTo,
-    spatialTarget,
-    timeTarget,
     windowId,
     mediaType,
     overlay,
@@ -86,15 +84,28 @@ export default function TargetFormSection(
       ...newData,
     });
   };
+let timeTarget;
+let spatialTarget;
 
-if(mediaType !== manifestTypes.IMAGE){
+if(mediaType === manifestTypes.IMAGE){
     timeTarget=false;
+    spatialTarget=true;
+}
+
+if(mediaType === manifestTypes.VIDEO){
+    timeTarget=true;
+    spatialTarget=true;
+}
+
+if(mediaType === manifestTypes.AUDIO){
+    timeTarget=true;
+    spatialTarget=false;
 }
 
     return (
     <Grid  item container direction='column' spacing={1}>
       <Grid item>
-          {spatialTarget ?  (
+          {spatialTarget === true || timeTarget === true?  (
               <Typography variant="formSectionTitle">
                   Target
               </Typography>
@@ -102,7 +113,7 @@ if(mediaType !== manifestTypes.IMAGE){
       </Grid>
       <Grid item container direction="column">
       {
-            spatialTarget && (
+            spatialTarget === true && (
               <Grid item >
             <TargetSpatialInput
               xywh={target.xywh}
@@ -118,7 +129,7 @@ if(mediaType !== manifestTypes.IMAGE){
             )
         }
       {
-        (timeTarget && mediaType !== manifestTypes.IMAGE) && (
+        (timeTarget === true) && (
         <TargetTimeInput
           tstart={target.tstart}
           tend={target.tend}

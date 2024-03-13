@@ -99,9 +99,7 @@ function TextCommentTemplate(
           onChangeTarget={updateTargetState}
           setCurrentTime={setCurrentTime}
           setSeekTo={setSeekTo}
-          spatialTarget
           target={annotationState.maeData.target}
-          timeTarget
           windowId={windowId}
           overlay={overlay}
           closeFormCompanionWindow={closeFormCompanionWindow}
