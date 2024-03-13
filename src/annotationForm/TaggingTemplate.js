@@ -10,7 +10,7 @@ export default function TaggingTemplate(
   {
     annotation,
     currentTime,
-    manifestType,
+    mediaType,
     overlay,
     setCurrentTime,
     setSeekTo,
@@ -73,7 +73,7 @@ export default function TaggingTemplate(
       />
       <TargetFormSection
         currentTime={currentTime}
-        manifestType={manifestType}
+        mediaType={mediaType}
         onChangeTarget={updateTargetState}
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
@@ -82,6 +82,7 @@ export default function TaggingTemplate(
         timeTarget
         windowId={windowId}
         overlay={overlay}
+        closeFormCompanionWindow={closeFormCompanionWindow}
       />
       <AnnotationFormFooter
         closeFormCompanionWindow={closeFormCompanionWindow}

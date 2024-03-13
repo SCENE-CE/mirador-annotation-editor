@@ -15,7 +15,7 @@ function TextCommentTemplate(
   {
     annotation,
     currentTime,
-    manifestType,
+    mediaType,
     setCurrentTime,
     setSeekTo,
     windowId,
@@ -95,7 +95,7 @@ function TextCommentTemplate(
 
         <TargetFormSection
           currentTime={currentTime}
-          manifestType={manifestType}
+          mediaType={mediaType}
           onChangeTarget={updateTargetState}
           setCurrentTime={setCurrentTime}
           setSeekTo={setSeekTo}
@@ -104,6 +104,7 @@ function TextCommentTemplate(
           timeTarget
           windowId={windowId}
           overlay={overlay}
+          closeFormCompanionWindow={closeFormCompanionWindow}
         />
       </Grid>
       <Grid item>
@@ -124,7 +125,7 @@ TextCommentTemplate.propTypes = {
   canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.number.isRequired,
-  manifestType: PropTypes.string.isRequired,
+  mediaType: PropTypes.string.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,

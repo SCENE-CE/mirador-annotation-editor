@@ -13,7 +13,7 @@ import { TargetSpatialInput } from './TargetSpatialInput';
  * Section of Time and Space Target
  * @param templateType
  * @param currentTime
- * @param manifestType
+ * @param mediaType
  * @param setCurrentTime
  * @param setSeekTo
  * @param spatialTarget
@@ -31,21 +31,21 @@ export default function TargetFormSection(
     spatialTarget,
     timeTarget,
     windowId,
-    manifestType,
+    mediaType,
     overlay,
+    closeFormCompanionWindow,
   },
 ) {
-  console.log('targetFS', target);
   if (!target) {
     target = {};
-    if (manifestType === manifestTypes.VIDEO) {
+    if (mediaType === manifestTypes.VIDEO) {
       const mediaVideo = VideosReferences.get(windowId);
       target.tstart = currentTime || 0;
       target.tend = mediaVideo.props.canvas.__jsonld.duration ? mediaVideo.props.canvas.__jsonld.duration : 0;
     }
 
     if (spatialTarget) {
-      switch (manifestType) {
+      switch (mediaType) {
         case manifestTypes.IMAGE:
           // TODO set default xywh
           target.xywh = '0,0,500,1000';
@@ -87,12 +87,18 @@ export default function TargetFormSection(
     });
   };
 
-  return (
+if(mediaType !== manifestTypes.IMAGE){
+    timeTarget=false;
+}
+
+    return (
     <Grid  item container direction='column' spacing={1}>
       <Grid item>
-      <Typography variant="formSectionTitle">
-        Target
-      </Typography>
+          {spatialTarget ?  (
+              <Typography variant="formSectionTitle">
+                  Target
+              </Typography>
+          ) : ( <></>)}
       </Grid>
       <Grid item container direction="column">
       {
@@ -103,15 +109,16 @@ export default function TargetFormSection(
               svg={target.svg}
               onChange={onChangeSpatialTargetInput}
               windowId={windowId}
-              manifestType={manifestType}
+              mediaType={mediaType}
               targetDrawingState={target.drawingState}
               overlay={overlay}
+              closeFormCompanionWindow={closeFormCompanionWindow}
             />
           </Grid>
             )
         }
       {
-        (timeTarget && manifestType !== manifestTypes.IMAGE) && (
+        (timeTarget && mediaType !== manifestTypes.IMAGE) && (
         <TargetTimeInput
           tstart={target.tstart}
           tend={target.tend}
@@ -131,7 +138,7 @@ export default function TargetFormSection(
 TargetFormSection.propTypes = {
   commentingType: PropTypes.string.isRequired,
   currentTime: PropTypes.number.isRequired,
-  manifestType: PropTypes.string.isRequired,
+  mediaType: PropTypes.string.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   spatialTarget: PropTypes.bool.isRequired,

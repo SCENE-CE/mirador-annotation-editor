@@ -1,4 +1,5 @@
 export const manifestsCatalog = [
+  { manifestId: 'https://files.tetras-libre.fr/dev/Heterogeneous-media-on-several-canvases.json' },
   { manifestId: 'https://files.tetras-libre.fr/dev/Clock/manifestWithAnnotationTemplates_MAE.json' },
   { manifestId: 'https://files.tetras-libre.fr/dev/Clock/manifest.json' },
   { manifestId: 'https://files.tetras-libre.fr/dev/Hakanai/manifest/manifest.json' },

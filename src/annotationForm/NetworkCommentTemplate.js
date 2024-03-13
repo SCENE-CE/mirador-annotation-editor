@@ -13,7 +13,7 @@ function NetworkCommentTemplate(
   {
     annotation,
     currentTime,
-    manifestType,
+    mediaType,
     setCurrentTime,
     setSeekTo,
     windowId,
@@ -94,7 +94,6 @@ function NetworkCommentTemplate(
         />
       </Grid>
       <Grid item>
-
         <TextFormSection
           annoHtml={annotationState.body.value}
           updateAnnotationBody={updateAnnotationTextBody}
@@ -102,7 +101,7 @@ function NetworkCommentTemplate(
       </Grid>
       <TargetFormSection
         currentTime={currentTime}
-        manifestType={manifestType}
+        mediaType={mediaType}
         onChangeTarget={updateTargetState}
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
@@ -112,7 +111,6 @@ function NetworkCommentTemplate(
         windowId={windowId}
       />
       <Grid item>
-
         <AnnotationFormFooter
           closeFormCompanionWindow={closeFormCompanionWindow}
           saveAnnotation={saveFunction}
@@ -126,7 +124,7 @@ NetworkCommentTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   annotation: PropTypes.object.isRequired,
   currentTime: PropTypes.number.isRequired,
-  manifestType: PropTypes.string.isRequired,
+  mediaType: PropTypes.string.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,

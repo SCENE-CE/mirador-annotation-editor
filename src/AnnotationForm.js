@@ -1,13 +1,11 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
-import PropTypes from 'prop-types';
-import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
+import PropTypes, {string} from 'prop-types';
 import { Grid } from '@mui/material';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
 import {
   getTemplateType,
-  manifestTypes,
-  template, templateTypes,
+  template, usePrevious,
 } from './AnnotationFormUtils';
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormBody from './AnnotationFormBody';
@@ -29,9 +27,11 @@ export default function AnnotationForm(
     canvases,
     receiveAnnotation,
     config,
+    osdref,
   },
 ) {
   const [templateType, setTemplateType] = useState(null);
+  const [mediaType, setMediaType ] = useState(canvases[0].__jsonld.items[0].items[0].body.type)
 
   // TODO must be improved when parsing annotation
   if (!templateType) {
@@ -45,22 +45,11 @@ export default function AnnotationForm(
       }
     }
   }
-  let manifestType;
-  if (mediaVideo) {
-    manifestType = manifestTypes.VIDEO;
-  } else {
-    manifestType = manifestTypes.IMAGE;
-  }
-  // TODO add check to other type of manifest
 
-  // eslint-disable-next-line no-underscore-dangle
-  // TODO: L'erreur de "Ref" sur l'ouverture d'une image vient d'ici et plus particulièrement
-  //  du useEffect qui prend en dépedance [overlay.containerWidth, overlay.canvasWidth]
-  const osdref = OSDReferences.get(windowId);
   let overlay = null;
   if (mediaVideo) {
     overlay = mediaVideo.canvasOverlay;
-  } else if (osdref) {
+  } else if (osdref.current) {
     overlay = {
       canvasHeight: osdref.current.canvas.clientHeight,
       canvasWidth: osdref.current.canvas.clientWidth,
@@ -162,7 +151,7 @@ export default function AnnotationForm(
         ? (
           <AnnotationFormTemplateSelector
             setCommentingType={setTemplateType}
-            manifestType={manifestType}
+            mediaType={mediaType}
           />
         )
         : (
@@ -184,10 +173,11 @@ export default function AnnotationForm(
                 currentTime={currentTime}
                 setCurrentTime={setCurrentTime}
                 setSeekTo={setSeekTo}
-                manifestType={manifestType}
+                mediaType={mediaType}
                 closeFormCompanionWindow={closeFormCompanionWindow}
                 saveAnnotation={saveAnnotation}
                 canvases={canvases}
+                osdref={osdref}
               />
             </Grid>
           </Grid>

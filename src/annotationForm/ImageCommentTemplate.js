@@ -9,7 +9,7 @@ import ImageFormSection from './ImageFormSection';
  * @param annoState
  * @param commentingType
  * @param currentTime
- * @param manifestType
+ * @param mediaType
  * @param setAnnoState
  * @param setCurrentTime
  * @param setSeekTo
@@ -22,7 +22,7 @@ export default function ImageCommentTemplate(
     annoState,
     templateType,
     currentTime,
-    manifestType,
+    mediaType,
     setAnnoState,
     setCurrentTime,
     setSeekTo,
@@ -66,7 +66,7 @@ export default function ImageCommentTemplate(
         setSeekTo={setSeekTo}
         windowId={windowId}
         commentingType={templateType}
-        manifestType={manifestType}
+        mediaType={mediaType}
         currentTime={currentTime}
         spatialTarget={false}
       />
@@ -81,7 +81,7 @@ ImageCommentTemplate.propTypes = {
     },
   ).isRequired,
   currentTime: PropTypes.number.isRequired,
-  manifestType: PropTypes.string.isRequired,
+  mediaType: PropTypes.string.isRequired,
   setAnnoState: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,

@@ -5,7 +5,7 @@ import HubIcon from '@mui/icons-material/Hub';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import ArticleIcon from '@mui/icons-material/Article';
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { OVERLAY_TOOL } from './AnnotationCreationUtils';
 
@@ -19,82 +19,12 @@ export const template = {
 };
 
 export const manifestTypes = {
-  AUDIO: 'audio',
-  IMAGE: 'image',
-  VIDEO: 'video',
+  AUDIO: "Sound",
+  IMAGE: "Image",
+  VIDEO: "Video",
 };
 
 export const getTemplateType = (templateType) => templateTypes.find((type) => type.id === templateType);
-
-/** Check compatibility between templates and manifest type*/
-const isManifestCompatibleWithDrawing = (manifestType) =>{
-  if( manifestType === manifestTypes.VIDEO){
-    return true
-  }
-  if( manifestType === manifestTypes.IMAGE) {
-    return false
-  }
-  if( manifestType === manifestTypes.AUDIO){
-    return false
-  }
-}
-
-const isManifestCompatibleWithText = (manifestType) =>{
-  if( manifestType === manifestTypes.VIDEO){
-    return true
-  }
-  if( manifestType === manifestTypes.IMAGE) {
-    return true
-  }
-  if( manifestType === manifestTypes.AUDIO){
-    return false
-  }
-}
-const isManifestCompatibleWithImage = (manifestType) =>{
-  if( manifestType === manifestTypes.VIDEO){
-    return true
-  }
-  if( manifestType === manifestTypes.IMAGE) {
-    return true
-  }
-  if( manifestType === manifestTypes.AUDIO){
-    return false
-  }
-}
-const isManifestCompatibleWithManifest = (manifestType) =>{
-  if( manifestType === manifestTypes.VIDEO){
-    return true
-  }
-  if( manifestType === manifestTypes.IMAGE) {
-    return true
-  }
-  if( manifestType === manifestTypes.AUDIO){
-    return true
-  }
-}
-const isManifestCompatibleWithTag = (manifestType) =>{
-  if( manifestType === manifestTypes.VIDEO){
-    return true
-  }
-  if( manifestType === manifestTypes.IMAGE) {
-    return true
-  }
-  if( manifestType === manifestTypes.AUDIO){
-    return true
-  }
-}
-
-const isManifestCompatibleWithIIIFJson = (manifestType) =>{
-  if( manifestType === manifestTypes.VIDEO){
-    return true
-  }
-  if( manifestType === manifestTypes.IMAGE) {
-    return true
-  }
-  if( manifestType === manifestTypes.AUDIO){
-    return true
-  }
-}
 
 /**
  * List of the template types supported
@@ -113,7 +43,7 @@ export const templateTypes = [
         return true
       }
       if( manifestType === manifestTypes.AUDIO){
-        return false
+        return true
       }
     }
   },
@@ -181,7 +111,7 @@ export const templateTypes = [
         return true
       }
       if( manifestType === manifestTypes.AUDIO){
-        return false
+        return true
       }
     },
   },

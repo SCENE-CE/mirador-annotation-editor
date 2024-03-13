@@ -22,7 +22,7 @@ export default function AnnotationFormBody(
     annotation,
     templateType,
     currentTime,
-    manifestType,
+    mediaType,
     overlay,
     setCurrentTime,
     setSeekTo,
@@ -33,7 +33,7 @@ export default function AnnotationFormBody(
   },
 ) {
   // TODO At this end we must only have annoSTate, setAnnoState, templateType,
-  //  manifestType, windowId in XTemplateProps
+  //  mediaType, windowId in XTemplateProps
   // TODO Search where overlay is used. Only in Konva ?
   // TODO setSeekTo, setCurrentTime, overlay, currentTime,
   //  mediaVideo must be get only in TargetFormSection
@@ -52,7 +52,7 @@ export default function AnnotationFormBody(
               canvases={canvases}
               closeFormCompanionWindow={closeFormCompanionWindow}
               currentTime={currentTime}
-              manifestType={manifestType}
+              mediaType={mediaType}
               saveAnnotation={saveAnnotation}
               setCurrentTime={setCurrentTime}
               setSeekTo={setSeekTo}
@@ -71,7 +71,7 @@ export default function AnnotationFormBody(
               setSeekTo={setSeekTo}
               windowId={windowId}
               templateType={templateType}
-              manifestType={manifestType}
+              mediaType={mediaType}
               currentTime={currentTime}
             />
           )
@@ -83,7 +83,7 @@ export default function AnnotationFormBody(
               canvases={canvases}
               closeFormCompanionWindow={closeFormCompanionWindow}
               currentTime={currentTime}
-              manifestType={manifestType}
+              mediaType={mediaType}
               overlay={overlay}
               saveAnnotation={saveAnnotation}
               setCurrentTime={setCurrentTime}
@@ -99,7 +99,7 @@ export default function AnnotationFormBody(
               canvases={canvases}
               closeFormCompanionWindow={closeFormCompanionWindow}
               currentTime={currentTime}
-              manifestType={manifestType}
+              mediaType={mediaType}
               saveAnnotation={saveAnnotation}
               setCurrentTime={setCurrentTime}
               setSeekTo={setSeekTo}
@@ -123,7 +123,7 @@ export default function AnnotationFormBody(
               saveAnnotation={saveAnnotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
               currentTime={currentTime}
-              manifestType={manifestType}
+              mediaType={mediaType}
               setCurrentTime={setCurrentTime}
               setSeekTo={setSeekTo}
               windowId={windowId}
@@ -176,7 +176,7 @@ AnnotationFormBody.propTypes = {
     target: PropTypes.string,
   }).isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
-  manifestType: PropTypes.string.isRequired,
+  mediaType: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   mediaVideo: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types

@@ -17,6 +17,7 @@ import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
+import {getVisibleCanvases} from "mirador/dist/es/src/state/selectors/canvases";
 
 /**
  * Template for Konva annotations (drawing)
@@ -30,7 +31,7 @@ import AnnotationFormFooter from './AnnotationFormFooter';
  * @param setCurrentTime
  * @param setSeekTo
  * @param commentingType
- * @param manifestType
+ * @param mediaType
  * @returns {Element}
  * @constructor
  */
@@ -40,7 +41,7 @@ export default function DrawingTemplate(
     canvases,
     closeFormCompanionWindow,
     currentTime,
-    manifestType,
+    mediaType,
     overlay,
     saveAnnotation,
     setCurrentTime,
@@ -85,10 +86,10 @@ export default function DrawingTemplate(
   };
 
   let player;
-  if (manifestType === manifestTypes.VIDEO) {
+  if (mediaType === manifestTypes.VIDEO) {
     player = VideosReferences.get(windowId);
   }
-  if (manifestType === manifestTypes.IMAGE) {
+  if (mediaType === manifestTypes.IMAGE) {
     player = OSDReferences.get(windowId);
   }
   /** save Function * */
@@ -138,6 +139,7 @@ export default function DrawingTemplate(
   useEffect(() => {
 
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
+
 
   /** Change scale from container / canva */
   const updateScale = () => {
@@ -246,6 +248,7 @@ export default function DrawingTemplate(
           showFragmentSelector={false}
           tabView={viewTool}
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+          mediaType={mediaType}
         />
       </Grid>
       <Grid item>
@@ -268,7 +271,7 @@ export default function DrawingTemplate(
       </Grid>
       <TargetFormSection
         currentTime={currentTime}
-        manifestType={manifestType}
+        mediaType={mediaType}
         onChangeTarget={updateTargetState}
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
@@ -308,7 +311,7 @@ DrawingTemplate.propTypes = {
     PropTypes.string,
   ]).isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
-  manifestType: PropTypes.string.isRequired,
+  mediaType: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,
   setCurrentTime: PropTypes.func.isRequired,

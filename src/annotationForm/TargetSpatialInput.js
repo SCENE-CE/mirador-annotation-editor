@@ -12,7 +12,7 @@ import CursorIcon from '../icons/Cursor';
 import {Grid, TextField} from "@mui/material";
 
 export function TargetSpatialInput({
-  xywh, setXywh, svg, overlay, windowId, manifestType, onChange, targetDrawingState,
+  xywh, setXywh, svg, overlay, windowId, mediaType, onChange, targetDrawingState,closeFormCompanionWindow
 }) {
   const [toolState, setToolState] = useState(targetSVGToolState);
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
@@ -61,10 +61,10 @@ export function TargetSpatialInput({
   };
 
   let player;
-  if (manifestType === manifestTypes.VIDEO) {
+  if (mediaType === manifestTypes.VIDEO) {
     player = VideosReferences.get(windowId);
   }
-  if (manifestType === manifestTypes.IMAGE) {
+  if (mediaType === manifestTypes.IMAGE) {
     player = OSDReferences.get(windowId);
   }
 
@@ -124,6 +124,8 @@ export function TargetSpatialInput({
             tabView="edit" // TODO change
             showStyleTools
             showFragmentSelector={showFragmentSelector}
+            mediaType={mediaType}
+            closeFormCompanionWindow={closeFormCompanionWindow}
           />
           <AnnotationFormOverlay
             toolState={toolState}

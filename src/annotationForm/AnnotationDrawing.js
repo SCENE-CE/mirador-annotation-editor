@@ -10,6 +10,7 @@ import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
 import FragmentSelector from './AnnotationFormOverlay/KonvaDrawing/FragmentSelector';
+import {manifestTypes} from "../AnnotationFormUtils";
 
 /** All the stuff to draw on the canvas */
 export default function AnnotationDrawing({
@@ -25,6 +26,8 @@ export default function AnnotationDrawing({
   updateCurrentShapeInShapes,
   updateScale,
   width,
+  mediaType,
+  closeFormCompanionWindow,
   ...props
 }) {
   const [isDrawing, setIsDrawing] = useState(false);
@@ -558,17 +561,50 @@ export default function AnnotationDrawing({
       />
     </Stage>
   );
-  const osdref = OSDReferences.get(props.windowId);
-  const videoref = VideosReferences.get(props.windowId);
+let osdref;
+let videoref;
+
+  if(mediaType === manifestTypes.IMAGE){
+  osdref = OSDReferences.get(props.windowId);
+  }
+
+  if(mediaType === manifestTypes.VIDEO){
+  videoref = VideosReferences.get(props.windowId);
+  }
+  
   if (!osdref && !videoref) {
     throw new Error("Unknown or missing data player, didn't found OpenSeadragon (image viewer) nor the video player");
   }
   if (osdref && videoref) {
     throw new Error('Unhandled case: both OpenSeadragon (image viewer) and video player on the same canvas');
   }
-  const container = osdref ? osdref.current.container : videoref.ref.current.parentElement;
 
+  let container;
+
+  if(mediaType === manifestTypes.IMAGE){
+  if(osdref.current === undefined){
+    console.log("window close")
+    closeFormCompanionWindow();
+  }else{
+  container = osdref.current ? osdref.current.container : undefined;
+  }
+  }
+
+  if(mediaType === manifestTypes.VIDEO){
+    console.log(videoref)
+    console.log('videoref',videoref.ref.current)
+    if(videoref.ref.current === null){
+      console.log("window close")
+      closeFormCompanionWindow();
+    }else{
+    container = videoref.ref ? videoref.ref.current.parentElement : undefined;
+    }
+  }
+  if(container){
   return ReactDOM.createPortal(drawKonvas(), container);
+  }else{
+    return <></>
+  }
 }
 
 const shapeObjectPropTypes = PropTypes.shape({
