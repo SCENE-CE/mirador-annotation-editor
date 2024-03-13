@@ -20,6 +20,7 @@ function NetworkCommentTemplate(
     saveAnnotation,
     closeFormCompanionWindow,
     canvases,
+    getMediaAudio
   },
 ) {
   let maeAnnotation = annotation;
@@ -109,6 +110,8 @@ function NetworkCommentTemplate(
         target={annotationState.maeData.target}
         timeTarget
         windowId={windowId}
+        closeFormCompanionWindow={closeFormCompanionWindow}
+        getMediaAudio={getMediaAudio}
       />
       <Grid item>
         <AnnotationFormFooter

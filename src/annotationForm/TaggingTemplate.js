@@ -18,6 +18,7 @@ export default function TaggingTemplate(
     canvases,
     closeFormCompanionWindow,
     saveAnnotation,
+      getMediaAudio
   },
 ) {
   let maeAnnotation = annotation;
@@ -83,6 +84,7 @@ export default function TaggingTemplate(
         windowId={windowId}
         overlay={overlay}
         closeFormCompanionWindow={closeFormCompanionWindow}
+        getMediaAudio={getMediaAudio}
       />
       <AnnotationFormFooter
         closeFormCompanionWindow={closeFormCompanionWindow}
