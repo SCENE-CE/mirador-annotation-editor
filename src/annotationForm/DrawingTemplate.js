@@ -249,6 +249,7 @@ export default function DrawingTemplate(
           tabView={viewTool}
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
           mediaType={mediaType}
+          closeFormCompanionWindow={closeFormCompanionWindow}
         />
       </Grid>
       <Grid item>
