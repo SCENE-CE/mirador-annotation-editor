@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { maeTargetToIiifTarget, template } from '../AnnotationFormUtils';
 import TargetFormSection from './TargetFormSection';
+import { getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
 export default function TaggingTemplate(
   {
@@ -27,15 +28,14 @@ export default function TaggingTemplate(
     // If the annotation does not have maeData, the annotation was not created with mae
     maeAnnotation = {
       body: {
-        id: uuid(),
         type: 'TextualBody',
         value: '',
       },
       maeData: {
         target: null,
-        templateType: template.TEXT_TYPE,
+        templateType: template.TAGGING_TYPE,
       },
-      motivation: 'commenting',
+      motivation: 'tagging',
       target: null,
     };
   }
@@ -51,16 +51,34 @@ export default function TaggingTemplate(
     });
   };
 
+  const updateTaggingValue = (newTextValue) => {
+    const newBody = annotationState.body;
+    newBody.value = newTextValue;
+    setAnnotationState({
+      ...annotationState,
+      body: newBody,
+    });
+  }
+
   /** Save function * */
   const saveFunction = () => {
-    canvases.forEach(async (canvas) => {
+    // TODO This code is not DRY, it's the same as in TextCommentTemplate.js
+    const promises = canvases.map(async (canvas) => {
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
+      console.log(annotation.maeData);
+      annotationState.maeData.target.svg = await getSvg(windowId);
+      // annotationState.maeData.target.dataUrl = await getKonvaAsDataURL(windowId);
       annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
+      annotationState.maeData.target.drawingState = JSON.stringify(annotationState.maeData.target.drawingState);
+      annotationState.maeData.target.svg = JSON.stringify(annotationState.maeData.target);
+      console.log('annotationState', annotationState.target);
       // delete annotationState.maeData.target;
-      saveAnnotation(annotationState, canvas.id);
+      return saveAnnotation(annotationState, canvas.id);
     });
-    closeFormCompanionWindow();
+    Promise.all(promises).then(() => {
+      closeFormCompanionWindow();
+    });
   };
 
   return (
@@ -71,6 +89,7 @@ export default function TaggingTemplate(
         label="Your tag here :"
         defaultValue=""
         variant="outlined"
+        onChange={(event) => updateTaggingValue(event.target.value)}
       />
       <TargetFormSection
         currentTime={currentTime}
