@@ -19,7 +19,7 @@ export default function AnnotationFormTemplateSelector({ setCommentingType, medi
       {mediaType === mediaTypes.AUDIO ? (
           <Grid container spacing={1} direction="column">
             <Grid item>
-              <Typography> Mirador Annotation Editor Plugin doesn't support Audio annotation</Typography>
+              <Typography> Mirador Annotation Editor Plugin does not support annotation on audio media.</Typography>
             </Grid>
 
           </Grid>
