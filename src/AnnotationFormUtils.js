@@ -117,7 +117,7 @@ export const templateTypes = [
   },
   {
     description: 'Edit directly the IIIF json code',
-    icon: <DataObjectIcon fontSize="small"/>,
+    icon: <DataObjectIcon fontSize="small" />,
     id: template.IIIF_TYPE,
     isCompatibleWithTemplate: (mediaTypes) => {
       if (mediaTypes === mediaTypes.VIDEO) {
@@ -304,7 +304,8 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
         x, y, width, height,
       } = maeTarget.drawingState.shapes[0];
       console.info('Implement target as string with one shape (reactangle or image)');
-      return `xywh=${x},${y},${width},${height}&t=${maeTarget.tstart},${maeTarget.tend}`;
+      // Image have not tstart and tend
+      return maeTarget.tstart ? `xywh=${x},${y},${width},${height}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${x},${y},${width},${height}`;
     }
     return {
       selector: [
@@ -314,11 +315,11 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
         },
         {
           type: 'FragmentSelector',
-          value: `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}`,
+          value: maeTarget.tstart ? `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${maeTarget.fullCanvaXYWH}`,
         },
       ],
       source: canvasId,
     };
   }
-  return `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}`;
+  return maeTarget.tstart ? `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${maeTarget.fullCanvaXYWH}`;
 };
