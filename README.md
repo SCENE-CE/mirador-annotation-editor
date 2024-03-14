@@ -63,7 +63,7 @@ You can override Mirador and existing annotation plugin with your own versions b
 Our custom Mirador 3 version. https://github.com/SCENE-CE/mirador-video
 
 ```js
-"mirador": "npm:mirador-video@^1.0.0",
+"mirador": "npm:mirador-video@^1.0.2",
 "mirador-annotations": "npm:mirador-annotation-editor@^1.0.3",
 ```
 
@@ -100,7 +100,7 @@ Persisting annotations requires implementing an a IIIF annotation server. Severa
 ## Installing `mirador-annotation-editor`
 
 `mirador-annotation-editor` requires our custom version of Mirador 3 : https://github.com/SCENE-CE/mirador-video. 
-Our version is up-to-date (at the 2024/15/02) with the master branch of Mirador and support React 17 and MUI5. We will soon make a pull request to the original Mirador 3 repository.
+Our version is up-to-date (at the 2024/14/03) with the master branch of Mirador and support React 18 and MUI5. We will soon make a pull request to the original Mirador 3 repository.
 
 ## Contribute
 
