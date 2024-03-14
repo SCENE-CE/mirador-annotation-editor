@@ -19,7 +19,6 @@ import {
 } from '../../AnnotationCreationUtils';
 import ShapesList from './ShapesList';
 
-
 // TODO WIP code duplicated
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
@@ -65,26 +64,26 @@ function AnnotationFormOverlayTool({
           <>
             {
               (currentShape && drawingMode) && (
-            <div>
-              <Typography variant="subFormSectionTitle">
-                Selected object
-              </Typography>
-              <AnnotationFormOverlayToolOptions
-                toolState={{
-                  ...toolState,
-                  activeTool: currentShape.type,
-                  closedMode: currentShape.closedMode,
-                  fillColor: currentShape.fill,
-                  image: { id: currentShape.url },
-                  strokeColor: currentShape.stroke,
-                  strokeWidth: currentShape.strokeWidth,
-                  text: currentShape.text,
-                }}
-                updateToolState={customUpdateToolState}
-                drawingMode={drawingMode}
-              />
-            </div>
-            )
+              <div>
+                <Typography variant="subFormSectionTitle">
+                  Selected object
+                </Typography>
+                <AnnotationFormOverlayToolOptions
+                  toolState={{
+                    ...toolState,
+                    activeTool: currentShape.type,
+                    closedMode: currentShape.closedMode,
+                    fillColor: currentShape.fill,
+                    image: { id: currentShape.url },
+                    strokeColor: currentShape.stroke,
+                    strokeWidth: currentShape.strokeWidth,
+                    text: currentShape.text,
+                  }}
+                  updateToolState={customUpdateToolState}
+                  drawingMode={drawingMode}
+                />
+              </div>
+              )
             }
             {
               (drawingMode && shapes.length > 0) && (
@@ -139,23 +138,23 @@ function AnnotationFormOverlayTool({
       }
       {
         (!drawingMode && isShapesTool(toolState.activeTool)) && (
-            <>
-              <Typography variant="subFormSectionTitle">
-                Shapes
-              </Typography>
-      <StyledToggleButtonGroup
-      value={toolState.activeTool} // State or props ?
-      exclusive
-      onChange={changeTool}
-      aria-label="tool selection"
-      size="small"
-      >
-    <ToggleButton value={SHAPES_TOOL.RECTANGLE} aria-label="add a rectangle">
-      <RectangleIcon />
-    </ToggleButton>
-    </StyledToggleButtonGroup>
-            </>
-          )
+        <>
+          <Typography variant="subFormSectionTitle">
+            Shapes
+          </Typography>
+          <StyledToggleButtonGroup
+            value={toolState.activeTool} // State or props ?
+            exclusive
+            onChange={changeTool}
+            aria-label="tool selection"
+            size="small"
+          >
+            <ToggleButton value={SHAPES_TOOL.RECTANGLE} aria-label="add a rectangle">
+              <RectangleIcon />
+            </ToggleButton>
+          </StyledToggleButtonGroup>
+        </>
+        )
       }
       {
         toolState.activeTool === OVERLAY_TOOL.DELETE && (
