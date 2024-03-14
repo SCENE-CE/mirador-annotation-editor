@@ -38,6 +38,8 @@ export default function TaggingTemplate(
       motivation: 'tagging',
       target: null,
     };
+  } else if (maeAnnotation.maeData.target.drawingState && typeof maeAnnotation.maeData.target.drawingState === 'string') {
+    maeAnnotation.maeData.target.drawingState = JSON.parse(maeAnnotation.maeData.target.drawingState);
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
@@ -87,7 +89,7 @@ export default function TaggingTemplate(
       <TextField
         id="outlined-basic"
         label="Your tag here :"
-        defaultValue=""
+        value={annotationState.body.value}
         variant="outlined"
         onChange={(event) => updateTaggingValue(event.target.value)}
       />
