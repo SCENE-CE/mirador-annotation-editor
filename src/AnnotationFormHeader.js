@@ -19,10 +19,14 @@ export default function AnnotationFormHeader({ templateType, setCommentingType, 
 
   return (
     <Grid
-      container
-      alignItems="center"
+        container
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{marginRight:"10px"}}
+        spacing={2}
     >
-      <Grid item xs={2}>
+      <Grid item>
         {annotation.id == null
         && (
           <MiradorMenuButton>
@@ -30,18 +34,8 @@ export default function AnnotationFormHeader({ templateType, setCommentingType, 
           </MiradorMenuButton>
         )}
       </Grid>
-      <Grid
-        justifyContent="space-between"
-        item
-        xs={10}
-        container
-      >
-        <Grid item xs={10}>
-          <Typography>{templateType.label}</Typography>
-        </Grid>
-        <Grid item xs={2}>
-          {templateType.icon}
-        </Grid>
+      <Grid item>
+        {templateType.icon}
       </Grid>
     </Grid>
   );
