@@ -485,7 +485,6 @@ export default function AnnotationDrawing({
       isDrawing: false,
     });
   };
-   console.log('ANNOTATION DRAWING',drawingMode);
   /** */
   const drawKonvas = () => (
     <Stage

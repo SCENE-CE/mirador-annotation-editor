@@ -37,7 +37,6 @@ function ParentComponent({
     onShapeClick(shape);
     setSelectedShape(shape);
   };
-  console.log(drawingMode)
 
   return (
     <Layer

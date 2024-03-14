@@ -107,7 +107,7 @@ function NetworkCommentTemplate(
         onChangeTarget={updateTargetState}
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
-        spatialTarget={false}
+        spatialTarget={true}
         target={annotationState.maeData.target}
         timeTarget
         windowId={windowId}

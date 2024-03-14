@@ -64,7 +64,7 @@ function AnnotationFormOverlayTool({
           toolState.activeTool === OVERLAY_TOOL.EDIT && (
           <>
             {
-            currentShape && (
+              (currentShape && drawingMode) && (
             <div>
               <Typography variant="subFormSectionTitle">
                 Selected object
@@ -138,7 +138,7 @@ function AnnotationFormOverlayTool({
         )
       }
       {
-        !drawingMode && (
+        (!drawingMode && isShapesTool(toolState.activeTool)) && (
             <>
               <Typography variant="subFormSectionTitle">
                 Shapes
