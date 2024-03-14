@@ -1,9 +1,9 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import { Card, CardActionArea, CardContent } from '@mui/material';
+import {Card, CardActionArea, CardContent, Grid} from '@mui/material';
 import PropTypes from 'prop-types';
-import { templateTypes } from './AnnotationFormUtils';
+import {mediaTypes, templateTypes} from './AnnotationFormUtils';
 /**
  * A component that renders a selection of annotation
  * form templates for different types of comments.
@@ -16,24 +16,34 @@ export default function AnnotationFormTemplateSelector({ setCommentingType, medi
 
   return (
     <CardContainer>
-      { templateTypes.map((t) => (
-        ( t.isCompatibleWithTemplate(mediaType) && (
-        <Card>
-          <CardActionArea id={t.id} onClick={() => setCommentType(t)}>
-            <CardContent>
-              <CardTypography variant="h6" component="div">
-                {t.label}
-                {t.icon}
-                {t.isCompatibleWithTemplate(mediaType)}
-              </CardTypography>
-              <DescriptionCardTypography component="div" variant="body2">
-                {t.description}
-              </DescriptionCardTypography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-        ))
-      ))}
+      {mediaType === mediaTypes.AUDIO ? (
+          <Grid container spacing={1} direction="column">
+            <Grid item>
+              <Typography> Miraodor Annotation Editor Plugin doesn't support Audio annotation</Typography>
+            </Grid>
+
+          </Grid>
+      ) : (
+          templateTypes.map((t) => (
+                ( t.isCompatibleWithTemplate(mediaType) && (
+                    <Card>
+                      <CardActionArea id={t.id} onClick={() => setCommentType(t)}>
+                        <CardContent>
+                          <CardTypography variant="h6" component="div">
+                            {t.label}
+                            {t.icon}
+                            {t.isCompatibleWithTemplate(mediaType)}
+                          </CardTypography>
+                          <DescriptionCardTypography component="div" variant="body2">
+                            {t.description}
+                          </DescriptionCardTypography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                ))
+            ))
+      )}
+
     </CardContainer>
   );
 }
