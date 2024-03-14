@@ -19,18 +19,6 @@ import {
 } from '../../AnnotationCreationUtils';
 import ShapesList from './ShapesList';
 
-const StyledLi = styled('li')(({ theme }) => ({
-  display: 'flex',
-  wordBreak: 'break-word',
-}));
-
-const StyledUl = styled('ul')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '5px',
-  listStyle: 'none',
-  paddingLeft: '0',
-}));
 
 // TODO WIP code duplicated
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
@@ -52,7 +40,7 @@ function AnnotationFormOverlayTool({
   updateCurrentShapeInShapes,
   shapes,
   deleteShape,
-  showStyleTools,
+  drawingMode,
 }) {
   /** Change the active overlay tool */
   const changeTool = (e, tool) => {
@@ -93,13 +81,13 @@ function AnnotationFormOverlayTool({
                   text: currentShape.text,
                 }}
                 updateToolState={customUpdateToolState}
-                showStyleTools={showStyleTools}
+                drawingMode={drawingMode}
               />
             </div>
             )
             }
             {
-              (showStyleTools && shapes.length > 0) && (
+              (drawingMode && shapes.length > 0) && (
                 <>
                   <Typography variant="subFormSectionTitle">
                     Object lists
@@ -118,7 +106,7 @@ function AnnotationFormOverlayTool({
           )
       }
       {
-        isShapesTool(toolState.activeTool) && (
+        (drawingMode && isShapesTool(toolState.activeTool)) && (
         <>
           <Typography variant="subFormSectionTitle">
             Shapes
@@ -150,6 +138,26 @@ function AnnotationFormOverlayTool({
         )
       }
       {
+        !drawingMode && (
+            <>
+              <Typography variant="subFormSectionTitle">
+                Shapes
+              </Typography>
+      <StyledToggleButtonGroup
+      value={toolState.activeTool} // State or props ?
+      exclusive
+      onChange={changeTool}
+      aria-label="tool selection"
+      size="small"
+      >
+    <ToggleButton value={SHAPES_TOOL.RECTANGLE} aria-label="add a rectangle">
+      <RectangleIcon />
+    </ToggleButton>
+    </StyledToggleButtonGroup>
+            </>
+          )
+      }
+      {
         toolState.activeTool === OVERLAY_TOOL.DELETE && (
         <>
           <Typography variant="overline">
@@ -170,7 +178,7 @@ function AnnotationFormOverlayTool({
       <AnnotationFormOverlayToolOptions
         toolState={toolState}
         setToolState={setToolState}
-        showStyleTools={showStyleTools}
+        drawingMode={drawingMode}
       />
     </>
   );

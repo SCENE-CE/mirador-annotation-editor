@@ -106,7 +106,6 @@ function TextCommentTemplate(
         />
       </Grid>
       <Grid item>
-
         <TargetFormSection
           currentTime={currentTime}
           mediaType={mediaType}

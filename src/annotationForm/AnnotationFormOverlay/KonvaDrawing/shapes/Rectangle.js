@@ -6,7 +6,7 @@ import { Rect, Transformer } from 'react-konva';
  * @returns {JSX.Element} The TextNode component.
  */
 function Rectangle({
-  shape, onShapeClick, activeTool, isSelected,
+  shape, onShapeClick, activeTool,drawingMode, isSelected,
   onTransform, handleDragEnd, handleDragStart
 }) {
   const shapeRef = useRef();
@@ -29,28 +29,57 @@ function Rectangle({
     onShapeClick(shape);
   };
 
+  console.log(drawingMode)
+
   return (
     <>
-      <Rect
-        ref={shapeRef}
-        x={shape.x || 0}
-        y={shape.y || 0}
-        scaleX={shape.scaleX}
-        scaleY={shape.scaleY}
-        rotation={shape.rotation}
-        width={shape.width || 1}
-        height={shape.height || 1}
-        fill={shape.fill}
-        stroke={shape.stroke}
-        strokeWidth={shape.strokeWidth || 1}
-        id={shape.id}
-        draggable={activeTool === 'cursor' || activeTool === 'edit'}
-        onClick={handleClick}
-        onMousedown={handleClick}
-        onTransform={onTransform}
-        onDrag={handleDragEnd}
-        onDragStart={handleDragStart}
-      />
+      {drawingMode ? (
+          <Rect
+              ref={shapeRef}
+              x={shape.x || 0}
+              y={shape.y || 0}
+              scaleX={shape.scaleX}
+              scaleY={shape.scaleY}
+              rotation={shape.rotation}
+              width={shape.width || 1}
+              height={shape.height || 1}
+              fill={shape.fill}
+              stroke={shape.stroke}
+              strokeWidth={shape.strokeWidth || 1}
+              id={shape.id}
+              draggable={activeTool === 'cursor' || activeTool === 'edit'}
+              onClick={handleClick}
+              onMousedown={handleClick}
+              onTransform={onTransform}
+              onDrag={handleDragEnd}
+              onDragStart={handleDragStart}
+          />
+
+      ):(
+          <Rect
+              ref={shapeRef}
+              x={shape.x || 0}
+              y={shape.y || 0}
+              scaleX={shape.scaleX}
+              scaleY={shape.scaleY}
+              rotation={shape.rotation}
+              width={shape.width || 1}
+              height={shape.height || 1}
+              fill={'transparent'}
+              stroke={shape.stroke}
+              strokeWidth={10}
+              id={shape.id}
+              draggable={activeTool === 'cursor' || activeTool === 'edit'}
+              onClick={handleClick}
+              onMousedown={handleClick}
+              onTransform={onTransform}
+              onDrag={handleDragEnd}
+              onDragStart={handleDragStart}
+              dash={[500/30]}
+          />
+
+      )
+      }
 
       <Transformer
         ref={trRef}
