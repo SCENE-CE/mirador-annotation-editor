@@ -89,6 +89,7 @@ function TargetTimeInput({
   const handleChangeTime = (event, newValueTime) => {
     console.debug('hct event', event);
     console.debug('hct handleChangeTime', newValueTime);
+    console.log("toto")
     const timeStart = newValueTime[0];
     const timeEnd = newValueTime[1];
     if (timeStart !== tstart) {
@@ -101,12 +102,13 @@ function TargetTimeInput({
 
   /** Change from Tstart HMS Input */
   const updateTstart = (valueTstart) => {
+      console.log('tend',tend)
+    console.log("tstart",tstart)
     if (valueTstart > tend) {
       return;
     }
     if (audioElement) {
       audioElement.currentTime = valueTstart;
-      console.log('toto');
     }
     onChange({
       tstart: valueTstart,
@@ -119,7 +121,6 @@ function TargetTimeInput({
   const updateTend = (valueTend) => {
     if (audioElement) {
       audioElement.currentTime = valueTend;
-      console.log('toto');
     }
     onChange({
       tend: valueTend,
