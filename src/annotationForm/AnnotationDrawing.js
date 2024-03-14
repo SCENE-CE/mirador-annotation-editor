@@ -14,6 +14,7 @@ import {mediaTypes} from "../AnnotationFormUtils";
 
 /** All the stuff to draw on the canvas */
 export default function AnnotationDrawing({
+  drawingMode,
   drawingState,
   height,
   imageEvent,
@@ -484,7 +485,6 @@ export default function AnnotationDrawing({
       isDrawing: false,
     });
   };
-
   /** */
   const drawKonvas = () => (
     <Stage
@@ -518,6 +518,7 @@ export default function AnnotationDrawing({
         handleDragStart={handleDragStart}
         isMouseOverSave={props.isMouseOverSave}
         trview={props.tabView !== 'target'}
+        drawingMode={drawingMode}
       />
     </Stage>
   );

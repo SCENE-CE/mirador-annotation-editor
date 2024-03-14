@@ -10,7 +10,10 @@ import { mediaTypes, templateTypes } from './AnnotationFormUtils';
  * A component that renders a selection of annotation
  * form templates for different types of comments.
  */
-export default function AnnotationFormTemplateSelector({ setCommentingType, mediaType }) {
+export default function AnnotationFormTemplateSelector({
+  mediaType,
+  setCommentingType,
+}) {
   /**
      * Sets the comment type for the application.
      */

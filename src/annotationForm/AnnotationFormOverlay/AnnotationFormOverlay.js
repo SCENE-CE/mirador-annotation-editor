@@ -44,7 +44,7 @@ function AnnotationFormOverlay(
     updateCurrentShapeInShapes,
     setViewTool,
     shapes,
-    showStyleTools,
+    drawingMode,
   },
 ) {
   useEffect(() => {
@@ -114,7 +114,7 @@ function AnnotationFormOverlay(
               currentShape={currentShape}
               shapes={shapes}
               deleteShape={deleteShape}
-              showStyleTools={showStyleTools}
+              drawingMode={drawingMode}
               updateCurrentShapeInShapes={updateCurrentShapeInShapes}
             />
           </OverlayIconAndTitleContainer>

@@ -250,6 +250,7 @@ export default function DrawingTemplate(
           mediaType={mediaType}
           closeFormCompanionWindow={closeFormCompanionWindow}
           displayMode={KONVA_MODE.DRAW}
+          drawingMode={true}
         />
       </Grid>
       <Grid item>
@@ -262,6 +263,7 @@ export default function DrawingTemplate(
           setViewTool={setViewTool}
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
           showStyleTools
+          drawingMode={true}
         />
       </Grid>
       <Grid item>

@@ -13,8 +13,9 @@ import ImageShape from './Image';
 function ParentComponent({
   isMouseOverSave,
   scale, onTransform, handleDragEnd,
-  shapes, onShapeClick, selectedShapeId, activeTool, handleDragStart, trview,
+  shapes, onShapeClick, selectedShapeId, activeTool, handleDragStart, trview,drawingMode
 }) {
+  console.log(drawingMode)
   // TODO Simplify these state
   const [selectedShape, setSelectedShape] = useState(null);
 
@@ -52,6 +53,7 @@ function ParentComponent({
               <Rectangle
                 {...{
                   activeTool,
+                  drawingMode,
                   handleDragEnd,
                   handleDragStart,
                   isSelected,

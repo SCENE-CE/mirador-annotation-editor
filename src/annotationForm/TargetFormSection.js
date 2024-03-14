@@ -42,7 +42,7 @@ export default function TargetFormSection(
     if (mediaType === mediaTypes.VIDEO) {
       const mediaVideo = VideosReferences.get(windowId);
       target.tstart = currentTime || 0;
-      target.tend = mediaVideo.props.canvas.__jsonld.duration ? mediaVideo.props.canvas.__jsonld.duration : 0;
+      target.tend = mediaVideo.props.canvas.__jsonld.duration ? Math.floor(mediaVideo.props.canvas.__jsonld.duration) : 0;
     }
 
     // TODO Check if its possible to use overlay ?

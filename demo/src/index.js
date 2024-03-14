@@ -31,14 +31,11 @@ const config = {
       typography: {
         formSectionTitle: {
           fontSize: '1.215rem',
-          letterSpacing: '0.007em',
-          lineHeight: '1.45em',
         },
         subFormSectionTitle: {
           fontSize: '0.937rem',
           fontWeight: 300,
-          letterSpacing: '0.015em',
-          lineHeight: '1.6em',
+
         },
       },
     },

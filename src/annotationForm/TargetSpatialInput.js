@@ -122,6 +122,7 @@ export function TargetSpatialInput({
               showStyleTools
               mediaType={mediaType}
               closeFormCompanionWindow={closeFormCompanionWindow}
+              drawingMode={false}
             />
             <AnnotationFormOverlay
               toolState={toolState}
@@ -130,7 +131,7 @@ export function TargetSpatialInput({
               shapes={drawingState.shapes}
               currentShape={drawingState.currentShape}
               setViewTool={setViewTool}
-              showStyleTools={false}
+              drawingMode={false}
               displayMode={TARGET_MODE}
               updateCurrentShapeInShapes={updateCurrentShapeInShapes}
             />
