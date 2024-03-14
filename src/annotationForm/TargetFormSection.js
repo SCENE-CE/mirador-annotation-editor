@@ -28,6 +28,8 @@ export default function TargetFormSection(
     onChangeTarget,
     setCurrentTime,
     setSeekTo,
+    spatialTarget,
+    timeTarget,
     windowId,
     mediaType,
     overlay,
@@ -35,6 +37,7 @@ export default function TargetFormSection(
     getMediaAudio,
   },
 ) {
+  console.log('targetFS', target);
   if (!target) {
     target = {};
     if (mediaType === manifestTypes.VIDEO) {
@@ -43,36 +46,34 @@ export default function TargetFormSection(
       target.tend = mediaVideo.props.canvas.__jsonld.duration ? mediaVideo.props.canvas.__jsonld.duration : 0;
     }
 
-    if (spatialTarget) {
-      switch (mediaType) {
-        case manifestTypes.IMAGE:
-          // TODO set default xywh
-          target.xywh = '0,0,500,1000';
-          break;
-        case manifestTypes.VIDEO:
-          const mediaVideo = VideosReferences.get(windowId);
-          const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
-          const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
-          target.xywh = `0,0,${targetWidth},${targetHeigth}`;
-          break;
-        default:
-          break;
-      }
+
+
+    // TODO Check if its possible to use overlay ?
+    switch (mediaType) {
+      case manifestTypes.IMAGE:
+        // TODO set default xywh
+        target.fullCanvaXYWH = '0,0,500,1000';
+        break;
+      case manifestTypes.VIDEO:
+        const mediaVideo = VideosReferences.get(windowId);
+        const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
+        const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
+        target.fullCanvaXYWH = `0,0,${targetWidth},${targetHeigth}`;
+        break;
+      default:
+        break;
     }
+
+    target.drawingState = {
+      currentShape: null,
+      isDrawing: false,
+      shapes: [],
+    };
 
     onChangeTarget(target);
   }
 
-  // const initTarget = () => {
-  // h
-  // };
-  //
-  // useEffect(() => {
-  //   onChangeTarget(initTarget());
-  // }, []);
-
   const onChangeTimeTargetInput = (newData) => {
-    console.log('newData', newData);
     onChangeTarget({
       ...target,
       ...newData,
@@ -86,52 +87,39 @@ export default function TargetFormSection(
     });
   };
 
-  let timeTarget;
-  let spatialTarget;
-
   if (mediaType === manifestTypes.IMAGE) {
     timeTarget = false;
-    spatialTarget = true;
-  }
-
-  if (mediaType === manifestTypes.VIDEO) {
-    timeTarget = true;
-    spatialTarget = false;
   }
 
   if (mediaType === manifestTypes.AUDIO) {
-    timeTarget = true;
     spatialTarget = false;
   }
 
   return (
     <Grid item container direction="column" spacing={1}>
       <Grid item>
-        {spatialTarget === true || timeTarget === true ? (
-          <Typography variant="formSectionTitle">
-            Target
-          </Typography>
-        ) : (<></>)}
+        <Typography variant="formSectionTitle">
+          Target
+        </Typography>
       </Grid>
       <Grid item container direction="column">
-        {
-            spatialTarget === true && (
-              <Grid item>
-                <TargetSpatialInput
-                  xywh={target.xywh}
-                  svg={target.svg}
-                  onChange={onChangeSpatialTargetInput}
-                  windowId={windowId}
-                  mediaType={mediaType}
-                  targetDrawingState={target.drawingState}
-                  overlay={overlay}
-                  closeFormCompanionWindow={closeFormCompanionWindow}
-                />
-              </Grid>
+      {
+            spatialTarget && (
+            <TargetSpatialInput
+              xywh={target.xywh}
+              svg={target.svg}
+              onChange={onChangeSpatialTargetInput}
+              windowId={windowId}
+              mediaType={mediaType}
+              targetDrawingState={target.drawingState}
+              overlay={overlay}
+              closeFormCompanionWindow={closeFormCompanionWindow}
+            />
+        </Grid>
             )
         }
-        {
-        (timeTarget === true) && (
+      {
+        timeTarget && (
         <TargetTimeInput
           tstart={target.tstart}
           tend={target.tend}

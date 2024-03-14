@@ -12,30 +12,22 @@ import CursorIcon from '../icons/Cursor';
 import {Grid, TextField} from "@mui/material";
 
 export function TargetSpatialInput({
-  xywh, setXywh, svg, overlay, windowId, mediaType, onChange, targetDrawingState,closeFormCompanionWindow
+  xywh, setXywh, svg, overlay, windowId, mediaType, onChange, targetDrawingState,closeFormCompanionWindow, setTargetDrawingState
 }) {
   const [toolState, setToolState] = useState(targetSVGToolState);
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
-
-  const initDrawingState = () => {
-    if (targetDrawingState) {
-      return JSON.parse(targetDrawingState);
-    }
-
-    return {
-      currentShape: null,
-      isDrawing: false,
-      shapes: [],
-    };
-  };
-
-  const [drawingState, setDrawingState] = useState(initDrawingState());
 
   const [scale, setScale] = useState(1);
   /** Change scale from container / canva */
   const updateScale = () => {
     setScale(overlay.containerWidth / overlay.canvasWidth);
   };
+
+  const [drawingState, setDrawingState] = useState(targetDrawingState);
+
+  useEffect(() => {
+    setTargetDrawingState({ drawingState : drawingState});
+  }, [drawingState.shapes]);
 
   /**
    * Deletes a shape from the drawing state based on its ID.
@@ -67,38 +59,34 @@ export function TargetSpatialInput({
   if (mediaType === manifestTypes.IMAGE) {
     player = OSDReferences.get(windowId);
   }
+  const updateCurrentShapeInShapes = (currentShape) => {
+    const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
 
-  // TODO save drawing state on change
-  useEffect(() => {
-    onChange({
-      drawingState: JSON.stringify(drawingState),
-    });
-  }, [drawingState]);
+    if (index !== -1) {
+      // eslint-disable-next-line max-len
+      const updatedShapes = drawingState.shapes.map((shape, i) => (i === index ? currentShape : shape));
+      setDrawingState({
+        ...drawingState,
+        currentShape,
+        shapes: updatedShapes,
+      });
+    } else {
+      setDrawingState({
+        ...drawingState,
+        currentShape,
+        shapes: [...drawingState.shapes, currentShape],
+      });
+    }
+  };
 
   const showSVGSelector = true;
 
-  const [showFragmentSelector, setShowFragmentSelector] = useState(false);
-
-  // TODO disable svg selector if showFragmentSelector is true
+  const TARGET_MODE = 'target';
 
   return (
-      <Grid container direction="column" spacing={1}>
-        <Grid item xs={12} container direction="column" spacing={1}>
-          <Grid item>
-            <Typography variant="subFormSectionTitle">Fragment</Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <TextField type="text" value={xywh} onChange={(event) => onChange({ xywh: event.target.value })} />
-          </Grid>
-          <Grid item xs={4}>
-            <ToggleButton value={showFragmentSelector} aria-label="select cursor" onChange={() => {
-              setShowFragmentSelector(!showFragmentSelector);
-            }}>
-              <CursorIcon />
-            </ToggleButton>
-          </Grid>
-        </Grid>
+    <>
       { showSVGSelector && (
+        <>
         <Grid item container direction="c">
           <Typography variant="subFormSectionTitle">SVG selection</Typography>
           <AnnotationDrawing
@@ -120,6 +108,7 @@ export function TargetSpatialInput({
             setColorToolFromCurrentShape={() => {}}
             drawingState={drawingState}
             overlay={overlay}
+            updateCurrentShapeInShapes={updateCurrentShapeInShapes}
             setDrawingState={setDrawingState}
             tabView="edit" // TODO change
             showStyleTools
@@ -135,6 +124,8 @@ export function TargetSpatialInput({
             currentShape={drawingState.currentShape}
             setViewTool={setViewTool}
             showStyleTools={false}
+            displayMode={TARGET_MODE}
+            updateCurrentShapeInShapes={updateCurrentShapeInShapes}
           />
         </Grid>
       )}

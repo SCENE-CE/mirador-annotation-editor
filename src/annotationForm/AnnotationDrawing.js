@@ -21,7 +21,6 @@ export default function AnnotationDrawing({
   originalHeight,
   overlay,
   scale,
-  showFragmentSelector,
   setDrawingState,
   updateCurrentShapeInShapes,
   updateScale,
@@ -486,33 +485,7 @@ export default function AnnotationDrawing({
     });
   };
 
-  /***************************************
-   * Fragment selector related functions *
-   * *************************************/
-
-  /**
-   * Handles the transformation event on a fragment selector
-   * @param {Event} evt - The transformation event object.
-   */
-  const onFragmentSelectorTransform = (evt) => {
-    const modifiedshape = evt.target.attrs;
-    const shape = surfacedata;
-    Object.assign(shape, modifiedshape);
-    setSurfaceData({ ...shape });
-  };
-
-  /**
-   * Handles the drag event on a fragment selector.
-   * Updates the fragment selector data with the new position.
-   * @param {Event} evt - The drag event object.
-   */
-  const onFragmentSelectorDrag = (evt) => {
-    const modifiedshape = evt.currentTarget.attrs;
-    const shape = { ...surfacedata };
-    shape.x = modifiedshape.x;
-    shape.y = modifiedshape.y;
-    setSurfaceData({ ...shape });
-  };
+  console.log('windowId', props.windowId);
 
   /** */
   const drawKonvas = () => (
@@ -534,17 +507,6 @@ export default function AnnotationDrawing({
       onMouseMove={handleMouseMove}
       id={props.windowId}
     >
-      { showFragmentSelector && (
-        <FragmentSelector
-          shape={surfacedata}
-          onTransform={onFragmentSelectorTransform}
-          handleDrag={onFragmentSelectorDrag}
-          showTransformer
-          width={width}
-          height={height}
-          scale={props.scale}
-        />
-      )}
       <ParentComponent
         shapes={drawingState.shapes}
         onShapeClick={onShapeClick}

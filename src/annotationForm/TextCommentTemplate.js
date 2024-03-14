@@ -9,6 +9,7 @@ import {
   maeTargetToIiifTarget,
   template,
 } from '../AnnotationFormUtils';
+import { getKonvaAsDataURL, getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
 /** Form part for edit annotation content and body */
 function TextCommentTemplate(
@@ -43,6 +44,8 @@ function TextCommentTemplate(
       motivation: 'commenting',
       target: null,
     };
+  } else if (maeAnnotation.maeData.target.drawingState && typeof maeAnnotation.maeData.target.drawingState === 'string') {
+    maeAnnotation.maeData.target.drawingState = JSON.parse(maeAnnotation.maeData.target.drawingState);
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
@@ -69,14 +72,24 @@ function TextCommentTemplate(
   };
 
   const saveFunction = () => {
-    canvases.forEach(async (canvas) => {
+    // Iterate over all canvases and save the annotation, then close the form
+
+    const promises = canvases.map(async (canvas) => {
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
+      console.log(annotation.maeData);
+      annotationState.maeData.target.svg = await getSvg(windowId);
+      // annotationState.maeData.target.dataUrl = await getKonvaAsDataURL(windowId);
       annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
+      annotationState.maeData.target.drawingState = JSON.stringify(annotationState.maeData.target.drawingState);
+      annotationState.maeData.target.svg = JSON.stringify(annotationState.maeData.target);
+      console.log('annotationState', annotationState.target);
       // delete annotationState.maeData.target;
-      saveAnnotation(annotationState, canvas.id);
+      return saveAnnotation(annotationState, canvas.id);
     });
-    closeFormCompanionWindow();
+    Promise.all(promises).then(() => {
+      closeFormCompanionWindow();
+    });
   };
 
   useEffect(() => {

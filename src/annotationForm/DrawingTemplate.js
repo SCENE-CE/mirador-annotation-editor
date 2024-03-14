@@ -17,7 +17,8 @@ import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import {getVisibleCanvases} from "mirador/dist/es/src/state/selectors/canvases";
+import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import {getVisibleCanvases} from "mirador/dist/es/src/state/selectors/canvases"; // TODO check if useful
 
 /**
  * Template for Konva annotations (drawing)
@@ -41,12 +42,13 @@ export default function DrawingTemplate(
     canvases,
     closeFormCompanionWindow,
     currentTime,
+    manifestType,
     mediaType,
     overlay,
-    saveAnnotation,
     setCurrentTime,
     setSeekTo,
     windowId,
+    saveAnnotation,
   },
 ) {
   // TODO Do something with this
@@ -139,7 +141,6 @@ export default function DrawingTemplate(
   useEffect(() => {
 
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
-
 
   /** Change scale from container / canva */
   const updateScale = () => {
@@ -234,41 +235,42 @@ export default function DrawingTemplate(
           windowId={windowId}
           player={player}
             // we need to pass the width and height of the image to the annotation drawing component
-          width={overlay ? overlay.containerWidth : 1920}
-          height={overlay ? overlay.containerHeight : 1080}
-          originalWidth={overlay ? overlay.canvasWidth : 1920}
-          originalHeight={overlay ? overlay.canvasHeight : 1080}
-          updateScale={updateScale}
-          imageEvent={toolState.imageEvent}
-          setColorToolFromCurrentShape={setColorToolFromCurrentShape}
-          drawingState={drawingState}
-          isMouseOverSave={isMouseOverSave}
-          overlay={overlay}
-          setDrawingState={setDrawingState}
-          showFragmentSelector={false}
-          tabView={viewTool}
-          updateCurrentShapeInShapes={updateCurrentShapeInShapes}
-          mediaType={mediaType}
-          closeFormCompanionWindow={closeFormCompanionWindow}
-        />
+        width={overlay ? overlay.containerWidth : 1920}
+        height={overlay ? overlay.containerHeight : 1080}
+        originalWidth={overlay ? overlay.canvasWidth : 1920}
+        originalHeight={overlay ? overlay.canvasHeight : 1080}
+        updateScale={updateScale}
+        imageEvent={toolState.imageEvent}
+        setColorToolFromCurrentShape={setColorToolFromCurrentShape}
+        drawingState={drawingState}
+        isMouseOverSave={isMouseOverSave}
+        overlay={overlay}
+        setDrawingState={setDrawingState}
+        showFragmentSelector={false}
+        tabView={viewTool}
+        updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+        mediaType={mediaType}
+        closeFormCompanionWindow={closeFormCompanionWindow}
+        displayMode={KONVA_MODE.DRAW}
+      />
       </Grid>
       <Grid item>
-        <AnnotationFormOverlay
-          toolState={toolState}
-          deleteShape={deleteShape}
-          setToolState={setToolState}
-          shapes={drawingState.shapes}
-          currentShape={drawingState.currentShape}
-          setViewTool={setViewTool}
-          updateCurrentShapeInShapes={updateCurrentShapeInShapes}
-          showStyleTools
-        />
+      <AnnotationFormOverlay
+        toolState={toolState}
+        deleteShape={deleteShape}
+        setToolState={setToolState}
+        shapes={drawingState.shapes}
+        currentShape={drawingState.currentShape}
+        setViewTool={setViewTool}
+        updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+        showStyleTools
+      />
       </Grid>
       <Grid item>
-        <TextFormSection
-          annoHtml={annotationState.body.value}
-          updateAnnotationBody={updateAnnotationTextualBodyValue}
-        />
+      <TextFormSection
+        annoHtml={annotationState.body.value}
+        updateAnnotationBody={updateAnnotationTextualBodyValue}
+      />
       </Grid>
       <TargetFormSection
           currentTime={currentTime}
@@ -281,6 +283,7 @@ export default function DrawingTemplate(
           overlay={overlay}
           closeFormCompanionWindow={closeFormCompanionWindow}
       />
+
       <Grid item>
 
         <AnnotationFormFooter

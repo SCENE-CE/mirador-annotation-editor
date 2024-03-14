@@ -81,35 +81,20 @@ function AnnotationFormOverlayTool({
               <Typography variant="overline">
                 Selected object
               </Typography>
-              {/* <ul> // useful for debug */}
-              {/*   { */}
-              {/*     Object.keys(currentShape).sort().map((key) => ( */}
-              {/*       <> */}
-              {/*         { key !== 'lines' && key !== 'image' && ( */}
-              {/*           <li key={key}> */}
-              {/*             {key} */}
-              {/*             : */}
-              {/*             {currentShape[key]} */}
-              {/*           </li> */}
-              {/*         )} */}
-              {/*       </> */}
-              {/*     )) */}
-              {/*   } */}
-              {/* </ul> */}
-                <AnnotationFormOverlayToolOptions
-                  toolState={{
-                    ...toolState,
-                    activeTool: currentShape.type,
-                    closedMode: currentShape.closedMode,
-                    fillColor: currentShape.fill,
-                    image: { id: currentShape.url },
-                    strokeColor: currentShape.stroke,
-                    strokeWidth: currentShape.strokeWidth,
-                    text: currentShape.text,
-                  }}
-                  updateToolState={customUpdateToolState}
-                  showStyleTools={showStyleTools}
-                />
+              <AnnotationFormOverlayToolOptions
+                toolState={{
+                  ...toolState,
+                  activeTool: currentShape.type,
+                  closedMode: currentShape.closedMode,
+                  fillColor: currentShape.fill,
+                  image: { id: currentShape.url },
+                  strokeColor: currentShape.stroke,
+                  strokeWidth: currentShape.strokeWidth,
+                  text: currentShape.text,
+                }}
+                updateToolState={customUpdateToolState}
+                showStyleTools={showStyleTools}
+              />
             </div>
             )
             }
