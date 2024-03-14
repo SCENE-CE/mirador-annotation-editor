@@ -96,7 +96,7 @@ export function TargetSpatialInput({
       { showSVGSelector && (
         <Grid item container direction="column">
           <Typography variant="subFormSectionTitle">SVG selection</Typography>
-          <Grid item container direction="row" spacing={2}>
+          <Grid item direction="row" spacing={2}>
             <AnnotationDrawing
               scale={scale}
               activeTool={toolState.activeTool}

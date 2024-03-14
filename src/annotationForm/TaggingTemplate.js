@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TextField } from '@mui/material';
+import {Grid, TextField} from '@mui/material';
 import uuid from 'draft-js/lib/uuid';
 import Typography from '@mui/material/Typography';
 import AnnotationFormFooter from './AnnotationFormFooter';
@@ -64,7 +64,7 @@ export default function TaggingTemplate(
   };
 
   return (
-    <div>
+    <Grid>
       <Typography variant="formSectionTitle">Tag</Typography>
       <TextField
         id="outlined-basic"
@@ -90,6 +90,6 @@ export default function TaggingTemplate(
         closeFormCompanionWindow={closeFormCompanionWindow}
         saveAnnotation={saveFunction}
       />
-    </div>
+    </Grid>
   );
 }

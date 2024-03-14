@@ -116,6 +116,8 @@ function TextCommentTemplate(
           target={annotationState.maeData.target}
           windowId={windowId}
           overlay={overlay}
+          timeTarget
+          spatialTarget
           closeFormCompanionWindow={closeFormCompanionWindow}
           getMediaAudio={getMediaAudio}
         />

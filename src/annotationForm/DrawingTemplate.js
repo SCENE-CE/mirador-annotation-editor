@@ -282,6 +282,8 @@ export default function DrawingTemplate(
           windowId={windowId}
           overlay={overlay}
           closeFormCompanionWindow={closeFormCompanionWindow}
+          timeTarget
+          spatialTarget
       />
 
       <Grid item>

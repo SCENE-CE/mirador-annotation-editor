@@ -47,23 +47,23 @@ export const templateTypes = [
       }
     }
   },
-  {
-    description: 'Image in overlay with a note',
-    icon: <ImageIcon fontSize="small" />,
-    id: template.IMAGE_TYPE,
-    label: 'Image',
-    isCompatibleWithTemplate: (manifestType) =>{
-      if( manifestType === manifestTypes.VIDEO){
-        return true
-      }
-      if( manifestType === manifestTypes.IMAGE) {
-        return false
-      }
-      if( manifestType === manifestTypes.AUDIO){
-        return false
-      }
-    },
-  },
+  // {
+  //   description: 'Image in overlay with a note',
+  //   icon: <ImageIcon fontSize="small" />,
+  //   id: template.IMAGE_TYPE,
+  //   label: 'Image',
+  //   isCompatibleWithTemplate: (manifestType) =>{
+  //     if( manifestType === manifestTypes.VIDEO){
+  //       return true
+  //     }
+  //     if( manifestType === manifestTypes.IMAGE) {
+  //       return false
+  //     }
+  //     if( manifestType === manifestTypes.AUDIO){
+  //       return false
+  //     }
+  //   },
+  // },
   {
     description: 'Drawings and text in overlay',
     icon: <CategoryIcon fontSize="small" />,

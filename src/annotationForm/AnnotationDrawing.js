@@ -485,8 +485,6 @@ export default function AnnotationDrawing({
     });
   };
 
-  console.log('windowId', props.windowId);
-
   /** */
   const drawKonvas = () => (
     <Stage

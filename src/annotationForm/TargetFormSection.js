@@ -37,7 +37,6 @@ export default function TargetFormSection(
     windowId,
   },
 ) {
-  console.log('targetFS', target);
   if (!target) {
     target = {};
     if (mediaType === manifestTypes.VIDEO) {
