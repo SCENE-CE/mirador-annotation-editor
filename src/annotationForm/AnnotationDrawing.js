@@ -10,7 +10,7 @@ import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
 import FragmentSelector from './AnnotationFormOverlay/KonvaDrawing/FragmentSelector';
-import {manifestTypes} from "../AnnotationFormUtils";
+import {mediaTypes} from "../AnnotationFormUtils";
 
 /** All the stuff to draw on the canvas */
 export default function AnnotationDrawing({
@@ -524,14 +524,14 @@ export default function AnnotationDrawing({
 let osdref;
 let videoref;
 
-  if(mediaType === manifestTypes.IMAGE){
+  if(mediaType === mediaTypes.IMAGE){
   osdref = OSDReferences.get(props.windowId);
   }
 
-  if(mediaType === manifestTypes.VIDEO){
+  if(mediaType === mediaTypes.VIDEO){
   videoref = VideosReferences.get(props.windowId);
   }
-  
+
   if (!osdref && !videoref) {
     throw new Error("Unknown or missing data player, didn't found OpenSeadragon (image viewer) nor the video player");
   }
@@ -541,7 +541,7 @@ let videoref;
 
   let container;
 
-  if(mediaType === manifestTypes.IMAGE){
+  if(mediaType === mediaTypes.IMAGE){
   if(osdref.current === undefined){
     console.log("window close")
     closeFormCompanionWindow();
@@ -550,7 +550,7 @@ let videoref;
   }
   }
 
-  if(mediaType === manifestTypes.VIDEO){
+  if(mediaType === mediaTypes.VIDEO){
     console.log(videoref)
     console.log('videoref',videoref.ref.current)
     if(videoref.ref.current === null){

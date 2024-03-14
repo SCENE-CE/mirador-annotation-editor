@@ -5,7 +5,7 @@ import HubIcon from '@mui/icons-material/Hub';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import ArticleIcon from '@mui/icons-material/Article';
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef } from 'react';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { OVERLAY_TOOL } from './AnnotationCreationUtils';
 
@@ -18,10 +18,10 @@ export const template = {
   TEXT_TYPE: 'text',
 };
 
-export const manifestTypes = {
-  AUDIO: "Sound",
-  IMAGE: "Image",
-  VIDEO: "Video",
+export const mediaTypes = {
+  AUDIO: 'Sound',
+  IMAGE: 'Image',
+  VIDEO: 'Video',
 };
 
 export const getTemplateType = (templateType) => templateTypes.find((type) => type.id === templateType);
@@ -34,18 +34,18 @@ export const templateTypes = [
     description: 'Textual note with target',
     icon: <TextFieldsIcon />,
     id: template.TEXT_TYPE,
+    isCompatibleWithTemplate: (mediaType) => {
+      if (mediaType === mediaTypes.VIDEO) {
+        return true;
+      }
+      if (mediaType === mediaTypes.IMAGE) {
+        return true;
+      }
+      if (mediaType === mediaTypes.AUDIO) {
+        return true;
+      }
+    },
     label: 'Note',
-    isCompatibleWithTemplate: (manifestType) =>{
-      if( manifestType === manifestTypes.VIDEO){
-        return true
-      }
-      if( manifestType === manifestTypes.IMAGE) {
-        return true
-      }
-      if( manifestType === manifestTypes.AUDIO){
-        return true
-      }
-    }
   },
   // {
   //   description: 'Image in overlay with a note',
@@ -68,72 +68,71 @@ export const templateTypes = [
     description: 'Drawings and text in overlay',
     icon: <CategoryIcon fontSize="small" />,
     id: template.KONVA_TYPE,
-    label: 'Overlay',
-    isCompatibleWithTemplate: (manifestType) =>{
-      if( manifestType === manifestTypes.VIDEO){
-        return true
+    isCompatibleWithTemplate: (mediaType) => {
+      if (mediaType === mediaTypes.VIDEO) {
+        return true;
       }
-      if( manifestType === manifestTypes.IMAGE) {
-        return false
+      if (mediaType === mediaTypes.IMAGE) {
+        return false;
       }
-      if( manifestType === manifestTypes.AUDIO){
-        return false
+      if (mediaType === mediaTypes.AUDIO) {
+        return false;
       }
     },
+    label: 'Overlay',
   },
   {
     description: 'Link target to a manifest',
     icon: <HubIcon fontSize="small" />,
     id: template.MANIFEST_TYPE,
-    label: 'Document',
-    isCompatibleWithTemplate: (manifestType) =>{
-      if( manifestType === manifestTypes.VIDEO){
-        return true
+    isCompatibleWithTemplate: (mediaType) => {
+      if (mediaType === mediaTypes.VIDEO) {
+        return true;
       }
-      if( manifestType === manifestTypes.IMAGE) {
-        return true
+      if (mediaType === mediaTypes.IMAGE) {
+        return true;
       }
-      if( manifestType === manifestTypes.AUDIO){
-        return true
+      if (mediaType === mediaTypes.AUDIO) {
+        return true;
       }
     },
+    label: 'Document',
   },
   {
     description: 'Tag with target',
     icon: <LocalOfferIcon fontSize="small" />,
     id: template.TAGGING_TYPE,
-    label: 'Tag',
-    isCompatibleWithTemplate: (manifestType) =>{
-      if( manifestType === manifestTypes.VIDEO){
-        return true
+    isCompatibleWithTemplate: (mediaType) => {
+      if (mediaType === mediaTypes.VIDEO) {
+        return true;
       }
-      if( manifestType === manifestTypes.IMAGE) {
-        return true
+      if (mediaType === mediaTypes.IMAGE) {
+        return true;
       }
-      if( manifestType === manifestTypes.AUDIO){
-        return true
+      if (mediaType === mediaTypes.AUDIO) {
+        return true;
       }
     },
+    label: 'Tag',
   },
   {
     description: 'Edit directly the IIIF json code',
-    icon: <DataObjectIcon fontSize="small" />,
+    icon: <DataObjectIcon fontSize="small"/>,
     id: template.IIIF_TYPE,
-    label: 'Expert mode',
-    isCompatibleWithTemplate: (manifestType) =>{
-      if( manifestType === manifestTypes.VIDEO){
-        return true
+    isCompatibleWithTemplate: (mediaTypes) => {
+      if (mediaTypes === mediaTypes.VIDEO) {
+        return true;
       }
-      if( manifestType === manifestTypes.IMAGE) {
-        return true
+      if (mediaTypes === mediaTypes.IMAGE) {
+        return true;
       }
-      if( manifestType === manifestTypes.AUDIO){
-        return true
+      if (mediaTypes === mediaTypes.AUDIO) {
+        return true;
       }
     },
+    label: 'Expert mode',
   },
 ];
-
 
 /** Extract time information from annotation target */
 export function timeFromAnnoTarget(annotarget) {
@@ -264,10 +263,10 @@ export const iiifTargetToMaeTarget = (iiifTarget) => {
 
     if (spatialTarget) {
       switch (manifestType) {
-        case manifestTypes.IMAGE:
+        case mediaTypes.IMAGE:
           defaultTarget.xywh = '0,0,500,1000';
           break;
-        case manifestTypes.VIDEO:
+        case mediaTypes.VIDEO:
           // eslint-disable-next-line no-case-declarations
           const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
           // eslint-disable-next-line no-case-declarations
@@ -280,7 +279,7 @@ export const iiifTargetToMaeTarget = (iiifTarget) => {
     }
     if (timeTarget) {
       switch (manifestType) {
-        case manifestTypes.VIDEO:
+        case mediaTypes.VIDEO:
           defaultTarget.tstart = currentTime ? Math.floor(currentTime) : 0;
           // eslint-disable-next-line no-underscore-dangle
           defaultTarget.tend = mediaVideo ? mediaVideo.props.canvas.__jsonld.duration : 0;

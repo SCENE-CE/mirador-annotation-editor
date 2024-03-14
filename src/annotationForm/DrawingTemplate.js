@@ -8,7 +8,7 @@ import AnnotationDrawing from './AnnotationDrawing';
 
 import {
   maeTargetToIiifTarget,
-  manifestTypes,
+  mediaTypes,
   TARGET_VIEW,
   template,
 } from '../AnnotationFormUtils';
@@ -18,7 +18,7 @@ import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import {getVisibleCanvases} from "mirador/dist/es/src/state/selectors/canvases"; // TODO check if useful
+// TODO check if useful
 
 /**
  * Template for Konva annotations (drawing)
@@ -42,7 +42,6 @@ export default function DrawingTemplate(
     canvases,
     closeFormCompanionWindow,
     currentTime,
-    manifestType,
     mediaType,
     overlay,
     setCurrentTime,
@@ -88,10 +87,10 @@ export default function DrawingTemplate(
   };
 
   let player;
-  if (mediaType === manifestTypes.VIDEO) {
+  if (mediaType === mediaTypes.VIDEO) {
     player = VideosReferences.get(windowId);
   }
-  if (mediaType === manifestTypes.IMAGE) {
+  if (mediaType === mediaTypes.IMAGE) {
     player = OSDReferences.get(windowId);
   }
   /** save Function * */
@@ -322,6 +321,5 @@ DrawingTemplate.propTypes = {
   overlay: PropTypes.object.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
-  templateType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 };

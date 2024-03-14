@@ -4,7 +4,7 @@ import { Grid, Typography } from '@mui/material';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import {
   extractTargetFromAnnotation,
-  manifestTypes,
+  mediaTypes,
 } from '../AnnotationFormUtils';
 import TargetTimeInput from './TargetTimeInput';
 import { TargetSpatialInput } from './TargetSpatialInput';
@@ -39,7 +39,7 @@ export default function TargetFormSection(
 ) {
   if (!target) {
     target = {};
-    if (mediaType === manifestTypes.VIDEO) {
+    if (mediaType === mediaTypes.VIDEO) {
       const mediaVideo = VideosReferences.get(windowId);
       target.tstart = currentTime || 0;
       target.tend = mediaVideo.props.canvas.__jsonld.duration ? mediaVideo.props.canvas.__jsonld.duration : 0;
@@ -47,11 +47,11 @@ export default function TargetFormSection(
 
     // TODO Check if its possible to use overlay ?
     switch (mediaType) {
-      case manifestTypes.IMAGE:
+      case mediaTypes.IMAGE:
         // TODO set default xywh
         target.fullCanvaXYWH = '0,0,500,1000';
         break;
-      case manifestTypes.VIDEO:
+      case mediaTypes.VIDEO:
         const mediaVideo = VideosReferences.get(windowId);
         const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
         const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
@@ -84,11 +84,11 @@ export default function TargetFormSection(
     });
   };
 
-  if (mediaType === manifestTypes.IMAGE) {
+  if (mediaType === mediaTypes.IMAGE) {
     timeTarget = false;
   }
 
-  if (mediaType === manifestTypes.AUDIO) {
+  if (mediaType === mediaTypes.AUDIO) {
     spatialTarget = false;
   }
 

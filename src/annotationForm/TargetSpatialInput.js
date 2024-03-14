@@ -7,7 +7,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import { Grid, TextField } from '@mui/material';
 import AnnotationDrawing from './AnnotationDrawing';
 import { defaultToolState, OVERLAY_TOOL, targetSVGToolState } from '../AnnotationCreationUtils';
-import { manifestTypes, TARGET_VIEW } from '../AnnotationFormUtils';
+import { mediaTypes, TARGET_VIEW } from '../AnnotationFormUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import CursorIcon from '../icons/Cursor';
 
@@ -62,10 +62,10 @@ export function TargetSpatialInput({
   };
 
   let player;
-  if (mediaType === manifestTypes.VIDEO) {
+  if (mediaType === mediaTypes.VIDEO) {
     player = VideosReferences.get(windowId);
   }
-  if (mediaType === manifestTypes.IMAGE) {
+  if (mediaType === mediaTypes.IMAGE) {
     player = OSDReferences.get(windowId);
   }
   const updateCurrentShapeInShapes = (currentShape) => {
