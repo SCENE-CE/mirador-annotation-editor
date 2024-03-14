@@ -281,7 +281,6 @@ export default function DrawingTemplate(
         overlay={overlay}
         closeFormCompanionWindow={closeFormCompanionWindow}
         timeTarget
-        spatialTarget
       />
       <Grid item>
         <AnnotationFormFooter
