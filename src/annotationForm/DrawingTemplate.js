@@ -66,9 +66,9 @@ export default function DrawingTemplate(
         value: '',
       },
       maeData: {
-        target: null, // Add full target
+        drawingState: null, // Add full target
+        target: null,
         templateType: template.KONVA_TYPE,
-        drawingState: null,
       },
       motivation: 'commenting',
       target: null,
@@ -198,7 +198,6 @@ export default function DrawingTemplate(
 
   const updateCurrentShapeInShapes = (currentShape) => {
     const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
-
     if (index !== -1) {
       // eslint-disable-next-line max-len
       const updatedShapes = drawingState.shapes.map((shape, i) => (i === index ? currentShape : shape));
@@ -234,59 +233,57 @@ export default function DrawingTemplate(
           windowId={windowId}
           player={player}
             // we need to pass the width and height of the image to the annotation drawing component
-        width={overlay ? overlay.containerWidth : 1920}
-        height={overlay ? overlay.containerHeight : 1080}
-        originalWidth={overlay ? overlay.canvasWidth : 1920}
-        originalHeight={overlay ? overlay.canvasHeight : 1080}
-        updateScale={updateScale}
-        imageEvent={toolState.imageEvent}
-        setColorToolFromCurrentShape={setColorToolFromCurrentShape}
-        drawingState={drawingState}
-        isMouseOverSave={isMouseOverSave}
-        overlay={overlay}
-        setDrawingState={setDrawingState}
-        showFragmentSelector={false}
-        tabView={viewTool}
-        updateCurrentShapeInShapes={updateCurrentShapeInShapes}
-        mediaType={mediaType}
-        closeFormCompanionWindow={closeFormCompanionWindow}
-        displayMode={KONVA_MODE.DRAW}
-      />
+          width={overlay ? overlay.containerWidth : 1920}
+          height={overlay ? overlay.containerHeight : 1080}
+          originalWidth={overlay ? overlay.canvasWidth : 1920}
+          originalHeight={overlay ? overlay.canvasHeight : 1080}
+          updateScale={updateScale}
+          imageEvent={toolState.imageEvent}
+          setColorToolFromCurrentShape={setColorToolFromCurrentShape}
+          drawingState={drawingState}
+          isMouseOverSave={isMouseOverSave}
+          overlay={overlay}
+          setDrawingState={setDrawingState}
+          showFragmentSelector={false}
+          tabView={viewTool}
+          updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+          mediaType={mediaType}
+          closeFormCompanionWindow={closeFormCompanionWindow}
+          displayMode={KONVA_MODE.DRAW}
+        />
       </Grid>
       <Grid item>
-      <AnnotationFormOverlay
-        toolState={toolState}
-        deleteShape={deleteShape}
-        setToolState={setToolState}
-        shapes={drawingState.shapes}
-        currentShape={drawingState.currentShape}
-        setViewTool={setViewTool}
-        updateCurrentShapeInShapes={updateCurrentShapeInShapes}
-        showStyleTools
-      />
+        <AnnotationFormOverlay
+          toolState={toolState}
+          deleteShape={deleteShape}
+          setToolState={setToolState}
+          shapes={drawingState.shapes}
+          currentShape={drawingState.currentShape}
+          setViewTool={setViewTool}
+          updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+          showStyleTools
+        />
       </Grid>
       <Grid item>
-      <TextFormSection
-        annoHtml={annotationState.body.value}
-        updateAnnotationBody={updateAnnotationTextualBodyValue}
-      />
+        <TextFormSection
+          annoHtml={annotationState.body.value}
+          updateAnnotationBody={updateAnnotationTextualBodyValue}
+        />
       </Grid>
       <TargetFormSection
-          currentTime={currentTime}
-          mediaType={mediaType}
-          onChangeTarget={updateTargetState}
-          setCurrentTime={setCurrentTime}
-          setSeekTo={setSeekTo}
-          target={annotationState.maeData.target}
-          windowId={windowId}
-          overlay={overlay}
-          closeFormCompanionWindow={closeFormCompanionWindow}
-          timeTarget
-          spatialTarget
+        currentTime={currentTime}
+        mediaType={mediaType}
+        onChangeTarget={updateTargetState}
+        setCurrentTime={setCurrentTime}
+        setSeekTo={setSeekTo}
+        target={annotationState.maeData.target}
+        windowId={windowId}
+        overlay={overlay}
+        closeFormCompanionWindow={closeFormCompanionWindow}
+        timeTarget
+        spatialTarget
       />
-
       <Grid item>
-
         <AnnotationFormFooter
           closeFormCompanionWindow={closeFormCompanionWindow}
           saveAnnotation={saveFunction}
@@ -315,11 +312,16 @@ DrawingTemplate.propTypes = {
     }),
     PropTypes.string,
   ]).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
+  closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   mediaType: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,
+  saveAnnotation: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
+
 };
