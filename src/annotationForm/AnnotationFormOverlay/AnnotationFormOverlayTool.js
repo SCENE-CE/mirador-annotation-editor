@@ -78,7 +78,7 @@ function AnnotationFormOverlayTool({
             {
             currentShape && (
             <div>
-              <Typography variant="overline">
+              <Typography variant="subFormSectionTitle">
                 Selected object
               </Typography>
               <AnnotationFormOverlayToolOptions
@@ -101,7 +101,7 @@ function AnnotationFormOverlayTool({
             {
               (showStyleTools && shapes.length > 0) && (
                 <>
-                  <Typography variant="overline">
+                  <Typography variant="subFormSectionTitle">
                     Object lists
                   </Typography>
                   <ShapesList
@@ -120,7 +120,7 @@ function AnnotationFormOverlayTool({
       {
         isShapesTool(toolState.activeTool) && (
         <>
-          <Typography variant="overline">
+          <Typography variant="subFormSectionTitle">
             Shapes
           </Typography>
           <StyledToggleButtonGroup
