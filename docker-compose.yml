@@ -8,3 +8,4 @@ services:
       - ${PWD}:/app
     environment:
       ENV:
+    restart: unless-stopped
