@@ -23,18 +23,18 @@ import { TargetSpatialInput } from './TargetSpatialInput';
  */
 export default function TargetFormSection(
   {
-    target,
+    closeFormCompanionWindow,
     currentTime,
+    getMediaAudio,
+    mediaType,
     onChangeTarget,
+    overlay,
     setCurrentTime,
     setSeekTo,
     spatialTarget,
+    target,
     timeTarget,
     windowId,
-    mediaType,
-    overlay,
-    closeFormCompanionWindow,
-    getMediaAudio,
   },
 ) {
   console.log('targetFS', target);
@@ -45,8 +45,6 @@ export default function TargetFormSection(
       target.tstart = currentTime || 0;
       target.tend = mediaVideo.props.canvas.__jsonld.duration ? mediaVideo.props.canvas.__jsonld.duration : 0;
     }
-
-
 
     // TODO Check if its possible to use overlay ?
     switch (mediaType) {
@@ -102,52 +100,52 @@ export default function TargetFormSection(
           Target
         </Typography>
       </Grid>
-      <Grid item container direction="column">
       {
-            spatialTarget && (
-            <TargetSpatialInput
-              xywh={target.xywh}
-              svg={target.svg}
-              onChange={onChangeSpatialTargetInput}
-              windowId={windowId}
-              mediaType={mediaType}
-              targetDrawingState={target.drawingState}
-              overlay={overlay}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-            />
+        spatialTarget && (
+        <Grid item container direction="column">
+          <TargetSpatialInput
+            xywh={target.xywh}
+            svg={target.svg}
+            onChange={onChangeSpatialTargetInput}
+            windowId={windowId}
+            mediaType={mediaType}
+            targetDrawingState={target.drawingState}
+            overlay={overlay}
+            closeFormCompanionWindow={closeFormCompanionWindow}
+          />
         </Grid>
-            )
-        }
+        )
+      }
       {
         timeTarget && (
-        <TargetTimeInput
-          tstart={target.tstart}
-          tend={target.tend}
-          onChange={onChangeTimeTargetInput}
-          windowId={windowId}
-          currentTime={currentTime}
-          setCurrentTime={setCurrentTime}
-          setSeekTo={setSeekTo}
-          getMediaAudio={getMediaAudio}
-          mediaType={mediaType}
-          closeFormCompanionWindow={closeFormCompanionWindow}
-        />
+          <Grid item container direction="column">
+            <TargetTimeInput
+              tstart={target.tstart}
+              tend={target.tend}
+              onChange={onChangeTimeTargetInput}
+              windowId={windowId}
+              currentTime={currentTime}
+              setCurrentTime={setCurrentTime}
+              setSeekTo={setSeekTo}
+              getMediaAudio={getMediaAudio}
+              mediaType={mediaType}
+              closeFormCompanionWindow={closeFormCompanionWindow}
+            />
+          </Grid>
         )
         }
-      </Grid>
     </Grid>
   );
 }
 
 TargetFormSection.propTypes = {
-  commentingType: PropTypes.string.isRequired,
   currentTime: PropTypes.number.isRequired,
   mediaType: PropTypes.string.isRequired,
+  onChangeTarget: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   spatialTarget: PropTypes.bool.isRequired,
+  target: PropTypes.object.isRequired,
   timeTarget: PropTypes.bool.isRequired,
   windowId: PropTypes.string.isRequired,
-  onChangeTarget: PropTypes.func.isRequired,
-  target: PropTypes.object.isRequired,
 };
