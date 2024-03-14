@@ -104,6 +104,7 @@ export default function TargetFormSection(
         spatialTarget && (
         <Grid item container direction="column">
           <TargetSpatialInput
+              setTargetDrawingState={onChangeSpatialTargetInput}
             xywh={target.xywh}
             svg={target.svg}
             onChange={onChangeSpatialTargetInput}
