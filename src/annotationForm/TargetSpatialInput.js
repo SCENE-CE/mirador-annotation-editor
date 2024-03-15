@@ -10,6 +10,7 @@ import { defaultToolState, OVERLAY_TOOL, targetSVGToolState } from '../Annotatio
 import { mediaTypes, TARGET_VIEW } from '../AnnotationFormUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import CursorIcon from '../icons/Cursor';
+import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
 export function TargetSpatialInput({
   closeFormCompanionWindow,
@@ -89,8 +90,6 @@ export function TargetSpatialInput({
   };
   const showSVGSelector = true;
 
-  const TARGET_MODE = 'target';
-
   return (
     <Grid container direction="column">
       { showSVGSelector && (
@@ -122,7 +121,7 @@ export function TargetSpatialInput({
               showStyleTools
               mediaType={mediaType}
               closeFormCompanionWindow={closeFormCompanionWindow}
-              drawingMode={false}
+              displayMode={KONVA_MODE.TARGET}
             />
             <AnnotationFormOverlay
               toolState={toolState}
@@ -131,8 +130,7 @@ export function TargetSpatialInput({
               shapes={drawingState.shapes}
               currentShape={drawingState.currentShape}
               setViewTool={setViewTool}
-              drawingMode={false}
-              displayMode={TARGET_MODE}
+              displayMode={KONVA_MODE.TARGET}
               updateCurrentShapeInShapes={updateCurrentShapeInShapes}
             />
           </Grid>

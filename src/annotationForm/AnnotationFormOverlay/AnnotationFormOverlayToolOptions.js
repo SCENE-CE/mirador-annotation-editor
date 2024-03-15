@@ -19,7 +19,7 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { v4 as uuidv4 } from 'uuid';
 import ImageFormField from './ImageFormField';
 import { isShapesTool, OVERLAY_TOOL } from '../../AnnotationCreationUtils';
-import { defaultLineWeightChoices } from './KonvaDrawing/KonvaUtils';
+import { defaultLineWeightChoices, KONVA_MODE } from './KonvaDrawing/KonvaUtils';
 
 const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
@@ -47,7 +47,11 @@ const objToRgba = (obj = {
 }) => `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
 
 /** All the tools options for the overlay options */
-function AnnotationFormOverlayToolOptions({ setToolState, toolState, drawingMode }) {
+function AnnotationFormOverlayToolOptions({
+  setToolState,
+  toolState,
+  displayMode,
+}) {
   // set toolOptionsValue
   const [toolOptions, setToolOptions] = useState({
     colorPopoverOpen: false,
@@ -134,7 +138,7 @@ function AnnotationFormOverlayToolOptions({ setToolState, toolState, drawingMode
   return (
     <div>
       {
-        (drawingMode && isShapesTool(toolState.activeTool)) && (
+        (displayMode === KONVA_MODE.DRAW && isShapesTool(toolState.activeTool)) && (
           <Grid container>
             <Grid item xs={12}>
               <Typography variant="overline">
@@ -250,6 +254,7 @@ function AnnotationFormOverlayToolOptions({ setToolState, toolState, drawingMode
 }
 
 AnnotationFormOverlayToolOptions.propTypes = {
+  displayMode: PropTypes.string.isRequired,
   setToolState: PropTypes.func.isRequired,
   toolState: PropTypes.shape({
     activeTool: PropTypes.string.isRequired,

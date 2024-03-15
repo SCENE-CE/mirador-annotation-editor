@@ -18,6 +18,7 @@ import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import Typography from '@mui/material/Typography';
 // TODO check if useful
 
 /**
@@ -221,6 +222,11 @@ export default function DrawingTemplate(
       {/* Check the useless props : annotation ?
       Check the width height originalW originalW */}
       <Grid item>
+        <Typography variant="formSectionTitle">
+          Overlay
+        </Typography>
+      </Grid>
+      <Grid item>
 
         <AnnotationDrawing
           scale={scale}
@@ -250,7 +256,6 @@ export default function DrawingTemplate(
           mediaType={mediaType}
           closeFormCompanionWindow={closeFormCompanionWindow}
           displayMode={KONVA_MODE.DRAW}
-          drawingMode={true}
         />
       </Grid>
       <Grid item>
@@ -263,7 +268,7 @@ export default function DrawingTemplate(
           setViewTool={setViewTool}
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
           showStyleTools
-          drawingMode={true}
+          displayMode={KONVA_MODE.DRAW}
         />
       </Grid>
       <Grid item>
