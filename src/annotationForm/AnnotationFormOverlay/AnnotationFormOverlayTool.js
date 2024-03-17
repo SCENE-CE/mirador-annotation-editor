@@ -80,7 +80,7 @@ function AnnotationFormOverlayTool({
                     strokeWidth: currentShape.strokeWidth,
                     text: currentShape.text,
                   }}
-                  updateToolState={customUpdateToolState}
+                  setToolState={customUpdateToolState}
                   displayMode={displayMode}
                 />
               </div>
