@@ -128,6 +128,7 @@ export function TargetSpatialInput({
               mediaType={mediaType}
               closeFormCompanionWindow={closeFormCompanionWindow}
               displayMode={KONVA_MODE.TARGET}
+              isMouseOverSave={false} // TODO remove
             />
             <AnnotationFormOverlay
               toolState={toolState}

@@ -49,7 +49,7 @@ function ParentComponent({
       {/* eslint-disable-next-line consistent-return */}
       {shapes.map((shape, i) => {
         // eslint-disable-next-line max-len
-        const isSelected = selectedShapeId === shape.id && isMouseOverSave === false && trview === true;
+        const isSelected = selectedShapeId === shape.id && !isMouseOverSave && trview;
         switch (shape.type) {
           case 'rectangle':
             return (
