@@ -70,21 +70,27 @@ export function TargetSpatialInput({
     player = OSDReferences.get(windowId);
   }
   const updateCurrentShapeInShapes = (currentShape) => {
-    const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
-
-    if (index !== -1) {
-      // eslint-disable-next-line max-len
-      const updatedShapes = drawingState.shapes.map((shape, i) => (i === index ? currentShape : shape));
-      setDrawingState({
-        ...drawingState,
-        currentShape,
-        shapes: updatedShapes,
-      });
+    if (currentShape) {
+      const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
+      if (index !== -1) {
+        // eslint-disable-next-line max-len
+        const updatedShapes = drawingState.shapes.map((shape, i) => (i === index ? currentShape : shape));
+        setDrawingState({
+          ...drawingState,
+          currentShape,
+          shapes: updatedShapes,
+        });
+      } else {
+        setDrawingState({
+          ...drawingState,
+          currentShape,
+          shapes: [...drawingState.shapes, currentShape],
+        });
+      }
     } else {
       setDrawingState({
         ...drawingState,
         currentShape,
-        shapes: [...drawingState.shapes, currentShape],
       });
     }
   };

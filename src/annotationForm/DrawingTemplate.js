@@ -219,7 +219,7 @@ export default function DrawingTemplate(
       setDrawingState({
         ...drawingState,
         currentShape: null,
-        shapes: drawingState.shapes
+        shapes: drawingState.shapes,
       });
     }
   };
