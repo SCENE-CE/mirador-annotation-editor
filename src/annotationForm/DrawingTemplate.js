@@ -17,7 +17,7 @@ import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { getKonvaAsDataURL, KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import Typography from '@mui/material/Typography';
 // TODO check if useful
 
@@ -62,8 +62,8 @@ export default function DrawingTemplate(
     // If the annotation does not have maeData, the annotation was not created with mae
     maeAnnotation = {
       body: {
-        id: uuid(),
-        type: 'TextualBody',
+        id: null,
+        type: 'Image',
         value: '',
       },
       maeData: {
@@ -96,15 +96,18 @@ export default function DrawingTemplate(
   }
   /** save Function * */
   const saveFunction = () => {
-    canvases.forEach(async (canvas) => {
+    const promises = canvases.map(async (canvas) => {
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
+      annotationState.body.id = await getKonvaAsDataURL(windowId);
       annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
       annotationState.maeData.drawingState = JSON.stringify(drawingState);
       // delete annotationState.maeData.target;
-      saveAnnotation(annotationState, canvas.id);
+      return saveAnnotation(annotationState, canvas.id);
     });
-    closeFormCompanionWindow();
+    Promise.all(promises).then(() => {
+      closeFormCompanionWindow();
+    });
   };
 
   const updateAnnotationTextualBodyValue = (newTextValue) => {
