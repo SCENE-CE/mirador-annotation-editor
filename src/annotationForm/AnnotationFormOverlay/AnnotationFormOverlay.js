@@ -92,19 +92,30 @@ function AnnotationFormOverlay(
           <ToggleButton value={OVERLAY_TOOL.EDIT} aria-label="select cursor" onClick={tabHandler(TARGET_VIEW)}>
             <CursorIcon />
           </ToggleButton>
-          <ToggleButton value={OVERLAY_TOOL.SHAPE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
-            <CategoryIcon />
-          </ToggleButton>
-          {
+          { displayMode !== KONVA_MODE.IMAGE && (
+          <>
+
+            <ToggleButton value={OVERLAY_TOOL.SHAPE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
+              <CategoryIcon />
+            </ToggleButton>
+            {
                 displayMode === KONVA_MODE.DRAW && (
                   <ToggleButton value={OVERLAY_TOOL.TEXT} aria-label="select text" onClick={tabHandler(OVERLAY_VIEW)}>
                     <TitleIcon />
                   </ToggleButton>
                 )
               }
-          <ToggleButton value={OVERLAY_TOOL.DELETE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
-            <DeleteIcon />
-          </ToggleButton>
+            <ToggleButton value={OVERLAY_TOOL.DELETE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
+              <DeleteIcon />
+            </ToggleButton>
+          </>
+          )}
+          { displayMode === KONVA_MODE.IMAGE && (
+            <ToggleButton value={OVERLAY_TOOL.IMAGE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
+
+              <ImageIcon />
+            </ToggleButton>
+          )}
         </StyledToggleButtonGroup>
 
         <AnnotationFormOverlayTool
@@ -113,7 +124,6 @@ function AnnotationFormOverlay(
           currentShape={currentShape}
           shapes={shapes}
           deleteShape={deleteShape}
-          displayMode={displayMode}
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
           displayMode={displayMode}
         />

@@ -64,23 +64,23 @@ export const templateTypes = [
     },
     label: 'Tag',
   },
-  // {
-  //   description: 'Image in overlay with a note',
-  //   icon: <ImageIcon fontSize="small" />,
-  //   id: template.IMAGE_TYPE,
-  //   label: 'Image',
-  //   isCompatibleWithTemplate: (manifestType) =>{
-  //     if( manifestType === manifestTypes.VIDEO){
-  //       return true
-  //     }
-  //     if( manifestType === manifestTypes.IMAGE) {
-  //       return false
-  //     }
-  //     if( manifestType === manifestTypes.AUDIO){
-  //       return false
-  //     }
-  //   },
-  // },
+  {
+    description: 'Image in overlay with a note',
+    icon: <ImageIcon fontSize="small"/>,
+    id: template.IMAGE_TYPE,
+    isCompatibleWithTemplate: (mediaType) => {
+      if (mediaType === mediaTypes.VIDEO) {
+        return true;
+      }
+      if (mediaType === mediaTypes.IMAGE) {
+        return false;
+      }
+      if (mediaType === mediaTypes.AUDIO) {
+        return false;
+      }
+    },
+    label: 'Image',
+  },
   {
     description: 'Drawings and text in overlay',
     icon: <CategoryIcon fontSize="small" />,

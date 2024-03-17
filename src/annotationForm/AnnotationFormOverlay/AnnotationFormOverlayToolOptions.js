@@ -20,9 +20,16 @@ import { v4 as uuidv4 } from 'uuid';
 import ImageFormField from './ImageFormField';
 import { isShapesTool, OVERLAY_TOOL } from '../../AnnotationCreationUtils';
 import { defaultLineWeightChoices, KONVA_MODE } from './KonvaDrawing/KonvaUtils';
+import { defaultToolState } from '../../AnnotationFormUtils';
 
 const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
+}));
+
+const StyledDivButtonImage = styled('div')(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'flex-end',
+  marginTop: '5px',
 }));
 
 /** Utils functions to convert string to object */
@@ -134,6 +141,29 @@ function AnnotationFormOverlayToolOptions({
       [toolOptions.currentColorType]: objToRgba(color.rgb),
     });
   };
+
+
+  const handleImgChange = (newUrl, imgRef) => {
+    setToolState({
+      ...toolState,
+      image: { ...toolState.image, id: newUrl },
+    });
+  };
+
+
+  const addImage = () => {
+    const data = {
+      id: toolState?.image?.id,
+      uuid: uuidv4(),
+    };
+
+    setToolState({
+      ...toolState,
+      image: { id: null },
+      imageEvent: data,
+    });
+  };
+
 
   return (
     <div>
@@ -248,6 +278,23 @@ function AnnotationFormOverlayToolOptions({
             )}
           </>
           )
+      }
+      {
+        toolState.activeTool === OVERLAY_TOOL.IMAGE && (
+          <>
+            <Typography variant="overline">
+              Add image from URL
+            </Typography>
+            <Grid container>
+              <ImageFormField xs={8} value={toolState.image} onChange={handleImgChange} />
+            </Grid>
+            <StyledDivButtonImage>
+              <Button variant="contained" onClick={addImage}>
+                <AddPhotoAlternateIcon />
+              </Button>
+            </StyledDivButtonImage>
+          </>
+        )
       }
     </div>
   );

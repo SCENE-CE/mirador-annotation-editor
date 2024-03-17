@@ -63,22 +63,22 @@ export default function AnnotationFormBody(
             />
           )
         }
-        {/*  {*/}
-        {/*  templateType.id === template.IMAGE_TYPE && (*/}
-        {/*    <ImageCommentTemplate*/}
-        {/*      annotation={annotation}*/}
-        {/*      canvases={canvases}*/}
-        {/*      closeFormCompanionWindow={closeFormCompanionWindow}*/}
-        {/*      setCurrentTime={setCurrentTime}*/}
-        {/*      setSeekTo={setSeekTo}*/}
-        {/*      windowId={windowId}*/}
-        {/*      templateType={templateType}*/}
-        {/*      mediaType={mediaType}*/}
-        {/*      currentTime={currentTime}*/}
-        {/*      overlay={overlay}*/}
-        {/*    />*/}
-        {/*  )*/}
-        {/*}*/}
+          {
+          templateType.id === template.IMAGE_TYPE && (
+          <ImageCommentTemplate
+            annotation={annotation}
+            canvases={canvases}
+            closeFormCompanionWindow={closeFormCompanionWindow}
+            setCurrentTime={setCurrentTime}
+            setSeekTo={setSeekTo}
+            windowId={windowId}
+            templateType={templateType}
+            mediaType={mediaType}
+            currentTime={currentTime}
+            overlay={overlay}
+          />
+          )
+        }
           {
           templateType.id === template.KONVA_TYPE && (
             <DrawingTemplate

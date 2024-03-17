@@ -27,7 +27,7 @@ export default function TaggingTemplate(
     // If the annotation does not have maeData, the annotation was not created with mae
     maeAnnotation = {
       body: {
-        type: 'TextualBody',
+        type: 'Image',
         value: '',
       },
       maeData: {
