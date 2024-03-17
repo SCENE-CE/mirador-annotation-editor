@@ -10,24 +10,25 @@ import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
 import FragmentSelector from './AnnotationFormOverlay/KonvaDrawing/FragmentSelector';
-import {mediaTypes} from "../AnnotationFormUtils";
+import { mediaTypes } from '../AnnotationFormUtils';
 
 /** All the stuff to draw on the canvas */
 export default function AnnotationDrawing({
+  closeFormCompanionWindow,
+  displayMode,
   drawingState,
   height,
   imageEvent,
-  originalWidth,
+  mediaType,
   originalHeight,
+  originalWidth,
   overlay,
   scale,
   setDrawingState,
   updateCurrentShapeInShapes,
   updateScale,
   width,
-  mediaType,
-  closeFormCompanionWindow,
-  displayMode,
+  setColorToolFromCurrentShape,
   ...props
 }) {
   const [isDrawing, setIsDrawing] = useState(false);
@@ -40,7 +41,6 @@ export default function AnnotationDrawing({
     x: 1,
     y: 1,
   });
-
 
   useEffect(() => {
     if (overlay) {
@@ -81,7 +81,6 @@ export default function AnnotationDrawing({
   const { fillColor, strokeColor, strokeWidth } = props;
 
   /** */
-
 
   /** */
   useEffect(() => {
@@ -157,7 +156,7 @@ export default function AnnotationDrawing({
       window.addEventListener('keydown', handleKeyPress);
 
       // Set here all the properties of the current shape for the tool options
-      props.setColorToolFromCurrentShape(
+      setColorToolFromCurrentShape(
         {
           fillColor: drawingState.currentShape.fill,
           strokeColor: drawingState.currentShape.stroke,
@@ -193,7 +192,7 @@ export default function AnnotationDrawing({
       currentShape: shape,
     });
 
-    props.setColorToolFromCurrentShape(
+    setColorToolFromCurrentShape(
       {
         fillColor: shape.fill,
         strokeColor: shape.stroke,
@@ -521,15 +520,15 @@ export default function AnnotationDrawing({
       />
     </Stage>
   );
-let osdref;
-let videoref;
+  let osdref;
+  let videoref;
 
-  if(mediaType === mediaTypes.IMAGE){
-  osdref = OSDReferences.get(props.windowId);
+  if (mediaType === mediaTypes.IMAGE) {
+    osdref = OSDReferences.get(props.windowId);
   }
 
-  if(mediaType === mediaTypes.VIDEO){
-  videoref = VideosReferences.get(props.windowId);
+  if (mediaType === mediaTypes.VIDEO) {
+    videoref = VideosReferences.get(props.windowId);
   }
 
   if (!osdref && !videoref) {
@@ -541,30 +540,29 @@ let videoref;
 
   let container;
 
-  if(mediaType === mediaTypes.IMAGE){
-  if(osdref.current === undefined){
-    console.log("window close")
-    closeFormCompanionWindow();
-  }else{
-  container = osdref.current ? osdref.current.container : undefined;
-  }
-  }
-
-  if(mediaType === mediaTypes.VIDEO){
-    console.log(videoref)
-    console.log('videoref',videoref.ref.current)
-    if(videoref.ref.current === null){
-      console.log("window close")
+  if (mediaType === mediaTypes.IMAGE) {
+    if (osdref.current === undefined) {
+      console.log('window close');
       closeFormCompanionWindow();
-    }else{
-    container = videoref.ref ? videoref.ref.current.parentElement : undefined;
+    } else {
+      container = osdref.current ? osdref.current.container : undefined;
     }
   }
-  if(container){
-  return ReactDOM.createPortal(drawKonvas(), container);
-  }else{
-    return <></>
+
+  if (mediaType === mediaTypes.VIDEO) {
+    console.log(videoref);
+    console.log('videoref', videoref.ref.current);
+    if (videoref.ref.current === null) {
+      console.log('window close');
+      closeFormCompanionWindow();
+    } else {
+      container = videoref.ref ? videoref.ref.current.parentElement : undefined;
+    }
   }
+  if (container) {
+    return ReactDOM.createPortal(drawKonvas(), container);
+  }
+  return <></>;
 }
 
 const shapeObjectPropTypes = PropTypes.shape({
@@ -581,6 +579,8 @@ const shapeObjectPropTypes = PropTypes.shape({
 AnnotationDrawing.propTypes = {
   activeTool: PropTypes.string.isRequired,
   closed: PropTypes.bool.isRequired,
+  closeFormCompanionWindow: PropTypes.func.isRequired,
+  displayMode: PropTypes.string.isRequired,
   drawingState: PropTypes.oneOfType([
     PropTypes.shape({
       currentShape: shapeObjectPropTypes,
@@ -616,9 +616,28 @@ AnnotationDrawing.propTypes = {
     ),
   ]).isRequired,
   fillColor: PropTypes.string.isRequired,
+  height: PropTypes.number.isRequired,
+  imageEvent: PropTypes.shape({
+    id: PropTypes.string,
+  }),
+  mediaType: PropTypes.string.isRequired,
   originalHeight: PropTypes.number.isRequired,
   originalWidth: PropTypes.number.isRequired,
+  overlay: PropTypes.shape({
+    canvasHeight: PropTypes.number,
+    canvasWidth: PropTypes.number,
+    containerHeight: PropTypes.number,
+    containerWidth: PropTypes.number,
+    height: PropTypes.number,
+    width: PropTypes.number,
+  }),
+  scale: PropTypes.number.isRequired,
+  setColorToolFromCurrentShape: PropTypes.func.isRequired,
+  setDrawingState: PropTypes.func.isRequired,
   strokeColor: PropTypes.string.isRequired,
   strokeWidth: PropTypes.number.isRequired,
+  updateCurrentShapeInShapes: PropTypes.func.isRequired,
+  updateScale: PropTypes.func.isRequired,
+  width: PropTypes.number.isRequired,
   windowId: PropTypes.string.isRequired,
 };
