@@ -61,6 +61,7 @@ function AnnotationFormOverlay(
         ...defaultToolState,
         activeTool: tool,
       });
+      updateCurrentShapeInShapes(null);
     } else {
       setToolState({
         ...toolState,
