@@ -47,6 +47,23 @@ export const templateTypes = [
     },
     label: 'Note',
   },
+  {
+    description: 'Tag with target',
+    icon: <LocalOfferIcon fontSize="small" />,
+    id: template.TAGGING_TYPE,
+    isCompatibleWithTemplate: (mediaType) => {
+      if (mediaType === mediaTypes.VIDEO) {
+        return true;
+      }
+      if (mediaType === mediaTypes.IMAGE) {
+        return true;
+      }
+      if (mediaType === mediaTypes.AUDIO) {
+        return true;
+      }
+    },
+    label: 'Tag',
+  },
   // {
   //   description: 'Image in overlay with a note',
   //   icon: <ImageIcon fontSize="small" />,
@@ -98,23 +115,6 @@ export const templateTypes = [
     },
     label: 'Document',
   }, */
-  {
-    description: 'Tag with target',
-    icon: <LocalOfferIcon fontSize="small" />,
-    id: template.TAGGING_TYPE,
-    isCompatibleWithTemplate: (mediaType) => {
-      if (mediaType === mediaTypes.VIDEO) {
-        return true;
-      }
-      if (mediaType === mediaTypes.IMAGE) {
-        return true;
-      }
-      if (mediaType === mediaTypes.AUDIO) {
-        return true;
-      }
-    },
-    label: 'Tag',
-  },
   {
     description: 'Edit directly the IIIF json code',
     icon: <DataObjectIcon fontSize="small" />,
