@@ -33,7 +33,11 @@ export function TargetSpatialInput({
     setScale(overlay.containerWidth / overlay.canvasWidth);
   };
 
-  const [drawingState, setDrawingState] = useState(targetDrawingState);
+  const [drawingState, setDrawingState] = useState({
+    ...targetDrawingState,
+    currentShape: null,
+    isDrawing: false,
+  });
 
   useEffect(() => {
     setTargetDrawingState({ drawingState });

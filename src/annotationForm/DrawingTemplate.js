@@ -123,7 +123,10 @@ export default function DrawingTemplate(
 
   const initDrawingState = () => {
     if (annotationState.maeData.drawingState) {
-      return JSON.parse(annotationState.maeData.drawingState);
+      return {
+        ...JSON.parse(annotationState.maeData.drawingState),
+        isDrawing: false,
+      };
     }
     return {
       currentShape: null,
