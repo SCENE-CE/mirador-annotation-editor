@@ -9,6 +9,7 @@ function Rectangle({
   shape,
   onShapeClick,
   activeTool,
+    displayMode,
   isSelected,
   onTransform,
   handleDragEnd,
@@ -42,7 +43,6 @@ function Rectangle({
         y={shape.y || 0}
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
-        rotation={shape.rotation}
         width={shape.width || 1}
         height={shape.height || 1}
         fill={shape.fill}
@@ -57,6 +57,7 @@ function Rectangle({
         onDragStart={handleDragStart}
       />
       <Transformer
+        rotateEnabled={displayMode !== 'target'}
         ref={trRef}
         visible={activeTool === 'edit' && isSelected}
       />
