@@ -5,6 +5,7 @@ import AnnotationFormFooter from './AnnotationFormFooter';
 import {maeTargetToIiifTarget, mediaTypes, template} from '../AnnotationFormUtils';
 import TargetFormSection from './TargetFormSection';
 import { getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { Debug } from './Debug';
 
 export default function TaggingTemplate(
   {

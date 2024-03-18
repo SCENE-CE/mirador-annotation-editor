@@ -6,14 +6,14 @@ import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
-import {
-  maeTargetToIiifTarget, mediaTypes, TARGET_VIEW, template,
-} from '../AnnotationFormUtils';
-import { getKonvaAsDataURL, KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { maeTargetToIiifTarget, mediaTypes, TARGET_VIEW, template, } from '../AnnotationFormUtils';
+import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { defaultToolState } from '../AnnotationCreationUtils';
 import AnnotationDrawing from './AnnotationDrawing';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import AnnotationFormFooter from './AnnotationFormFooter';
+import { Debug } from './Debug';
+
 
 /**
  * Image Comment template
@@ -278,6 +278,14 @@ export default function ImageCommentTemplate(
         timeTarget
         spatialTarget={false}
       />
+     {/*  <Grid item>
+        <Debug
+          overlay={overlay}
+          scale={scale}
+          drawingState={drawingState}
+        />
+      </Grid> */}
+
       <Grid item>
         <AnnotationFormFooter
           closeFormCompanionWindow={closeFormCompanionWindow}
