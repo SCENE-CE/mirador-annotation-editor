@@ -299,7 +299,7 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
       console.info('Implement target as string on fullSizeCanvas');
       return `${canvasId}#` + `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}`;
     }
-    if (maeTarget.drawingState.shapes.length === 1 && (maeTarget.drawingState.shapes[0].type === 'rectangle')) {
+    if (maeTarget.drawingState.shapes.length === 1 && (maeTarget.drawingState.shapes[0].type === 'rectangle' || maeTarget.drawingState.shapes[0].type === 'image')) {
       let {
         x, y, width, height,
       } = maeTarget.drawingState.shapes[0];

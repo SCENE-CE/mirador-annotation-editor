@@ -74,6 +74,7 @@ export default function AnnotationFormBody(
             windowId={windowId}
             templateType={templateType}
             mediaType={mediaType}
+            saveAnnotation={saveAnnotation}
             currentTime={currentTime}
             overlay={overlay}
           />
