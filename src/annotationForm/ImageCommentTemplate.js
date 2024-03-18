@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import TextFormSection from './TextFormSection';
-import TargetFormSection from './TargetFormSection';
-import ImageFormSection from './ImageFormSection';
-import { maeTargetToIiifTarget, mediaTypes, TARGET_VIEW, template } from '../AnnotationFormUtils';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
-import { getKonvaAsDataURL, KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import { defaultToolState } from '../AnnotationCreationUtils';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import TextFormSection from './TextFormSection';
+import TargetFormSection from './TargetFormSection';
+import {
+  maeTargetToIiifTarget, mediaTypes, TARGET_VIEW, template,
+} from '../AnnotationFormUtils';
+import { getKonvaAsDataURL, KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { defaultToolState } from '../AnnotationCreationUtils';
 import AnnotationDrawing from './AnnotationDrawing';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import DrawingTemplate from './DrawingTemplate';
 
 /**
  * Image Comment template
@@ -36,13 +36,12 @@ export default function ImageCommentTemplate(
     currentTime,
     mediaType,
     overlay,
+    saveAnnotation,
     setCurrentTime,
     setSeekTo,
     windowId,
-    saveAnnotation,
   },
 ) {
-
   let maeAnnotation = annotation;
 
   if (!maeAnnotation.id) {
@@ -61,6 +60,8 @@ export default function ImageCommentTemplate(
       motivation: 'commenting',
       target: null,
     };
+  } else if (maeAnnotation.maeData.target.drawingState && typeof maeAnnotation.maeData.target.drawingState === 'string') {
+    maeAnnotation.maeData.target.drawingState = JSON.parse(maeAnnotation.maeData.target.drawingState);
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
@@ -86,7 +87,7 @@ export default function ImageCommentTemplate(
     const promises = canvases.map(async (canvas) => {
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
-      maeAnnotation.maeData.target.drawingState = drawingState;
+      annotationState.maeData.target.drawingState = drawingState;
       if (drawingState.shapes) {
         annotationState.body.id = drawingState.shapes[0].url;
       }
@@ -143,21 +144,6 @@ export default function ImageCommentTemplate(
   const updateScale = () => {
     setScale(overlay.containerWidth / overlay.canvasWidth);
   };
-
-  // TODO Check how to use it
-
-  /*   /!**
-     * Update annoState with the svg and position of kanva item
-     * @param svg
-     * @param xywh
-     *!/
-  const updateGeometry = ({ svg, xywh }) => {
-    setAnnoState((prevState) => ({
-      ...prevState,
-      svg,
-      xywh,
-    }));
-  }; */
 
   /**
    * Updates the tool state by merging the current color state with the existing tool state.
@@ -289,6 +275,7 @@ export default function ImageCommentTemplate(
         overlay={overlay}
         closeFormCompanionWindow={closeFormCompanionWindow}
         timeTarget
+        spatialTarget={false}
       />
       <Grid item>
         <AnnotationFormFooter

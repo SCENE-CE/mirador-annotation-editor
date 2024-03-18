@@ -15,16 +15,16 @@ import { getKonvaAsDataURL, getSvg } from './AnnotationFormOverlay/KonvaDrawing/
 function TextCommentTemplate(
   {
     annotation,
+    canvases,
+    closeFormCompanionWindow,
     currentTime,
+    getMediaAudio,
     mediaType,
+    overlay,
+    saveAnnotation,
     setCurrentTime,
     setSeekTo,
     windowId,
-    saveAnnotation,
-    closeFormCompanionWindow,
-    canvases,
-    overlay,
-    getMediaAudio,
   },
 ) {
   let maeAnnotation = annotation;
