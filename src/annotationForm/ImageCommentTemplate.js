@@ -89,6 +89,7 @@ export default function ImageCommentTemplate(
       // eslint-disable-next-line no-param-reassign
       annotationState.maeData.target.drawingState = drawingState;
       if (drawingState.shapes) {
+        // TODO check if only one shape is allowed
         annotationState.body.id = drawingState.shapes[0].url;
       }
       annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
