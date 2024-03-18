@@ -229,7 +229,7 @@ export default function DrawingTemplate(
       });
     }
   };
-
+/** Handle text change from AnnotationFormOverlayToolOption **/
   const handleTextChange = (e) =>{
     const text = e.target.value
     setToolState(

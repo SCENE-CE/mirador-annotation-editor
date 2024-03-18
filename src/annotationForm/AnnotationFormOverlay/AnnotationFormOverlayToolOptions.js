@@ -264,20 +264,20 @@ function AnnotationFormOverlayToolOptions({
       }
       {
           toolState.activeTool === 'text' && (
-          <>
-            <Typography variant="overline">
-              Text
-            </Typography>
-            { toolState.text ? (
-              <TextField
-                value={toolState.text}
-                fullWidth
-                onChange={handleTextChange}
+              <Grid container direction="column" spacing={1}>
+                <Grid item>
+                  <Typography variant="overline">
+                    Text
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <TextField
+                    value={toolState.text ? toolState.text : "Click on Canvas"}
+                    fullWidth
+                    onChange={handleTextChange}
               />
-            ) : (
-              <p>Click on canva to add text</p>
-            )}
-          </>
+                </Grid>
+              </Grid>
           )
       }
       {
