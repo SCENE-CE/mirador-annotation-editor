@@ -544,7 +544,6 @@ export default function AnnotationDrawing({
 
   if (mediaType === mediaTypes.IMAGE) {
     if (osdref.current === undefined) {
-      console.log('window close');
       closeFormCompanionWindow();
     } else {
       container = osdref.current ? osdref.current.container : undefined;
@@ -552,10 +551,7 @@ export default function AnnotationDrawing({
   }
 
   if (mediaType === mediaTypes.VIDEO) {
-    console.log(videoref);
-    console.log('videoref', videoref.ref.current);
     if (videoref.ref.current === null) {
-      console.log('window close');
       closeFormCompanionWindow();
     } else {
       container = videoref.ref ? videoref.ref.current.parentElement : undefined;

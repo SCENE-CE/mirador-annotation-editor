@@ -66,7 +66,7 @@ export const templateTypes = [
   },
   {
     description: 'Image in overlay with a note',
-    icon: <ImageIcon fontSize="small"/>,
+    icon: <ImageIcon fontSize="small" />,
     id: template.IMAGE_TYPE,
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === mediaTypes.VIDEO) {
@@ -303,6 +303,10 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
       let {
         x, y, width, height,
       } = maeTarget.drawingState.shapes[0];
+      // x = Math.floor(x / maeTarget.scale);
+      // y = Math.floor(y / maeTarget.scale);
+      // width = Math.floor(width / maeTarget.scale);
+      // height = Math.floor(height / maeTarget.scale);
       x = Math.floor(x);
       y = Math.floor(y);
       width = Math.floor(width);
