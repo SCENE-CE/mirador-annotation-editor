@@ -110,7 +110,6 @@ export default function AnnotationDrawing({
   /** */
   const handleKeyPress = (e) => {
     e.stopPropagation();
-    const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape', 'Tab', 'AltGraph', 'CapsLock', 'NumLock', 'ScrollLock', 'Pause', 'Insert', 'Home', 'PageUp', 'PageDown', 'End', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ContextMenu', 'PrintScreen', 'Help', 'Clear', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'OS'];
 
     if (!drawingState.currentShape) {
       return;
@@ -128,18 +127,9 @@ export default function AnnotationDrawing({
 
     // TODO This comportment must be handle by the text component
     if (drawingState.currentShape.type === 'text') {
-      let newText = drawingState.currentShape.text;
-      if (e.key === 'Backspace') {
-        newText = newText.slice(0, -1);
-      } else {
-        if (unnalowedKeys.includes(e.key)) {
-          return;
-        }
-        newText += e.key;
-      }
 
       // Potentially bug during the update
-      const newCurrentShape = { ...drawingState.currentShape, text: newText };
+      const newCurrentShape = { ...drawingState.currentShape };
 
       setDrawingState({
         ...drawingState,

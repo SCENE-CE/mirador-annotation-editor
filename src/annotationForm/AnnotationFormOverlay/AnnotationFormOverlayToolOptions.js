@@ -58,6 +58,7 @@ function AnnotationFormOverlayToolOptions({
   setToolState,
   toolState,
   displayMode,
+  handleTextChange,
 }) {
   // set toolOptionsValue
   const [toolOptions, setToolOptions] = useState({
@@ -163,7 +164,6 @@ function AnnotationFormOverlayToolOptions({
       imageEvent: data,
     });
   };
-
 
   return (
     <div>
@@ -272,6 +272,7 @@ function AnnotationFormOverlayToolOptions({
               <TextField
                 value={toolState.text}
                 fullWidth
+                onChange={handleTextChange}
               />
             ) : (
               <p>Click on canva to add text</p>

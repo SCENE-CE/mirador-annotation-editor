@@ -230,6 +230,25 @@ export default function DrawingTemplate(
     }
   };
 
+  const handleTextChange = (e) =>{
+    const text = e.target.value
+    setToolState(
+        {
+          ...toolState,
+          text: text,
+        }
+    )
+    setDrawingState({
+      ...drawingState,
+      currentShape:{
+        ...drawingState.currentShape,
+        text: text,
+      }
+    })
+    console.log(e.target.value)
+  }
+
+
   return (
     <Grid container direction="column" spacing={2}>
       {/* Rename AnnotationDrawing in Drawing Stage */}
@@ -283,6 +302,7 @@ export default function DrawingTemplate(
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
           showStyleTools
           displayMode={KONVA_MODE.DRAW}
+          handleTextChange={handleTextChange}
         />
       </Grid>
       <Grid item>
