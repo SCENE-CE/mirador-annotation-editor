@@ -17,7 +17,8 @@ import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { getKonvaAsDataURL, KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import Typography from '@mui/material/Typography';
 // TODO check if useful
 
 /**
@@ -61,8 +62,8 @@ export default function DrawingTemplate(
     // If the annotation does not have maeData, the annotation was not created with mae
     maeAnnotation = {
       body: {
-        id: uuid(),
-        type: 'TextualBody',
+        id: null,
+        type: 'Image',
         value: '',
       },
       maeData: {
@@ -95,15 +96,18 @@ export default function DrawingTemplate(
   }
   /** save Function * */
   const saveFunction = () => {
-    canvases.forEach(async (canvas) => {
+    const promises = canvases.map(async (canvas) => {
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
+      annotationState.body.id = await getKonvaAsDataURL(windowId);
       annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
       annotationState.maeData.drawingState = JSON.stringify(drawingState);
       // delete annotationState.maeData.target;
-      saveAnnotation(annotationState, canvas.id);
+      return saveAnnotation(annotationState, canvas.id);
     });
-    closeFormCompanionWindow();
+    Promise.all(promises).then(() => {
+      closeFormCompanionWindow();
+    });
   };
 
   const updateAnnotationTextualBodyValue = (newTextValue) => {
@@ -122,7 +126,10 @@ export default function DrawingTemplate(
 
   const initDrawingState = () => {
     if (annotationState.maeData.drawingState) {
-      return JSON.parse(annotationState.maeData.drawingState);
+      return {
+        ...JSON.parse(annotationState.maeData.drawingState),
+        isDrawing: false,
+      };
     }
     return {
       currentShape: null,
@@ -197,20 +204,28 @@ export default function DrawingTemplate(
   };
 
   const updateCurrentShapeInShapes = (currentShape) => {
-    const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
-    if (index !== -1) {
-      // eslint-disable-next-line max-len
-      const updatedShapes = drawingState.shapes.map((shape, i) => (i === index ? currentShape : shape));
-      setDrawingState({
-        ...drawingState,
-        currentShape,
-        shapes: updatedShapes,
-      });
+    if (currentShape) {
+      const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
+      if (index !== -1) {
+        // eslint-disable-next-line max-len
+        const updatedShapes = drawingState.shapes.map((shape, i) => (i === index ? currentShape : shape));
+        setDrawingState({
+          ...drawingState,
+          currentShape,
+          shapes: updatedShapes,
+        });
+      } else {
+        setDrawingState({
+          ...drawingState,
+          currentShape,
+          shapes: [...drawingState.shapes, currentShape],
+        });
+      }
     } else {
       setDrawingState({
         ...drawingState,
-        currentShape,
-        shapes: [...drawingState.shapes, currentShape],
+        currentShape: null,
+        shapes: drawingState.shapes,
       });
     }
   };
@@ -220,6 +235,11 @@ export default function DrawingTemplate(
       {/* Rename AnnotationDrawing in Drawing Stage */}
       {/* Check the useless props : annotation ?
       Check the width height originalW originalW */}
+      <Grid item>
+        <Typography variant="formSectionTitle">
+          Overlay
+        </Typography>
+      </Grid>
       <Grid item>
 
         <AnnotationDrawing
@@ -250,7 +270,6 @@ export default function DrawingTemplate(
           mediaType={mediaType}
           closeFormCompanionWindow={closeFormCompanionWindow}
           displayMode={KONVA_MODE.DRAW}
-          drawingMode={true}
         />
       </Grid>
       <Grid item>
@@ -263,7 +282,7 @@ export default function DrawingTemplate(
           setViewTool={setViewTool}
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
           showStyleTools
-          drawingMode={true}
+          displayMode={KONVA_MODE.DRAW}
         />
       </Grid>
       <Grid item>

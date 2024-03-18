@@ -12,17 +12,20 @@ import ImageShape from './Image';
 /** Loads Konva and display in function of their type */
 function ParentComponent({
   isMouseOverSave,
-  scale, onTransform, handleDragEnd,
-  shapes, onShapeClick, selectedShapeId, activeTool, handleDragStart, trview,drawingMode
+  scale,
+  onTransform,
+  handleDragEnd,
+  shapes,
+  onShapeClick,
+  selectedShapeId,
+  activeTool,
+  handleDragStart,
+  trview,
 }) {
-  console.log(drawingMode)
-  // TODO Simplify these state
   const [selectedShape, setSelectedShape] = useState(null);
 
   useEffect(() => {
-   /* if (shapes.length === 1 && !selectedShapeId) {
-      setSelectedShape(shapes[0]);
-    }*/
+
   }, [shapes, selectedShapeId]);
 
   useEffect(() => {
@@ -46,14 +49,13 @@ function ParentComponent({
       {/* eslint-disable-next-line consistent-return */}
       {shapes.map((shape, i) => {
         // eslint-disable-next-line max-len
-        const isSelected = selectedShapeId === shape.id && isMouseOverSave === false && trview === true;
+        const isSelected = selectedShapeId === shape.id && !isMouseOverSave && trview;
         switch (shape.type) {
           case 'rectangle':
             return (
               <Rectangle
                 {...{
                   activeTool,
-                  drawingMode,
                   handleDragEnd,
                   handleDragStart,
                   isSelected,

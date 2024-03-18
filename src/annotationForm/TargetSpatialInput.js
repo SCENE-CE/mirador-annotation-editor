@@ -10,6 +10,7 @@ import { defaultToolState, OVERLAY_TOOL, targetSVGToolState } from '../Annotatio
 import { mediaTypes, TARGET_VIEW } from '../AnnotationFormUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import CursorIcon from '../icons/Cursor';
+import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
 export function TargetSpatialInput({
   closeFormCompanionWindow,
@@ -32,7 +33,11 @@ export function TargetSpatialInput({
     setScale(overlay.containerWidth / overlay.canvasWidth);
   };
 
-  const [drawingState, setDrawingState] = useState(targetDrawingState);
+  const [drawingState, setDrawingState] = useState({
+    ...targetDrawingState,
+    currentShape: null,
+    isDrawing: false,
+  });
 
   useEffect(() => {
     setTargetDrawingState({ drawingState });
@@ -69,27 +74,31 @@ export function TargetSpatialInput({
     player = OSDReferences.get(windowId);
   }
   const updateCurrentShapeInShapes = (currentShape) => {
-    const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
-
-    if (index !== -1) {
-      // eslint-disable-next-line max-len
-      const updatedShapes = drawingState.shapes.map((shape, i) => (i === index ? currentShape : shape));
-      setDrawingState({
-        ...drawingState,
-        currentShape,
-        shapes: updatedShapes,
-      });
+    if (currentShape) {
+      const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
+      if (index !== -1) {
+        // eslint-disable-next-line max-len
+        const updatedShapes = drawingState.shapes.map((shape, i) => (i === index ? currentShape : shape));
+        setDrawingState({
+          ...drawingState,
+          currentShape,
+          shapes: updatedShapes,
+        });
+      } else {
+        setDrawingState({
+          ...drawingState,
+          currentShape,
+          shapes: [...drawingState.shapes, currentShape],
+        });
+      }
     } else {
       setDrawingState({
         ...drawingState,
         currentShape,
-        shapes: [...drawingState.shapes, currentShape],
       });
     }
   };
   const showSVGSelector = true;
-
-  const TARGET_MODE = 'target';
 
   return (
     <Grid container direction="column">
@@ -122,7 +131,8 @@ export function TargetSpatialInput({
               showStyleTools
               mediaType={mediaType}
               closeFormCompanionWindow={closeFormCompanionWindow}
-              drawingMode={false}
+              displayMode={KONVA_MODE.TARGET}
+              isMouseOverSave={false} // TODO remove
             />
             <AnnotationFormOverlay
               toolState={toolState}
@@ -131,8 +141,7 @@ export function TargetSpatialInput({
               shapes={drawingState.shapes}
               currentShape={drawingState.currentShape}
               setViewTool={setViewTool}
-              drawingMode={false}
-              displayMode={TARGET_MODE}
+              displayMode={KONVA_MODE.TARGET}
               updateCurrentShapeInShapes={updateCurrentShapeInShapes}
             />
           </Grid>

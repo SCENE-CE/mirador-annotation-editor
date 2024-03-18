@@ -44,7 +44,6 @@ function AnnotationFormOverlay(
     updateCurrentShapeInShapes,
     setViewTool,
     shapes,
-    drawingMode,
   },
 ) {
   useEffect(() => {
@@ -62,6 +61,7 @@ function AnnotationFormOverlay(
         ...defaultToolState,
         activeTool: tool,
       });
+      updateCurrentShapeInShapes(null);
     } else {
       setToolState({
         ...toolState,
@@ -80,45 +80,55 @@ function AnnotationFormOverlay(
   } = toolState;
 
   return (
+    <Grid container>
+      <OverlayIconAndTitleContainer item xs={12}>
+        <StyledToggleButtonGroup
+          value={activeTool} // State or props ?
+          exclusive
+          onChange={changeTool}
+          aria-label="tool selection"
+          size="small"
+        >
+          <ToggleButton value={OVERLAY_TOOL.EDIT} aria-label="select cursor" onClick={tabHandler(TARGET_VIEW)}>
+            <CursorIcon />
+          </ToggleButton>
+          { displayMode !== KONVA_MODE.IMAGE && (
+          <>
 
-        <Grid container>
-          <OverlayIconAndTitleContainer item xs={12}>
-            <StyledToggleButtonGroup
-              value={activeTool} // State or props ?
-              exclusive
-              onChange={changeTool}
-              aria-label="tool selection"
-              size="small"
-            >
-              <ToggleButton value={OVERLAY_TOOL.EDIT} aria-label="select cursor" onClick={tabHandler(TARGET_VIEW)}>
-                <CursorIcon />
-              </ToggleButton>
-              <ToggleButton value={OVERLAY_TOOL.SHAPE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
-                <CategoryIcon />
-              </ToggleButton>
-              {
+            <ToggleButton value={OVERLAY_TOOL.SHAPE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
+              <CategoryIcon />
+            </ToggleButton>
+            {
                 displayMode === KONVA_MODE.DRAW && (
                   <ToggleButton value={OVERLAY_TOOL.TEXT} aria-label="select text" onClick={tabHandler(OVERLAY_VIEW)}>
                     <TitleIcon />
                   </ToggleButton>
                 )
               }
-              <ToggleButton value={OVERLAY_TOOL.DELETE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
-                <DeleteIcon />
-              </ToggleButton>
-            </StyledToggleButtonGroup>
+            <ToggleButton value={OVERLAY_TOOL.DELETE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
+              <DeleteIcon />
+            </ToggleButton>
+          </>
+          )}
+          { displayMode === KONVA_MODE.IMAGE && (
+            <ToggleButton value={OVERLAY_TOOL.IMAGE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
 
-            <AnnotationFormOverlayTool
-              toolState={toolState}
-              setToolState={setToolState}
-              currentShape={currentShape}
-              shapes={shapes}
-              deleteShape={deleteShape}
-              drawingMode={drawingMode}
-              updateCurrentShapeInShapes={updateCurrentShapeInShapes}
-            />
-          </OverlayIconAndTitleContainer>
-        </Grid>
+              <ImageIcon />
+            </ToggleButton>
+          )}
+        </StyledToggleButtonGroup>
+
+        <AnnotationFormOverlayTool
+          toolState={toolState}
+          setToolState={setToolState}
+          currentShape={currentShape}
+          shapes={shapes}
+          deleteShape={deleteShape}
+          updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+          displayMode={displayMode}
+        />
+      </OverlayIconAndTitleContainer>
+    </Grid>
   );
 }
 
@@ -134,6 +144,7 @@ AnnotationFormOverlay.propTypes = {
     y: PropTypes.number,
   }).isRequired,
   deleteShape: PropTypes.func.isRequired,
+  displayMode: PropTypes.string.isRequired,
   setToolState: PropTypes.func.isRequired,
   setViewTool: PropTypes.func.isRequired,
   shapes: PropTypes.arrayOf(
@@ -159,6 +170,7 @@ AnnotationFormOverlay.propTypes = {
     strokeWidth: PropTypes.number.isRequired,
     updateColor: PropTypes.func.isRequired,
   }).isRequired,
+  updateCurrentShapeInShapes: PropTypes.func.isRequired,
 };
 
 export default AnnotationFormOverlay;

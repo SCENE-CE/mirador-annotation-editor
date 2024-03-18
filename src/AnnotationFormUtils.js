@@ -47,23 +47,40 @@ export const templateTypes = [
     },
     label: 'Note',
   },
-  // {
-  //   description: 'Image in overlay with a note',
-  //   icon: <ImageIcon fontSize="small" />,
-  //   id: template.IMAGE_TYPE,
-  //   label: 'Image',
-  //   isCompatibleWithTemplate: (manifestType) =>{
-  //     if( manifestType === manifestTypes.VIDEO){
-  //       return true
-  //     }
-  //     if( manifestType === manifestTypes.IMAGE) {
-  //       return false
-  //     }
-  //     if( manifestType === manifestTypes.AUDIO){
-  //       return false
-  //     }
-  //   },
-  // },
+  {
+    description: 'Tag with target',
+    icon: <LocalOfferIcon fontSize="small" />,
+    id: template.TAGGING_TYPE,
+    isCompatibleWithTemplate: (mediaType) => {
+      if (mediaType === mediaTypes.VIDEO) {
+        return true;
+      }
+      if (mediaType === mediaTypes.IMAGE) {
+        return true;
+      }
+      if (mediaType === mediaTypes.AUDIO) {
+        return true;
+      }
+    },
+    label: 'Tag',
+  },
+  {
+    description: 'Image in overlay with a note',
+    icon: <ImageIcon fontSize="small" />,
+    id: template.IMAGE_TYPE,
+    isCompatibleWithTemplate: (mediaType) => {
+      if (mediaType === mediaTypes.VIDEO) {
+        return true;
+      }
+      if (mediaType === mediaTypes.IMAGE) {
+        return false;
+      }
+      if (mediaType === mediaTypes.AUDIO) {
+        return false;
+      }
+    },
+    label: 'Image',
+  },
   {
     description: 'Drawings and text in overlay',
     icon: <CategoryIcon fontSize="small" />,
@@ -98,23 +115,6 @@ export const templateTypes = [
     },
     label: 'Document',
   }, */
-  {
-    description: 'Tag with target',
-    icon: <LocalOfferIcon fontSize="small" />,
-    id: template.TAGGING_TYPE,
-    isCompatibleWithTemplate: (mediaType) => {
-      if (mediaType === mediaTypes.VIDEO) {
-        return true;
-      }
-      if (mediaType === mediaTypes.IMAGE) {
-        return true;
-      }
-      if (mediaType === mediaTypes.AUDIO) {
-        return true;
-      }
-    },
-    label: 'Tag',
-  },
   {
     description: 'Edit directly the IIIF json code',
     icon: <DataObjectIcon fontSize="small" />,
@@ -299,10 +299,14 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
       console.info('Implement target as string on fullSizeCanvas');
       return `${canvasId}#` + `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}`;
     }
-    if (maeTarget.drawingState.shapes.length === 1 && (maeTarget.drawingState.shapes[0].type === 'rectangle')) {
+    if (maeTarget.drawingState.shapes.length === 1 && (maeTarget.drawingState.shapes[0].type === 'rectangle' || maeTarget.drawingState.shapes[0].type === 'image')) {
       let {
         x, y, width, height,
       } = maeTarget.drawingState.shapes[0];
+      // x = Math.floor(x / maeTarget.scale);
+      // y = Math.floor(y / maeTarget.scale);
+      // width = Math.floor(width / maeTarget.scale);
+      // height = Math.floor(height / maeTarget.scale);
       x = Math.floor(x);
       y = Math.floor(y);
       width = Math.floor(width);

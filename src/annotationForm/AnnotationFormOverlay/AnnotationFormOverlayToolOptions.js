@@ -19,10 +19,17 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { v4 as uuidv4 } from 'uuid';
 import ImageFormField from './ImageFormField';
 import { isShapesTool, OVERLAY_TOOL } from '../../AnnotationCreationUtils';
-import { defaultLineWeightChoices } from './KonvaDrawing/KonvaUtils';
+import { defaultLineWeightChoices, KONVA_MODE } from './KonvaDrawing/KonvaUtils';
+import { defaultToolState } from '../../AnnotationFormUtils';
 
 const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
+}));
+
+const StyledDivButtonImage = styled('div')(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'flex-end',
+  marginTop: '5px',
 }));
 
 /** Utils functions to convert string to object */
@@ -47,7 +54,11 @@ const objToRgba = (obj = {
 }) => `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
 
 /** All the tools options for the overlay options */
-function AnnotationFormOverlayToolOptions({ setToolState, toolState, drawingMode }) {
+function AnnotationFormOverlayToolOptions({
+  setToolState,
+  toolState,
+  displayMode,
+}) {
   // set toolOptionsValue
   const [toolOptions, setToolOptions] = useState({
     colorPopoverOpen: false,
@@ -131,10 +142,33 @@ function AnnotationFormOverlayToolOptions({ setToolState, toolState, drawingMode
     });
   };
 
+
+  const handleImgChange = (newUrl, imgRef) => {
+    setToolState({
+      ...toolState,
+      image: { ...toolState.image, id: newUrl },
+    });
+  };
+
+
+  const addImage = () => {
+    const data = {
+      id: toolState?.image?.id,
+      uuid: uuidv4(),
+    };
+
+    setToolState({
+      ...toolState,
+      image: { id: null },
+      imageEvent: data,
+    });
+  };
+
+
   return (
     <div>
       {
-        (drawingMode && isShapesTool(toolState.activeTool)) && (
+        (displayMode === KONVA_MODE.DRAW && isShapesTool(toolState.activeTool)) && (
           <Grid container>
             <Grid item xs={12}>
               <Typography variant="overline">
@@ -245,11 +279,29 @@ function AnnotationFormOverlayToolOptions({ setToolState, toolState, drawingMode
           </>
           )
       }
+      {
+        toolState.activeTool === OVERLAY_TOOL.IMAGE && (
+          <>
+            <Typography variant="overline">
+              Add image from URL
+            </Typography>
+            <Grid container>
+              <ImageFormField xs={8} value={toolState.image} onChange={handleImgChange} />
+            </Grid>
+            <StyledDivButtonImage>
+              <Button variant="contained" onClick={addImage}>
+                <AddPhotoAlternateIcon />
+              </Button>
+            </StyledDivButtonImage>
+          </>
+        )
+      }
     </div>
   );
 }
 
 AnnotationFormOverlayToolOptions.propTypes = {
+  displayMode: PropTypes.string.isRequired,
   setToolState: PropTypes.func.isRequired,
   toolState: PropTypes.shape({
     activeTool: PropTypes.string.isRequired,

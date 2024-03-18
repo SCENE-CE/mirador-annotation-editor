@@ -57,9 +57,9 @@ The authors of this software are :
 - If you need video annotation, you can use [our fork of Mirador: mirador-video](https://gitlab.tetras-libre.fr/iiif/mirador/mirador-video)
 
 
-## Integration with npm in existing project
+## Use in npm project
 
-You can override Mirador and existing annotation plugin with your own versions by using npm.
+You can override Mirador and existing annotation plugin with your own versions by using npm. We support React 18 and MUI 5.
 Our custom Mirador 3 version. https://github.com/SCENE-CE/mirador-video
 
 ```js
