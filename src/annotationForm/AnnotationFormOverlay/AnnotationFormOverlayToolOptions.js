@@ -58,6 +58,8 @@ function AnnotationFormOverlayToolOptions({
   setToolState,
   toolState,
   displayMode,
+    setDrawingState,
+    drawingState
 }) {
   // set toolOptionsValue
   const [toolOptions, setToolOptions] = useState({
@@ -163,6 +165,17 @@ function AnnotationFormOverlayToolOptions({
       imageEvent: data,
     });
   };
+
+  const handleTextChange = (e) =>{
+    console.log(e.target.value)
+    setDrawingState( {
+      ...drawingState,
+      currentShape:{
+        ...drawingState.currentShape,
+        text:e.target.value,
+      }
+    })
+  }
 
 
   return (
@@ -270,8 +283,8 @@ function AnnotationFormOverlayToolOptions({
             </Typography>
             { toolState.text ? (
               <TextField
-                value={toolState.text}
                 fullWidth
+                onChange={handleTextChange}
               />
             ) : (
               <p>Click on canva to add text</p>

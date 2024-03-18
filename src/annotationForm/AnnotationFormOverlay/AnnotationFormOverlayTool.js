@@ -37,10 +37,12 @@ function AnnotationFormOverlayTool({
   toolState,
   setToolState,
   currentShape,
+  drawingState,
   updateCurrentShapeInShapes,
   shapes,
   deleteShape,
   displayMode,
+  setDrawingState,
 }) {
   /** Change the active overlay tool */
   const changeTool = (e, tool) => {
@@ -82,6 +84,7 @@ function AnnotationFormOverlayTool({
                   }}
                   setToolState={customUpdateToolState}
                   displayMode={displayMode}
+                  setDrawingState={setDrawingState}
                 />
               </div>
               )
@@ -165,6 +168,8 @@ function AnnotationFormOverlayTool({
         toolState={toolState}
         setToolState={setToolState}
         displayMode={displayMode}
+        setDrawingState={setDrawingState}
+        drawingState={drawingState}
       />
     </>
   );

@@ -145,7 +145,6 @@ export default function DrawingTemplate(
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
 
   useEffect(() => {
-
   }, [toolState.fillColor, toolState.strokeColor, toolState.strokeWidth]);
 
   /** Change scale from container / canva */
@@ -274,10 +273,12 @@ export default function DrawingTemplate(
       </Grid>
       <Grid item>
         <AnnotationFormOverlay
+          drawingState={drawingState}
           toolState={toolState}
           deleteShape={deleteShape}
           setToolState={setToolState}
           shapes={drawingState.shapes}
+          setDrawingState={setDrawingState}
           currentShape={drawingState.currentShape}
           setViewTool={setViewTool}
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}

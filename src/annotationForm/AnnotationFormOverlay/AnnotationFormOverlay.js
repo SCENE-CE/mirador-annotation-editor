@@ -36,12 +36,14 @@ const OverlayIconAndTitleContainer = styled(Grid)(({ theme }) => ({
 /** All the stuff to manage to choose the drawing tool */
 function AnnotationFormOverlay(
   {
+    drawingState,
     displayMode,
     setToolState,
     toolState,
     deleteShape,
     currentShape,
     updateCurrentShapeInShapes,
+      setDrawingState,
     setViewTool,
     shapes,
   },
@@ -125,7 +127,9 @@ function AnnotationFormOverlay(
           shapes={shapes}
           deleteShape={deleteShape}
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+          drawingState={drawingState}
           displayMode={displayMode}
+          setDrawingState={setDrawingState}
         />
       </OverlayIconAndTitleContainer>
     </Grid>
