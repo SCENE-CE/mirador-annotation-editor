@@ -144,6 +144,7 @@ export default function AnnotationFormBody(
         <ToggleButton
           value={showDebug}
           onChange={() => setShowDebug(!showDebug)}
+          style={{ display: 'none' }}
         >
           {showDebug ? 'Hide' : 'Show'}
           {' '}
