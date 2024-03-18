@@ -59,6 +59,14 @@ function AnnotationFormOverlayTool({
     });
   };
 
+  /** Set DefaultTool Option to Rectangle **/
+  if(toolState.activeTool === OVERLAY_TOOL.SHAPE){
+    setToolState({
+      ...toolState,
+      activeTool: SHAPES_TOOL.RECTANGLE
+    })
+  }
+
   return (
     <>
       {
