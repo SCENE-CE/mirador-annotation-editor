@@ -255,12 +255,8 @@ export default function DrawingTemplate(
       <Grid item>
         <AnnotationDrawing
           scale={scale}
-          activeTool={toolState.activeTool}
+          toolState={toolState}
           annotation={annotation}
-          fillColor={toolState.fillColor}
-          strokeColor={toolState.strokeColor}
-          strokeWidth={toolState.strokeWidth}
-          closed={toolState.closedMode === 'closed'}
           windowId={windowId}
           player={player}
             // we need to pass the width and height of the image to the annotation drawing component
@@ -269,7 +265,6 @@ export default function DrawingTemplate(
           originalWidth={overlay ? overlay.canvasWidth : 1920}
           originalHeight={overlay ? overlay.canvasHeight : 1080}
           updateScale={updateScale}
-          imageEvent={toolState.imageEvent}
           setColorToolFromCurrentShape={setColorToolFromCurrentShape}
           drawingState={drawingState}
           isMouseOverSave={isMouseOverSave}
