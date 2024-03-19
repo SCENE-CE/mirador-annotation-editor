@@ -13,7 +13,6 @@ import ImageShape from './Image';
 function ParentComponent({
   displayMode,
   isMouseOverSave,
-    displayMode,
   scale,
   onTransform,
   handleDragEnd,

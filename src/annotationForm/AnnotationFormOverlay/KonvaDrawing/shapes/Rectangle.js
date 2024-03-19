@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Rect, Transformer } from 'react-konva';
-import {KONVA_MODE} from "../KonvaUtils";
+import { KONVA_MODE } from '../KonvaUtils';
 /**
  * Represents a rectangle node component.
  * @returns {JSX.Element} The TextNode component.
@@ -11,7 +11,6 @@ function Rectangle({
   shape,
   onShapeClick,
   activeTool,
-    displayMode,
   isSelected,
   onTransform,
   handleDragEnd,
@@ -37,7 +36,7 @@ function Rectangle({
     onShapeClick(shape);
   };
 
-  console.log()
+  console.log();
   return (
     <>
       <Rect
@@ -46,11 +45,11 @@ function Rectangle({
         y={shape.y || 0}
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
-        width={shape.width || 1}
-        height={shape.height || 1}
-        fill={displayMode !== KONVA_MODE.TARGET ? shape.fill : null}
-        stroke={displayMode !== KONVA_MODE.TARGET ? shape.stroke : 'red'}
-        strokeWidth={shape.strokeWidth || 1}
+        width={shape.width}
+        height={shape.height}
+        fill={shape.fill}
+        stroke={shape.stroke}
+        strokeWidth={shape.strokeWidth}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}
@@ -58,8 +57,9 @@ function Rectangle({
         onTransform={onTransform}
         onDrag={handleDragEnd}
         onDragStart={handleDragStart}
-        dash={[1000/50]}
+        dash={[10, 10]}
         dashEnabled={displayMode === KONVA_MODE.TARGET}
+        strokeScaleEnabled={false}
       />
       <Transformer
         rotateEnabled={displayMode !== 'target'}
