@@ -231,7 +231,7 @@ export default function DrawingTemplate(
   };
 
   return (
-    <Grid container direction="column" spacing={2}>
+    <Grid container direction="column" spacing={1}>
       {/* Rename AnnotationDrawing in Drawing Stage */}
       {/* Check the useless props : annotation ?
       Check the width height originalW originalW */}
