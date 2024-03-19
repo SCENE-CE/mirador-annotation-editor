@@ -519,6 +519,7 @@ export default function AnnotationDrawing({
         handleDragStart={handleDragStart}
         isMouseOverSave={props.isMouseOverSave}
         trview={props.tabView !== 'target'}
+        displayMode={displayMode}
       />
     </Stage>
   );
