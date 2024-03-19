@@ -13,6 +13,7 @@ import ImageShape from './Image';
 function ParentComponent({
   displayMode,
   isMouseOverSave,
+    displayMode,
   scale,
   onTransform,
   handleDragEnd,
@@ -63,6 +64,7 @@ function ParentComponent({
                   onShapeClick: handleShapeClick,
                   onTransform,
                   shape,
+                  displayMode,
                 }}
                 key={i}
                 displayMode={displayMode}
@@ -155,6 +157,7 @@ function ParentComponent({
                   onTransform,
                   shape,
                   src: shape.src,
+                  displayMode,
                 }}
                 key={i}
               />

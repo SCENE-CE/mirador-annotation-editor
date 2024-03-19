@@ -92,8 +92,11 @@ export default function TaggingTemplate(
   };
 
   return (
-    <Grid>
+    <Grid container direction="column" spacing={2}>
+        <Grid item>
       <Typography variant="formSectionTitle">Tag</Typography>
+        </Grid>
+        <Grid item>
       <TextField
         id="outlined-basic"
         label="Your tag here :"
@@ -101,6 +104,8 @@ export default function TaggingTemplate(
         variant="outlined"
         onChange={(event) => updateTaggingValue(event.target.value)}
       />
+        </Grid>
+        <Grid item>
       <TargetFormSection
         currentTime={currentTime}
         mediaType={mediaType}
@@ -115,10 +120,13 @@ export default function TaggingTemplate(
         closeFormCompanionWindow={closeFormCompanionWindow}
         getMediaAudio={getMediaAudio}
       />
+        </Grid>
+        <Grid item>
       <AnnotationFormFooter
         closeFormCompanionWindow={closeFormCompanionWindow}
         saveAnnotation={saveFunction}
       />
+        </Grid>
     </Grid>
   );
 }

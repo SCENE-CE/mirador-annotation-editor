@@ -11,6 +11,7 @@ function Rectangle({
   shape,
   onShapeClick,
   activeTool,
+    displayMode,
   isSelected,
   onTransform,
   handleDragEnd,
@@ -45,7 +46,6 @@ function Rectangle({
         y={shape.y || 0}
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
-        rotation={shape.rotation}
         width={shape.width || 1}
         height={shape.height || 1}
         fill={displayMode !== KONVA_MODE.TARGET ? shape.fill : null}
@@ -62,6 +62,7 @@ function Rectangle({
         dashEnabled={displayMode === KONVA_MODE.TARGET}
       />
       <Transformer
+        rotateEnabled={displayMode !== 'target'}
         ref={trRef}
         visible={activeTool === 'edit' && isSelected}
       />

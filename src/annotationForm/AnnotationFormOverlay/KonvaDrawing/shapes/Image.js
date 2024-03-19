@@ -7,7 +7,7 @@ import useImage from 'use-image';
  * @returns {JSX.Element} The TextNode component.
  */
 function ImageShape({
-  onShapeClick, shape, activeTool, isSelected, onTransform, handleDragEnd, handleDragStart,
+  onShapeClick, shape, activeTool, isSelected, onTransform, handleDragEnd, handleDragStart,displayMode,
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -49,8 +49,9 @@ function ImageShape({
       />
 
       <Transformer
-        ref={trRef}
-        visible={activeTool === 'edit' && isSelected}
+      rotateEnabled={displayMode !== 'image'}
+      ref={trRef}
+      visible={activeTool === 'edit' && isSelected}
       />
     </>
   );
