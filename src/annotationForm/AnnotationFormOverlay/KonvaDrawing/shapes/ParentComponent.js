@@ -31,6 +31,7 @@ function ParentComponent({
   useEffect(() => {
 
   }, [selectedShape]);
+        console.log('RERENDER PARENT COMP', shapes)
 
   /**
     * Triggered onShapeClick provided function when a shape is clicked

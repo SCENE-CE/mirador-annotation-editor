@@ -229,7 +229,7 @@ export default function DrawingTemplate(
       });
     }
   };
-/** Handle text change from AnnotationFormOverlayToolOption **/
+  /** Handle text change from AnnotationFormOverlayToolOption **/
   const handleTextChange = (e) =>{
     const text = e.target.value
     setToolState(
@@ -238,17 +238,14 @@ export default function DrawingTemplate(
           text: text,
         }
     )
-    setDrawingState({
-      ...drawingState,
-      currentShape:{
-        ...drawingState.currentShape,
-        text: text,
-      }
-    })
+
+    drawingState.currentShape.text = text;
+    updateCurrentShapeInShapes(drawingState.currentShape);
+
     console.log(e.target.value)
   }
 
-
+  console.log(drawingState.currentShape)
   return (
     <Grid container direction="column" spacing={2}>
       {/* Rename AnnotationDrawing in Drawing Stage */}

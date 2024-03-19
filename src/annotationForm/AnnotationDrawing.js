@@ -476,6 +476,8 @@ export default function AnnotationDrawing({
       isDrawing: false,
     });
   };
+
+  console.log('ANNOTATION DRAWING :',drawingState.shapes)
   /** */
   const drawKonvas = () => (
     <Stage

@@ -55,6 +55,7 @@ const objToRgba = (obj = {
 
 /** All the tools options for the overlay options */
 function AnnotationFormOverlayToolOptions({
+  currentShape,
   setToolState,
   toolState,
   displayMode,
@@ -71,6 +72,7 @@ function AnnotationFormOverlayToolOptions({
 
   useEffect(() => {
     // TODO: This useEffect fix the bug on konva to svg but may be useless
+
   }, []);
   // Set unused default color to avoid error on render
   const currentColor = toolOptions.currentColorType ? rgbaToObj(toolState[toolOptions.currentColorType]) : 'rgba(255, 0, 0, 0.5)';
@@ -164,6 +166,7 @@ function AnnotationFormOverlayToolOptions({
       imageEvent: data,
     });
   };
+
 
   return (
     <div>
@@ -270,32 +273,39 @@ function AnnotationFormOverlayToolOptions({
                     Text
                   </Typography>
                 </Grid>
+                  {currentShape ? (
                 <Grid item>
                   <TextField
-                    value={toolState.text ? toolState.text : "Click on Canvas"}
-                    fullWidth
-                    onChange={handleTextChange}
-              />
+                      value={toolState.text}
+                      fullWidth
+                      onChange={handleTextChange}
+                  />
                 </Grid>
+                  ):(
+                      <Grid item>
+                        <Typography> Click on canvas to write text</Typography>
+                      </Grid>
+                  )
+                  }
               </Grid>
           )
       }
       {
-        toolState.activeTool === OVERLAY_TOOL.IMAGE && (
-          <>
-            <Typography variant="overline">
-              Add image from URL
-            </Typography>
-            <Grid container>
-              <ImageFormField xs={8} value={toolState.image} onChange={handleImgChange} />
-            </Grid>
-            <StyledDivButtonImage>
-              <Button variant="contained" onClick={addImage}>
-                <AddPhotoAlternateIcon />
-              </Button>
-            </StyledDivButtonImage>
-          </>
-        )
+          toolState.activeTool === OVERLAY_TOOL.IMAGE && (
+              <>
+                <Typography variant="overline">
+                  Add image from URL
+                </Typography>
+                <Grid container>
+                  <ImageFormField xs={8} value={toolState.image} onChange={handleImgChange} />
+                </Grid>
+                <StyledDivButtonImage>
+                  <Button variant="contained" onClick={addImage}>
+                    <AddPhotoAlternateIcon />
+                  </Button>
+                </StyledDivButtonImage>
+              </>
+          )
       }
     </div>
   );

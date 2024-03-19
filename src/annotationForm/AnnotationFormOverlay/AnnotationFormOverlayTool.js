@@ -167,6 +167,7 @@ function AnnotationFormOverlayTool({
         toolState={toolState}
         setToolState={setToolState}
         displayMode={displayMode}
+          currentShape={currentShape}
       />
     </>
   );
