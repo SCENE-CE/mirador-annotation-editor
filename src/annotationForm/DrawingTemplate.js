@@ -229,19 +229,7 @@ export default function DrawingTemplate(
       });
     }
   };
-  /** Handle text change from AnnotationFormOverlayToolOption **/
-  const handleTextChange = (e) =>{
-    const text = e.target.value
-    setToolState(
-        {
-          ...toolState,
-          text: text,
-        }
-    )
 
-    drawingState.currentShape.text = text;
-    updateCurrentShapeInShapes(drawingState.currentShape);
-  }
   return (
     <Grid container direction="column" spacing={2}>
       {/* Rename AnnotationDrawing in Drawing Stage */}
@@ -289,7 +277,6 @@ export default function DrawingTemplate(
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
           showStyleTools
           displayMode={KONVA_MODE.DRAW}
-          handleTextChange={handleTextChange}
         />
       </Grid>
       <Grid item>

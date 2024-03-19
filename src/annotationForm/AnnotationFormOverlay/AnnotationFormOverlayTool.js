@@ -41,7 +41,6 @@ function AnnotationFormOverlayTool({
   shapes,
   deleteShape,
   displayMode,
-  handleTextChange,
 }) {
   /** Change the active overlay tool */
   const changeTool = (e, tool) => {
@@ -163,7 +162,6 @@ function AnnotationFormOverlayTool({
         )
       }
       <AnnotationFormOverlayToolOptions
-          handleTextChange={handleTextChange}
         toolState={toolState}
         setToolState={setToolState}
         displayMode={displayMode}

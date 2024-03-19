@@ -104,6 +104,7 @@ export default function AnnotationDrawing({
       drawingState.currentShape.stroke = toolState.strokeColor;
       // eslint-disable-next-line no-param-reassign
       drawingState.currentShape.strokeWidth = toolState.strokeWidth;
+      drawingState.currentShape.text = toolState.text;
       updateCurrentShapeInShapes(drawingState.currentShape);
     }
   }, [toolState]);
@@ -511,6 +512,7 @@ export default function AnnotationDrawing({
         handleDragStart={handleDragStart}
         isMouseOverSave={props.isMouseOverSave}
         trview={props.tabView !== 'target'}
+        text={toolState.text}
       />
     </Stage>
   );

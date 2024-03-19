@@ -58,7 +58,6 @@ function AnnotationFormOverlayToolOptions({
   setToolState,
   toolState,
   displayMode,
-  handleTextChange,
 }) {
   // set toolOptionsValue
   const [toolOptions, setToolOptions] = useState({
@@ -166,7 +165,16 @@ function AnnotationFormOverlayToolOptions({
     });
   };
 
-
+  /** Handle text change from AnnotationFormOverlayToolOption **/
+  const handleTextChange = (e) =>{
+    const text = e.target.value
+    setToolState(
+        {
+          ...toolState,
+          text: text,
+        }
+    )
+  }
   return (
     <div>
       {
