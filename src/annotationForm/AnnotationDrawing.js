@@ -214,8 +214,10 @@ export default function AnnotationDrawing({
     const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
 
     Object.assign(shape, modifiedshape);
+    if(modifiedshape.image){
     shape.width = modifiedshape.image.width;
     shape.height = modifiedshape.image.height;
+    }
     updateCurrentShapeInShapes(shape);
   };
 
