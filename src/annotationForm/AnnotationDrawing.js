@@ -297,7 +297,7 @@ export default function AnnotationDrawing({
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            text: '',
+            text: 'Change me',
             type: OVERLAY_TOOL.TEXT,
             x: pos.x,
             y: pos.y,
