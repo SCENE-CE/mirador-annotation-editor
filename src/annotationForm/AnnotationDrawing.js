@@ -125,9 +125,8 @@ export default function AnnotationDrawing({
       return;
     }
 
-    // TODO This comportment must be handle by the text component
+    // Update the text of the current shape if it's a text. The input come from the annotationForm
     if (drawingState.currentShape.type === 'text') {
-
       // Potentially bug during the update
       const newCurrentShape = { ...drawingState.currentShape };
 
