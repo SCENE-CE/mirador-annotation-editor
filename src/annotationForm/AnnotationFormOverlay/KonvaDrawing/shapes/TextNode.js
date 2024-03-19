@@ -21,7 +21,6 @@ function TextNode({
   const handleClick = () => {
     onShapeClick(shape);
   };
-  console.log('RERENDER ON TEXT NODE', shape.text)
   useEffect(() => {
     if (trRef.current) {
       trRef.current.nodes([shapeRef.current]);

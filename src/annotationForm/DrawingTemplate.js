@@ -241,11 +241,7 @@ export default function DrawingTemplate(
 
     drawingState.currentShape.text = text;
     updateCurrentShapeInShapes(drawingState.currentShape);
-
-    console.log(e.target.value)
   }
-
-  console.log(drawingState.currentShape)
   return (
     <Grid container direction="column" spacing={2}>
       {/* Rename AnnotationDrawing in Drawing Stage */}
@@ -257,7 +253,6 @@ export default function DrawingTemplate(
         </Typography>
       </Grid>
       <Grid item>
-
         <AnnotationDrawing
           scale={scale}
           activeTool={toolState.activeTool}

@@ -21,10 +21,9 @@ import ImageFormField from './ImageFormField';
 import { isShapesTool, OVERLAY_TOOL } from '../../AnnotationCreationUtils';
 import { defaultLineWeightChoices, KONVA_MODE } from './KonvaDrawing/KonvaUtils';
 import { defaultToolState } from '../../AnnotationFormUtils';
+import ColorPicker from "./KonvaDrawing/shapes/ColorPicker";
 
-const StyledDivider = styled(Divider)(({ theme }) => ({
-  margin: theme.spacing(1, 0.5),
-}));
+
 
 const StyledDivButtonImage = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -173,95 +172,18 @@ function AnnotationFormOverlayToolOptions({
       {
         (displayMode === KONVA_MODE.DRAW && isShapesTool(toolState.activeTool)) && (
           <Grid container>
-            <Grid item xs={12}>
-              <Typography variant="overline">
-                Style
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <ToggleButtonGroup
-                aria-label="style selection"
-                size="small"
-              >
-                <ToggleButton
-                  value="strokeColor"
-                  aria-label="select color"
-                  onClick={openChooseColor}
-                >
-                  <StrokeColorIcon style={{ fill: toolState.strokeColor }} />
-                  <ArrowDropDownIcon />
-                </ToggleButton>
-                <ToggleButton
-                  value="strokeColor"
-                  aria-label="select line weight"
-                  onClick={openChooseLineWeight}
-                >
-                  <LineWeightIcon />
-                  <ArrowDropDownIcon />
-                </ToggleButton>
-                <ToggleButton
-                  value="fillColor"
-                  aria-label="select color"
-                  onClick={openChooseColor}
-                >
-                  <FormatColorFillIcon style={{ fill: toolState.fillColor }} />
-                  <ArrowDropDownIcon />
-                </ToggleButton>
-              </ToggleButtonGroup>
-
-              <StyledDivider flexItem orientation="vertical" />
-              { /* close / open polygon mode only for freehand drawing mode. */
-              false
-                && (
-                  <ToggleButtonGroup
-                    size="small"
-                    value={toolState.closedMode}
-                    onChange={changeClosedMode}
-                  >
-                    <ToggleButton value="closed">
-                      <ClosedPolygonIcon />
-                    </ToggleButton>
-                    <ToggleButton value="open">
-                      <OpenPolygonIcon />
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                )
-            }
-            </Grid>
-            <Popover
-              open={toolOptions.lineWeightPopoverOpen}
-              anchorEl={toolOptions.popoverLineWeightAnchorEl}
-            >
-              <div>
-                <ClickAwayListener onClickAway={handleCloseLineWeight}>
-                  <MenuList autoFocus role="listbox">
-                    {defaultLineWeightChoices.map((option, index) => (
-                      <MenuItem
-                        key={option}
-                        onClick={handleLineWeightSelect}
-                        value={option}
-                        selected={option === toolState.strokeWidth}
-                        role="option"
-                        aria-selected={option === toolState.strokeWidth}
-                      >
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </MenuList>
-                </ClickAwayListener>
-              </div>
-            </Popover>
-            <Popover
-              open={toolOptions.colorPopoverOpen}
-              anchorEl={toolOptions.popoverAnchorEl}
-              onClose={closeChooseColor}
-            >
-              <SketchPicker
-                disableAlpha={false}
-                color={currentColor}
-                onChangeComplete={updateColor}
-              />
-            </Popover>
+            <ColorPicker
+                currentColor={currentColor}
+                changeClosedMode={changeClosedMode}
+                closeChooseColor={closeChooseColor}
+                handleCloseLineWeight={handleCloseLineWeight}
+                handleLineWeightSelect={handleLineWeightSelect}
+                openChooseColor={openChooseColor}
+                openChooseLineWeight={openChooseLineWeight}
+                updateColor={updateColor}
+                toolOptions={toolOptions}
+                toolState={toolState}
+            />
           </Grid>
         )
       }
@@ -274,6 +196,7 @@ function AnnotationFormOverlayToolOptions({
                   </Typography>
                 </Grid>
                   {currentShape ? (
+                      <>
                 <Grid item>
                   <TextField
                       value={toolState.text}
@@ -281,6 +204,21 @@ function AnnotationFormOverlayToolOptions({
                       onChange={handleTextChange}
                   />
                 </Grid>
+                <Grid item>
+                  <ColorPicker
+                      changeClosedMode={changeClosedMode}
+                      closeChooseColor={closeChooseColor}
+                      currentColor={currentColor}
+                      handleCloseLineWeight={handleCloseLineWeight}
+                      handleLineWeightSelect={handleLineWeightSelect}
+                      openChooseColor={openChooseColor}
+                      openChooseLineWeight={openChooseLineWeight}
+                      updateColor={updateColor}
+                      toolOptions={toolOptions}
+                      toolState={toolState}
+                  />
+                </Grid>
+                      </>
                   ):(
                       <Grid item>
                         <Typography> Click on canvas to write text</Typography>
