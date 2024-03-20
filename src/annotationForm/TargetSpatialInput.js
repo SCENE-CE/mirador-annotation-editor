@@ -110,10 +110,6 @@ export function TargetSpatialInput({
           <Grid item direction="row" spacing={2}>
             <AnnotationDrawing
               scale={scale}
-              activeTool={toolState.activeTool}
-              fillColor={toolState.fillColor}
-              strokeColor={toolState.strokeColor}
-              strokeWidth={toolState.strokeWidth}
               closed={toolState.closedMode === 'closed'}
               windowId={windowId}
               player={player}
@@ -123,7 +119,6 @@ export function TargetSpatialInput({
               originalWidth={overlay ? overlay.canvasWidth : 1920}
               originalHeight={overlay ? overlay.canvasHeight : 1080}
               updateScale={updateScale}
-              imageEvent={toolState.imageEvent}
               setColorToolFromCurrentShape={() => {}}
               drawingState={drawingState}
               overlay={overlay}
@@ -135,6 +130,7 @@ export function TargetSpatialInput({
               closeFormCompanionWindow={closeFormCompanionWindow}
               displayMode={KONVA_MODE.TARGET}
               isMouseOverSave={false} // TODO remove
+              toolState={toolState}
             />
             <AnnotationFormOverlay
               toolState={toolState}

@@ -28,6 +28,7 @@ export default function AnnotationDrawing({
   updateScale,
   width,
   setColorToolFromCurrentShape,
+  toolState,
   ...props
 }) {
   const [isDrawing, setIsDrawing] = useState(false);
@@ -40,6 +41,7 @@ export default function AnnotationDrawing({
     x: 1,
     y: 1,
   });
+
 
   useEffect(() => {
     if (overlay) {
@@ -57,14 +59,14 @@ export default function AnnotationDrawing({
 
   useEffect(() => {
     // TODO clean
-    if (imageEvent && imageEvent.id) {
+    if (toolState.imageEvent && toolState.imageEvent.id) {
       const imageShape = {
         id: uuidv4(),
         rotation: 0,
         scaleX: 1,
         scaleY: 1,
         type: 'image',
-        url: imageEvent.id,
+        url: toolState.imageEvent.id,
         x: 30,
         y: 30,
       };
@@ -75,9 +77,8 @@ export default function AnnotationDrawing({
         shapes: [...drawingState.shapes, imageShape],
       });
     }
-  }, [imageEvent]);
+  }, [toolState]);
 
-  const { fillColor, strokeColor, strokeWidth } = props;
 
   /** */
 
@@ -97,19 +98,19 @@ export default function AnnotationDrawing({
     // update current shape
     if (drawingState.currentShape) {
       // eslint-disable-next-line no-param-reassign
-      drawingState.currentShape.fill = fillColor;
+      drawingState.currentShape.fill = toolState.fillColor;
       // eslint-disable-next-line no-param-reassign
-      drawingState.currentShape.stroke = strokeColor;
+      drawingState.currentShape.stroke = toolState.strokeColor;
       // eslint-disable-next-line no-param-reassign
-      drawingState.currentShape.strokeWidth = strokeWidth;
+      drawingState.currentShape.strokeWidth = toolState.strokeWidth;
+      drawingState.currentShape.text = toolState.text;
       updateCurrentShapeInShapes(drawingState.currentShape);
     }
-  }, [fillColor, strokeColor, strokeWidth]);
+  }, [toolState]);
 
   /** */
   const handleKeyPress = (e) => {
     e.stopPropagation();
-    const unnalowedKeys = ['Shift', 'Control', 'Alt', 'Meta', 'Enter', 'Escape', 'Tab', 'AltGraph', 'CapsLock', 'NumLock', 'ScrollLock', 'Pause', 'Insert', 'Home', 'PageUp', 'PageDown', 'End', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ContextMenu', 'PrintScreen', 'Help', 'Clear', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'OS'];
 
     if (!drawingState.currentShape) {
       return;
@@ -127,18 +128,9 @@ export default function AnnotationDrawing({
 
     // TODO This comportment must be handle by the text component
     if (drawingState.currentShape.type === 'text') {
-      let newText = drawingState.currentShape.text;
-      if (e.key === 'Backspace') {
-        newText = newText.slice(0, -1);
-      } else {
-        if (unnalowedKeys.includes(e.key)) {
-          return;
-        }
-        newText += e.key;
-      }
 
       // Potentially bug during the update
-      const newCurrentShape = { ...drawingState.currentShape, text: newText };
+      const newCurrentShape = { ...drawingState.currentShape };
 
       setDrawingState({
         ...drawingState,
@@ -173,11 +165,11 @@ export default function AnnotationDrawing({
   /** */
   const onShapeClick = async (shp) => {
     // return if we are not in edit or cursor mode
-    if (props.activeTool !== 'edit' && props.activeTool !== 'cursor' && props.activeTool !== 'delete') {
+    if (toolState.activeTool !== 'edit' && toolState.activeTool !== 'cursor' && toolState.activeTool !== 'delete') {
       return;
     }
     const shape = drawingState.shapes.find((s) => s.id === shp.id);
-    if (props.activeTool === 'delete') {
+    if (toolState.activeTool === 'delete') {
       const newShapes = drawingState.shapes.filter((s) => s.id !== shape.id);
       setDrawingState({
         ...drawingState,
@@ -255,17 +247,17 @@ export default function AnnotationDrawing({
       pos.x /= scale;
       pos.y /= scale;
       let shape = null;
-      switch (props.activeTool) {
+      switch (toolState.activeTool) {
         case SHAPES_TOOL.RECTANGLE:
           shape = {
-            fill: props.fillColor,
+            fill: toolState.fillColor,
             height: 1,
             id: uuidv4(),
             scaleX: 1,
             scaleY: 1,
-            stroke: props.strokeColor,
-            strokeWidth: props.strokeWidth,
-            type: props.activeTool,
+            stroke: toolState.strokeColor,
+            strokeWidth: toolState.strokeWidth,
+            type: toolState.activeTool,
             width: 1,
             x: pos.x,
             y: pos.y,
@@ -278,7 +270,7 @@ export default function AnnotationDrawing({
           break;
         case SHAPES_TOOL.ELLIPSE:
           shape = {
-            fill: props.fillColor,
+            fill: toolState.fillColor,
             height: 1,
             id: uuidv4(),
             radiusX: 1,
@@ -286,9 +278,9 @@ export default function AnnotationDrawing({
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            stroke: props.strokeColor,
-            strokeWidth: props.strokeWidth,
-            type: props.activeTool,
+            stroke: toolState.strokeColor,
+            strokeWidth: toolState.strokeWidth,
+            type: toolState.activeTool,
             width: 1,
             x: pos.x,
             y: pos.y,
@@ -301,13 +293,13 @@ export default function AnnotationDrawing({
           break;
         case 'text':
           shape = {
-            fill: props.fillColor,
+            fill: toolState.fillColor,
             fontSize: 20,
             id: uuidv4(),
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            text: 'text',
+            text: 'Change me',
             type: OVERLAY_TOOL.TEXT,
             x: pos.x,
             y: pos.y,
@@ -321,13 +313,13 @@ export default function AnnotationDrawing({
           break;
         case SHAPES_TOOL.FREEHAND:
           shape = {
-            fill: props.fillColor,
+            fill: toolState.fillColor,
             id: uuidv4(),
             lines: [
               {
                 points: [pos.x, pos.y, pos.x, pos.y],
-                stroke: props.strokeColor,
-                strokeWidth: props.strokeWidth,
+                stroke: toolState.strokeColor,
+                strokeWidth: toolState.strokeWidth,
                 x: 0,
                 y: 0,
               },
@@ -335,8 +327,8 @@ export default function AnnotationDrawing({
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            stroke: props.strokeColor,
-            strokeWidth: props.strokeWidth,
+            stroke: toolState.strokeColor,
+            strokeWidth: toolState.strokeWidth,
             type: SHAPES_TOOL.FREEHAND,
             x: 0,
             y: 0,
@@ -349,14 +341,14 @@ export default function AnnotationDrawing({
           break;
         case SHAPES_TOOL.POLYGON:
           shape = {
-            fill: props.fillColor,
+            fill: toolState.fillColor,
             id: uuidv4(),
             points: [pos.x, pos.y],
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            stroke: props.strokeColor,
-            strokeWidth: props.strokeWidth,
+            stroke: toolState.strokeColor,
+            strokeWidth: toolState.strokeWidth,
             type: SHAPES_TOOL.POLYGON,
             x: 0,
             y: 0,
@@ -369,7 +361,7 @@ export default function AnnotationDrawing({
           break;
         case SHAPES_TOOL.ARROW:
           shape = {
-            fill: props.fillColor,
+            fill: toolState.fillColor,
             id: uuidv4(),
             pointerLength: 20,
             pointerWidth: 20,
@@ -377,8 +369,8 @@ export default function AnnotationDrawing({
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            stroke: props.strokeColor,
-            strokeWidth: props.strokeWidth,
+            stroke: toolState.strokeColor,
+            strokeWidth: toolState.strokeWidth,
             type: SHAPES_TOOL.ARROW,
           };
           setDrawingState({
@@ -409,7 +401,7 @@ export default function AnnotationDrawing({
       pos.x /= scale;
       pos.y /= scale;
 
-      switch (props.activeTool) {
+      switch (toolState.activeTool) {
         case SHAPES_TOOL.RECTANGLE:
           updateCurrentShapeInShapes({
             ...drawingState.currentShape,
@@ -440,8 +432,8 @@ export default function AnnotationDrawing({
           const freehandShape = drawingState.currentShape; // TODO Check if not nuse { ...drawingState.currentShape };
           freehandShape.lines.push({
             points: [pos.x, pos.y, pos.x, pos.y],
-            stroke: props.strokeColor,
-            strokeWidth: props.strokeWidth,
+            stroke: toolState.strokeColor,
+            strokeWidth: toolState.strokeWidth,
           });
           updateCurrentShapeInShapes(freehandShape);
           break;
@@ -465,9 +457,9 @@ export default function AnnotationDrawing({
           arrowShape.pointerWidth = drawingState.currentShape.pointerWidth;
           arrowShape.x = drawingState.currentShape.x;
           arrowShape.y = drawingState.currentShape.y;
-          arrowShape.fill = props.fillColor;
-          arrowShape.stroke = props.strokeColor;
-          arrowShape.strokeWidth = props.strokeWidth;
+          arrowShape.fill = toolState.fillColor;
+          arrowShape.stroke = toolState.strokeColor;
+          arrowShape.strokeWidth = toolState.strokeWidth;
           updateCurrentShapeInShapes(arrowShape);
           setIsDrawing(true);
           break;
@@ -486,6 +478,7 @@ export default function AnnotationDrawing({
       isDrawing: false,
     });
   };
+
   /** */
   const drawKonvas = () => (
     <Stage
@@ -509,7 +502,7 @@ export default function AnnotationDrawing({
       <ParentComponent
         shapes={drawingState.shapes}
         onShapeClick={onShapeClick}
-        activeTool={props.activeTool}
+        activeTool={toolState.activeTool}
         selectedShapeId={drawingState.currentShape?.id}
         scale={scale}
         width={originalWidth}
@@ -519,6 +512,7 @@ export default function AnnotationDrawing({
         handleDragStart={handleDragStart}
         isMouseOverSave={props.isMouseOverSave}
         trview={props.tabView !== 'target'}
+        text={toolState.text}
         displayMode={displayMode}
       />
     </Stage>
@@ -576,8 +570,6 @@ const shapeObjectPropTypes = PropTypes.shape({
 });
 
 AnnotationDrawing.propTypes = {
-  activeTool: PropTypes.string.isRequired,
-  closed: PropTypes.bool.isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
   displayMode: PropTypes.string.isRequired,
   drawingState: PropTypes.oneOfType([
@@ -614,11 +606,7 @@ AnnotationDrawing.propTypes = {
       }),
     ),
   ]).isRequired,
-  fillColor: PropTypes.string.isRequired,
   height: PropTypes.number.isRequired,
-  imageEvent: PropTypes.shape({
-    id: PropTypes.string,
-  }),
   mediaType: PropTypes.string.isRequired,
   originalHeight: PropTypes.number.isRequired,
   originalWidth: PropTypes.number.isRequired,
@@ -633,8 +621,6 @@ AnnotationDrawing.propTypes = {
   scale: PropTypes.number.isRequired,
   setColorToolFromCurrentShape: PropTypes.func.isRequired,
   setDrawingState: PropTypes.func.isRequired,
-  strokeColor: PropTypes.string.isRequired,
-  strokeWidth: PropTypes.number.isRequired,
   updateCurrentShapeInShapes: PropTypes.func.isRequired,
   updateScale: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
