@@ -9,7 +9,6 @@ import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
-import FragmentSelector from './AnnotationFormOverlay/KonvaDrawing/FragmentSelector';
 import { mediaTypes } from '../AnnotationFormUtils';
 
 /** All the stuff to draw on the canvas */
@@ -207,8 +206,10 @@ export default function AnnotationDrawing({
     const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
 
     Object.assign(shape, modifiedshape);
+    if(modifiedshape.image){
     shape.width = modifiedshape.image.width;
     shape.height = modifiedshape.image.height;
+    }
     updateCurrentShapeInShapes(shape);
   };
 
@@ -252,7 +253,6 @@ export default function AnnotationDrawing({
             fill: toolState.fillColor,
             height: 1,
             id: uuidv4(),
-            rotation: 0,
             scaleX: 1,
             scaleY: 1,
             stroke: toolState.strokeColor,
@@ -513,6 +513,7 @@ export default function AnnotationDrawing({
         isMouseOverSave={props.isMouseOverSave}
         trview={props.tabView !== 'target'}
         text={toolState.text}
+        displayMode={displayMode}
       />
     </Stage>
   );

@@ -209,7 +209,7 @@ export default function ImageCommentTemplate(
   };
 
   return (
-    <Grid container direction="column" spacing={2}>
+    <Grid container direction="column" spacing={1}>
       <Grid item>
         <Typography variant="formSectionTitle">
           Image

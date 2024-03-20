@@ -12,6 +12,7 @@ import ImageShape from './Image';
 /** Loads Konva and display in function of their type */
 function ParentComponent({
   isMouseOverSave,
+    displayMode,
   scale,
   onTransform,
   handleDragEnd,
@@ -63,6 +64,7 @@ function ParentComponent({
                   onShapeClick: handleShapeClick,
                   onTransform,
                   shape,
+                  displayMode,
                 }}
                 key={i}
               />
@@ -155,6 +157,7 @@ function ParentComponent({
                   onTransform,
                   shape,
                   src: shape.src,
+                  displayMode,
                 }}
                 key={i}
               />
