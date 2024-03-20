@@ -11,6 +11,7 @@ import { mediaTypes, TARGET_VIEW } from '../AnnotationFormUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import CursorIcon from '../icons/Cursor';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import {Debug} from "./Debug";
 
 export function TargetSpatialInput({
   closeFormCompanionWindow,
@@ -26,7 +27,6 @@ export function TargetSpatialInput({
 }) {
   // TODO the targetSVGToolSTate is not used. Why the defaultToolState is used?
   const [toolState, setToolState] = useState(targetSVGToolState);
-  console.log('toolState',toolState)
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
 
   const [scale, setScale] = useState(1);
@@ -132,6 +132,7 @@ export function TargetSpatialInput({
               isMouseOverSave={false} // TODO remove
               toolState={toolState}
             />
+
             <AnnotationFormOverlay
               toolState={toolState}
               deleteShape={deleteShape}
@@ -141,6 +142,14 @@ export function TargetSpatialInput({
               setViewTool={setViewTool}
               displayMode={KONVA_MODE.TARGET}
               updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+            />
+          </Grid>
+          <Grid item>
+            <Debug
+                overlay={overlay}
+                scale={scale}
+                drawingState={drawingState}
+                displayMode={KONVA_MODE.TARGET}
             />
           </Grid>
         </Grid>
