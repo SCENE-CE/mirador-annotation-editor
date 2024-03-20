@@ -37,7 +37,7 @@ function Freehand({
         width={shape.width || 1920}
         height={shape.height || 1080}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
-        onDrag={handleDragEnd}
+        onDragEnd={handleDragEnd}
         onDragStart={handleDragStart}
         id={shape.id}
       >

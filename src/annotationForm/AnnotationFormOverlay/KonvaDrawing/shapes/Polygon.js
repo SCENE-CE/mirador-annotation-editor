@@ -52,7 +52,7 @@ function Polygon({
         rotation={shape.rotation}
         x={shape.x}
         y={shape.y}
-        onDrag={handleDragEnd}
+        onDragEnd={handleDragEnd}
         onDragStart={handleDragStart}
 
       />
