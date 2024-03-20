@@ -274,13 +274,13 @@ export default function ImageCommentTemplate(
         timeTarget
         spatialTarget={false}
       />
-     {/*  <Grid item>
+     <Grid item>
         <Debug
           overlay={overlay}
           scale={scale}
           drawingState={drawingState}
         />
-      </Grid> */}
+      </Grid>
 
       <Grid item>
         <AnnotationFormFooter

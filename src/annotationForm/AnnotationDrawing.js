@@ -57,6 +57,7 @@ export default function AnnotationDrawing({
     }
   }, [{ width }]);
 
+
   useEffect(() => {
     // TODO clean
     if (toolState.imageEvent && toolState.imageEvent.id) {
@@ -201,6 +202,7 @@ export default function AnnotationDrawing({
    * @param {Object} evt - The event object containing the target shape's modified attributes.
    */
   const onTransform = (evt) => {
+
     const modifiedshape = evt.target.attrs;
 
     const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
@@ -211,6 +213,7 @@ export default function AnnotationDrawing({
     shape.height = modifiedshape.image.height;
     }
     updateCurrentShapeInShapes(shape);
+    console.log('ON TRANSOFRM',shape)
   };
 
   /**
