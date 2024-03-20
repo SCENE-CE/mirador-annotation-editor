@@ -58,6 +58,14 @@ function AnnotationFormOverlayTool({
     });
   };
 
+  /** Set DefaultTool shape Option to Rectangle * */
+  if (toolState.activeTool === OVERLAY_TOOL.SHAPE) {
+    setToolState({
+      ...toolState,
+      activeTool: SHAPES_TOOL.RECTANGLE,
+    });
+  }
+
   return (
     <>
       {
@@ -165,7 +173,7 @@ function AnnotationFormOverlayTool({
         toolState={toolState}
         setToolState={setToolState}
         displayMode={displayMode}
-          currentShape={currentShape}
+        currentShape={currentShape}
       />
     </>
   );
