@@ -1,9 +1,9 @@
 import Typography from '@mui/material/Typography';
 import {Grid} from '@mui/material';
-import React, {useEffect} from 'react';
-import {TARGET_VIEW} from "../AnnotationFormUtils";
+import React, {useEffect, useState} from 'react';
 import {JsonEditor as Editor} from "jsoneditor-react";
 import ace from "brace";
+import Button from "@mui/material/Button";
 
 export function Debug(
     {
@@ -12,8 +12,14 @@ export function Debug(
       drawingState,
     })
 {
+const [updateComp, setUpdateComp] = useState(drawingState)
   useEffect(() => {
-  }, [drawingState, scale,overlay]);
+      console.log(drawingState)
+  }, [drawingState, scale,overlay, updateComp]);
+    const UpdateComponent = () => {
+        setUpdateComp(drawingState)
+    }
+
   return(
       <Grid container direction="column" spacing={1}>
         <Grid item>
@@ -79,6 +85,7 @@ export function Debug(
                   </>
               )
           }
+          <Button onClick={UpdateComponent}>Update Editor</Button>
           <Grid item>
               <Editor
                   value={drawingState}
