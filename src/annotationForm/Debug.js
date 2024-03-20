@@ -41,9 +41,6 @@ export function Debug(
     }
   }, [drawingState]);
 
-  const UpdateComponent = () => {
-    setUpdateComp(drawingState);
-  };
 
   return (
     <Grid container direction="column" spacing={1}>
