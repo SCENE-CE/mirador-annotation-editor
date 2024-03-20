@@ -1,11 +1,12 @@
 import Typography from '@mui/material/Typography';
-import { Grid } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import {Grid, setRef} from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
 import { JsonEditor as Editor } from 'jsoneditor-react';
 import ace from 'brace';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
 
+/** Debug Component * */
 export function Debug(
   {
     drawingState,
@@ -14,10 +15,22 @@ export function Debug(
   },
 ) {
   const [updateComp, setUpdateComp] = useState(drawingState);
+  const jsonEditorRef = useRef(null);
+  useEffect(() => {
+    console.log('--------------New Render--------------');
+    console.log('canvas Width:', overlay.canvasWidth);
+    console.log('canvas Height:', overlay.canvasHeight);
+    console.log('overlay.containerWidth', overlay.containerWidth);
+    console.log('overlay.containerHeight', overlay.containerHeight);
+    console.log('drawingState', drawingState);
+    console.log('-------------End of Render---------------');
+  }, [drawingState, scale, overlay, updateComp]);
 
   useEffect(() => {
-    console.log(drawingState);
-  }, [drawingState, scale, overlay, updateComp]);
+    if (jsonEditorRef.current !== null) {
+      jsonEditorRef.current.set(drawingState);
+    }
+  }, [drawingState]);
 
   const UpdateComponent = () => {
     setUpdateComp(drawingState);
@@ -118,6 +131,7 @@ export function Debug(
       <Button onClick={UpdateComponent}>Update Editor</Button>
       <Grid item>
         <Editor
+          ref={setRef}
           value={drawingState}
           ace={ace}
           theme="ace/theme/github"
