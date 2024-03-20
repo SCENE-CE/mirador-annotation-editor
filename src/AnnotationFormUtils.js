@@ -301,7 +301,7 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
     }
     if (maeTarget.drawingState.shapes.length === 1 && (maeTarget.drawingState.shapes[0].type === 'rectangle' || maeTarget.drawingState.shapes[0].type === 'image')) {
       let {
-        x, y, width, height,
+        x, y, width, height, scaleX, scaleY,
       } = maeTarget.drawingState.shapes[0];
       // x = Math.floor(x / maeTarget.scale);
       // y = Math.floor(y / maeTarget.scale);
@@ -309,8 +309,8 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
       // height = Math.floor(height / maeTarget.scale);
       x = Math.floor(x);
       y = Math.floor(y);
-      width = Math.floor(width);
-      height = Math.floor(height);
+      width = Math.floor(width * scaleX);
+      height = Math.floor(height * scaleY);
       console.info('Implement target as string with one shape (reactangle or image)');
       // Image have not tstart and tend
       return `${canvasId}#${maeTarget.tend ? `xywh=${x},${y},${width},${height}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${x},${y},${width},${height}`}`;
