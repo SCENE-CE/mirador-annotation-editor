@@ -21,6 +21,14 @@ import { getKonvaAsDataURL, KONVA_MODE } from './AnnotationFormOverlay/KonvaDraw
 import Typography from '@mui/material/Typography';
 // TODO check if useful
 
+function Debug(props) {
+  return null;
+}
+
+Debug.propTypes = {
+  drawingState: PropTypes.any,
+  scale: PropTypes.number
+};
 /**
  * Template for Konva annotations (drawing)
  * @param annotation
@@ -297,6 +305,13 @@ export default function DrawingTemplate(
         closeFormCompanionWindow={closeFormCompanionWindow}
         timeTarget
       />
+      <Grid item>
+      <Debug
+          overlay={overlay}
+          scale={scale}
+          drawingState={drawingState}
+      />
+    </Grid>
       <Grid item>
         <AnnotationFormFooter
           closeFormCompanionWindow={closeFormCompanionWindow}
