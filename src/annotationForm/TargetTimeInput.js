@@ -87,9 +87,6 @@ function TargetTimeInput({
    * @param {any} newValueTime
    */
   const handleChangeTime = (event, newValueTime) => {
-    console.debug('hct event', event);
-    console.debug('hct handleChangeTime', newValueTime);
-    console.log("toto")
     const timeStart = newValueTime[0];
     const timeEnd = newValueTime[1];
     if (timeStart !== tstart) {
@@ -102,8 +99,6 @@ function TargetTimeInput({
 
   /** Change from Tstart HMS Input */
   const updateTstart = (valueTstart) => {
-      console.log('tend',tend)
-    console.log("tstart",tstart)
     if (valueTstart > tend) {
       return;
     }

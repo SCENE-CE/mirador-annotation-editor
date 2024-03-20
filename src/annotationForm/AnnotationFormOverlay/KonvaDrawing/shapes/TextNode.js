@@ -27,7 +27,6 @@ function TextNode({
       trRef.current.getLayer().batchDraw();
     }
   }, []);
-  console.log(text);
 
   return (
     <>
