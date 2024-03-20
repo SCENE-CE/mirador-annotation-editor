@@ -138,7 +138,7 @@ export function Debug(
               )
           }
       <Button onClick={UpdateComponent}>Update Editor</Button>
-      <Grid item>
+      <Grid item sx={{height:'500px'}}>
         <Editor
           ref={setRef}
           value={drawingState}
@@ -146,6 +146,11 @@ export function Debug(
           theme="ace/theme/github"
           mode="code"
           statusBar
+          htmlElementProps={{
+              style: {
+                  height: 500
+              },
+          }}
         />
       </Grid>
     </Grid>
