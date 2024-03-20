@@ -1,5 +1,5 @@
 import Typography from '@mui/material/Typography';
-import {Grid, setRef} from '@mui/material';
+import { Grid, setRef } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { JsonEditor as Editor } from 'jsoneditor-react';
 import ace from 'brace';
@@ -16,6 +16,15 @@ export function Debug(
 ) {
   const [updateComp, setUpdateComp] = useState(drawingState);
   const jsonEditorRef = useRef(null);
+
+  const setRef = (instance) => {
+    if (instance) {
+      jsonEditorRef.current = instance.jsonEditor;
+    } else {
+      jsonEditorRef.current = null;
+    }
+  };
+
   useEffect(() => {
     console.log('--------------New Render--------------');
     console.log('canvas Width:', overlay.canvasWidth);
@@ -135,6 +144,8 @@ export function Debug(
           value={drawingState}
           ace={ace}
           theme="ace/theme/github"
+          mode="code"
+          statusBar
         />
       </Grid>
     </Grid>
