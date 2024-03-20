@@ -42,7 +42,6 @@ export default function AnnotationDrawing({
     y: 1,
   });
 
-
   useEffect(() => {
     if (overlay) {
       updateScale(overlay.containerWidth / overlay.canvasWidth);
@@ -56,7 +55,6 @@ export default function AnnotationDrawing({
       setSurfaceData(newSurfaceData);
     }
   }, [{ width }]);
-
 
   useEffect(() => {
     // TODO clean
@@ -79,7 +77,6 @@ export default function AnnotationDrawing({
       });
     }
   }, [toolState]);
-
 
   /** */
 
@@ -129,7 +126,6 @@ export default function AnnotationDrawing({
 
     // TODO This comportment must be handle by the text component
     if (drawingState.currentShape.type === 'text') {
-
       // Potentially bug during the update
       const newCurrentShape = { ...drawingState.currentShape };
 
@@ -202,18 +198,17 @@ export default function AnnotationDrawing({
    * @param {Object} evt - The event object containing the target shape's modified attributes.
    */
   const onTransform = (evt) => {
-
     const modifiedshape = evt.target.attrs;
 
     const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
 
     Object.assign(shape, modifiedshape);
-    if(modifiedshape.image){
-    shape.width = modifiedshape.image.width;
-    shape.height = modifiedshape.image.height;
+    if (shape.type === 'image') {
+      shape.width = modifiedshape.image.width * modifiedshape.scaleX;
+      shape.height = modifiedshape.image.height * modifiedshape.scaleY;
     }
     updateCurrentShapeInShapes(shape);
-    console.log('ON TRANSOFRM',shape)
+    console.log('onTransform', shape);
   };
 
   /**
