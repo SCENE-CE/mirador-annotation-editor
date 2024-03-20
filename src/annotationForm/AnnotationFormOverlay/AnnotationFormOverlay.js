@@ -13,7 +13,7 @@ import { styled } from '@mui/material/styles';
 import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../../icons/Cursor';
 import AnnotationFormOverlayTool from './AnnotationFormOverlayTool';
-import {defaultToolState, OVERLAY_TOOL, targetSVGToolState} from '../../AnnotationCreationUtils';
+import { defaultToolState, OVERLAY_TOOL, targetSVGToolState } from '../../AnnotationCreationUtils';
 import { OVERLAY_VIEW, TARGET_VIEW } from '../../AnnotationFormUtils';
 import { KONVA_MODE } from './KonvaDrawing/KonvaUtils';
 
@@ -56,15 +56,13 @@ function AnnotationFormOverlay(
    * @param tool
    */
   const changeTool = (e, tool) => {
-    if(!displayMode){
+    if (!displayMode) {
       if (tool === OVERLAY_TOOL.SHAPE) {
-        console.log('HAHA JE CHANGE TOOLSTATE')
-        console.log(displayMode)
         setToolState({
           ...defaultToolState,
           activeTool: tool,
         });
-    }
+      }
       updateCurrentShapeInShapes(null);
     } else {
       setToolState({
