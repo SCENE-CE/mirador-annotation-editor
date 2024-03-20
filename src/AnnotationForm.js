@@ -35,7 +35,7 @@ export default function AnnotationForm(
 ) {
   const [templateType, setTemplateType] = useState(null);
   const [mediaType, setMediaType] = useState(canvases[0].__jsonld.items[0].items[0].body.type);
-
+  const debugMode = config.debugMode === true;
   // TODO must be improved when parsing annotation
   if (!templateType) {
     if (annotation.id) {
@@ -146,7 +146,12 @@ export default function AnnotationForm(
   /** Save function * */
   const saveAnnotation = (annotationToSaved, canvasId) => {
     const storageAdapter = config.annotation.adapter(canvasId);
-    return saveAnnotationInStorageAdapter(canvasId, storageAdapter, receiveAnnotation, annotationToSaved);
+    return saveAnnotationInStorageAdapter(
+      canvasId,
+      storageAdapter,
+      receiveAnnotation,
+      annotationToSaved,
+    );
   };
 
   return (
@@ -187,6 +192,7 @@ export default function AnnotationForm(
                 canvases={canvases}
                 osdref={osdref}
                 getMediaAudio={getMediaAudio}
+                debugMode={debugMode}
               />
             </Grid>
           </Grid>

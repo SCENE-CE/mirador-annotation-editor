@@ -11,6 +11,7 @@ export default function TaggingTemplate(
   {
     annotation,
     currentTime,
+    debugMode,
     mediaType,
     overlay,
     setCurrentTime,
@@ -119,6 +120,7 @@ export default function TaggingTemplate(
         overlay={overlay}
         closeFormCompanionWindow={closeFormCompanionWindow}
         getMediaAudio={getMediaAudio}
+        debugMode={debugMode}
       />
         </Grid>
         <Grid item>

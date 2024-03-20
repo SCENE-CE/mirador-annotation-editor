@@ -31,6 +31,7 @@ export default function AnnotationFormBody(
     saveAnnotation,
     canvases,
     getMediaAudio,
+    debugMode,
   },
 ) {
   // TODO At this end we must only have annoSTate, setAnnoState, templateType,
@@ -60,6 +61,7 @@ export default function AnnotationFormBody(
               windowId={windowId}
               overlay={overlay}
               getMediaAudio={getMediaAudio}
+              debugMode={debugMode}
             />
           )
         }
@@ -77,6 +79,7 @@ export default function AnnotationFormBody(
             saveAnnotation={saveAnnotation}
             currentTime={currentTime}
             overlay={overlay}
+            debugMode={debugMode}
           />
           )
         }
@@ -93,6 +96,7 @@ export default function AnnotationFormBody(
               setCurrentTime={setCurrentTime}
               setSeekTo={setSeekTo}
               windowId={windowId}
+              debugMode={debugMode}
             />
           )
         }
@@ -110,6 +114,7 @@ export default function AnnotationFormBody(
               windowId={windowId}
               getMediaAudio={getMediaAudio}
               overlay={overlay}
+              debugMode={debugMode}
             />
           )
         }
@@ -136,6 +141,7 @@ export default function AnnotationFormBody(
               overlay={overlay}
               annotation={annotation}
               getMediaAudio={getMediaAudio}
+              debugMode={debugMode}
             />
             )}
         </TemplateContainer>

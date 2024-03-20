@@ -11,10 +11,11 @@ import { mediaTypes, TARGET_VIEW } from '../AnnotationFormUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import CursorIcon from '../icons/Cursor';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import {Debug} from "./Debug";
+import { Debug } from './Debug';
 
 export function TargetSpatialInput({
   closeFormCompanionWindow,
+  debugMode,
   mediaType,
   onChange,
   overlay,
@@ -144,14 +145,16 @@ export function TargetSpatialInput({
               updateCurrentShapeInShapes={updateCurrentShapeInShapes}
             />
           </Grid>
+          {debugMode && (
           <Grid item>
             <Debug
-                overlay={overlay}
-                scale={scale}
-                drawingState={drawingState}
-                displayMode={KONVA_MODE.TARGET}
+              overlay={overlay}
+              scale={scale}
+              drawingState={drawingState}
+              displayMode={KONVA_MODE.TARGET}
             />
           </Grid>
+          )}
         </Grid>
       )}
     </Grid>

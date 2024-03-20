@@ -51,6 +51,7 @@ export default function DrawingTemplate(
     canvases,
     closeFormCompanionWindow,
     currentTime,
+    debugMode,
     mediaType,
     overlay,
     setCurrentTime,
@@ -304,6 +305,7 @@ export default function DrawingTemplate(
         overlay={overlay}
         closeFormCompanionWindow={closeFormCompanionWindow}
         timeTarget
+        debugMode={debugMode}
       />
       <Grid item>
       <Debug

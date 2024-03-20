@@ -34,6 +34,7 @@ export default function ImageCommentTemplate(
     canvases,
     closeFormCompanionWindow,
     currentTime,
+    debugMode,
     mediaType,
     overlay,
     saveAnnotation,
@@ -273,6 +274,7 @@ export default function ImageCommentTemplate(
         closeFormCompanionWindow={closeFormCompanionWindow}
         timeTarget
         spatialTarget={false}
+        debugMode={debugMode}
       />
      <Grid item>
         <Debug
