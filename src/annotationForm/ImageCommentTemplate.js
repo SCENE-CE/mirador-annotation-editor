@@ -218,11 +218,7 @@ export default function ImageCommentTemplate(
       <Grid item>
         <AnnotationDrawing
           scale={scale}
-          activeTool={toolState.activeTool}
           annotation={annotation}
-          fillColor={toolState.fillColor}
-          strokeColor={toolState.strokeColor}
-          strokeWidth={toolState.strokeWidth}
           closed={toolState.closedMode === 'closed'}
           windowId={windowId}
           player={player}
@@ -232,7 +228,6 @@ export default function ImageCommentTemplate(
           originalWidth={overlay ? overlay.canvasWidth : 1920}
           originalHeight={overlay ? overlay.canvasHeight : 1080}
           updateScale={updateScale}
-          imageEvent={toolState.imageEvent}
           setColorToolFromCurrentShape={setColorToolFromCurrentShape}
           drawingState={drawingState}
           isMouseOverSave={isMouseOverSave}
@@ -244,6 +239,7 @@ export default function ImageCommentTemplate(
           mediaType={mediaType}
           closeFormCompanionWindow={closeFormCompanionWindow}
           displayMode={KONVA_MODE.IMAGE}
+          toolState={toolState}
         />
       </Grid>
       <Grid item>

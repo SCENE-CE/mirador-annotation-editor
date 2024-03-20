@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
  */
 function TextNode({
   shape, onShapeClick, activeTool, isSelected,
-  onTransform, handleDragEnd, handleDragStart,
+  onTransform, handleDragEnd, handleDragStart,text
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -21,13 +21,13 @@ function TextNode({
   const handleClick = () => {
     onShapeClick(shape);
   };
-
   useEffect(() => {
     if (trRef.current) {
       trRef.current.nodes([shapeRef.current]);
       trRef.current.getLayer().batchDraw();
     }
   }, []);
+  console.log(text);
 
   return (
     <>
@@ -40,7 +40,7 @@ function TextNode({
         y={shape.y}
         fontSize={40}
         fill={shape.fill}
-        text={shape.text}
+        text={text}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
         onClick={handleClick}

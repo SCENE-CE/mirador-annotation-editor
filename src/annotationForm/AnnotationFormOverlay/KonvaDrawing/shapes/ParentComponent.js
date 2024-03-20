@@ -22,6 +22,7 @@ function ParentComponent({
   activeTool,
   handleDragStart,
   trview,
+    text,
 }) {
   const [selectedShape, setSelectedShape] = useState(null);
 
@@ -80,6 +81,7 @@ function ParentComponent({
                   onTransform,
                   shape,
                 }}
+                  text={text}
                 key={i}
               />
             );
