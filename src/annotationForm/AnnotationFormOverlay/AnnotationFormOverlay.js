@@ -1,7 +1,6 @@
 import {
-  Button, Grid, Paper,
+  Grid,
 } from '@mui/material';
-import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import TitleIcon from '@mui/icons-material/Title';
 import ImageIcon from '@mui/icons-material/Image';
@@ -13,7 +12,7 @@ import { styled } from '@mui/material/styles';
 import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../../icons/Cursor';
 import AnnotationFormOverlayTool from './AnnotationFormOverlayTool';
-import { defaultToolState, OVERLAY_TOOL, targetSVGToolState } from '../../AnnotationCreationUtils';
+import { defaultToolState, OVERLAY_TOOL } from '../../AnnotationCreationUtils';
 import { OVERLAY_VIEW, TARGET_VIEW } from '../../AnnotationFormUtils';
 import { KONVA_MODE } from './KonvaDrawing/KonvaUtils';
 
@@ -56,7 +55,8 @@ function AnnotationFormOverlay(
    * @param tool
    */
   const changeTool = (e, tool) => {
-    if (!displayMode) {
+    console.log('displayMode', displayMode);
+    if (!displayMode) { // TODO Why this check ?
       if (tool === OVERLAY_TOOL.SHAPE) {
         setToolState({
           ...defaultToolState,
