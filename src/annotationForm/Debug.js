@@ -2,6 +2,8 @@ import Typography from '@mui/material/Typography';
 import {Grid} from '@mui/material';
 import React, {useEffect} from 'react';
 import {TARGET_VIEW} from "../AnnotationFormUtils";
+import {JsonEditor as Editor} from "jsoneditor-react";
+import ace from "brace";
 
 export function Debug(
     {
@@ -77,6 +79,13 @@ export function Debug(
                   </>
               )
           }
+          <Grid item>
+              <Editor
+                  value={drawingState}
+                  ace={ace}
+                  theme="ace/theme/github"
+              />
+          </Grid>
         </Grid>
         );
 }
