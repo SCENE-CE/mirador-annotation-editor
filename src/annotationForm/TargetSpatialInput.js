@@ -24,7 +24,9 @@ export function TargetSpatialInput({
   windowId,
   xywh,
 }) {
+  // TODO the targetSVGToolSTate is not used. Why the defaultToolState is used?
   const [toolState, setToolState] = useState(targetSVGToolState);
+  console.log('toolState',toolState)
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
 
   const [scale, setScale] = useState(1);

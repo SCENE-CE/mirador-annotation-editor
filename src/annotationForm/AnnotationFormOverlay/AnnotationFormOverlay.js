@@ -1,7 +1,6 @@
 import {
-  Button, Grid, Paper,
+  Grid,
 } from '@mui/material';
-import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import TitleIcon from '@mui/icons-material/Title';
 import ImageIcon from '@mui/icons-material/Image';
@@ -56,11 +55,14 @@ function AnnotationFormOverlay(
    * @param tool
    */
   const changeTool = (e, tool) => {
-    if (tool === OVERLAY_TOOL.SHAPE) {
-      setToolState({
-        ...defaultToolState,
-        activeTool: tool,
-      });
+    console.log('displayMode', displayMode);
+    if (!displayMode) { // TODO Why this check ?
+      if (tool === OVERLAY_TOOL.SHAPE) {
+        setToolState({
+          ...defaultToolState,
+          activeTool: tool,
+        });
+      }
       updateCurrentShapeInShapes(null);
     } else {
       setToolState({

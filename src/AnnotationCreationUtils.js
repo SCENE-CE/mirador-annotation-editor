@@ -96,10 +96,8 @@ export const defaultToolState = {
 export const targetSVGToolState = {
   activeTool: OVERLAY_TOOL.EDIT,
   closedMode: 'closed',
-  fillColor: 'rgba(255,0, 0, 0.5)',
   image: { id: null },
   imageEvent: null,
   strokeColor: 'rgba(255,0, 0, 0.5)',
-  strokeWidth: 2,
+  strokeWidth: 5,
 };
-

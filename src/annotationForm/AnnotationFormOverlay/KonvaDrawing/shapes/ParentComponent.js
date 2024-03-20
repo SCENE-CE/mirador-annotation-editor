@@ -11,8 +11,8 @@ import ImageShape from './Image';
 
 /** Loads Konva and display in function of their type */
 function ParentComponent({
+  displayMode,
   isMouseOverSave,
-    displayMode,
   scale,
   onTransform,
   handleDragEnd,
@@ -67,6 +67,7 @@ function ParentComponent({
                   displayMode,
                 }}
                 key={i}
+                displayMode={displayMode}
               />
             );
           case 'text':
