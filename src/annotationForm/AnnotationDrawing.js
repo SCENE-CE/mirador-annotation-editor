@@ -224,6 +224,11 @@ export default function AnnotationDrawing({
     shape.x = modifiedshape.x;
     shape.y = modifiedshape.y;
 
+    if (shape.type === 'image') {
+      shape.width = modifiedshape.image.width * modifiedshape.scaleX;
+      shape.height = modifiedshape.image.height * modifiedshape.scaleY;
+    }
+
     updateCurrentShapeInShapes( shape);
     console.log('On drag end', shape);
   };
