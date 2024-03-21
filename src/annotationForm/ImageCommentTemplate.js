@@ -6,14 +6,16 @@ import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
-import { maeTargetToIiifTarget, mediaTypes, TARGET_VIEW, template, } from '../AnnotationFormUtils';
+import { maeTargetToIiifTarget } from '../IIIFUtils';
+import {
+   mediaTypes, TARGET_VIEW, template,
+} from '../AnnotationFormUtils';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { defaultToolState } from '../AnnotationCreationUtils';
 import AnnotationDrawing from './AnnotationDrawing';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { Debug } from './Debug';
-
 
 /**
  * Image Comment template
@@ -62,11 +64,14 @@ export default function ImageCommentTemplate(
       target: null,
     };
   } else if (maeAnnotation.maeData.target.drawingState && typeof maeAnnotation.maeData.target.drawingState === 'string') {
-    maeAnnotation.maeData.target.drawingState = JSON.parse(maeAnnotation.maeData.target.drawingState);
+    maeAnnotation.maeData.target.drawingState = JSON.parse(
+      maeAnnotation.maeData.target.drawingState,
+    );
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
 
+  /** updateTargetState with maeDate * */
   const updateTargetState = (target) => {
     const newMaeData = annotationState.maeData;
     newMaeData.target = target;
@@ -104,6 +109,7 @@ export default function ImageCommentTemplate(
       });
   };
 
+  /** Update Annotation with body Text * */
   const updateAnnotationTextualBodyValue = (newTextValue) => {
     const newBody = annotationState.body;
     newBody.value = newTextValue;
@@ -118,6 +124,7 @@ export default function ImageCommentTemplate(
    ***************************************** */
   const [toolState, setToolState] = useState(defaultToolState);
 
+  /** Initialize drawingState * */
   const initDrawingState = () => {
     if (annotationState.maeData.drawingState) {
       return {
@@ -182,6 +189,7 @@ export default function ImageCommentTemplate(
     }
   };
 
+  /** Update CurrentShape * */
   const updateCurrentShapeInShapes = (currentShape) => {
     if (currentShape) {
       const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
@@ -276,7 +284,7 @@ export default function ImageCommentTemplate(
         spatialTarget={false}
         debugMode={debugMode}
       />
-     <Grid item>
+      <Grid item>
         <Debug
           overlay={overlay}
           scale={scale}

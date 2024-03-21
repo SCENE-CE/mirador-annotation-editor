@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Grid, Link, TextField, Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { isValidUrl } from '../utils';
+import { isValidUrl } from '../AnnotationFormUtils';
 
 /**
  * Handle Manifest Section
@@ -18,14 +18,13 @@ export default function ManifestNetworkFormSection(
     onChange,
   },
 ) {
-
   // TODO probably useless.  check this state
-    const [manifestUrl, setManifestUrl] = useState('');
+  const [manifestUrl, setManifestUrl] = useState('');
 
-    const handlOnChange = (value) =>{
-        setManifestUrl(value)
-        onChange(value)
-    }
+  const handlOnChange = (value) => {
+    setManifestUrl(value);
+    onChange(value);
+  };
 
   return (
     <Grid item container direction="column" spacing={1}>
@@ -43,9 +42,9 @@ export default function ManifestNetworkFormSection(
           error={!isValidUrl(manifestNetwork)}
         />
       </Grid>
-        <Grid item>
-            <Link href={manifestUrl}>{manifestUrl}</Link>
-        </Grid>
+      <Grid item>
+        <Link href={manifestUrl}>{manifestUrl}</Link>
+      </Grid>
       <Grid item>
         {
           isValidUrl(manifestNetwork) && (

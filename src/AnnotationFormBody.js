@@ -150,7 +150,6 @@ export default function AnnotationFormBody(
         <ToggleButton
           value={showDebug}
           onChange={() => setShowDebug(!showDebug)}
-          style={{ display: 'none' }}
         >
           {showDebug ? 'Hide' : 'Show'}
           {' '}
@@ -189,19 +188,19 @@ AnnotationFormBody.propTypes = {
     manifestNetwork: PropTypes.string,
     target: PropTypes.string,
   }).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
+  closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  getMediaAudio: PropTypes.object.isRequired,
   mediaType: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  mediaVideo: PropTypes.object.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
+  saveAnnotation: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   templateType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
-  saveAnnotation: PropTypes.func.isRequired,
-  closeFormCompanionWindow: PropTypes.func.isRequired,
-  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
 
 };

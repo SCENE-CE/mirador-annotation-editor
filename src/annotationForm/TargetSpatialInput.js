@@ -1,30 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
-import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
-import ToggleButton from '@mui/material/ToggleButton';
-import { Grid, TextField } from '@mui/material';
+import { Grid } from '@mui/material';
 import AnnotationDrawing from './AnnotationDrawing';
-import { defaultToolState, OVERLAY_TOOL, targetSVGToolState } from '../AnnotationCreationUtils';
-import { mediaTypes, TARGET_VIEW } from '../AnnotationFormUtils';
+import { targetSVGToolState } from '../AnnotationCreationUtils';
+import { TARGET_VIEW } from '../AnnotationFormUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
-import CursorIcon from '../icons/Cursor';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { Debug } from './Debug';
 
+/** Handle target spacial for annot templates * */
 export function TargetSpatialInput({
   closeFormCompanionWindow,
   debugMode,
   mediaType,
-  onChange,
   overlay,
   setTargetDrawingState,
-  setXywh,
-  svg,
   targetDrawingState,
   windowId,
-  xywh,
 }) {
   // TODO the targetSVGToolSTate is not used. Why the defaultToolState is used?
   const [toolState, setToolState] = useState(targetSVGToolState);
@@ -41,7 +34,6 @@ export function TargetSpatialInput({
     currentShape: null,
     isDrawing: false,
   });
-
   useEffect(() => {
     setTargetDrawingState({ drawingState });
   }, [drawingState.shapes]);
@@ -69,13 +61,7 @@ export function TargetSpatialInput({
     }
   };
 
-  let player;
-  if (mediaType === mediaTypes.VIDEO) {
-    player = VideosReferences.get(windowId);
-  }
-  if (mediaType === mediaTypes.IMAGE) {
-    player = OSDReferences.get(windowId);
-  }
+  /** handle the update of currentShape into drawingState */
   const updateCurrentShapeInShapes = (currentShape) => {
     if (currentShape) {
       const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
@@ -111,9 +97,7 @@ export function TargetSpatialInput({
           <Grid item direction="row" spacing={2}>
             <AnnotationDrawing
               scale={scale}
-              closed={toolState.closedMode === 'closed'}
               windowId={windowId}
-              player={player}
             // we need to pass the width and height of the image to the annotation drawing component
               width={overlay ? overlay.containerWidth : 1920}
               height={overlay ? overlay.containerHeight : 1080}
@@ -126,7 +110,6 @@ export function TargetSpatialInput({
               updateCurrentShapeInShapes={updateCurrentShapeInShapes}
               setDrawingState={setDrawingState}
               tabView="edit" // TODO change
-              showStyleTools
               mediaType={mediaType}
               closeFormCompanionWindow={closeFormCompanionWindow}
               displayMode={KONVA_MODE.TARGET}
@@ -160,3 +143,14 @@ export function TargetSpatialInput({
     </Grid>
   );
 }
+
+TargetSpatialInput.propTypes = {
+  closeFormCompanionWindow: PropTypes.func.isRequired,
+  mediaType: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  overlay: PropTypes.object.isRequired,
+  setTargetDrawingState: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  targetDrawingState: PropTypes.object.isRequired,
+  windowId: PropTypes.string.isRequired,
+};

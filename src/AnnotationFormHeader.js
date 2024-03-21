@@ -1,15 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import PropTypes from 'prop-types';
-import { styled } from '@mui/material/styles';
 import { MiradorMenuButton } from 'mirador/dist/es/src/components/MiradorMenuButton';
-import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
 
 /**
  * React component for rendering the header of the annotation form.
  * */
-export default function AnnotationFormHeader({ templateType, setCommentingType, annotation }) {
+export default function AnnotationFormHeader(
+  {
+    templateType,
+    setCommentingType,
+    annotation,
+  },
+) {
   /**
      * Function to navigate back to the template selection.
      */
@@ -19,12 +23,12 @@ export default function AnnotationFormHeader({ templateType, setCommentingType, 
 
   return (
     <Grid
-        container
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{marginRight:"10px"}}
-        spacing={2}
+      container
+      direction="row"
+      alignItems="center"
+      justifyContent="space-between"
+      sx={{ marginRight: '10px' }}
+      spacing={2}
     >
       <Grid item>
         {annotation.id == null
@@ -41,6 +45,22 @@ export default function AnnotationFormHeader({ templateType, setCommentingType, 
   );
 }
 AnnotationFormHeader.propTypes = {
+  annotation: PropTypes.oneOfType([
+    PropTypes.shape({
+      body: PropTypes.shape({
+        format: PropTypes.string,
+        id: PropTypes.string,
+        type: PropTypes.string,
+        value: PropTypes.string,
+      }),
+      drawingState: PropTypes.string,
+      id: PropTypes.string,
+      manifestNetwork: PropTypes.string,
+      motivation: PropTypes.string,
+      target: PropTypes.string,
+    }),
+    PropTypes.string,
+  ]).isRequired,
   setCommentingType: PropTypes.func.isRequired,
   templateType: PropTypes.arrayOf(PropTypes.shape(
     {

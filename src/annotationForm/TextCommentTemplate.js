@@ -5,11 +5,9 @@ import { Grid } from '@mui/material';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import {
-  maeTargetToIiifTarget,
-  template,
-} from '../AnnotationFormUtils';
-import { getKonvaAsDataURL, getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { template } from '../AnnotationFormUtils';
+import { maeTargetToIiifTarget } from '../IIIFUtils';
+import { getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
 /** Form part for edit annotation content and body */
 function TextCommentTemplate(
@@ -46,6 +44,7 @@ function TextCommentTemplate(
       target: null,
     };
   } else if (maeAnnotation.maeData.target.drawingState && typeof maeAnnotation.maeData.target.drawingState === 'string') {
+    // eslint-disable-next-line max-len
     maeAnnotation.maeData.target.drawingState = JSON.parse(maeAnnotation.maeData.target.drawingState);
   }
 
@@ -63,6 +62,7 @@ function TextCommentTemplate(
     });
   };
 
+  /** this code update annotationState with maeDate * */
   const updateTargetState = (target) => {
     const newMaeData = annotationState.maeData;
     newMaeData.target = target;
@@ -72,6 +72,7 @@ function TextCommentTemplate(
     });
   };
 
+  /** SaveFunction for textComment * */
   const saveFunction = () => {
     // Iterate over all canvases and save the annotation, then close the form
 
@@ -82,6 +83,7 @@ function TextCommentTemplate(
       annotationState.maeData.target.svg = await getSvg(windowId);
       // annotationState.maeData.target.dataUrl = await getKonvaAsDataURL(windowId);
       annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
+      // eslint-disable-next-line max-len
       annotationState.maeData.target.drawingState = JSON.stringify(annotationState.maeData.target.drawingState);
       annotationState.maeData.target.svg = JSON.stringify(annotationState.maeData.target);
       console.log('annotationState', annotationState.target);
@@ -141,7 +143,11 @@ TextCommentTemplate.propTypes = {
   canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  getMediaAudio: PropTypes.object.isRequired,
   mediaType: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  overlay: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
