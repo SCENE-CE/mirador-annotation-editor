@@ -3,27 +3,22 @@ import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
-import ToggleButton from '@mui/material/ToggleButton';
-import { Grid, TextField } from '@mui/material';
+import { Grid } from '@mui/material';
 import AnnotationDrawing from './AnnotationDrawing';
-import { defaultToolState, OVERLAY_TOOL, targetSVGToolState } from '../AnnotationCreationUtils';
+import { targetSVGToolState } from '../AnnotationCreationUtils';
 import { mediaTypes, TARGET_VIEW } from '../AnnotationFormUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
-import CursorIcon from '../icons/Cursor';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import {Debug} from "./Debug";
+import { Debug } from './Debug';
 
+/** Handle target spacial for annot templates * */
 export function TargetSpatialInput({
   closeFormCompanionWindow,
   mediaType,
-  onChange,
   overlay,
   setTargetDrawingState,
-  setXywh,
-  svg,
   targetDrawingState,
   windowId,
-  xywh,
 }) {
   // TODO the targetSVGToolSTate is not used. Why the defaultToolState is used?
   const [toolState, setToolState] = useState(targetSVGToolState);
@@ -40,7 +35,6 @@ export function TargetSpatialInput({
     currentShape: null,
     isDrawing: false,
   });
-
   useEffect(() => {
     setTargetDrawingState({ drawingState });
   }, [drawingState.shapes]);
@@ -146,10 +140,10 @@ export function TargetSpatialInput({
           </Grid>
           <Grid item>
             <Debug
-                overlay={overlay}
-                scale={scale}
-                drawingState={drawingState}
-                displayMode={KONVA_MODE.TARGET}
+              overlay={overlay}
+              scale={scale}
+              drawingState={drawingState}
+              displayMode={KONVA_MODE.TARGET}
             />
           </Grid>
         </Grid>
@@ -157,3 +151,14 @@ export function TargetSpatialInput({
     </Grid>
   );
 }
+
+TargetSpatialInput.propTypes = {
+  closeFormCompanionWindow: PropTypes.func.isRequired,
+  mediaType: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  overlay: PropTypes.object.isRequired,
+  setTargetDrawingState: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  targetDrawingState: PropTypes.object.isRequired,
+  windowId: PropTypes.string.isRequired
+};

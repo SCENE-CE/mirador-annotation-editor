@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography } from '@mui/material';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
-import {
-  extractTargetFromAnnotation,
-  mediaTypes,
-} from '../AnnotationFormUtils';
+import { mediaTypes } from '../AnnotationFormUtils';
 import TargetTimeInput from './TargetTimeInput';
 import { TargetSpatialInput } from './TargetSpatialInput';
 
@@ -38,10 +35,13 @@ export default function TargetFormSection(
   },
 ) {
   if (!target) {
+    // eslint-disable-next-line no-param-reassign
     target = {};
     if (mediaType === mediaTypes.VIDEO) {
       const mediaVideo = VideosReferences.get(windowId);
+      // eslint-disable-next-line no-param-reassign
       target.tstart = currentTime || 0;
+      // eslint-disable-next-line max-len,no-underscore-dangle,no-param-reassign
       target.tend = mediaVideo.props.canvas.__jsonld.duration ? Math.floor(mediaVideo.props.canvas.__jsonld.duration) : 0;
     }
 
@@ -49,18 +49,23 @@ export default function TargetFormSection(
     switch (mediaType) {
       case mediaTypes.IMAGE:
         // TODO set default xywh
+        // eslint-disable-next-line no-param-reassign
         target.fullCanvaXYWH = '0,0,500,1000';
         break;
       case mediaTypes.VIDEO:
         const mediaVideo = VideosReferences.get(windowId);
+        // eslint-disable-next-line no-underscore-dangle
         const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
+        // eslint-disable-next-line no-underscore-dangle
         const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
+        // eslint-disable-next-line no-param-reassign
         target.fullCanvaXYWH = `0,0,${targetWidth},${targetHeigth}`;
         break;
       default:
         break;
     }
 
+    // eslint-disable-next-line no-param-reassign
     target.drawingState = {
       currentShape: null,
       isDrawing: false,
@@ -85,10 +90,12 @@ export default function TargetFormSection(
   };
 
   if (mediaType === mediaTypes.IMAGE) {
+    // eslint-disable-next-line no-param-reassign
     timeTarget = false;
   }
 
   if (mediaType === mediaTypes.AUDIO) {
+    // eslint-disable-next-line no-param-reassign
     spatialTarget = false;
   }
 
@@ -103,7 +110,7 @@ export default function TargetFormSection(
         spatialTarget && (
         <Grid item container direction="column">
           <TargetSpatialInput
-              setTargetDrawingState={onChangeSpatialTargetInput}
+            setTargetDrawingState={onChangeSpatialTargetInput}
             xywh={target.xywh}
             svg={target.svg}
             onChange={onChangeSpatialTargetInput}
@@ -139,12 +146,18 @@ export default function TargetFormSection(
 }
 
 TargetFormSection.propTypes = {
+  closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  getMediaAudio: PropTypes.object.isRequired,
   mediaType: PropTypes.string.isRequired,
   onChangeTarget: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  overlay: PropTypes.object.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   spatialTarget: PropTypes.bool.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   target: PropTypes.object.isRequired,
   timeTarget: PropTypes.bool.isRequired,
   windowId: PropTypes.string.isRequired,

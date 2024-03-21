@@ -1,12 +1,6 @@
-import {Button, Grid} from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import PropTypes from 'prop-types';
-import { styled } from '@mui/material/styles';
 import React from 'react';
-
-const StyledButtonDivSaveOrCancel = styled('div')(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'flex-end',
-}));
 
 /** Annotation form footer, save or cancel the edition/creation of an annotation */
 function AnnotationFormFooter({

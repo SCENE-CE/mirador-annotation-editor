@@ -74,5 +74,6 @@ const DescriptionCardTypography = styled(Typography, { name: 'CompanionWindow', 
 });
 
 AnnotationFormTemplateSelector.propTypes = {
+  mediaType: PropTypes.string.isRequired,
   setCommentingType: PropTypes.func.isRequired,
 };
