@@ -243,7 +243,6 @@ AnnotationForm.propTypes = {
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
-
 };
 
 AnnotationForm.defaultProps = {

@@ -13,8 +13,10 @@ import OpenPolygonIcon from '@mui/icons-material/ShowChart';
 import { SketchPicker } from 'react-color';
 import React from 'react';
 import { styled } from '@mui/material/styles';
+import * as Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { defaultLineWeightChoices } from '../KonvaUtils';
-/** Display color picker and border **/
+/** Display color picker and border * */
 export default function ColorPicker(
   {
     changeClosedMode,
@@ -135,3 +137,34 @@ export default function ColorPicker(
 const StyledDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(1, 0.5),
 }));
+
+ColorPicker.propTypes = {
+  changeClosedMode: Proptypes.func.isRequired,
+  closeChooseColor: Proptypes.func.isRequired,
+  currentColor: Proptypes.string.isRequired,
+  handleCloseLineWeight: Proptypes.func.isRequired,
+  handleLineWeightSelect: Proptypes.func.isRequired,
+  openChooseColor: Proptypes.func.isRequired,
+  openChooseLineWeight: Proptypes.func.isRequired,
+  toolOptions: Proptypes.oneOfType(
+    Proptypes.bool,
+    Proptypes.string,
+    Proptypes.bool,
+    Proptypes.string,
+    Proptypes.string,
+  ).isRequired,
+  toolState: PropTypes.shape({
+    activeTool: PropTypes.string.isRequired,
+    closedMode: PropTypes.bool.isRequired,
+    fillColor: PropTypes.string.isRequired,
+    image: PropTypes.shape({
+      id: PropTypes.string,
+    }),
+    strokeColor: PropTypes.string.isRequired,
+    strokeWidth: PropTypes.number.isRequired,
+    text: PropTypes.string,
+    textBody: PropTypes.string,
+    updateColor: PropTypes.func.isRequired,
+  }).isRequired,
+  updateColor: Proptypes.func.isRequired,
+};
