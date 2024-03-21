@@ -39,7 +39,7 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
       },
     };
   }
-
+  console.log('mediaVideo',mediaVideo)
   return {
     annotation,
     canvases,

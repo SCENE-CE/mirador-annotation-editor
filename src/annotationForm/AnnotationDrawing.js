@@ -20,7 +20,6 @@ export default function AnnotationDrawing({
   imageEvent,
   mediaType,
   originalHeight,
-  originalWidth,
   overlay,
   scale,
   setDrawingState,
@@ -29,6 +28,7 @@ export default function AnnotationDrawing({
   width,
   setColorToolFromCurrentShape,
   toolState,
+  originalWidth,
   ...props
 }) {
   const [isDrawing, setIsDrawing] = useState(false);
@@ -481,25 +481,25 @@ export default function AnnotationDrawing({
     });
   };
 
+  console.log('width',width)
+  console.log('height',height)
   /** */
   const drawKonvas = () => (
     <Stage
-      width={width}
-      height={height}
+      width={originalWidth}
+      height={originalHeight}
       style={{
-        height: 'auto',
         left: 0,
-        objectFit: 'contain',
-        overflow: 'clip',
-        overflowClipMargin: 'content-box',
         position: 'absolute',
         top: 0,
-        width: '100%',
+        backgroundColor:"yellow",
+        opacity:'0.15',
       }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
       id={props.windowId}
+      opacity={1}
     >
       <ParentComponent
         shapes={drawingState.shapes}
@@ -507,8 +507,6 @@ export default function AnnotationDrawing({
         activeTool={toolState.activeTool}
         selectedShapeId={drawingState.currentShape?.id}
         scale={scale}
-        width={originalWidth}
-        height={originalHeight}
         onTransform={onTransform}
         handleDragEnd={handleDragEnd}
         handleDragStart={handleDragStart}
