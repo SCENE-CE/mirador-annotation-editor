@@ -5,10 +5,8 @@ import { Grid } from '@mui/material';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import {
-  maeTargetToIiifTarget,
-  template,
-} from '../AnnotationFormUtils';
+import { template } from '../AnnotationFormUtils';
+import { maeTargetToIiifTarget } from '../IIIFUtils';
 import { getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
 /** Form part for edit annotation content and body */

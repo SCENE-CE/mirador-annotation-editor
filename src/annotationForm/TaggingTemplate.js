@@ -3,7 +3,8 @@ import { Grid, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { maeTargetToIiifTarget, mediaTypes, template } from '../AnnotationFormUtils';
+import { mediaTypes, template } from '../AnnotationFormUtils';
+import { maeTargetToIiifTarget } from '../IIIFUtils';
 import TargetFormSection from './TargetFormSection';
 import { getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 

@@ -138,24 +138,6 @@ export const templateTypes = [
   },
 ];
 
-/** Extract time information from annotation target */
-export function timeFromAnnoTarget(annotarget) {
-  // TODO w3c media fragments: t=,10 t=5,
-  const r = /t=([0-9.]+),([0-9.]+)/.exec(annotarget);
-  if (!r || r.length !== 3) {
-    return [0, 0];
-  }
-  return [Number(r[1]), Number(r[2])];
-}
-/** Extract xywh from annotation target */
-export function geomFromAnnoTarget(annotarget) {
-  const r = /xywh=((-?[0-9]+,?)+)/.exec(annotarget);
-  if (!r || r.length !== 3) {
-    return '';
-  }
-  return r[1];
-}
-
 export const defaultToolState = {
   activeTool: OVERLAY_TOOL.EDIT,
   closedMode: 'closed',
@@ -171,56 +153,30 @@ export const OVERLAY_VIEW = 'layer';
 export const TAG_VIEW = 'tag';
 export const MANIFEST_LINK_VIEW = 'link';
 
-const targetTypes = {
-  MULTI: 'multi',
-  STRING: 'string',
-  SVG_SELECTOR: 'SVGSelector',
-};
 
-/** Transform maetarget to IIIF compatible data * */
-export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
-  if (maeTarget.drawingState) {
-    if (maeTarget.drawingState.shapes.length == 0) {
-      console.info('Implement target as string on fullSizeCanvas');
-      return `${canvasId}#` + `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}`;
-    }
-    if (maeTarget.drawingState.shapes.length === 1 && maeTarget.drawingState.shapes[0].type === 'rectangle') {
-      let {
-        // eslint-disable-next-line prefer-const
-        x, y, width, height, scaleX, scaleY,
-      } = maeTarget.drawingState.shapes[0];
-      x = Math.floor(x);
-      y = Math.floor(y);
-      width = Math.floor(width * scaleX);
-      height = Math.floor(height * scaleY);
-      console.info('Implement target as string with one shape (reactangle or image)');
-      // Image have not tstart and tend
-      return `${canvasId}#${maeTarget.tend ? `xywh=${x},${y},${width},${height}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${x},${y},${width},${height}`}`;
-    }
-    if (maeTarget.drawingState.shapes.length === 1 && maeTarget.drawingState.shapes[0].type === 'image') {
-      let {
-        x, y, width, height,
-      } = maeTarget.drawingState.shapes[0];
-      x = Math.floor(x);
-      y = Math.floor(y);
-      width = Math.floor(width);
-      height = Math.floor(height);
-      return `${canvasId}#${maeTarget.tend ? `xywh=${x},${y},${width},${height}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${x},${y},${width},${height}`}`;
-    }
+/** Split a second to { hours, minutes, seconds }  */
+export function secondsToHMSarray(secs) {
+  const h = Math.floor(secs / 3600);
+  return {
+    hours: h,
+    minutes: Math.floor(secs / 60) - h * 60,
+    seconds: secs % 60,
+  };
+}
 
-    return {
-      selector: [
-        {
-          type: 'SvgSelector',
-          value: maeTarget.svg,
-        },
-        {
-          type: 'FragmentSelector',
-          value: `${canvasId}#${maeTarget.tend}` ? `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${maeTarget.fullCanvaXYWH}`,
-        },
-      ],
-      source: canvasId,
-    };
+/**
+ * Checks if a given string is a valid URL.
+ * @returns {boolean} - Returns true if the string is a valid URL, otherwise false.
+ */
+export const isValidUrl = (string) => {
+  if (string === '' || string === undefined || string === null) {
+    return true;
   }
-  return `${canvasId}#${maeTarget.tend}` ? `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${maeTarget.fullCanvaXYWH}`;
+  try {
+    // eslint-disable-next-line no-new
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
 };

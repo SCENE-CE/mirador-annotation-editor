@@ -6,8 +6,9 @@ import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
+import { maeTargetToIiifTarget } from '../IIIFUtils';
 import {
-  maeTargetToIiifTarget, mediaTypes, TARGET_VIEW, template,
+   mediaTypes, TARGET_VIEW, template,
 } from '../AnnotationFormUtils';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { defaultToolState } from '../AnnotationCreationUtils';

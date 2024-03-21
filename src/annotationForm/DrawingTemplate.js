@@ -5,9 +5,9 @@ import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import AnnotationDrawing from './AnnotationDrawing';
+import { maeTargetToIiifTarget } from '../IIIFUtils';
 
 import {
-  maeTargetToIiifTarget,
   mediaTypes,
   TARGET_VIEW,
   template,
