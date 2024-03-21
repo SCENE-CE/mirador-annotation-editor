@@ -216,12 +216,21 @@ export default function AnnotationDrawing({
    * @param {Event} evt - The drag end event object.
    */
   const handleDragEnd = (evt) => {
+    console.log('On drag end', evt);
     const modifiedshape = evt.currentTarget.attrs;
     const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
+
+    Object.assign(shape, modifiedshape);
     shape.x = modifiedshape.x;
     shape.y = modifiedshape.y;
 
-    updateCurrentShapeInShapes(shape);
+    if (shape.type === 'image') {
+      shape.width = modifiedshape.image.width * modifiedshape.scaleX;
+      shape.height = modifiedshape.image.height * modifiedshape.scaleY;
+    }
+
+    updateCurrentShapeInShapes( shape);
+    console.log('On drag end', shape);
   };
 
   /**

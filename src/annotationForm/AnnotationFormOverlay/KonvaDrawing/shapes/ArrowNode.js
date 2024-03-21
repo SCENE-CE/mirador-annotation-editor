@@ -49,7 +49,7 @@ import {StayPrimaryPortrait} from "@mui/icons-material";
         pointerLength={shape.pointerLength}
         pointerWidth={shape.pointerWidth}
         onTransform={onTransform}
-        onDrag={handleDragEnd}
+        onDragEnd={handleDragEnd}
         onDragStart={handleDragEnd}
       />
       <Transformer
