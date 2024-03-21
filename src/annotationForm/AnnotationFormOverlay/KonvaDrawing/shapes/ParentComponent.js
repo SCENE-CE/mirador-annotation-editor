@@ -11,18 +11,18 @@ import ImageShape from './Image';
 
 /** Loads Konva and display in function of their type */
 function ParentComponent({
-  displayMode,
-  isMouseOverSave,
-  scale,
-  onTransform,
-  handleDragEnd,
-  shapes,
-  onShapeClick,
-  selectedShapeId,
+  text,
   activeTool,
+  displayMode,
+  handleDragEnd,
   handleDragStart,
+  isMouseOverSave,
+  onShapeClick,
+  onTransform,
+  scale,
+  selectedShapeId,
+  shapes,
   trview,
-    text,
 }) {
   const [selectedShape, setSelectedShape] = useState(null);
 
@@ -58,15 +58,15 @@ function ParentComponent({
               <Rectangle
                 {...{
                   activeTool,
+                  displayMode,
                   handleDragEnd,
                   handleDragStart,
                   isSelected,
                   onShapeClick: handleShapeClick,
                   onTransform,
                   shape,
-                  displayMode,
                 }}
-                key={i}
+                key={shape.id}
                 displayMode={displayMode}
               />
             );
@@ -82,8 +82,8 @@ function ParentComponent({
                   onTransform,
                   shape,
                 }}
-                  text={text}
-                key={i}
+                text={text}
+                key={shape.id}
               />
             );
           case 'ellipse':
@@ -98,7 +98,7 @@ function ParentComponent({
                   onTransform,
                   shape,
                 }}
-                key={i}
+                key={shape.id}
               />
             );
           case 'freehand':
@@ -113,7 +113,7 @@ function ParentComponent({
                   onTransform,
                   shape,
                 }}
-                key={i}
+                key={shape.id}
               />
             );
           case 'polygon':
@@ -128,7 +128,7 @@ function ParentComponent({
                   onTransform,
                   shape,
                 }}
-                key={i}
+                key={shape.id}
               />
             );
           case 'arrow':
@@ -143,7 +143,7 @@ function ParentComponent({
                   onTransform,
                   shape,
                 }}
-                key={i}
+                key={shape.id}
               />
             );
           case 'image':
@@ -151,6 +151,7 @@ function ParentComponent({
               <ImageShape
                 {...{
                   activeTool,
+                  displayMode,
                   handleDragEnd,
                   handleDragStart,
                   isSelected,
@@ -158,9 +159,8 @@ function ParentComponent({
                   onTransform,
                   shape,
                   src: shape.src,
-                  displayMode,
                 }}
-                key={i}
+                key={shape.id}
               />
             );
         }
@@ -171,6 +171,7 @@ function ParentComponent({
 
 ParentComponent.propTypes = {
   activeTool: PropTypes.string.isRequired,
+  displayMode: PropTypes.string.isRequired,
   handleDragEnd: PropTypes.func.isRequired,
   handleDragStart: PropTypes.func.isRequired,
   isMouseOverSave: PropTypes.bool.isRequired,
@@ -188,6 +189,7 @@ ParentComponent.propTypes = {
     x: PropTypes.number,
     y: PropTypes.number,
   })).isRequired,
+  text: PropTypes.string.isRequired,
   trview: PropTypes.bool.isRequired,
 };
 export default ParentComponent;
