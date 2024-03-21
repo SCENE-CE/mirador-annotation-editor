@@ -14,6 +14,7 @@ function NetworkCommentTemplate(
   {
     annotation,
     currentTime,
+    debugMode,
     mediaType,
     setCurrentTime,
     setSeekTo,
@@ -118,6 +119,7 @@ function NetworkCommentTemplate(
         closeFormCompanionWindow={closeFormCompanionWindow}
         getMediaAudio={getMediaAudio}
         overlay={overlay}
+        debugMode={debugMode}
       />
       <Grid item>
         <AnnotationFormFooter

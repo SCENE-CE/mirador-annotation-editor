@@ -15,6 +15,7 @@ export default function TaggingTemplate(
     canvases,
     closeFormCompanionWindow,
     currentTime,
+    debugMode,
     getMediaAudio,
     mediaType,
     overlay,
@@ -127,6 +128,7 @@ export default function TaggingTemplate(
           overlay={overlay}
           closeFormCompanionWindow={closeFormCompanionWindow}
           getMediaAudio={getMediaAudio}
+          debugMode={debugMode}
         />
       </Grid>
       <Grid item>

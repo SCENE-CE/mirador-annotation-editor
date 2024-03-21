@@ -22,6 +22,7 @@ export default function TargetFormSection(
   {
     closeFormCompanionWindow,
     currentTime,
+    debugMode,
     getMediaAudio,
     mediaType,
     onChangeTarget,
@@ -121,6 +122,7 @@ export default function TargetFormSection(
             targetDrawingState={target.drawingState}
             overlay={overlay}
             closeFormCompanionWindow={closeFormCompanionWindow}
+            debugMode={debugMode}
           />
         </Grid>
         )

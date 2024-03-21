@@ -12,6 +12,7 @@ import { Debug } from './Debug';
 /** Handle target spacial for annot templates * */
 export function TargetSpatialInput({
   closeFormCompanionWindow,
+  debugMode,
   mediaType,
   overlay,
   setTargetDrawingState,
@@ -127,6 +128,7 @@ export function TargetSpatialInput({
               updateCurrentShapeInShapes={updateCurrentShapeInShapes}
             />
           </Grid>
+          {debugMode && (
           <Grid item>
             <Debug
               overlay={overlay}
@@ -135,6 +137,7 @@ export function TargetSpatialInput({
               displayMode={KONVA_MODE.TARGET}
             />
           </Grid>
+          )}
         </Grid>
       )}
     </Grid>

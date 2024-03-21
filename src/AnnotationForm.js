@@ -36,6 +36,9 @@ export default function AnnotationForm(
   const [templateType, setTemplateType] = useState(null);
   // eslint-disable-next-line no-underscore-dangle
   const [mediaType, setMediaType] = useState(canvases[0].__jsonld.items[0].items[0].body.type);
+
+  const debugMode = config.debugMode === true;
+
   // TODO must be improved when parsing annotation
   if (!templateType) {
     if (annotation.id) {
@@ -193,6 +196,7 @@ export default function AnnotationForm(
                 canvases={canvases}
                 osdref={osdref}
                 getMediaAudio={getMediaAudio}
+                debugMode={debugMode}
               />
             </Grid>
           </Grid>

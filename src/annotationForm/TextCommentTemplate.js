@@ -16,6 +16,7 @@ function TextCommentTemplate(
     canvases,
     closeFormCompanionWindow,
     currentTime,
+    debugMode,
     getMediaAudio,
     mediaType,
     overlay,
@@ -121,6 +122,7 @@ function TextCommentTemplate(
           spatialTarget
           closeFormCompanionWindow={closeFormCompanionWindow}
           getMediaAudio={getMediaAudio}
+          debugMode={debugMode}
         />
       </Grid>
       <Grid item>
