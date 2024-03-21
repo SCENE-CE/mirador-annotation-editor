@@ -1,29 +1,14 @@
-import {
-  Button,
-  ClickAwayListener, Divider, Grid, MenuItem, MenuList, Paper, Popover, TextField,
-} from '@mui/material';
+import { Button, Grid, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import ToggleButton from '@mui/material/ToggleButton';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import StrokeColorIcon from '@mui/icons-material/BorderColor';
-import LineWeightIcon from '@mui/icons-material/LineWeight';
-import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
 import React, { useEffect, useState } from 'react';
-import ClosedPolygonIcon from '@mui/icons-material/ChangeHistory';
-import OpenPolygonIcon from '@mui/icons-material/ShowChart';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { SketchPicker } from 'react-color';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { v4 as uuidv4 } from 'uuid';
 import ImageFormField from './ImageFormField';
 import { isShapesTool, OVERLAY_TOOL } from '../../AnnotationCreationUtils';
-import { defaultLineWeightChoices, KONVA_MODE } from './KonvaDrawing/KonvaUtils';
-import { defaultToolState } from '../../AnnotationFormUtils';
-import ColorPicker from "./KonvaDrawing/shapes/ColorPicker";
-
-
+import { KONVA_MODE } from './KonvaDrawing/KonvaUtils';
+import ColorPicker from './KonvaDrawing/shapes/ColorPicker';
 
 const StyledDivButtonImage = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -143,15 +128,14 @@ function AnnotationFormOverlayToolOptions({
     });
   };
 
-
+  /** Handle Image Change * */
   const handleImgChange = (newUrl, imgRef) => {
     setToolState({
       ...toolState,
       image: { ...toolState.image, id: newUrl },
     });
   };
-
-
+  /** Handle Image into toolstate * */
   const addImage = () => {
     const data = {
       id: toolState?.image?.id,
@@ -165,93 +149,92 @@ function AnnotationFormOverlayToolOptions({
     });
   };
 
-  /** Handle text change from AnnotationFormOverlayToolOption **/
-  const handleTextChange = (e) =>{
-    const text = e.target.value
+  /** Handle text change from AnnotationFormOverlayToolOption * */
+  const handleTextChange = (e) => {
+    const text = e.target.value;
     setToolState(
-        {
-          ...toolState,
-          text: text,
-        }
-    )
-  }
+      {
+        ...toolState,
+        text,
+      },
+    );
+  };
   return (
     <div>
       {
         (displayMode === KONVA_MODE.DRAW && isShapesTool(toolState.activeTool)) && (
           <Grid container>
             <ColorPicker
-                currentColor={currentColor}
-                changeClosedMode={changeClosedMode}
-                closeChooseColor={closeChooseColor}
-                handleCloseLineWeight={handleCloseLineWeight}
-                handleLineWeightSelect={handleLineWeightSelect}
-                openChooseColor={openChooseColor}
-                openChooseLineWeight={openChooseLineWeight}
-                updateColor={updateColor}
-                toolOptions={toolOptions}
-                toolState={toolState}
+              currentColor={currentColor}
+              changeClosedMode={changeClosedMode}
+              closeChooseColor={closeChooseColor}
+              handleCloseLineWeight={handleCloseLineWeight}
+              handleLineWeightSelect={handleLineWeightSelect}
+              openChooseColor={openChooseColor}
+              openChooseLineWeight={openChooseLineWeight}
+              updateColor={updateColor}
+              toolOptions={toolOptions}
+              toolState={toolState}
             />
           </Grid>
         )
       }
       {
           toolState.activeTool === 'text' && (
-              <Grid container direction="column" spacing={1}>
-                <Grid item>
-                  <Typography variant="overline">
-                    Text
-                  </Typography>
-                </Grid>
-                  {currentShape ? (
-                      <>
+          <Grid container direction="column" spacing={1}>
+            <Grid item>
+              <Typography variant="overline">
+                Text
+              </Typography>
+            </Grid>
+            {currentShape ? (
+              <>
                 <Grid item>
                   <TextField
-                      value={toolState.text}
-                      placeholder="Change me"
-                      fullWidth
-                      onChange={handleTextChange}
+                    value={toolState.text}
+                    placeholder="Change me"
+                    fullWidth
+                    onChange={handleTextChange}
                   />
                 </Grid>
                 <Grid item>
                   <ColorPicker
-                      changeClosedMode={changeClosedMode}
-                      closeChooseColor={closeChooseColor}
-                      currentColor={currentColor}
-                      handleCloseLineWeight={handleCloseLineWeight}
-                      handleLineWeightSelect={handleLineWeightSelect}
-                      openChooseColor={openChooseColor}
-                      openChooseLineWeight={openChooseLineWeight}
-                      updateColor={updateColor}
-                      toolOptions={toolOptions}
-                      toolState={toolState}
+                    changeClosedMode={changeClosedMode}
+                    closeChooseColor={closeChooseColor}
+                    currentColor={currentColor}
+                    handleCloseLineWeight={handleCloseLineWeight}
+                    handleLineWeightSelect={handleLineWeightSelect}
+                    openChooseColor={openChooseColor}
+                    openChooseLineWeight={openChooseLineWeight}
+                    updateColor={updateColor}
+                    toolOptions={toolOptions}
+                    toolState={toolState}
                   />
                 </Grid>
-                      </>
-                  ):(
-                      <Grid item>
-                        <Typography> Click on canvas to write text</Typography>
-                      </Grid>
-                  )
-                  }
+              </>
+            ) : (
+              <Grid item>
+                <Typography> Click on canvas to write text</Typography>
               </Grid>
+            )}
+          </Grid>
           )
       }
       {
           toolState.activeTool === OVERLAY_TOOL.IMAGE && (
-              <>
-                <Typography variant="overline">
-                  Add image from URL
-                </Typography>
-                <Grid container>
-                  <ImageFormField xs={8} value={toolState.image} onChange={handleImgChange} />
-                </Grid>
-                <StyledDivButtonImage>
-                  <Button variant="contained" onClick={addImage}>
-                    <AddPhotoAlternateIcon />
-                  </Button>
-                </StyledDivButtonImage>
-              </>
+          <>
+            <Typography variant="overline">
+              Add image from URL
+            </Typography>
+            <Grid container>
+              <ImageFormField xs={8} value={toolState.image} onChange={handleImgChange} />
+            </Grid>
+            <StyledDivButtonImage>
+              <Button variant="contained" onClick={addImage}>
+                <AddPhotoAlternateIcon />
+              </Button>
+            </StyledDivButtonImage>
+          </>
           )
       }
     </div>
@@ -259,6 +242,8 @@ function AnnotationFormOverlayToolOptions({
 }
 
 AnnotationFormOverlayToolOptions.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  currentShape: PropTypes.object.isRequired,
   displayMode: PropTypes.string.isRequired,
   setToolState: PropTypes.func.isRequired,
   toolState: PropTypes.shape({

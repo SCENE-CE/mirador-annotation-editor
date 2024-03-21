@@ -57,6 +57,7 @@ export async function saveAnnotationInStorageAdapter(
         receiveAnnotation(canvasId, storageAdapter.annotationPageId, annoPage);
       });
   } else {
+    // eslint-disable-next-line no-param-reassign
     annotation.id = uuidv4();
     storageAdapter.create(annotation)
       .then((annoPage) => {

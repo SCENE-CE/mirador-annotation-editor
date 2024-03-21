@@ -1,13 +1,13 @@
 import React, {
-  useEffect, useLayoutEffect, useRef, useState,
+  useEffect, useLayoutEffect, useState,
 } from 'react';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
-import PropTypes, { string } from 'prop-types';
+import PropTypes from 'prop-types';
 import { Grid } from '@mui/material';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
 import {
   getTemplateType,
-  template, usePrevious,
+  template,
 } from './AnnotationFormUtils';
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormBody from './AnnotationFormBody';
@@ -19,23 +19,23 @@ import { saveAnnotationInStorageAdapter } from './AnnotationCreationUtils';
 export default function AnnotationForm(
   {
     annotation,
-    id,
-    windowId,
-    currentTime,
+    canvases,
     closeCompanionWindow,
+    config,
+    currentTime,
+    getMediaAudio,
+    id,
     mediaVideo,
+    osdref,
+    receiveAnnotation,
     setCurrentTime,
     setSeekTo,
-    canvases,
-    receiveAnnotation,
-    config,
-    osdref,
-    getMediaAudio,
+    windowId,
   },
 ) {
   const [templateType, setTemplateType] = useState(null);
+  // eslint-disable-next-line no-underscore-dangle
   const [mediaType, setMediaType] = useState(canvases[0].__jsonld.items[0].items[0].body.type);
-
   // TODO must be improved when parsing annotation
   if (!templateType) {
     if (annotation.id) {
@@ -71,6 +71,7 @@ export default function AnnotationForm(
   // Listen to window resize event
   useEffect(() => {
     setTemplateType(null);
+    // eslint-disable-next-line no-underscore-dangle
     setMediaType(canvases[0].__jsonld.items[0].items[0].body.type);
   }, [canvases[0].index]);
 
@@ -146,7 +147,12 @@ export default function AnnotationForm(
   /** Save function * */
   const saveAnnotation = (annotationToSaved, canvasId) => {
     const storageAdapter = config.annotation.adapter(canvasId);
-    return saveAnnotationInStorageAdapter(canvasId, storageAdapter, receiveAnnotation, annotationToSaved);
+    return saveAnnotationInStorageAdapter(
+      canvasId,
+      storageAdapter,
+      receiveAnnotation,
+      annotationToSaved,
+    );
   };
 
   return (
@@ -212,6 +218,8 @@ AnnotationForm.propTypes = {
     }),
     PropTypes.string,
   ]),
+  // eslint-disable-next-line react/forbid-prop-types
+  canvases: PropTypes.object.isRequired,
   closeCompanionWindow: PropTypes.func,
   config: PropTypes.shape({
     annotation: PropTypes.shape({
@@ -224,13 +232,17 @@ AnnotationForm.propTypes = {
     }),
   }).isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]),
+  // eslint-disable-next-line react/forbid-prop-types
+  getMediaAudio: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   mediaVideo: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  osdref: PropTypes.object.isRequired,
+  receiveAnnotation: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
-
 };
 
 AnnotationForm.defaultProps = {

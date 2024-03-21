@@ -183,6 +183,7 @@ AnnotationFormOverlayTool.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   currentShape: PropTypes.object.isRequired,
   deleteShape: PropTypes.func.isRequired,
+  displayMode: PropTypes.string.isRequired,
   setToolState: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   shapes: PropTypes.array.isRequired,
@@ -197,6 +198,7 @@ AnnotationFormOverlayTool.propTypes = {
     strokeWidth: PropTypes.number.isRequired,
     updateColor: PropTypes.func.isRequired,
   }).isRequired,
+  updateCurrentShapeInShapes: PropTypes.func.isRequired,
 
 };
 

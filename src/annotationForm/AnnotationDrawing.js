@@ -17,19 +17,20 @@ export default function AnnotationDrawing({
   displayMode,
   drawingState,
   height,
-  imageEvent,
+  isMouseOverSave,
   mediaType,
   originalHeight,
   originalWidth,
   overlay,
   scale,
+  setColorToolFromCurrentShape,
   setDrawingState,
+  tabView,
+  toolState,
   updateCurrentShapeInShapes,
   updateScale,
   width,
-  setColorToolFromCurrentShape,
-  toolState,
-  ...props
+  windowId,
 }) {
   const [isDrawing, setIsDrawing] = useState(false);
   // TODO target from the annotation
@@ -101,6 +102,7 @@ export default function AnnotationDrawing({
       drawingState.currentShape.stroke = toolState.strokeColor;
       // eslint-disable-next-line no-param-reassign
       drawingState.currentShape.strokeWidth = toolState.strokeWidth;
+      // eslint-disable-next-line no-param-reassign
       drawingState.currentShape.text = toolState.text;
       updateCurrentShapeInShapes(drawingState.currentShape);
     }
@@ -229,7 +231,7 @@ export default function AnnotationDrawing({
       shape.height = modifiedshape.image.height * modifiedshape.scaleY;
     }
 
-    updateCurrentShapeInShapes( shape);
+    updateCurrentShapeInShapes(shape);
     console.log('On drag end', shape);
   };
 
@@ -504,7 +506,7 @@ export default function AnnotationDrawing({
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
-      id={props.windowId}
+      id={windowId}
     >
       <ParentComponent
         shapes={drawingState.shapes}
@@ -517,8 +519,8 @@ export default function AnnotationDrawing({
         onTransform={onTransform}
         handleDragEnd={handleDragEnd}
         handleDragStart={handleDragStart}
-        isMouseOverSave={props.isMouseOverSave}
-        trview={props.tabView !== 'target'}
+        isMouseOverSave={isMouseOverSave}
+        trview={tabView !== 'target'}
         text={toolState.text}
         displayMode={displayMode}
       />
@@ -528,11 +530,11 @@ export default function AnnotationDrawing({
   let videoref;
 
   if (mediaType === mediaTypes.IMAGE) {
-    osdref = OSDReferences.get(props.windowId);
+    osdref = OSDReferences.get(windowId);
   }
 
   if (mediaType === mediaTypes.VIDEO) {
-    videoref = VideosReferences.get(props.windowId);
+    videoref = VideosReferences.get(windowId);
   }
 
   if (!osdref && !videoref) {
@@ -562,14 +564,28 @@ export default function AnnotationDrawing({
   if (container) {
     return ReactDOM.createPortal(drawKonvas(), container);
   }
+  // eslint-disable-next-line react/jsx-no-useless-fragment
   return <></>;
 }
 
 const shapeObjectPropTypes = PropTypes.shape({
+  fill: PropTypes.string,
   id: PropTypes.string,
+  lines: ({
+    pointerLength: PropTypes.number,
+    points: PropTypes.arrayOf([PropTypes.number]),
+    stroke: PropTypes.string,
+    strokeWidth: PropTypes.number,
+  }),
+  pointerLength: PropTypes.number,
+  pointerWidth: PropTypes.number,
+  points: PropTypes.number,
   rotation: PropTypes.number,
   scaleX: PropTypes.number,
   scaleY: PropTypes.number,
+  stroke: PropTypes.string,
+  strokeWidth: PropTypes.number,
+  text: PropTypes.string,
   type: PropTypes.string,
   url: PropTypes.string,
   x: PropTypes.number,
@@ -614,6 +630,7 @@ AnnotationDrawing.propTypes = {
     ),
   ]).isRequired,
   height: PropTypes.number.isRequired,
+  isMouseOverSave: PropTypes.bool.isRequired,
   mediaType: PropTypes.string.isRequired,
   originalHeight: PropTypes.number.isRequired,
   originalWidth: PropTypes.number.isRequired,
@@ -624,10 +641,22 @@ AnnotationDrawing.propTypes = {
     containerWidth: PropTypes.number,
     height: PropTypes.number,
     width: PropTypes.number,
-  }),
+  }).isRequired,
   scale: PropTypes.number.isRequired,
   setColorToolFromCurrentShape: PropTypes.func.isRequired,
   setDrawingState: PropTypes.func.isRequired,
+  tabView: PropTypes.string.isRequired,
+  toolState: PropTypes.oneOfType(
+    PropTypes.string,
+    PropTypes.string,
+    PropTypes.string,
+    PropTypes.oneOfType(
+      PropTypes.string,
+    ),
+    PropTypes.string,
+    PropTypes.string,
+    PropTypes.number,
+  ).isRequired,
   updateCurrentShapeInShapes: PropTypes.func.isRequired,
   updateScale: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
