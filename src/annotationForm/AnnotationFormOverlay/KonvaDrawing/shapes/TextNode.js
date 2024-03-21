@@ -45,7 +45,7 @@ function TextNode({
         onClick={handleClick}
         onMousedown={handleClick}
         onTransform={onTransform}
-        onDrag={handleDragEnd}
+        onDragEnd={handleDragEnd}
         onDragStart={handleDragStart}
       />
       <Transformer

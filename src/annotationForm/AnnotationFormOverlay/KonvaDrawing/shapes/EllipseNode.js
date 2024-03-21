@@ -48,7 +48,7 @@ function EllipseNode({
         onClick={handleClick}
         onMousedown={handleClick}
         onTransform={onTransform}
-        onDrag={handleDragEnd}
+        onDragEnd={handleDragEnd}
         onDragStart={handleDragStart}
       />
 
