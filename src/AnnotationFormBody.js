@@ -192,7 +192,6 @@ AnnotationFormBody.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   templateType: PropTypes.string.isRequired,

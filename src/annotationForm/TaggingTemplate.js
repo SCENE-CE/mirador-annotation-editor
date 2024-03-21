@@ -1,25 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Grid, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import PropTypes from 'prop-types';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { maeTargetToIiifTarget, mediaTypes, template } from '../AnnotationFormUtils';
 import TargetFormSection from './TargetFormSection';
 import { getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import { Debug } from './Debug';
 
+/** Tagging Template* */
 export default function TaggingTemplate(
   {
     annotation,
+    canvases,
+    closeFormCompanionWindow,
     currentTime,
+    getMediaAudio,
     mediaType,
     overlay,
+    saveAnnotation,
     setCurrentTime,
     setSeekTo,
     windowId,
-    canvases,
-    closeFormCompanionWindow,
-    saveAnnotation,
-    getMediaAudio,
   },
 ) {
   let maeAnnotation = annotation;
@@ -39,11 +40,14 @@ export default function TaggingTemplate(
       target: null,
     };
   } else if (maeAnnotation.maeData.target.drawingState && typeof maeAnnotation.maeData.target.drawingState === 'string') {
-    maeAnnotation.maeData.target.drawingState = JSON.parse(maeAnnotation.maeData.target.drawingState);
+    maeAnnotation.maeData.target.drawingState = JSON.parse(
+      maeAnnotation.maeData.target.drawingState,
+    );
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
 
+  /** Update Target State * */
   const updateTargetState = (target) => {
     const newMaeData = annotationState.maeData;
     newMaeData.target = target;
@@ -53,6 +57,7 @@ export default function TaggingTemplate(
     });
   };
 
+  /** Update annotation with Tag Value * */
   const updateTaggingValue = (newTextValue) => {
     const newBody = annotationState.body;
     newBody.value = newTextValue;
@@ -71,10 +76,12 @@ export default function TaggingTemplate(
         // eslint-disable-next-line no-param-reassign
         console.log(annotation.maeData);
         annotationState.maeData.target.svg = await getSvg(windowId);
-        annotationState.maeData.target.scale=overlay.containerWidth / overlay.canvasWidth;
+        annotationState.maeData.target.scale = overlay.containerWidth / overlay.canvasWidth;
         // annotationState.maeData.target.dataUrl = await getKonvaAsDataURL(windowId);
         annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
-        annotationState.maeData.target.drawingState = JSON.stringify(annotationState.maeData.target.drawingState);
+        annotationState.maeData.target.drawingState = JSON.stringify(
+          annotationState.maeData.target.drawingState,
+        );
         annotationState.maeData.target.svg = JSON.stringify(annotationState.maeData.target);
         console.log('annotationState', annotationState.target);
         // delete annotationState.maeData.target;
@@ -130,3 +137,35 @@ export default function TaggingTemplate(
     </Grid>
   );
 }
+
+TaggingTemplate.propTypes = {
+  annotation: PropTypes.shape({
+    adapter: PropTypes.func,
+    body: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.string,
+      }),
+    ),
+    defaults: PropTypes.objectOf(
+      PropTypes.oneOfType(
+        [PropTypes.bool, PropTypes.func, PropTypes.number, PropTypes.string],
+      ),
+    ),
+    drawingState: PropTypes.string,
+    manifestNetwork: PropTypes.string,
+    target: PropTypes.string,
+  }).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
+  closeFormCompanionWindow: PropTypes.func.isRequired,
+  currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  getMediaAudio: PropTypes.object.isRequired,
+  mediaType: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  overlay: PropTypes.object.isRequired,
+  saveAnnotation: PropTypes.func.isRequired,
+  setCurrentTime: PropTypes.func.isRequired,
+  setSeekTo: PropTypes.func.isRequired,
+  windowId: PropTypes.string.isRequired,
+};

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import PropTypes from 'prop-types';
-import uuid from 'draft-js/lib/uuid';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { Grid } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import AnnotationDrawing from './AnnotationDrawing';
 
 import {
@@ -18,17 +18,8 @@ import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { getKonvaAsDataURL, KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import Typography from '@mui/material/Typography';
-// TODO check if useful
+import { Debug } from './Debug';
 
-function Debug(props) {
-  return null;
-}
-
-Debug.propTypes = {
-  drawingState: PropTypes.any,
-  scale: PropTypes.number
-};
 /**
  * Template for Konva annotations (drawing)
  * @param annotation
@@ -85,7 +76,7 @@ export default function DrawingTemplate(
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
-
+  /** Update AnnotationState with Target * */
   const updateTargetState = (target) => {
     const newMaeData = annotationState.maeData;
     newMaeData.target = target;
@@ -117,7 +108,7 @@ export default function DrawingTemplate(
       closeFormCompanionWindow();
     });
   };
-
+  /** Update annotation state with text body* */
   const updateAnnotationTextualBodyValue = (newTextValue) => {
     const newBody = annotationState.body;
     newBody.value = newTextValue;
@@ -131,7 +122,7 @@ export default function DrawingTemplate(
    * Drawing stuff
    ***************************************** */
   const [toolState, setToolState] = useState(defaultToolState);
-
+  /** initialise drawing State* */
   const initDrawingState = () => {
     if (annotationState.maeData.drawingState) {
       return {
@@ -210,7 +201,7 @@ export default function DrawingTemplate(
       }));
     }
   };
-
+  /** Update currentShape * */
   const updateCurrentShapeInShapes = (currentShape) => {
     if (currentShape) {
       const index = drawingState.shapes.findIndex((s) => s.id === currentShape.id);
@@ -306,12 +297,12 @@ export default function DrawingTemplate(
         timeTarget
       />
       <Grid item>
-      <Debug
+        <Debug
           overlay={overlay}
           scale={scale}
           drawingState={drawingState}
-      />
-    </Grid>
+        />
+      </Grid>
       <Grid item>
         <AnnotationFormFooter
           closeFormCompanionWindow={closeFormCompanionWindow}

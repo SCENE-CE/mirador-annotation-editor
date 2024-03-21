@@ -5,7 +5,6 @@ import 'jsoneditor-react/es/editor.min.css';
 import ace from 'brace';
 import 'brace/mode/json';
 import 'brace/theme/github';
-import { styled } from '@mui/system';
 import { Paper } from '@mui/material';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { template } from '../AnnotationFormUtils';
@@ -13,6 +12,9 @@ import { template } from '../AnnotationFormUtils';
 /**
  * IIIFTemplate component
  * @param annotation
+ * @param saveAnnotation
+ * @param closeFormCompanionWindow
+ * @param canvases
  * @returns {JSX.Element}
  */
 export default function IIIFTemplate({
@@ -26,17 +28,17 @@ export default function IIIFTemplate({
   if (!annotation.id) {
     // If the annotation does not have maeData, the annotation was not created with mae
     maeAnnotation = {
-      id: null,
-      motivation: '',
-      target: '',
       body: {
         id: '',
         type: '',
         value: '',
       },
+      id: null,
       maeData: {
         templateType: template.IIIF_TYPE,
       },
+      motivation: '',
+      target: '',
     };
   }
 
@@ -78,7 +80,6 @@ export default function IIIFTemplate({
   );
 }
 
-
 IIIFTemplate.propTypes = {
   annotation: PropTypes.shape({
     body: PropTypes.shape({
@@ -89,11 +90,13 @@ IIIFTemplate.propTypes = {
     }),
     drawingState: PropTypes.string,
     id: PropTypes.string,
+    // eslint-disable-next-line react/forbid-prop-types
     maeData: PropTypes.object,
     manifestNetwork: PropTypes.string,
     motivation: PropTypes.string,
     target: PropTypes.string,
   }).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
