@@ -502,6 +502,7 @@ export default function AnnotationDrawing({
         position: 'absolute',
         top: 0,
         width: '100%',
+        border: '10px solid black',
       }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}

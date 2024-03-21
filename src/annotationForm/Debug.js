@@ -41,14 +41,6 @@ export function Debug(
     }
   }, [drawingState]);
 
-    const videoElement = document.querySelector('video');
-    const parentVideoElement = videoElement.parentElement;
-    const grandParentVideoElement = parentVideoElement.parentElement;
-    videoElement.style.border = "solid blue";
-    parentVideoElement.style.border = "solid red";
-    grandParentVideoElement.style.border = "solid green";
-
-    console.log(parentVideoElement)
   return (
     <Grid container direction="column" spacing={1}>
       <Grid item>

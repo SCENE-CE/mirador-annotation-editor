@@ -1,0 +1,6 @@
+video {
+    width: 100%;
+    height: min-content;
+    border: 5px solid red;
+}
+

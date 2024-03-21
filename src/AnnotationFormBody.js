@@ -14,6 +14,8 @@ import NetworkCommentTemplate from './annotationForm/NetworkCommentTemplate';
 import DrawingTemplate from './annotationForm/DrawingTemplate';
 import IIIFTemplate from './annotationForm/IIIFTemplate';
 import TaggingTemplate from './annotationForm/TaggingTemplate';
+
+import './debug.css';
 /**
  * This function contain the logic for loading annotation and render proper template type
  * * */
