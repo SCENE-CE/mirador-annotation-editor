@@ -53,10 +53,11 @@ export default function TargetFormSection(
         target.fullCanvaXYWH = '0,0,500,1000';
         break;
       case mediaTypes.VIDEO:
+        // eslint-disable-next-line no-case-declarations
         const mediaVideo = VideosReferences.get(windowId);
-        // eslint-disable-next-line no-underscore-dangle
+        // eslint-disable-next-line no-underscore-dangle,no-case-declarations
         const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
-        // eslint-disable-next-line no-underscore-dangle
+        // eslint-disable-next-line no-underscore-dangle,no-case-declarations
         const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
         // eslint-disable-next-line no-param-reassign
         target.fullCanvaXYWH = `0,0,${targetWidth},${targetHeigth}`;
@@ -75,13 +76,14 @@ export default function TargetFormSection(
     onChangeTarget(target);
   }
 
+  /** Handle timeTargetInput * */
   const onChangeTimeTargetInput = (newData) => {
     onChangeTarget({
       ...target,
       ...newData,
     });
   };
-
+  /** Handle spatialTarget Changes * */
   const onChangeSpatialTargetInput = (newData) => {
     onChangeTarget({
       ...target,

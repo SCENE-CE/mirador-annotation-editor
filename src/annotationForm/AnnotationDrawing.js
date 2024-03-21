@@ -17,19 +17,20 @@ export default function AnnotationDrawing({
   displayMode,
   drawingState,
   height,
-  imageEvent,
+  isMouseOverSave,
   mediaType,
   originalHeight,
   originalWidth,
   overlay,
   scale,
+  setColorToolFromCurrentShape,
   setDrawingState,
+  tabView,
+  toolState,
   updateCurrentShapeInShapes,
   updateScale,
   width,
-  setColorToolFromCurrentShape,
-  toolState,
-  ...props
+  windowId,
 }) {
   const [isDrawing, setIsDrawing] = useState(false);
   // TODO target from the annotation
@@ -495,7 +496,7 @@ export default function AnnotationDrawing({
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
-      id={props.windowId}
+      id={windowId}
     >
       <ParentComponent
         shapes={drawingState.shapes}
@@ -508,8 +509,8 @@ export default function AnnotationDrawing({
         onTransform={onTransform}
         handleDragEnd={handleDragEnd}
         handleDragStart={handleDragStart}
-        isMouseOverSave={props.isMouseOverSave}
-        trview={props.tabView !== 'target'}
+        isMouseOverSave={isMouseOverSave}
+        trview={tabView !== 'target'}
         text={toolState.text}
         displayMode={displayMode}
       />
@@ -519,11 +520,11 @@ export default function AnnotationDrawing({
   let videoref;
 
   if (mediaType === mediaTypes.IMAGE) {
-    osdref = OSDReferences.get(props.windowId);
+    osdref = OSDReferences.get(windowId);
   }
 
   if (mediaType === mediaTypes.VIDEO) {
-    videoref = VideosReferences.get(props.windowId);
+    videoref = VideosReferences.get(windowId);
   }
 
   if (!osdref && !videoref) {
