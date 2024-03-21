@@ -1,12 +1,9 @@
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import ImageIcon from '@mui/icons-material/Image';
 import CategoryIcon from '@mui/icons-material/Category';
-import HubIcon from '@mui/icons-material/Hub';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import DataObjectIcon from '@mui/icons-material/DataObject';
-import ArticleIcon from '@mui/icons-material/Article';
-import React, { useEffect, useRef } from 'react';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
+import React from 'react';
 import { OVERLAY_TOOL } from './AnnotationCreationUtils';
 
 export const template = {
@@ -23,8 +20,10 @@ export const mediaTypes = {
   IMAGE: 'Image',
   VIDEO: 'Video',
 };
-
-export const getTemplateType = (templateType) => templateTypes.find((type) => type.id === templateType);
+/** Return template type * */
+export const getTemplateType = (templateType) => templateTypes.find(
+  (type) => type.id === templateType,
+);
 
 /**
  * List of the template types supported
@@ -34,6 +33,7 @@ export const templateTypes = [
     description: 'Textual note with target',
     icon: <TextFieldsIcon />,
     id: template.TEXT_TYPE,
+    // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === mediaTypes.VIDEO) {
         return true;
@@ -51,6 +51,7 @@ export const templateTypes = [
     description: 'Tag with target',
     icon: <LocalOfferIcon fontSize="small" />,
     id: template.TAGGING_TYPE,
+    // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === mediaTypes.VIDEO) {
         return true;
@@ -68,6 +69,7 @@ export const templateTypes = [
     description: 'Image in overlay with a note',
     icon: <ImageIcon fontSize="small" />,
     id: template.IMAGE_TYPE,
+    // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === mediaTypes.VIDEO) {
         return true;
@@ -85,6 +87,7 @@ export const templateTypes = [
     description: 'Drawings and text in overlay',
     icon: <CategoryIcon fontSize="small" />,
     id: template.KONVA_TYPE,
+    // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === mediaTypes.VIDEO) {
         return true;
@@ -119,6 +122,7 @@ export const templateTypes = [
     description: 'Edit directly the IIIF json code',
     icon: <DataObjectIcon fontSize="small" />,
     id: template.IIIF_TYPE,
+    // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === mediaTypes.VIDEO) {
         return true;
@@ -173,126 +177,7 @@ const targetTypes = {
   SVG_SELECTOR: 'SVGSelector',
 };
 
-/**
- *
- * @param target object
- * @param manifestType string
- * @param timeTarget boolean
- * @param spatialTarget boolean
- */
-export const extractTargetFromAnnotation = (target, manifestType, timeTarget, spatialTarget, additionalParams) => {
-  // Can be, String, SVGSelector, Array[SVGSelector,FragmentSelector]
-  const maeTarget = {};
-  let targetType;
-
-  if (target) {
-    // We have an existing annotation
-
-    // First check target type
-    if (target.selector) {
-      if (Array.isArray(target.selector)) {
-        targetType = targetTypes.MULTI;
-      } else {
-        targetType = targetTypes.SVG_SELECTOR;
-      }
-    } else if (typeof target === 'string') {
-      targetType = targetTypes.STRING;
-    }
-
-    // Set spatial target if necessary
-    if (spatialTarget) {
-      switch (targetType) {
-        case targetTypes.STRING:
-          maeTarget.xywh = geomFromAnnoTarget(target);
-          break;
-        case targetTypes.SVG_SELECTOR:
-          maeTarget.svg = target.selector.value;
-          break;
-        case targetTypes.MULTI:
-          target.selector.forEach((selector) => {
-            if (selector.type === 'SvgSelector') {
-              maeTarget.svg = selector.value;
-            } else if (selector.type === 'FragmentSelector') {
-              // TODO proper fragment selector extraction
-              maeTarget.xywh = geomFromAnnoTarget(selector.value);
-            }
-          });
-          break;
-        default: {
-          break;
-        }
-      }
-    }
-
-    // Set time target
-    if (timeTarget) {
-      switch (targetType) {
-        case targetTypes.STRING:
-          const [tstart, tend] = timeFromAnnoTarget(target);
-          maeTarget.tstart = tstart;
-          maeTarget.tend = tend;
-          break;
-        case targetTypes.SVG_SELECTOR:
-          break;
-        case targetTypes.MULTI:
-          target.selector.forEach((selector) => {
-            if (selector.type === 'FragmentSelector') {
-              const [tstart, tend] = timeFromAnnoTarget(selector.value);
-              maeTarget.tstart = tstart;
-              maeTarget.tend = tend;
-            }
-          });
-          break;
-        default:
-          break;
-      }
-    }
-    return maeTarget;
-  }
-  return null;
-};
-
-export const iiifTargetToMaeTarget = (iiifTarget) => {
-  const target = extractTargetFromAnnotation(iiifTarget, manifestType, timeTarget, spatialTarget);
-  if (!target) {
-    const defaultTarget = {
-      tend: 0,
-      tstart: 0,
-      xywh: '0,0,500,1000',
-    };
-
-    if (spatialTarget) {
-      switch (manifestType) {
-        case mediaTypes.IMAGE:
-          defaultTarget.xywh = '0,0,500,1000';
-          break;
-        case mediaTypes.VIDEO:
-          // eslint-disable-next-line no-case-declarations
-          const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
-          // eslint-disable-next-line no-case-declarations
-          const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
-          defaultTarget.xywh = `0,0,${targetWidth},${targetHeigth}`;
-          break;
-        default:
-          break;
-      }
-    }
-    if (timeTarget) {
-      switch (manifestType) {
-        case mediaTypes.VIDEO:
-          defaultTarget.tstart = currentTime ? Math.floor(currentTime) : 0;
-          // eslint-disable-next-line no-underscore-dangle
-          defaultTarget.tend = mediaVideo ? mediaVideo.props.canvas.__jsonld.duration : 0;
-          break;
-        default:
-          break;
-      }
-    }
-    return defaultTarget;
-  }
-  return target;
-};
-
+/** Transform maetarget to IIIF compatible data * */
 export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
   if (maeTarget.drawingState) {
     if (maeTarget.drawingState.shapes.length == 0) {
