@@ -153,7 +153,6 @@ export const OVERLAY_VIEW = 'layer';
 export const TAG_VIEW = 'tag';
 export const MANIFEST_LINK_VIEW = 'link';
 
-
 /** Split a second to { hours, minutes, seconds }  */
 export function secondsToHMSarray(secs) {
   const h = Math.floor(secs / 3600);
