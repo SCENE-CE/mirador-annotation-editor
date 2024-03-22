@@ -1,16 +1,17 @@
 import Typography from '@mui/material/Typography';
-import { Grid, setRef } from '@mui/material';
+import { Grid } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { JsonEditor as Editor } from 'jsoneditor-react';
 import ace from 'brace';
-import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
+import { mediaTypes } from '../AnnotationFormUtils';
 
 /** Debug Component * */
 export function Debug(
   {
     drawingState,
     overlay,
+    mediaType,
     scale,
   },
 ) {
@@ -41,14 +42,17 @@ export function Debug(
     }
   }, [drawingState]);
 
+  if (mediaType === mediaTypes.VIDEO) {
     const videoElement = document.querySelector('video');
     const parentVideoElement = videoElement.parentElement;
     const grandParentVideoElement = parentVideoElement.parentElement;
-    videoElement.style.border = "solid blue";
-    parentVideoElement.style.border = "solid red";
-    grandParentVideoElement.style.border = "solid green";
+    videoElement.style.border = 'solid blue';
+    parentVideoElement.style.border = 'solid red';
+    grandParentVideoElement.style.border = 'solid green';
 
-    console.log(parentVideoElement)
+    console.log(parentVideoElement);
+  }
+
   return (
     <Grid container direction="column" spacing={1}>
       <Grid item>
