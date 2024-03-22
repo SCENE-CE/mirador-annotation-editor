@@ -288,6 +288,7 @@ export default function ImageCommentTemplate(
         <Debug
           overlay={overlay}
           scale={scale}
+          mediaType={mediaType}
           drawingState={drawingState}
         />
       </Grid>

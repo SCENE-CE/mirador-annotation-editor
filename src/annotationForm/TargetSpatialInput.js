@@ -134,6 +134,7 @@ export function TargetSpatialInput({
               overlay={overlay}
               scale={scale}
               drawingState={drawingState}
+              mediaType={mediaType}
               displayMode={KONVA_MODE.TARGET}
             />
           </Grid>
