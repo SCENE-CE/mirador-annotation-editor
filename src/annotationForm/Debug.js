@@ -28,6 +28,7 @@ export function Debug(
   const videoElement = document.querySelector('video');
   const parentVideoElement = videoElement.parentElement;
   const grandParentVideoElement = parentVideoElement.parentElement;
+  videoElement.style.border = "solid blue";
   parentVideoElement.style.border = "solid red";
   grandParentVideoElement.style.border = "solid green";
 
