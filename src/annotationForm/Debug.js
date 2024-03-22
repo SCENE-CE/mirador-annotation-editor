@@ -25,6 +25,12 @@ export function Debug(
     }
   };
 
+  const videoElement = document.querySelector('video');
+  const parentVideoElement = videoElement.parentElement;
+  const grandParentVideoElement = parentVideoElement.parentElement;
+  parentVideoElement.style.border = "solid red";
+  grandParentVideoElement.style.border = "solid green";
+
   useEffect(() => {
     console.log('--------------New Render--------------');
     console.log('canvas Width:', overlay.canvasWidth);
