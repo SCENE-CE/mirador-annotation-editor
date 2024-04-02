@@ -14,13 +14,18 @@ export default function TaggingTemplate(
     annotation,
     canvases,
     closeFormCompanionWindow,
+// FeatureMediaVideo
     currentTime,
     debugMode,
+// FeatureMediaAudio
     getMediaAudio,
+// FeatureMedia
     mediaType,
     overlay,
     saveAnnotation,
+// FeatureMediaVideo
     setCurrentTime,
+// FeatureMediaVideo
     setSeekTo,
     windowId,
   },
@@ -94,6 +99,7 @@ export default function TaggingTemplate(
       });
     }
     // TODO: Proper save for AUDIO media's annotation
+// FeatureMediaAudio
     if (mediaType === mediaTypes.AUDIO) {
       console.log('TODO: Proper save for AUDIO media\'s annotation');
       closeFormCompanionWindow();
@@ -116,17 +122,24 @@ export default function TaggingTemplate(
       </Grid>
       <Grid item>
         <TargetFormSection
+            // FeatureMediaVideo
           currentTime={currentTime}
+            // FeatureMedia
           mediaType={mediaType}
           onChangeTarget={updateTargetState}
+            // FeatureMediaVideo
           setCurrentTime={setCurrentTime}
+            // FeatureMediaVideo
           setSeekTo={setSeekTo}
+            // FeatureMedia
           spatialTarget
           target={annotationState.maeData.target}
+            // FeatureMediaVideo
           timeTarget
           windowId={windowId}
           overlay={overlay}
           closeFormCompanionWindow={closeFormCompanionWindow}
+            // FeatureMediaAudio
           getMediaAudio={getMediaAudio}
           debugMode={debugMode}
         />

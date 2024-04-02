@@ -1,9 +1,13 @@
 import * as actions from 'mirador/dist/es/src/state/actions';
 import { getCompanionWindow } from 'mirador/dist/es/src/state/selectors/companionWindows';
+// FeatureMediaVideo
 import { getWindowCurrentTime, getWindowPausedStatus } from 'mirador/dist/es/src/state/selectors/window';
+// FeatureMediaAudio
 import { getVisibleCanvasAudioResources, getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
 import { getPresentAnnotationsOnSelectedCanvases } from 'mirador/dist/es/src/state/selectors/annotations';
+// FeatureMediaVideo
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
+// FeatureMediaImage
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import annotationForm from '../AnnotationForm';
 /** */
@@ -14,17 +18,21 @@ const mapDispatchToProps = (dispatch, { id, windowId }) => ({
   receiveAnnotation: (targetId, annoId, annotation) => dispatch(
     actions.receiveAnnotation(targetId, annoId, annotation),
   ),
+  // FeatureMediaVideo
   setCurrentTime: (...args) => dispatch(actions.setWindowCurrentTime(windowId, ...args)),
   setSeekTo: (...args) => dispatch(actions.setWindowSeekTo(windowId, ...args)),
 });
 
 /** */
 function mapStateToProps(state, { id: companionWindowId, windowId }) {
+// FeatureMediaVideo
   const currentTime = getWindowCurrentTime(state, { windowId });
   const cw = getCompanionWindow(state, { companionWindowId, windowId });
   const { annotationid } = cw;
   const canvases = getVisibleCanvases(state, { windowId });
+  // FeatureMediaVideo
   const mediaVideo = VideosReferences.get(windowId);
+  // FeatureMediaImage
   const osdref = OSDReferences.get(windowId);
   let annotation = getPresentAnnotationsOnSelectedCanvases(state, { windowId })
     .flatMap((annoPage) => annoPage.json.items || [])
@@ -44,10 +52,15 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
     annotation,
     canvases,
     config: state.config,
+    // FeatureMediaVideo
     currentTime,
+    // FeatureMediaVideo
     mediaVideo,
+    // FeatureMediaImage
     osdref,
+    // FeatureMediaAudio
     getMediaAudio: getVisibleCanvasAudioResources(state, { windowId }),
+    // FeatureMediaVideo
     paused: getWindowPausedStatus(state, { windowId }),
     getVisibleCanvase: getVisibleCanvases(state, { windowId }),
   };

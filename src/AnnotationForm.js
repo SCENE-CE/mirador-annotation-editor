@@ -22,18 +22,25 @@ export default function AnnotationForm(
     canvases,
     closeCompanionWindow,
     config,
+    // FeatureMediaVideo
     currentTime,
+    // FeatureMediaAudio
     getMediaAudio,
     id,
+    // FeatureMediaVideo
     mediaVideo,
+    // FeatureMediaImage
     osdref,
     receiveAnnotation,
+    // FeatureMediaVideo
     setCurrentTime,
+    // FeatureMediaVideo
     setSeekTo,
     windowId,
   },
 ) {
   const [templateType, setTemplateType] = useState(null);
+  // FeatureMedia
   // eslint-disable-next-line no-underscore-dangle
   const [mediaType, setMediaType] = useState(canvases[0].__jsonld.items[0].items[0].body.type);
 
@@ -53,6 +60,7 @@ export default function AnnotationForm(
   }
 
   let overlay = null;
+  // FeatureMediaVideo
   if (mediaVideo) {
     overlay = mediaVideo.canvasOverlay;
   } else if (osdref.current) {
@@ -74,6 +82,7 @@ export default function AnnotationForm(
   // Listen to window resize event
   useEffect(() => {
     setTemplateType(null);
+    // FeatureMedia
     // eslint-disable-next-line no-underscore-dangle
     setMediaType(canvases[0].__jsonld.items[0].items[0].body.type);
   }, [canvases[0].index]);
@@ -87,6 +96,7 @@ export default function AnnotationForm(
    * @returns {{height: number, width: number}}
    */
   const getHeightAndWidth = () => {
+    // FeatureMediaVideo
     if (mediaVideo) {
       return mediaVideo;
     }
@@ -168,6 +178,7 @@ export default function AnnotationForm(
         ? (
           <AnnotationFormTemplateSelector
             setCommentingType={setTemplateType}
+              // FeatureMedia
             mediaType={mediaType}
           />
         )
@@ -186,15 +197,22 @@ export default function AnnotationForm(
                 windowId={windowId}
                 overlay={overlay}
                 annotation={annotation}
+                  // FeatureMediaVideo
                 mediaVideo={mediaVideo}
+                  // FeatureMediaVideo
                 currentTime={currentTime}
+                  // FeatureMediaVideo
                 setCurrentTime={setCurrentTime}
+                  // FeatureMediaVideo
                 setSeekTo={setSeekTo}
+                  // FeatureMedia
                 mediaType={mediaType}
                 closeFormCompanionWindow={closeFormCompanionWindow}
                 saveAnnotation={saveAnnotation}
                 canvases={canvases}
+                  // FeatureMediaImage
                 osdref={osdref}
+                  // FeatureMediaAudio
                 getMediaAudio={getMediaAudio}
                 debugMode={debugMode}
               />

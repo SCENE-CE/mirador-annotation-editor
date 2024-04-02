@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+// FeatureMediaImage
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import PropTypes from 'prop-types';
+// FeatureMediaVideo
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -41,11 +43,15 @@ export default function DrawingTemplate(
     annotation,
     canvases,
     closeFormCompanionWindow,
+// FeatureMediaVideo
     currentTime,
     debugMode,
+// FeatureMediaVideo
     mediaType,
     overlay,
+// FeatureMediaVideo
     setCurrentTime,
+// FeatureMediaVideo
     setSeekTo,
     windowId,
     saveAnnotation,
@@ -87,10 +93,13 @@ export default function DrawingTemplate(
     });
   };
 
+// FeatureMedia
   let player;
+// FeatureMediaVideo
   if (mediaType === mediaTypes.VIDEO) {
     player = VideosReferences.get(windowId);
   }
+// FeatureMediaImage
   if (mediaType === mediaTypes.IMAGE) {
     player = OSDReferences.get(windowId);
   }
@@ -261,6 +270,7 @@ export default function DrawingTemplate(
           showFragmentSelector={false}
           tabView={viewTool}
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+            // FeatureMedia
           mediaType={mediaType}
           closeFormCompanionWindow={closeFormCompanionWindow}
           displayMode={KONVA_MODE.DRAW}
@@ -286,10 +296,14 @@ export default function DrawingTemplate(
         />
       </Grid>
       <TargetFormSection
+          // FeatureMediaVideo
         currentTime={currentTime}
+          // FeatureMedia
         mediaType={mediaType}
         onChangeTarget={updateTargetState}
+          // FeatureMediaVideo
         setCurrentTime={setCurrentTime}
+          // FeatureMediaVideo
         setSeekTo={setSeekTo}
         target={annotationState.maeData.target}
         windowId={windowId}
@@ -303,6 +317,7 @@ export default function DrawingTemplate(
           overlay={overlay}
           scale={scale}
           drawingState={drawingState}
+            // FeatureMedia
           mediaType={mediaType}
         />
       </Grid>

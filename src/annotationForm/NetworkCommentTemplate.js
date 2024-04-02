@@ -13,10 +13,14 @@ import AnnotationFormFooter from './AnnotationFormFooter';
 function NetworkCommentTemplate(
   {
     annotation,
+// FeatureMediaVideo
     currentTime,
     debugMode,
+// FeatureMedia
     mediaType,
+// FeatureMediaVideo
     setCurrentTime,
+// FeatureMediaVideo
     setSeekTo,
     windowId,
     saveAnnotation,
@@ -107,16 +111,22 @@ function NetworkCommentTemplate(
         />
       </Grid>
       <TargetFormSection
+          // FeatureMediaVideo
         currentTime={currentTime}
+          // FeatureMedia
         mediaType={mediaType}
         onChangeTarget={updateTargetState}
+          // FeatureMediaVideo
         setCurrentTime={setCurrentTime}
+          // FeatureMediaVideo
         setSeekTo={setSeekTo}
         spatialTarget
         target={annotationState.maeData.target}
+          // FeatureMediaVideo
         timeTarget
         windowId={windowId}
         closeFormCompanionWindow={closeFormCompanionWindow}
+          // FeatureMediaAudio
         getMediaAudio={getMediaAudio}
         overlay={overlay}
         debugMode={debugMode}

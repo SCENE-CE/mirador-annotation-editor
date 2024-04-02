@@ -15,13 +15,18 @@ function TextCommentTemplate(
     annotation,
     canvases,
     closeFormCompanionWindow,
+// FeatureMediaVideo
     currentTime,
     debugMode,
+// FeatureMediaAudio
     getMediaAudio,
+// FeatureMedia
     mediaType,
     overlay,
     saveAnnotation,
+// FeatureMediaVideo
     setCurrentTime,
+// FeatureMediaVideo
     setSeekTo,
     windowId,
   },
@@ -110,17 +115,23 @@ function TextCommentTemplate(
       </Grid>
       <Grid item>
         <TargetFormSection
+            // FeatureMediaVideo
           currentTime={currentTime}
+            // FeatureMedia
           mediaType={mediaType}
           onChangeTarget={updateTargetState}
+            // FeatureMediaVideo
           setCurrentTime={setCurrentTime}
+            // FeatureMediaVideo
           setSeekTo={setSeekTo}
           target={annotationState.maeData.target}
           windowId={windowId}
           overlay={overlay}
+            // FeatureMediaVideo
           timeTarget
           spatialTarget
           closeFormCompanionWindow={closeFormCompanionWindow}
+            // FeatureMediaAudio
           getMediaAudio={getMediaAudio}
           debugMode={debugMode}
         />

@@ -5,10 +5,13 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { Stage } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
+// FeatureMediaImage
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
+// FeatureMediaVideo
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
+// FeatureMedia
 import { mediaTypes } from '../AnnotationFormUtils';
 
 /** All the stuff to draw on the canvas */
@@ -18,6 +21,7 @@ export default function AnnotationDrawing({
   drawingState,
   height,
   isMouseOverSave,
+  // FeatureMedia
   mediaType,
   originalHeight,
   originalWidth,
@@ -527,17 +531,21 @@ export default function AnnotationDrawing({
       />
     </Stage>
   );
+  // FeatureMediaImage
   let osdref;
+  // FeatureMediaVideo
   let videoref;
 
+  // FeatureMediaImage
   if (mediaType === mediaTypes.IMAGE) {
     osdref = OSDReferences.get(windowId);
   }
 
+  // FeatureMediaVideo
   if (mediaType === mediaTypes.VIDEO) {
     videoref = VideosReferences.get(windowId);
   }
-
+  // FeatureMedia
   if (!osdref && !videoref) {
     throw new Error("Unknown or missing data player, didn't found OpenSeadragon (image viewer) nor the video player");
   }
@@ -546,7 +554,7 @@ export default function AnnotationDrawing({
   }
 
   let container;
-
+  // FeatureMediaImage
   if (mediaType === mediaTypes.IMAGE) {
     if (osdref.current === undefined) {
       closeFormCompanionWindow();
@@ -554,7 +562,7 @@ export default function AnnotationDrawing({
       container = osdref.current ? osdref.current.container : undefined;
     }
   }
-
+  // FeatureMediaVideo
   if (mediaType === mediaTypes.VIDEO) {
     if (videoref.ref.current === null) {
       closeFormCompanionWindow();
@@ -593,6 +601,7 @@ const shapeObjectPropTypes = PropTypes.shape({
   y: PropTypes.number,
 });
 
+// FeatureMediaVideo
 AnnotationDrawing.propTypes = {
   closeFormCompanionWindow: PropTypes.func.isRequired,
   displayMode: PropTypes.string.isRequired,

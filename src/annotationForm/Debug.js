@@ -10,6 +10,7 @@ import { mediaTypes } from '../AnnotationFormUtils';
 export function Debug(
   {
     drawingState,
+// FeatureMedia
     mediaType,
     overlay,
     scale,
@@ -25,6 +26,7 @@ export function Debug(
       jsonEditorRef.current = null;
     }
   };
+// FeatureMediaVideo
   /**check if mediaType = video and if it is set border around video**/
   if (mediaType === mediaTypes.VIDEO) {
     const videoElement = document.querySelector('video');

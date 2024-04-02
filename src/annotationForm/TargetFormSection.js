@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography } from '@mui/material';
+// FeatureMediaVideo
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { mediaTypes } from '../AnnotationFormUtils';
+// FeatureMediaVideo
 import TargetTimeInput from './TargetTimeInput';
+// FeatureMedia
 import { TargetSpatialInput } from './TargetSpatialInput';
 
 /**
@@ -21,16 +24,23 @@ import { TargetSpatialInput } from './TargetSpatialInput';
 export default function TargetFormSection(
   {
     closeFormCompanionWindow,
+// FeatureMediaVideo
     currentTime,
     debugMode,
+// FeatureMediaAudio
     getMediaAudio,
+// FeatureMedia
     mediaType,
     onChangeTarget,
     overlay,
+// FeatureMediaVideo
     setCurrentTime,
+// FeatureMediaVideo
     setSeekTo,
+// FeatureMedia
     spatialTarget,
     target,
+// FeatureMediaVideo
     timeTarget,
     windowId,
   },
@@ -38,6 +48,7 @@ export default function TargetFormSection(
   if (!target) {
     // eslint-disable-next-line no-param-reassign
     target = {};
+// FeatureMediaVideo
     if (mediaType === mediaTypes.VIDEO) {
       const mediaVideo = VideosReferences.get(windowId);
       // eslint-disable-next-line no-param-reassign
@@ -48,11 +59,13 @@ export default function TargetFormSection(
 
     // TODO Check if its possible to use overlay ?
     switch (mediaType) {
+// FeatureMediaImage
       case mediaTypes.IMAGE:
         // TODO set default xywh
         // eslint-disable-next-line no-param-reassign
         target.fullCanvaXYWH = '0,0,500,1000';
         break;
+// FeatureMediaVideo
       case mediaTypes.VIDEO:
         // eslint-disable-next-line no-case-declarations
         const mediaVideo = VideosReferences.get(windowId);
@@ -92,11 +105,13 @@ export default function TargetFormSection(
     });
   };
 
+// FeatureMediaImage
   if (mediaType === mediaTypes.IMAGE) {
     // eslint-disable-next-line no-param-reassign
     timeTarget = false;
   }
 
+// FeatureMediaAudio
   if (mediaType === mediaTypes.AUDIO) {
     // eslint-disable-next-line no-param-reassign
     spatialTarget = false;
@@ -118,6 +133,7 @@ export default function TargetFormSection(
             svg={target.svg}
             onChange={onChangeSpatialTargetInput}
             windowId={windowId}
+              // FeatureMedia
             mediaType={mediaType}
             targetDrawingState={target.drawingState}
             overlay={overlay}
@@ -128,6 +144,7 @@ export default function TargetFormSection(
         )
       }
       {
+// FeatureMediaVideo
         timeTarget && (
           <Grid item container direction="column">
             <TargetTimeInput

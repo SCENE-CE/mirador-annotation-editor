@@ -23,16 +23,21 @@ export default function AnnotationFormBody(
   {
     annotation,
     templateType,
-    currentTime,
-    mediaType,
+      // FeatureMediaVideo
+      currentTime,
+      // FeatureMedia
+      mediaType,
     overlay,
-    setCurrentTime,
-    setSeekTo,
+      // FeatureMediaVideo
+      setCurrentTime,
+      // FeatureMediaVideo
+      setSeekTo,
     windowId,
     closeFormCompanionWindow,
     saveAnnotation,
     canvases,
-    getMediaAudio,
+      // FeatureMediaAudio
+      getMediaAudio,
     debugMode,
   },
 ) {
@@ -55,13 +60,18 @@ export default function AnnotationFormBody(
               annotation={annotation}
               canvases={canvases}
               closeFormCompanionWindow={closeFormCompanionWindow}
+                // FeatureMediaVideo
               currentTime={currentTime}
+                // FeatureMedia
               mediaType={mediaType}
               saveAnnotation={saveAnnotation}
+                // FeatureMediaVideo
               setCurrentTime={setCurrentTime}
+                // FeatureMediaVideo
               setSeekTo={setSeekTo}
               windowId={windowId}
               overlay={overlay}
+                // FeatureMediaAudio
               getMediaAudio={getMediaAudio}
               debugMode={debugMode}
             />
@@ -73,12 +83,16 @@ export default function AnnotationFormBody(
             annotation={annotation}
             canvases={canvases}
             closeFormCompanionWindow={closeFormCompanionWindow}
+              // FeatureMediaVideo
             setCurrentTime={setCurrentTime}
+              // FeatureMediaVideo
             setSeekTo={setSeekTo}
             windowId={windowId}
             templateType={templateType}
+              // FeatureMedia
             mediaType={mediaType}
             saveAnnotation={saveAnnotation}
+              // FeatureMediaVideo
             currentTime={currentTime}
             overlay={overlay}
             debugMode={debugMode}
@@ -91,11 +105,15 @@ export default function AnnotationFormBody(
               annotation={annotation}
               canvases={canvases}
               closeFormCompanionWindow={closeFormCompanionWindow}
+                // FeatureMediaVideo
               currentTime={currentTime}
+                // FeatureMedia
               mediaType={mediaType}
               overlay={overlay}
               saveAnnotation={saveAnnotation}
+                // FeatureMediaVideo
               setCurrentTime={setCurrentTime}
+                // FeatureMediaVideo
               setSeekTo={setSeekTo}
               windowId={windowId}
               debugMode={debugMode}
@@ -108,12 +126,17 @@ export default function AnnotationFormBody(
               annotation={annotation}
               canvases={canvases}
               closeFormCompanionWindow={closeFormCompanionWindow}
+                // FeatureMediaVideo
               currentTime={currentTime}
+                // FeatureMedia
               mediaType={mediaType}
               saveAnnotation={saveAnnotation}
+                // FeatureMediaVideo
               setCurrentTime={setCurrentTime}
+                // FeatureMediaVideo
               setSeekTo={setSeekTo}
               windowId={windowId}
+                // FeatureMediaAudio
               getMediaAudio={getMediaAudio}
               overlay={overlay}
               debugMode={debugMode}
@@ -135,13 +158,18 @@ export default function AnnotationFormBody(
               canvases={canvases}
               saveAnnotation={saveAnnotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
+                // FeatureMediaVideo
               currentTime={currentTime}
+                // FeatureMedia
               mediaType={mediaType}
+                // FeatureMediaVideo
               setCurrentTime={setCurrentTime}
+                // FeatureMediaVideo
               setSeekTo={setSeekTo}
               windowId={windowId}
               overlay={overlay}
               annotation={annotation}
+                // FeatureMediaAudio
               getMediaAudio={getMediaAudio}
               debugMode={debugMode}
             />

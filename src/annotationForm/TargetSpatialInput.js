@@ -13,6 +13,7 @@ import { Debug } from './Debug';
 export function TargetSpatialInput({
   closeFormCompanionWindow,
   debugMode,
+// FeatureMedia
   mediaType,
   overlay,
   setTargetDrawingState,
@@ -110,6 +111,7 @@ export function TargetSpatialInput({
               updateCurrentShapeInShapes={updateCurrentShapeInShapes}
               setDrawingState={setDrawingState}
               tabView="edit" // TODO change
+                // FeatureMedia
               mediaType={mediaType}
               closeFormCompanionWindow={closeFormCompanionWindow}
               displayMode={KONVA_MODE.TARGET}
@@ -134,6 +136,7 @@ export function TargetSpatialInput({
               overlay={overlay}
               scale={scale}
               drawingState={drawingState}
+                // FeatureMedia
               mediaType={mediaType}
               displayMode={KONVA_MODE.TARGET}
             />

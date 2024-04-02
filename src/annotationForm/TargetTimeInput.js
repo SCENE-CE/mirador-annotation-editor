@@ -6,8 +6,10 @@ import { Alarm } from '@mui/icons-material';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
+// FeatureMediaVideo
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import HMSInput from '../HMSInput';
+// FeatureMedia
 import { mediaTypes } from '../AnnotationFormUtils';
 
 const StyledSlider = styled(Slider)(({ theme }) => ({
@@ -31,27 +33,38 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 /** Form part with time mangement, dual slider + double input. Mange Tstart and Tend value */
 function TargetTimeInput({
   windowId,
+// FeatureMediaVideo
   currentTime,
+// FeatureMediaVideo
   setSeekTo,
+// FeatureMediaVideo
   setCurrentTime,
+// FeatureMediaVideo
   tstart,
+// FeatureMediaVideo
   tend,
   onChange,
+// FeatureMediaAudio
   getMediaAudio,
+// FeatureMedia
   mediaType,
   closeFormCompanionWindow,
 }) {
+// FeatureMediaVideo
   let duration;
 
+// FeatureMediaVideo
   if (mediaType === mediaTypes.VIDEO) {
     const mediaVideo = VideosReferences.get(windowId);
     const videoDuration = mediaVideo.props.canvas.__jsonld.duration;
     duration = videoDuration;
   }
 
+// FeatureMediaAudio
   let audioDuration;
   let audioElement;
 
+// FeatureMediaAudio
   if (mediaType === mediaTypes.AUDIO) {
     const audio = getMediaAudio;
     if (audio[0]) {
@@ -86,6 +99,7 @@ function TargetTimeInput({
    * @param {Event} event
    * @param {any} newValueTime
    */
+// FeatureMediaVideo
   const handleChangeTime = (event, newValueTime) => {
     const timeStart = newValueTime[0];
     const timeEnd = newValueTime[1];
@@ -98,6 +112,7 @@ function TargetTimeInput({
   };
 
   /** Change from Tstart HMS Input */
+// FeatureMediaVideo
   const updateTstart = (valueTstart) => {
     if (valueTstart > tend) {
       return;
@@ -113,6 +128,7 @@ function TargetTimeInput({
   };
 
   /** update annotation end time */
+// FeatureMediaVideo
   const updateTend = (valueTend) => {
     if (audioElement) {
       audioElement.currentTime = valueTend;

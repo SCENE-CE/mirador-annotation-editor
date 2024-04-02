@@ -11,6 +11,7 @@ import { mediaTypes, templateTypes } from './AnnotationFormUtils';
  * form templates for different types of comments.
  */
 export default function AnnotationFormTemplateSelector({
+  // FeatureMedia
   mediaType,
   setCommentingType,
 }) {

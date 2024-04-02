@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+// FeatureMediaVideo
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
+// FeatureMediaImage
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -35,12 +37,16 @@ export default function ImageCommentTemplate(
     annotation,
     canvases,
     closeFormCompanionWindow,
+// FeatureMediaVideo
     currentTime,
     debugMode,
+// FeatureMedia
     mediaType,
     overlay,
     saveAnnotation,
+// FeatureMediaVideo
     setCurrentTime,
+// FeatureMediaVideo
     setSeekTo,
     windowId,
   },
@@ -80,11 +86,13 @@ export default function ImageCommentTemplate(
       maeData: newMaeData,
     });
   };
-
+// FeatureMedia
   let player;
+// FeatureMediaVideo
   if (mediaType === mediaTypes.VIDEO) {
     player = VideosReferences.get(windowId);
   }
+// FeatureMediaImage
   if (mediaType === mediaTypes.IMAGE) {
     player = OSDReferences.get(windowId);
   }
@@ -245,6 +253,7 @@ export default function ImageCommentTemplate(
           showFragmentSelector={false}
           tabView={viewTool}
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+            // FeatureMedia
           mediaType={mediaType}
           closeFormCompanionWindow={closeFormCompanionWindow}
           displayMode={KONVA_MODE.IMAGE}
@@ -271,16 +280,22 @@ export default function ImageCommentTemplate(
         />
       </Grid>
       <TargetFormSection
+          // FeatureMediaVideo
         currentTime={currentTime}
+          // FeatureMedia
         mediaType={mediaType}
         onChangeTarget={updateTargetState}
+          // FeatureMediaVideo
         setCurrentTime={setCurrentTime}
+          // FeatureMediaVideo
         setSeekTo={setSeekTo}
         target={annotationState.maeData.target}
         windowId={windowId}
         overlay={overlay}
         closeFormCompanionWindow={closeFormCompanionWindow}
+          // FeatureMediaVideo
         timeTarget
+          // FeatureMedia
         spatialTarget={false}
         debugMode={debugMode}
       />
@@ -288,6 +303,7 @@ export default function ImageCommentTemplate(
         <Debug
           overlay={overlay}
           scale={scale}
+            // FeatureMedia
           mediaType={mediaType}
           drawingState={drawingState}
         />

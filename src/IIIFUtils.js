@@ -62,7 +62,7 @@ export function geomFromAnnoTarget(annotarget) {
   }
   return r[1];
 }
-
+// FeatureMediaVideo
 /** Extract time information from annotation target */
 export function timeFromAnnoTarget(annotarget) {
   // TODO w3c media fragments: t=,10 t=5,
