@@ -1,7 +1,6 @@
 import mirador from 'mirador/dist/es/src/index';
 import annotationPlugins from '../../src';
 import LocalStorageAdapter from '../../src/LocalStorageAdapter';
-import AnnototAdapter from '../../src/AnnototAdapter';
 import { manifestsCatalog } from './manifestsCatalog';
 
 const endpointUrl = 'http://127.0.0.1:3000/annotations';
