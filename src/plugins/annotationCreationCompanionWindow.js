@@ -58,6 +58,8 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
     //   },
     // };
   }
+
+  console.log(playerReferences.getPlayerName())
   // New annotation has no ID and no templateType defined
   if (!annotation) {
     annotation = {
