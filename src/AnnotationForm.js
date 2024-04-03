@@ -12,6 +12,7 @@ import {
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormBody from './AnnotationFormBody';
 import { saveAnnotationInStorageAdapter } from './AnnotationCreationUtils';
+import {playerReferences} from "./playerReferences";
 
 /**
  * Component for submitting a form to create or edit an annotation.
@@ -51,6 +52,7 @@ export default function AnnotationForm(
       }
     }
   }
+
 
   let overlay = null;
   if (mediaVideo) {

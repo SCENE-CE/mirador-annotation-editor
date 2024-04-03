@@ -6,6 +6,8 @@ import { getPresentAnnotationsOnSelectedCanvases } from 'mirador/dist/es/src/sta
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import annotationForm from '../AnnotationForm';
+import { mediaTypes } from '../AnnotationFormUtils';
+import {playerReferences} from "../playerReferences";
 /** */
 const mapDispatchToProps = (dispatch, { id, windowId }) => ({
   closeCompanionWindow: () => dispatch(
@@ -30,6 +32,32 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
     .flatMap((annoPage) => annoPage.json.items || [])
     .find((annot) => annot.id === annotationid);
 
+
+
+  // if (mediaVideo) {
+
+  //   playerReferences.setPlayerName(mediaVideo);
+  //
+  //   // playerReferences = {
+  //   //   mediaType: mediaTypes.VIDEO,
+  //   //   overlay: mediaVideo.canvasOverlay,
+  //   //   setCurrentTime: actions.setWindowCurrentTime(),
+  //   //   setSeekTo: actions.setWindowSeekTo(),
+  //   //
+  //   // };
+  // }
+  if (osdref) {
+    playerReferences.setPlayerName("image");
+    // playerReferences = {
+    //   mediaTypes: mediaTypes.IMAGE,
+    //   overlay: {
+    //     canvasHeight: osdref.current.canvas.clientHeight,
+    //     canvasWidth: osdref.current.canvas.clientWidth,
+    //     containerHeight: osdref.current.canvas.clientHeight,
+    //     containerWidth: osdref.current.canvas.clientWidth,
+    //   },
+    // };
+  }
   // New annotation has no ID and no templateType defined
   if (!annotation) {
     annotation = {
@@ -48,8 +76,8 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
     mediaVideo,
     osdref,
     getMediaAudio: getVisibleCanvasAudioResources(state, { windowId }),
-    paused: getWindowPausedStatus(state, { windowId }),
     getVisibleCanvase: getVisibleCanvases(state, { windowId }),
+    paused: getWindowPausedStatus(state, { windowId }),
   };
 }
 
