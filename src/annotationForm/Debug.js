@@ -1,22 +1,23 @@
 import Typography from '@mui/material/Typography';
-import { Grid, setRef } from '@mui/material';
+import { Grid } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { JsonEditor as Editor } from 'jsoneditor-react';
 import ace from 'brace';
-import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
+import { mediaTypes } from '../AnnotationFormUtils';
 
 /** Debug Component * */
 export function Debug(
   {
     drawingState,
+    mediaType,
     overlay,
     scale,
   },
 ) {
   const [updateComp, setUpdateComp] = useState(drawingState);
   const jsonEditorRef = useRef(null);
-
+/** update the jsonEditor dynamicly **/
   const setRef = (instance) => {
     if (instance) {
       jsonEditorRef.current = instance.jsonEditor;
@@ -24,13 +25,15 @@ export function Debug(
       jsonEditorRef.current = null;
     }
   };
-
-  const videoElement = document.querySelector('video');
-  const parentVideoElement = videoElement.parentElement;
-  const grandParentVideoElement = parentVideoElement.parentElement;
-  videoElement.style.border = "solid blue";
-  parentVideoElement.style.border = "solid red";
-  grandParentVideoElement.style.border = "solid green";
+  /**check if mediaType = video and if it is set border around video**/
+  if (mediaType === mediaTypes.VIDEO) {
+    const videoElement = document.querySelector('video');
+    const parentVideoElement = videoElement.parentElement;
+    const grandParentVideoElement = parentVideoElement.parentElement;
+    videoElement.style.border = 'solid blue';
+    parentVideoElement.style.border = 'solid red';
+    grandParentVideoElement.style.border = 'solid green';
+  }
 
   useEffect(() => {
     console.log('--------------New Render--------------');
@@ -162,6 +165,7 @@ export function Debug(
 Debug.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   drawingState: PropTypes.object.isRequired,
+  mediaType: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,
   scale: PropTypes.string.isRequired,
