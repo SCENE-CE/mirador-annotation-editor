@@ -53,7 +53,7 @@ export default function AnnotationForm(
     }
   }
 
-
+console.log(playerReferences.getPlayerName());
   let overlay = null;
   if (mediaVideo) {
     overlay = mediaVideo.canvasOverlay;
