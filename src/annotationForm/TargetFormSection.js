@@ -33,6 +33,7 @@ export default function TargetFormSection(
     target,
     timeTarget,
     windowId,
+    helloWorld,
   },
 ) {
   if (!target) {
@@ -102,11 +103,18 @@ export default function TargetFormSection(
     spatialTarget = false;
   }
 
+  console.log(helloWorld);
   return (
     <Grid item container direction="column" spacing={1}>
       <Grid item>
         <Typography variant="formSectionTitle">
           Target
+        </Typography>
+        <Typography>
+          {helloWorld}
+        </Typography>
+        <Typography>
+          toto
         </Typography>
       </Grid>
       {
@@ -154,6 +162,7 @@ TargetFormSection.propTypes = {
   currentTime: PropTypes.number.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   getMediaAudio: PropTypes.object.isRequired,
+  helloWorld: PropTypes.string.isRequired,
   mediaType: PropTypes.string.isRequired,
   onChangeTarget: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
