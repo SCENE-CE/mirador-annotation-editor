@@ -6,8 +6,7 @@ import { getPresentAnnotationsOnSelectedCanvases } from 'mirador/dist/es/src/sta
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import annotationForm from '../AnnotationForm';
-import { mediaTypes } from '../AnnotationFormUtils';
-import {playerReferences} from "../playerReferences";
+import { playerReferences } from '../playerReferences';
 /** */
 const mapDispatchToProps = (dispatch, { id, windowId }) => ({
   closeCompanionWindow: () => dispatch(
@@ -47,7 +46,7 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
   //   // };
   // }
   if (osdref) {
-    playerReferences.setPlayerName("image");
+    playerReferences.setPlayerName('image');
     // playerReferences = {
     //   mediaTypes: mediaTypes.IMAGE,
     //   overlay: {
@@ -59,7 +58,7 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
     // };
   }
 
-  console.log(playerReferences.getPlayerName())
+  console.log(playerReferences.getPlayerName());
   // New annotation has no ID and no templateType defined
   if (!annotation) {
     annotation = {
