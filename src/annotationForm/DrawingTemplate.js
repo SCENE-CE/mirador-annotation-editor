@@ -87,13 +87,6 @@ export default function DrawingTemplate(
     });
   };
 
-  let player;
-  if (mediaType === mediaTypes.VIDEO) {
-    player = VideosReferences.get(windowId);
-  }
-  if (mediaType === mediaTypes.IMAGE) {
-    player = OSDReferences.get(windowId);
-  }
   /** save Function * */
   const saveFunction = () => {
     const promises = canvases.map(async (canvas) => {
@@ -246,7 +239,6 @@ export default function DrawingTemplate(
           toolState={toolState}
           annotation={annotation}
           windowId={windowId}
-          player={player}
             // we need to pass the width and height of the image to the annotation drawing component
           width={overlay ? overlay.containerWidth : 1920}
           height={overlay ? overlay.containerHeight : 1080}

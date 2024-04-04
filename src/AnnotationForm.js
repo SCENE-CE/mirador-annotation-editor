@@ -20,7 +20,6 @@ import {playerReferences} from "./playerReferences";
 export default function AnnotationForm(
   {
     annotation,
-    canvases,
     closeCompanionWindow,
     config,
     currentTime,
@@ -36,7 +35,7 @@ export default function AnnotationForm(
 ) {
   const [templateType, setTemplateType] = useState(null);
   // eslint-disable-next-line no-underscore-dangle
-  const [mediaType, setMediaType] = useState(canvases[0].__jsonld.items[0].items[0].body.type);
+  const [mediaType, setMediaType] = useState(playerReferences.getMediaType());
 
   const debugMode = config.debugMode === true;
 
@@ -53,7 +52,6 @@ export default function AnnotationForm(
     }
   }
 
-console.log(playerReferences.getPlayerName());
   let overlay = null;
   if (mediaVideo) {
     overlay = mediaVideo.canvasOverlay;

@@ -110,12 +110,6 @@ export default function TargetFormSection(
         <Typography variant="formSectionTitle">
           Target
         </Typography>
-        <Typography>
-          {helloWorld}
-        </Typography>
-        <Typography>
-          toto
-        </Typography>
       </Grid>
       {
         spatialTarget && (

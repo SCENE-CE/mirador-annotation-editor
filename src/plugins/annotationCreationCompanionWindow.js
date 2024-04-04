@@ -3,11 +3,8 @@ import { getCompanionWindow } from 'mirador/dist/es/src/state/selectors/companio
 import { getWindowCurrentTime, getWindowPausedStatus } from 'mirador/dist/es/src/state/selectors/window';
 import { getVisibleCanvasAudioResources, getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
 import { getPresentAnnotationsOnSelectedCanvases } from 'mirador/dist/es/src/state/selectors/annotations';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
-import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import annotationForm from '../AnnotationForm';
-import { mediaTypes } from '../AnnotationFormUtils';
-import {playerReferences} from "../playerReferences";
+import { playerReferences } from '../playerReferences';
 /** */
 const mapDispatchToProps = (dispatch, { id, windowId }) => ({
   closeCompanionWindow: () => dispatch(
@@ -25,14 +22,11 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
   const currentTime = getWindowCurrentTime(state, { windowId });
   const cw = getCompanionWindow(state, { companionWindowId, windowId });
   const { annotationid } = cw;
-  const canvases = getVisibleCanvases(state, { windowId });
-  const mediaVideo = VideosReferences.get(windowId);
-  const osdref = OSDReferences.get(windowId);
+  playerReferences.setCanvases(state, windowId);
+  playerReferences.setMediaType();
   let annotation = getPresentAnnotationsOnSelectedCanvases(state, { windowId })
     .flatMap((annoPage) => annoPage.json.items || [])
     .find((annot) => annot.id === annotationid);
-
-
 
   // if (mediaVideo) {
 
@@ -47,7 +41,6 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
   //   // };
   // }
   if (osdref) {
-    playerReferences.setPlayerName("image");
     // playerReferences = {
     //   mediaTypes: mediaTypes.IMAGE,
     //   overlay: {
@@ -59,7 +52,6 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
     // };
   }
 
-  console.log(playerReferences.getPlayerName())
   // New annotation has no ID and no templateType defined
   if (!annotation) {
     annotation = {
@@ -72,7 +64,6 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
 
   return {
     annotation,
-    canvases,
     config: state.config,
     currentTime,
     mediaVideo,
