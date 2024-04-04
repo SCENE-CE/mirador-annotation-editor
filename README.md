@@ -4,7 +4,7 @@
 
 ### Generalities
 
-`mirador-annotation-editor`(also know as "MAE") is a [Mirador 4](https://github.com/projectmirador/mirador) plugin that 
+`mirador-annotation-editor`(also known as "MAE") is a [Mirador 4](https://github.com/projectmirador/mirador) plugin that 
 adds annotation creation tools to the user interface. 
 
 It is based on the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugin with a
@@ -20,7 +20,7 @@ Unlike the original [mirador-annotations](https://github.com/ProjectMirador/mira
 Please acknowledge that any modification you make must be distributed under a compatible licence and cannot be closed 
 source.
 
-If you need to integrate this code base in closed source pieces of software, please contact us so we can discuss dual 
+If you need to integrate this code base in closed source pieces of software, please contact us, so we can discuss dual 
 licencing. 
 
 #### Property
@@ -43,9 +43,9 @@ The authors of this software are :
 
 - AZOPSOFT SAS 
   - Samuel Jugnet (especially code for the Konvas part)
-- Loïs Poujade (especially the original modifications to anotate videos)
+- Loïs Poujade (especially the original modifications to annotate videos)
 
-### General functionatities 
+### General functionalities 
 
 - Activate a pannel with tools to create annotations on IIIF documents (manifests) containing images **and videos with 
 MAEV**
