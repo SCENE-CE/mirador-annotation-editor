@@ -4,23 +4,29 @@
 
 ### Generalities
 
-`mirador-annotation-editor`(also know as "MAE") is a [Mirador 4](https://github.com/projectmirador/mirador) plugin that adds annotation creation tools to the user interface. 
+`mirador-annotation-editor`(also know as "MAE") is a [Mirador 4](https://github.com/projectmirador/mirador) plugin that 
+adds annotation creation tools to the user interface. 
 
-It is based on the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugin with a lot of technical and functional modifications.
+It is based on the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugin with a
+lot of technical and functional modifications.
 
 ### Copyrights
 
 #### Licence
 
-Unlike the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugin, this `mirador-annotation-editor` is distributed under the **GPL v3**.
+Unlike the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugin, this 
+`mirador-annotation-editor` is distributed under the **GPL v3**.
 
-Please acknowledge that any modification you make must be distributed under a compatible licence and cannot be closed source.
+Please acknowledge that any modification you make must be distributed under a compatible licence and cannot be closed 
+source.
 
-If you need to integrate this code base in closed source pieces of software, please contact us so we can discuss dual licencing. 
+If you need to integrate this code base in closed source pieces of software, please contact us so we can discuss dual 
+licencing. 
 
 #### Property
 
-The base of this software (up to V1) is the property of [SATT Ouest Valorisation](https://www.ouest-valorisation.fr/) that funded its development under the french public contract AO-MA2023-0004-DV5189.
+The base of this software (up to V1) is the property of [SATT Ouest Valorisation](https://www.ouest-valorisation.fr/) 
+that funded its development under the French public contract AO-MA2023-0004-DV5189.
 
 #### Authors 
 
@@ -41,7 +47,8 @@ The authors of this software are :
 
 ### General functionatities 
 
-- Activate a pannel with tools to create annotations on IIIF documents (manifests) containing images **and videos with MAEV**
+- Activate a pannel with tools to create annotations on IIIF documents (manifests) containing images **and videos with 
+MAEV**
 - Spatial and temporal targets for annotations
 - Overlay annotations (geometric forms, free hand drawing, text and images)
 - Textual/semantic annotations and tags
@@ -52,7 +59,8 @@ The authors of this software are :
 
 - Update to Material UI 5 and React 18 to follow latest Mirador upgrades (React 17 release also available)
 - The [paperjs](http://paperjs.org/ ) library has been replaced with [Konvas](https://konvajs.org) 
-- Major refactoring since the original `[mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugins`
+- Major refactoring since the original `[mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) 
+plugins`
 - Works with the original [Mirador 4](https://github.com/projectmirador/mirador) if you need only image annotation
 
 ## Use in npm project
@@ -63,7 +71,8 @@ You can override existing annotation plugin with your own versions by using npm.
 "mirador-annotations": "npm:mirador-annotation-editor@^1.0.10",
 ```
 
-You can find an example of integration in our Mirador-integration repository : https://github.com/SCENE-CE/mirador-integration
+You can find an example of integration in our Mirador-integration repository : 
+https://github.com/SCENE-CE/mirador-integration
 
 ## Install (local)
 
@@ -83,25 +92,33 @@ npm start
 ```
 
 ## Use MAE with video annotation support
-- If you need video annotation, you can use [our fork of Mirador: mirador-video](https://github.com/SCENE-CE/mirador-video)
-- In addition we have develop a wrapper of MAE to support video annotation. This wrapper is called **MAEV** and is available in the [mirador-annotation-editor-video](https://github.com/SCENE-CE/mirador-annotation-editor-video) repository.
+- If you need video annotation, you can use 
+[our fork of Mirador: mirador-video](https://github.com/SCENE-CE/mirador-video)
+- In addition, we have developed a wrapper of MAE to support video annotation. This wrapper is called **MAEV** and is
+available in the [mirador-annotation-editor-video](https://github.com/SCENE-CE/mirador-annotation-editor-video)
+repository.
 
 ### Install with video annotation support
 
-```
+
 ```js
 "mirador": "npm:mirador-video@^1.0.2",
 "mirador-annotations": "npm:mirador-annotation-editor-video@^0.0.0",
-``` 
-
+```
 
 ## Persisting Annotations
-Persisting annotations requires implementing a IIIF annotation server. Several [examples of annotation servers](https://github.com/IIIF/awesome-iiif#annotation-servers) are available on iiif-awesome.
+Persisting annotations requires implementing a IIIF annotation server. Several 
+[examples of annotation servers](https://github.com/IIIF/awesome-iiif#annotation-servers) are available on iiif-awesome.
 
-`mirador-annotation-editor` currently supports adapters for [annotot](https://github.com/ProjectMirador/mirador-annotations/blob/master/src/AnnototAdapter.js) and [local storage](https://github.com/ProjectMirador/mirador-annotations/blob/master/src/LocalStorageAdapter.js). We welcome contributions of adapters for other annotation servers.
+`mirador-annotation-editor` currently supports adapters for 
+[annotot](https://github.com/ProjectMirador/mirador-annotations/blob/master/src/AnnototAdapter.js) and 
+[local storage](https://github.com/ProjectMirador/mirador-annotations/blob/master/src/LocalStorageAdapter.js). We 
+welcome contributions of adapters for other annotation servers.
+
 
 ## Contribute
 
-Our plugin follow the Mirador guidelines. Development, design, and maintenance is driven by community needs and ongoing feedback and discussion.
+Our plugin follow the Mirador guidelines. Development, design, and maintenance is driven by community needs and ongoing
+feedback and discussion.
 To suggest features, report bugs, and clarify usage, please submit a GitHub issue.
 
