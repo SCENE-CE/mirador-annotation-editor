@@ -292,10 +292,8 @@ export default function DrawingTemplate(
       />
       <Grid item>
         <Debug
-          overlay={overlay}
           scale={scale}
           drawingState={drawingState}
-          mediaType={mediaType}
         />
       </Grid>
       <Grid item>
