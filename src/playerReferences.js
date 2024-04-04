@@ -2,12 +2,12 @@ import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { mediaTypes } from './AnnotationFormUtils';
-
+import * as actions from 'mirador/dist/es/src/state/actions';
 export const playerReferences = (function () {
   let _canvases;
+  let _media;
   let _mediaType;
   let _overlay;
-  let _media;
 
   return {
     setCanvases(state, windowId) {
@@ -18,12 +18,50 @@ export const playerReferences = (function () {
       return _canvases;
     },
 
-    setMediaType() {
-      _mediaType = _canvases[0].__jsonld.items[0].items[0].body.type;
+    getMediaDuration(){
+      return  _media.props.canvas.__jsonld.duration;
     },
 
     getMediaType() {
-      return _mediaType;
+      return _media.props.canvas.__jsonld.items[0].items[0].body.type;
+    },
+
+
+    getHeight(){
+      return _media.props.canvas.__jsonld.height;
+    },
+
+    getWidth(){
+      return _media.props.canvas.__jsonld.width;
+    },
+
+    getContainerWidth(){
+      return _overlay.containerWidth;;
+    },
+    getContainerHeight(){
+      return _overlay.containerHeight
+    },
+
+    getCanvasWidth(){
+      return _overlay.canvasWidth;
+    },
+    getCanvasHeight(){
+      return _overlay.canvasHeight;
+    },
+    getContainer(){
+      if(_mediaType === mediaTypes.IMAGE){
+      return _media.current.container;
+      }
+      if(_mediaType === mediaTypes.VIDEO){
+        return _media.ref.current.parentElement;
+      }
+    },
+
+    setCurrentTime(windowId, ...args){
+      return actions.setWindowCurrentTime(windowId, ...args);
+    },
+    setSeekTo(windowId, ...args){
+      return actions.setWindowSeekTo(windowId,...args);
     },
 
     setMedia(windowId) {
@@ -59,12 +97,7 @@ export const playerReferences = (function () {
       return _overlay;
     },
     // /* *********************************************************** */
-    // getTimeInfos() {
-    //   return _timeInfos;
-    // },
-    // setTimeInfos(newTimeInfos) {
-    //   _timeInfos = newTimeInfos;
-    // },
+
     // getTimeControlFunction() {
     //
     // },

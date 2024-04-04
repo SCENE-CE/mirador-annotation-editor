@@ -23,11 +23,7 @@ export default function AnnotationFormBody(
   {
     annotation,
     templateType,
-    currentTime,
-    mediaType,
-    overlay,
-    setCurrentTime,
-    setSeekTo,
+      currentTime,
     windowId,
     closeFormCompanionWindow,
     saveAnnotation,
@@ -56,12 +52,8 @@ export default function AnnotationFormBody(
               canvases={canvases}
               closeFormCompanionWindow={closeFormCompanionWindow}
               currentTime={currentTime}
-              mediaType={mediaType}
               saveAnnotation={saveAnnotation}
-              setCurrentTime={setCurrentTime}
-              setSeekTo={setSeekTo}
               windowId={windowId}
-              overlay={overlay}
               getMediaAudio={getMediaAudio}
               debugMode={debugMode}
             />
@@ -73,15 +65,11 @@ export default function AnnotationFormBody(
             annotation={annotation}
             canvases={canvases}
             closeFormCompanionWindow={closeFormCompanionWindow}
-            setCurrentTime={setCurrentTime}
-            setSeekTo={setSeekTo}
             windowId={windowId}
             templateType={templateType}
-            mediaType={mediaType}
             saveAnnotation={saveAnnotation}
-            currentTime={currentTime}
-            overlay={overlay}
             debugMode={debugMode}
+            currentTime={currentTime}
           />
           )
         }
@@ -91,12 +79,8 @@ export default function AnnotationFormBody(
               annotation={annotation}
               canvases={canvases}
               closeFormCompanionWindow={closeFormCompanionWindow}
-              currentTime={currentTime}
-              mediaType={mediaType}
-              overlay={overlay}
               saveAnnotation={saveAnnotation}
-              setCurrentTime={setCurrentTime}
-              setSeekTo={setSeekTo}
+              currentTime={currentTime}
               windowId={windowId}
               debugMode={debugMode}
             />
@@ -107,15 +91,11 @@ export default function AnnotationFormBody(
             <NetworkCommentTemplate
               annotation={annotation}
               canvases={canvases}
-              closeFormCompanionWindow={closeFormCompanionWindow}
               currentTime={currentTime}
-              mediaType={mediaType}
+              closeFormCompanionWindow={closeFormCompanionWindow}
               saveAnnotation={saveAnnotation}
-              setCurrentTime={setCurrentTime}
-              setSeekTo={setSeekTo}
               windowId={windowId}
               getMediaAudio={getMediaAudio}
-              overlay={overlay}
               debugMode={debugMode}
             />
           )
@@ -135,12 +115,8 @@ export default function AnnotationFormBody(
               canvases={canvases}
               saveAnnotation={saveAnnotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
-              currentTime={currentTime}
-              mediaType={mediaType}
-              setCurrentTime={setCurrentTime}
-              setSeekTo={setSeekTo}
               windowId={windowId}
-              overlay={overlay}
+              currentTime={currentTime}
               annotation={annotation}
               getMediaAudio={getMediaAudio}
               debugMode={debugMode}
@@ -190,18 +166,11 @@ AnnotationFormBody.propTypes = {
     manifestNetwork: PropTypes.string,
     target: PropTypes.string,
   }).isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
-  currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   getMediaAudio: PropTypes.object.isRequired,
-  mediaType: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  overlay: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
-  setCurrentTime: PropTypes.func.isRequired,
-  setSeekTo: PropTypes.func.isRequired,
   templateType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 

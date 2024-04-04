@@ -8,21 +8,17 @@ import AnnotationFormFooter from './AnnotationFormFooter';
 import { template } from '../AnnotationFormUtils';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
 import { getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import {playerReferences} from "../playerReferences";
 
 /** Form part for edit annotation content and body */
 function TextCommentTemplate(
   {
     annotation,
-    canvases,
     closeFormCompanionWindow,
     currentTime,
     debugMode,
     getMediaAudio,
-    mediaType,
-    overlay,
     saveAnnotation,
-    setCurrentTime,
-    setSeekTo,
     windowId,
   },
 ) {
@@ -76,7 +72,7 @@ function TextCommentTemplate(
   const saveFunction = () => {
     // Iterate over all canvases and save the annotation, then close the form
 
-    const promises = canvases.map(async (canvas) => {
+    const promises = playerReferences.getCanvases().map(async (canvas) => {
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
       console.log(annotation.maeData);
@@ -110,14 +106,10 @@ function TextCommentTemplate(
       </Grid>
       <Grid item>
         <TargetFormSection
-          currentTime={currentTime}
-          mediaType={mediaType}
+            currentTime={currentTime}
           onChangeTarget={updateTargetState}
-          setCurrentTime={setCurrentTime}
-          setSeekTo={setSeekTo}
           target={annotationState.maeData.target}
           windowId={windowId}
-          overlay={overlay}
           timeTarget
           spatialTarget
           closeFormCompanionWindow={closeFormCompanionWindow}

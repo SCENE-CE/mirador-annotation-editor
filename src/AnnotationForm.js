@@ -20,7 +20,9 @@ import {playerReferences} from "./playerReferences";
 export default function AnnotationForm(
   {
     annotation,
+      canvases,
     closeCompanionWindow,
+      currentTime,
     config,
     getMediaAudio,
     id,
@@ -62,21 +64,21 @@ export default function AnnotationForm(
    *
    * @returns {{height: number, width: number}}
    */
-  const getHeightAndWidth = () => {
-    if (mediaVideo) {
-      return mediaVideo;
-    }
-    // Todo get size from manifest image
-    return {
-      height: 1000,
-      width: 500,
-    };
-  };
-
-  const {
-    height,
-    width,
-  } = getHeightAndWidth();
+  // const getHeightAndWidth = () => {
+  //   if (mediaVideo) {
+  //     return mediaVideo;
+  //   }
+  //   // Todo get size from manifest image
+  //   return {
+  //     height: 1000,
+  //     width: 500,
+  //   };
+  // };
+  //
+  // const {
+  //   height,
+  //   width,
+  // } = getHeightAndWidth();
   // TODO Check the effect to keep and remove the other
   // Add a state to trigger redraw
   const [windowSize, setWindowSize] = useState({
@@ -104,12 +106,12 @@ export default function AnnotationForm(
     };
   }, []);
 
-  // TODO Useless ?
-  useLayoutEffect(() => {
-  }, [{
-    height,
-    width,
-  }]);
+  // // TODO Useless ?
+  // useLayoutEffect(() => {
+  // }, [{
+  //   height,
+  //   width,
+  // }]);
 
   /**
    * Closes the companion window with the specified ID and position.
@@ -160,17 +162,10 @@ export default function AnnotationForm(
               <AnnotationFormBody
                 templateType={templateType}
                 windowId={windowId}
-                overlay={overlay}
                 annotation={annotation}
-                mediaVideo={mediaVideo}
                 currentTime={currentTime}
-                setCurrentTime={setCurrentTime}
-                setSeekTo={setSeekTo}
-                mediaType={mediaType}
                 closeFormCompanionWindow={closeFormCompanionWindow}
                 saveAnnotation={saveAnnotation}
-                canvases={canvases}
-                osdref={osdref}
                 getMediaAudio={getMediaAudio}
                 debugMode={debugMode}
               />
@@ -220,7 +215,6 @@ AnnotationForm.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   osdref: PropTypes.object.isRequired,
   receiveAnnotation: PropTypes.func.isRequired,
-  setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };

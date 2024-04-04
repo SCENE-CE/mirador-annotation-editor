@@ -8,13 +8,12 @@ import { TARGET_VIEW } from '../AnnotationFormUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { Debug } from './Debug';
+import {playerReferences} from "../playerReferences";
 
 /** Handle target spacial for annot templates * */
 export function TargetSpatialInput({
   closeFormCompanionWindow,
   debugMode,
-  mediaType,
-  overlay,
   setTargetDrawingState,
   targetDrawingState,
   windowId,
@@ -26,7 +25,7 @@ export function TargetSpatialInput({
   const [scale, setScale] = useState(1);
   /** Change scale from container / canva */
   const updateScale = () => {
-    setScale(overlay.containerWidth / overlay.canvasWidth);
+    setScale(playerReferences.getContainerWidth() / playerReferences.getCanvasWidth());
   };
 
   const [drawingState, setDrawingState] = useState({

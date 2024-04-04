@@ -10,18 +10,14 @@ import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
 import { mediaTypes } from '../AnnotationFormUtils';
+import {playerReferences} from "../playerReferences";
 
 /** All the stuff to draw on the canvas */
 export default function AnnotationDrawing({
   closeFormCompanionWindow,
   displayMode,
   drawingState,
-  height,
   isMouseOverSave,
-  mediaType,
-  originalHeight,
-  originalWidth,
-  overlay,
   scale,
   setColorToolFromCurrentShape,
   setDrawingState,
@@ -29,10 +25,11 @@ export default function AnnotationDrawing({
   toolState,
   updateCurrentShapeInShapes,
   updateScale,
-  width,
   windowId,
 }) {
   const [isDrawing, setIsDrawing] = useState(false);
+  const width = playerReferences.getWidth();
+  const height = playerReferences.getHeight();
   // TODO target from the annotation
   const [surfacedata, setSurfaceData] = useState({
     height: height / scale,
@@ -44,12 +41,12 @@ export default function AnnotationDrawing({
   });
 
   useEffect(() => {
-    if (overlay) {
-      updateScale(overlay.containerWidth / overlay.canvasWidth);
-    }
+
+    updateScale(playerReferences.getContainerWidth() / playerReferences.getCanvasWidth());
+
     const newSurfaceData = { ...surfacedata };
-    newSurfaceData.width = overlay.width;
-    newSurfaceData.height = overlay.height;
+    newSurfaceData.width = playerReferences.getWidth();
+    newSurfaceData.height = playerReferences.getHeight();
     // compare newSurfaceData and surfacedata, if different, update surfacedata
     // eslint-disable-next-line max-len
     if (newSurfaceData.width !== surfacedata.width || newSurfaceData.height !== surfacedata.height) {
@@ -515,8 +512,6 @@ export default function AnnotationDrawing({
         activeTool={toolState.activeTool}
         selectedShapeId={drawingState.currentShape?.id}
         scale={scale}
-        width={originalWidth}
-        height={originalHeight}
         onTransform={onTransform}
         handleDragEnd={handleDragEnd}
         handleDragStart={handleDragStart}
@@ -527,41 +522,7 @@ export default function AnnotationDrawing({
       />
     </Stage>
   );
-  let osdref;
-  let videoref;
-
-  if (mediaType === mediaTypes.IMAGE) {
-    osdref = OSDReferences.get(windowId);
-  }
-
-  if (mediaType === mediaTypes.VIDEO) {
-    videoref = VideosReferences.get(windowId);
-  }
-
-  if (!osdref && !videoref) {
-    throw new Error("Unknown or missing data player, didn't found OpenSeadragon (image viewer) nor the video player");
-  }
-  if (osdref && videoref) {
-    throw new Error('Unhandled case: both OpenSeadragon (image viewer) and video player on the same canvas');
-  }
-
-  let container;
-
-  if (mediaType === mediaTypes.IMAGE) {
-    if (osdref.current === undefined) {
-      closeFormCompanionWindow();
-    } else {
-      container = osdref.current ? osdref.current.container : undefined;
-    }
-  }
-
-  if (mediaType === mediaTypes.VIDEO) {
-    if (videoref.ref.current === null) {
-      closeFormCompanionWindow();
-    } else {
-      container = videoref.ref ? videoref.ref.current.parentElement : undefined;
-    }
-  }
+  let container = playerReferences.getContainer();
   if (container) {
     return ReactDOM.createPortal(drawKonvas(), container);
   }

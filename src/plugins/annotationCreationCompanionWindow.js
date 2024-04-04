@@ -1,6 +1,5 @@
 import * as actions from 'mirador/dist/es/src/state/actions';
 import { getCompanionWindow } from 'mirador/dist/es/src/state/selectors/companionWindows';
-import { getWindowCurrentTime, getWindowPausedStatus } from 'mirador/dist/es/src/state/selectors/window';
 import { getVisibleCanvasAudioResources, getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
 import { getPresentAnnotationsOnSelectedCanvases } from 'mirador/dist/es/src/state/selectors/annotations';
 import annotationForm from '../AnnotationForm';
@@ -19,11 +18,12 @@ const mapDispatchToProps = (dispatch, { id, windowId }) => ({
 
 /** */
 function mapStateToProps(state, { id: companionWindowId, windowId }) {
-  const currentTime = getWindowCurrentTime(state, { windowId });
+  const currentTime = null;
   const cw = getCompanionWindow(state, { companionWindowId, windowId });
   const { annotationid } = cw;
   playerReferences.setCanvases(state, windowId);
-  playerReferences.setMediaType();
+  playerReferences.setMedia(windowId);
+  playerReferences.setOverlay();
   // This could be removed but it's serve the useEffect in AnnotationForm for now.
   const canvases = getVisibleCanvases(state, { windowId });
   let annotation = getPresentAnnotationsOnSelectedCanvases(state, { windowId })
@@ -41,6 +41,7 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
   }
 
   return {
+    currentTime,
     annotation,
     canvases,
     config: state.config,
