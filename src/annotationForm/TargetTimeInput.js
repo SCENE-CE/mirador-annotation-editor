@@ -6,10 +6,9 @@ import { Alarm } from '@mui/icons-material';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import HMSInput from '../HMSInput';
 import { mediaTypes } from '../AnnotationFormUtils';
-import {playerReferences} from "../playerReferences";
+import { playerReferences } from '../playerReferences';
 
 const StyledSlider = styled(Slider)(({ theme }) => ({
   color: 'rgba(1, 0, 0, 0.38)',
@@ -103,8 +102,8 @@ function TargetTimeInput({
     }
     onChange({
       tstart: valueTstart,
-      ...playerReferences.setSeekTo(windowId,valueTstart),
-      ...playerReferences.setCurrentTime(windowId,valueTstart),
+      ...playerReferences.setSeekTo(windowId, valueTstart),
+      ...playerReferences.setCurrentTime(windowId, valueTstart),
     });
   };
 
@@ -115,8 +114,8 @@ function TargetTimeInput({
     }
     onChange({
       tend: valueTend,
-      ...playerReferences.setSeekTo(windowId,valueTend),
-      ...playerReferences.setCurrentTime(windowId,valueTend),
+      ...playerReferences.setSeekTo(windowId, valueTend),
+      ...playerReferences.setCurrentTime(windowId, valueTend),
     });
   };
 
