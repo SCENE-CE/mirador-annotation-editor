@@ -8,6 +8,7 @@ export const playerReferences = (function () {
   let _mediaType;
   let _overlay;
   let _media;
+
   return {
     setCanvases(state, windowId) {
       _canvases = getVisibleCanvases(state, { windowId });

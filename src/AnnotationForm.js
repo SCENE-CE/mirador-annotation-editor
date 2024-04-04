@@ -22,14 +22,9 @@ export default function AnnotationForm(
     annotation,
     closeCompanionWindow,
     config,
-    currentTime,
     getMediaAudio,
     id,
-    mediaVideo,
-    osdref,
     receiveAnnotation,
-    setCurrentTime,
-    setSeekTo,
     windowId,
   },
 ) {
@@ -52,30 +47,11 @@ export default function AnnotationForm(
     }
   }
 
-  let overlay = null;
-  if (mediaVideo) {
-    overlay = mediaVideo.canvasOverlay;
-  } else if (osdref.current) {
-    overlay = {
-      canvasHeight: osdref.current.canvas.clientHeight,
-      canvasWidth: osdref.current.canvas.clientWidth,
-      containerHeight: osdref.current.canvas.clientHeight,
-      containerWidth: osdref.current.canvas.clientWidth,
-    };
-  } else {
-    overlay = {
-      canvasHeight: 500,
-      canvasWidth: 1000,
-      containerHeight: 500,
-      containerWidth: 1000,
-    };
-  }
-
   // Listen to window resize event
   useEffect(() => {
     setTemplateType(null);
     // eslint-disable-next-line no-underscore-dangle
-    setMediaType(canvases[0].__jsonld.items[0].items[0].body.type);
+    setMediaType(playerReferences.getMediaType());
   }, [canvases[0].index]);
 
   /**

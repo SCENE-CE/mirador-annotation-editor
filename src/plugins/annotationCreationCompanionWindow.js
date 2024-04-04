@@ -13,8 +13,8 @@ const mapDispatchToProps = (dispatch, { id, windowId }) => ({
   receiveAnnotation: (targetId, annoId, annotation) => dispatch(
     actions.receiveAnnotation(targetId, annoId, annotation),
   ),
-  setCurrentTime: (...args) => dispatch(actions.setWindowCurrentTime(windowId, ...args)),
-  setSeekTo: (...args) => dispatch(actions.setWindowSeekTo(windowId, ...args)),
+  // setCurrentTime: (...args) => dispatch(actions.setWindowCurrentTime(windowId, ...args)),
+  // setSeekTo: (...args) => dispatch(actions.setWindowSeekTo(windowId, ...args)),
 });
 
 /** */
@@ -24,33 +24,11 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
   const { annotationid } = cw;
   playerReferences.setCanvases(state, windowId);
   playerReferences.setMediaType();
+  // This could be removed but it's serve the useEffect in AnnotationForm for now.
+  const canvases = getVisibleCanvases(state, { windowId });
   let annotation = getPresentAnnotationsOnSelectedCanvases(state, { windowId })
     .flatMap((annoPage) => annoPage.json.items || [])
     .find((annot) => annot.id === annotationid);
-
-  // if (mediaVideo) {
-
-  //   playerReferences.setPlayerName(mediaVideo);
-  //
-  //   // playerReferences = {
-  //   //   mediaType: mediaTypes.VIDEO,
-  //   //   overlay: mediaVideo.canvasOverlay,
-  //   //   setCurrentTime: actions.setWindowCurrentTime(),
-  //   //   setSeekTo: actions.setWindowSeekTo(),
-  //   //
-  //   // };
-  // }
-  if (osdref) {
-    // playerReferences = {
-    //   mediaTypes: mediaTypes.IMAGE,
-    //   overlay: {
-    //     canvasHeight: osdref.current.canvas.clientHeight,
-    //     canvasWidth: osdref.current.canvas.clientWidth,
-    //     containerHeight: osdref.current.canvas.clientHeight,
-    //     containerWidth: osdref.current.canvas.clientWidth,
-    //   },
-    // };
-  }
 
   // New annotation has no ID and no templateType defined
   if (!annotation) {
@@ -64,13 +42,9 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
 
   return {
     annotation,
+    canvases,
     config: state.config,
-    currentTime,
-    mediaVideo,
-    osdref,
     getMediaAudio: getVisibleCanvasAudioResources(state, { windowId }),
-    getVisibleCanvase: getVisibleCanvases(state, { windowId }),
-    paused: getWindowPausedStatus(state, { windowId }),
   };
 }
 
