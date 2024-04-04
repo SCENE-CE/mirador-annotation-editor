@@ -14,7 +14,7 @@ It is based on the original [mirador-annotations](https://github.com/ProjectMira
 
 Unlike the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugin, this `mirador-annotation-editor` is distributed under the **GPL v3**.
 
-Please acknoldge that any modification you make must be distributed under a compatible licence and cannot be closed source.
+Please acknowledge that any modification you make must be distributed under a compatible licence and cannot be closed source.
 
 If you need to integrate this code base in closed source pieces of software, please contact us so we can discuss dual licencing. 
 
@@ -52,7 +52,7 @@ The authors of this software are :
 
 - Update to Material UI 5 and React 18 to follow latest Mirador upgrades (React 17 release also available)
 - The [paperjs](http://paperjs.org/ ) library has been replaced with [Konvas](https://konvajs.org) 
-- Major refactorisation since the original `[mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugins`
+- Major refactoring since the original `[mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugins`
 - Works with the original [Mirador 4](https://github.com/projectmirador/mirador) if you need only image annotation
 
 ## Use in npm project
@@ -76,7 +76,7 @@ nvm use
 npm install
 ```
 
-Run mirador and the plugin :
+Run a demo with Mirador and the MAE plugin :
 
 ```
 npm start
