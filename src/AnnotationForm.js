@@ -146,8 +146,9 @@ export default function AnnotationForm(
           <Grid container>
               <Grid container>
               <Typography>
-              One of your canvases has video content, you must install MAEV to edit annotion on  video : https://github.com/SCENE-CE/mirador-annotation-editor-video
+              One of your canvases has video or audio content, you must install MAEV to edit annotion on  video : https://github.com/SCENE-CE/mirador-annotation-editor-video
               </Typography>
+                <Typography> Edit annotation on Audio is not supported</Typography>
               </Grid>
           </Grid>
         </CompanionWindow>
