@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import PropTypes from 'prop-types';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import AnnotationDrawing from './AnnotationDrawing';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
 
 import {
-  mediaTypes,
   TARGET_VIEW,
   template,
 } from '../AnnotationFormUtils';

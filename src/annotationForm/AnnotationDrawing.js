@@ -5,11 +5,8 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { Stage } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
-import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
-import { mediaTypes } from '../AnnotationFormUtils';
 import {playerReferences} from "../playerReferences";
 
 /** All the stuff to draw on the canvas */
