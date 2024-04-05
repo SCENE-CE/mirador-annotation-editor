@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
-import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
 import {
-   mediaTypes, TARGET_VIEW, template,
+   TARGET_VIEW, template,
 } from '../AnnotationFormUtils';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { defaultToolState } from '../AnnotationCreationUtils';
