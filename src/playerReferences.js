@@ -1,5 +1,4 @@
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
-import * as actions from 'mirador/dist/es/src/state/actions';
 import { mediaTypes } from './AnnotationFormUtils';
 
 export const playerReferences = (function () {
@@ -7,6 +6,7 @@ export const playerReferences = (function () {
   let _media;
   let _mediaType;
   let _overlay;
+  let _actions;
 
   return {
     getCanvasHeight() {
@@ -25,6 +25,7 @@ export const playerReferences = (function () {
       if (_mediaType === mediaTypes.VIDEO) {
         return _media.ref.current.parentElement;
       }
+      return null;
     },
     getContainerHeight() {
       return _overlay.containerHeight;
@@ -60,7 +61,7 @@ export const playerReferences = (function () {
       }
       return undefined;
     },
-    init(state, windowId, playerRef) {
+    init(state, windowId, playerRef, actions) {
       _canvases = getVisibleCanvases(state, { windowId });
       _mediaType = _canvases[0].__jsonld.items ? mediaTypes.VIDEO : mediaTypes.IMAGE;
       _media = playerRef.get(windowId);
@@ -80,16 +81,18 @@ export const playerReferences = (function () {
           console.error('Unknown media type');
           break;
       }
+      _actions = actions;
     },
+    // TODO internalize actions
     setCurrentTime(windowId, ...args) {
       if (_mediaType === mediaTypes.VIDEO) {
-        return actions.setWindowCurrentTime(windowId, ...args);
+        return _actions.setWindowCurrentTime(windowId, ...args);
       }
       console.error('Cannot set current time for image');
     },
     setSeekTo(windowId, ...args) {
       if (_mediaType === mediaTypes.VIDEO) {
-        return actions.setWindowSeekTo(windowId, ...args);
+        return _actions.setWindowSeekTo(windowId, ...args);
       }
       console.error('Cannot seek time for image');
     },

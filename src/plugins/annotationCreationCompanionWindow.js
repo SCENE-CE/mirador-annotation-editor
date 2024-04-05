@@ -22,7 +22,7 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
   const currentTime = null;
   const cw = getCompanionWindow(state, { companionWindowId, windowId });
   const { annotationid } = cw;
-  playerReferences.init(state, windowId,OSDReferences);
+  playerReferences.init(state, windowId,OSDReferences, actions);
   console.log(playerReferences.getCanvases());
   // This could be removed but it's serve the useEffect in AnnotationForm for now.
   const canvases = getVisibleCanvases(state, { windowId });
