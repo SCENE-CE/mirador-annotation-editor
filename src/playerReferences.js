@@ -76,7 +76,7 @@ export const playerReferences = (function () {
       return actions.setWindowSeekTo(windowId, ...args);
     },
 
-    setMedia(windowId, type) {
+    setMedia(windowId) {
       if (_mediaType === mediaTypes.IMAGE) {
         _media = OSDReferences.get(windowId);
       }
