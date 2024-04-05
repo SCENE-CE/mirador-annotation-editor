@@ -1,6 +1,4 @@
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
-import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import * as actions from 'mirador/dist/es/src/state/actions';
 import { mediaTypes } from './AnnotationFormUtils';
 
@@ -11,54 +9,14 @@ export const playerReferences = (function () {
   let _overlay;
 
   return {
-    setCanvases(state, windowId) {
-      _canvases = getVisibleCanvases(state, { windowId });
-      _mediaType = _canvases[0].__jsonld.items ? mediaTypes.VIDEO : mediaTypes.IMAGE;
-      this.setMedia(windowId, _mediaType);
+    getCanvasHeight() {
+      return _overlay.canvasHeight;
     },
-
-    getCanvases() {
-      return _canvases;
-    },
-
-    getMediaDuration() {
-      return _media.props.canvas.__jsonld.duration;
-    },
-
-    getMediaType() {
-      return _mediaType;
-    },
-
-    getHeight() {
-      if (_mediaType === mediaTypes.IMAGE) {
-        return _canvases[0].__jsonld.height;
-      } if (_mediaType === mediaTypes.VIDEO) {
-        return _media.props.canvas.__jsonld.height;
-      }
-      return undefined;
-    },
-
-    getWidth() {
-      if (_mediaType === mediaTypes.IMAGE) {
-        return _canvases[0].__jsonld.width;
-      } if (_mediaType === mediaTypes.VIDEO) {
-        return _media.props.canvas.__jsonld.width;
-      }
-      return undefined;
-    },
-
-    getContainerWidth() {
-      return _overlay.containerWidth;
-    },
-    getContainerHeight() {
-      return _overlay.containerHeight;
-    },
-
     getCanvasWidth() {
       return _overlay.canvasWidth;
     },
-    getCanvasHeight() {
-      return _overlay.canvasHeight;
+    getCanvases() {
+      return _canvases;
     },
     getContainer() {
       if (_mediaType === mediaTypes.IMAGE) {
@@ -68,62 +26,72 @@ export const playerReferences = (function () {
         return _media.ref.current.parentElement;
       }
     },
-
-    setCurrentTime(windowId, ...args) {
-      return actions.setWindowCurrentTime(windowId, ...args);
+    getContainerHeight() {
+      return _overlay.containerHeight;
     },
-    setSeekTo(windowId, ...args) {
-      return actions.setWindowSeekTo(windowId, ...args);
+    getContainerWidth() {
+      return _overlay.containerWidth;
     },
-
-    setMedia(windowId, type) {
+    getHeight() {
       if (_mediaType === mediaTypes.IMAGE) {
-        _media = OSDReferences.get(windowId);
+        return _canvases[0].__jsonld.height;
       }
       if (_mediaType === mediaTypes.VIDEO) {
-        _media = VideosReferences.get(windowId);
+        return _media.props.canvas.__jsonld.height;
       }
+      console.error('Unknown media type');
+      return undefined;
     },
-
-    setOverlay() {
-      if (_mediaType === mediaTypes.IMAGE) {
-        _overlay = {
-          canvasHeight: _media.current.canvas.clientHeight,
-          canvasWidth: _media.current.canvas.clientWidth,
-          containerHeight: _media.current.canvas.clientHeight,
-          containerWidth: _media.current.canvas.clientWidth,
-        };
-      } else if (_mediaType === mediaTypes.VIDEO) {
-        _overlay = _media.canvasOverlay;
-      } else {
-        _overlay = {
-          canvasHeight: 500,
-          canvasWidth: 1000,
-          containerHeight: 500,
-          containerWidth: 1000,
-        };
-      }
+    getMediaDuration() {
+      return _media.props.canvas.__jsonld.duration;
     },
-
+    getMediaType() {
+      return _mediaType;
+    },
     getOverlay() {
       return _overlay;
     },
-    // /* *********************************************************** */
-
-    // getTimeControlFunction() {
-    //
-    // },
-    // setTimeControlFunctions() {
-    //
-    // },
-    // getPlayerType() {
-    //
-    // },
-    // setPlayerName(playerName) {
-    //   _playerName = playerName;
-    // },
-    // getPlayerName() {
-    //     return _playerName;
-    // },
+    getWidth() {
+      if (_mediaType === mediaTypes.IMAGE) {
+        return _canvases[0].__jsonld.width;
+      }
+      if (_mediaType === mediaTypes.VIDEO) {
+        return _media.props.canvas.__jsonld.width;
+      }
+      return undefined;
+    },
+    init(state, windowId, playerRef) {
+      _canvases = getVisibleCanvases(state, { windowId });
+      _mediaType = _canvases[0].__jsonld.items ? mediaTypes.VIDEO : mediaTypes.IMAGE;
+      _media = playerRef.get(windowId);
+      switch (_mediaType) {
+        case mediaTypes.IMAGE:
+          _overlay = {
+            canvasHeight: _media.current.canvas.clientHeight,
+            canvasWidth: _media.current.canvas.clientWidth,
+            containerHeight: _media.current.canvas.clientHeight,
+            containerWidth: _media.current.canvas.clientWidth,
+          };
+          break;
+        case mediaTypes.VIDEO:
+          _overlay = _media.canvasOverlay;
+          break;
+        default:
+          console.error('Unknown media type');
+          break;
+      }
+    },
+    setCurrentTime(windowId, ...args) {
+      if (_mediaType === mediaTypes.VIDEO) {
+        return actions.setWindowCurrentTime(windowId, ...args);
+      }
+      console.error('Cannot set current time for image');
+    },
+    setSeekTo(windowId, ...args) {
+      if (_mediaType === mediaTypes.VIDEO) {
+        return actions.setWindowSeekTo(windowId, ...args);
+      }
+      console.error('Cannot seek time for image');
+    },
   };
 }());
