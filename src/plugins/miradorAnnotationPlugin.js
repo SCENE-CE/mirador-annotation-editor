@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SingleCanvasDialog from '../SingleCanvasDialog';
 import AnnotationExportDialog from '../AnnotationExportDialog';
 import LocalStorageAdapter from '../LocalStorageAdapter';
+import {playerReferences} from "../playerReferences";
 
 /** Mirador annotation plugin component. Get all the stuff
  * and info to manage annotation functionnality */
@@ -23,6 +24,8 @@ function MiradorAnnotation({
   const [currentCompanionWindowId, setCurrentCompanionWindowId] = useState(null);
 
   const dispatch = useDispatch();
+
+
   /** Open the companion window for annotation */
   const addCompanionWindow = (content, additionalProps) => {
     setCurrentCompanionWindowId(targetProps.windowId);

@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { mediaTypes, templateTypes } from './AnnotationFormUtils';
+import {playerReferences} from "./playerReferences";
 /**
  * A component that renders a selection of annotation
  * form templates for different types of comments.
@@ -18,9 +19,9 @@ export default function AnnotationFormTemplateSelector({
      * Sets the comment type for the application.
      */
   const setCommentType = (template) => setCommentingType(template);
-
   return (
     <CardContainer>
+
       {mediaType === mediaTypes.AUDIO ? (
         <Grid container spacing={1} direction="column">
           <Grid item>

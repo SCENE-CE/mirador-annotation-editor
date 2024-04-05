@@ -13,6 +13,7 @@ import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormBody from './AnnotationFormBody';
 import { saveAnnotationInStorageAdapter } from './AnnotationCreationUtils';
 import {playerReferences} from "./playerReferences";
+import Typography from "@mui/material/Typography";
 
 /**
  * Component for submitting a form to create or edit an annotation.
@@ -30,6 +31,7 @@ export default function AnnotationForm(
     windowId,
   },
 ) {
+
   const [templateType, setTemplateType] = useState(null);
   // eslint-disable-next-line no-underscore-dangle
   const [mediaType, setMediaType] = useState(playerReferences.getMediaType());
@@ -124,7 +126,6 @@ export default function AnnotationForm(
       position: 'right',
     });
   };
-
   /** Save function * */
   const saveAnnotation = (annotationToSaved, canvasId) => {
     const storageAdapter = config.annotation.adapter(canvasId);
@@ -135,6 +136,23 @@ export default function AnnotationForm(
       annotationToSaved,
     );
   };
+
+  if(!playerReferences.isInitialized()){
+    return(
+        <CompanionWindow
+        title={'media not supported'}
+        windowId={windowId}
+        id={id}>
+          <Grid container>
+              <Grid container>
+              <Typography>
+              One of your canvases has video content, you must install MAEV to edit annotion on  video : https://github.com/SCENE-CE/mirador-annotation-editor-video
+              </Typography>
+              </Grid>
+          </Grid>
+        </CompanionWindow>
+    )
+  }
 
   return (
     <CompanionWindow

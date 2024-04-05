@@ -7,12 +7,12 @@ import { mediaTypes, template } from '../AnnotationFormUtils';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
 import TargetFormSection from './TargetFormSection';
 import { getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import {playerReferences} from "../playerReferences";
 
 /** Tagging Template* */
 export default function TaggingTemplate(
   {
     annotation,
-    canvases,
     closeFormCompanionWindow,
     currentTime,
     debugMode,
@@ -73,11 +73,12 @@ export default function TaggingTemplate(
   const saveFunction = () => {
     // TODO This code is not DRY, it's the same as in TextCommentTemplate.js
     if (mediaType !== mediaTypes.AUDIO) {
-      const promises = canvases.map(async (canvas) => {
+      const promises = playerReferences.getCanvases().map(async (canvas) => {
         // Adapt target to the canvas
         // eslint-disable-next-line no-param-reassign
         console.log(annotation.maeData);
         annotationState.maeData.target.svg = await getSvg(windowId);
+        const overlay = playerReferences.getOverlay();
         annotationState.maeData.target.scale = overlay.containerWidth / overlay.canvasWidth;
         // annotationState.maeData.target.dataUrl = await getKonvaAsDataURL(windowId);
         annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
@@ -125,7 +126,6 @@ export default function TaggingTemplate(
           target={annotationState.maeData.target}
           timeTarget
           windowId={windowId}
-          overlay={overlay}
           closeFormCompanionWindow={closeFormCompanionWindow}
           getMediaAudio={getMediaAudio}
           debugMode={debugMode}
@@ -159,14 +159,11 @@ TaggingTemplate.propTypes = {
     target: PropTypes.string,
   }).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   getMediaAudio: PropTypes.object.isRequired,
-  mediaType: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  overlay: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
