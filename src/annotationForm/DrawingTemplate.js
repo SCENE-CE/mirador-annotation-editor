@@ -8,8 +8,8 @@ import { maeTargetToIiifTarget } from '../IIIFUtils';
 import {
   TARGET_VIEW,
   template,
+  defaultToolState,
 } from '../AnnotationFormUtils';
-import { defaultToolState } from '../AnnotationCreationUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';

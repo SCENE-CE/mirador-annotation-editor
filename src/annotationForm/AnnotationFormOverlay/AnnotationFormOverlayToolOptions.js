@@ -6,8 +6,7 @@ import { styled } from '@mui/material/styles';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { v4 as uuidv4 } from 'uuid';
 import ImageFormField from './ImageFormField';
-import { isShapesTool, OVERLAY_TOOL } from '../../AnnotationCreationUtils';
-import { KONVA_MODE } from './KonvaDrawing/KonvaUtils';
+import { isShapesTool, OVERLAY_TOOL , KONVA_MODE } from './KonvaDrawing/KonvaUtils';
 import ColorPicker from './KonvaDrawing/shapes/ColorPicker';
 
 const StyledDivButtonImage = styled('div')(({ theme }) => ({

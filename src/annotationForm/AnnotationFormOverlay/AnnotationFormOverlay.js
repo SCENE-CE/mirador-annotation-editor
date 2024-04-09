@@ -12,7 +12,8 @@ import { styled } from '@mui/material/styles';
 import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../../icons/Cursor';
 import AnnotationFormOverlayTool from './AnnotationFormOverlayTool';
-import { defaultToolState, OVERLAY_TOOL } from '../../AnnotationCreationUtils';
+import { defaultToolState } from '../../AnnotationFormUtils';
+import { OVERLAY_TOOL } from './KonvaDrawing/KonvaUtils';
 import { OVERLAY_VIEW, TARGET_VIEW } from '../../AnnotationFormUtils';
 import { KONVA_MODE } from './KonvaDrawing/KonvaUtils';
 

@@ -4,16 +4,16 @@ import React, {
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import PropTypes from 'prop-types';
 import { Grid } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
 import {
   getTemplateType,
+  saveAnnotationInStorageAdapter,
   template,
 } from './AnnotationFormUtils';
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormBody from './AnnotationFormBody';
-import { saveAnnotationInStorageAdapter } from './AnnotationCreationUtils';
-import {playerReferences} from "./playerReferences";
-import Typography from "@mui/material/Typography";
+import { playerReferences } from './playerReferences';
 
 /**
  * Component for submitting a form to create or edit an annotation.
@@ -21,9 +21,9 @@ import Typography from "@mui/material/Typography";
 export default function AnnotationForm(
   {
     annotation,
-      canvases,
+    canvases,
     closeCompanionWindow,
-      currentTime,
+    currentTime,
     config,
     getMediaAudio,
     id,
@@ -31,7 +31,6 @@ export default function AnnotationForm(
     windowId,
   },
 ) {
-
   const [templateType, setTemplateType] = useState(null);
   // eslint-disable-next-line no-underscore-dangle
   const [mediaType, setMediaType] = useState(playerReferences.getMediaType());
@@ -137,22 +136,23 @@ export default function AnnotationForm(
     );
   };
 
-  if(!playerReferences.isInitialized()){
-    return(
-        <CompanionWindow
-        title={'media not supported'}
+  if (!playerReferences.isInitialized()) {
+    return (
+      <CompanionWindow
+        title="media not supported"
         windowId={windowId}
-        id={id}>
+        id={id}
+      >
+        <Grid container>
           <Grid container>
-              <Grid container>
-              <Typography>
+            <Typography>
               One of your canvases has video or audio content, you must install MAEV to edit annotion on  video : https://github.com/SCENE-CE/mirador-annotation-editor-video
-              </Typography>
-                <Typography> Edit annotation on Audio is not supported</Typography>
-              </Grid>
+            </Typography>
+            <Typography> Edit annotation on Audio is not supported</Typography>
           </Grid>
-        </CompanionWindow>
-    )
+        </Grid>
+      </CompanionWindow>
+    );
   }
 
   return (

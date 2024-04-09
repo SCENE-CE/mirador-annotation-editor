@@ -28,3 +28,28 @@ export const KONVA_MODE = {
   IMAGE: 'image',
   TARGET: 'target',
 };
+
+
+export const OVERLAY_TOOL = {
+  CURSOR: 'cursor',
+  DELETE: 'delete',
+  EDIT: 'edit',
+  IMAGE: 'image',
+  SHAPE: 'shapes',
+  TEXT: 'text',
+};
+
+export const SHAPES_TOOL = {
+  ARROW: 'arrow',
+  ELLIPSE: 'ellipse',
+  FREEHAND: 'freehand',
+  POLYGON: 'polygon',
+  RECTANGLE: 'rectangle',
+  SHAPES: 'shapes',
+};
+
+/** Check if the active tool is a shape tool */
+export function isShapesTool(activeTool) {
+  // Find if active tool in the list of overlay tools. I want a boolean in return
+  return Object.values(SHAPES_TOOL).find((tool) => tool === activeTool);
+}

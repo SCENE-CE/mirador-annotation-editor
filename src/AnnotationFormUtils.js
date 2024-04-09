@@ -4,7 +4,8 @@ import CategoryIcon from '@mui/icons-material/Category';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import React from 'react';
-import { OVERLAY_TOOL } from './AnnotationCreationUtils';
+import { v4 as uuidv4 } from 'uuid';
+import { OVERLAY_TOOL } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
 export const template = {
   IIIF_TYPE: 'iiif',
@@ -148,6 +149,16 @@ export const defaultToolState = {
   strokeWidth: 2,
 };
 
+export const targetSVGToolState = {
+  activeTool: OVERLAY_TOOL.EDIT,
+  closedMode: 'closed',
+  image: { id: null },
+  imageEvent: null,
+  strokeColor: 'rgba(255,0, 0, 0.5)',
+  strokeWidth: 5,
+};
+
+
 export const TARGET_VIEW = 'target';
 export const OVERLAY_VIEW = 'layer';
 export const TAG_VIEW = 'tag';
@@ -179,3 +190,26 @@ export const isValidUrl = (string) => {
     return false;
   }
 };
+
+
+export async function saveAnnotationInStorageAdapter(
+  canvasId,
+  storageAdapter,
+  receiveAnnotation,
+  annotation,
+) {
+  console.log('Annotation to save', annotation);
+  if (annotation.id) {
+    storageAdapter.update(annotation)
+      .then((annoPage) => {
+        receiveAnnotation(canvasId, storageAdapter.annotationPageId, annoPage);
+      });
+  } else {
+    // eslint-disable-next-line no-param-reassign
+    annotation.id = uuidv4();
+    storageAdapter.create(annotation)
+      .then((annoPage) => {
+        receiveAnnotation(canvasId, storageAdapter.annotationPageId, annoPage);
+      });
+  }
+}

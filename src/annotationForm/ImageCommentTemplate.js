@@ -6,15 +6,14 @@ import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
 import {
-   TARGET_VIEW, template,
+  TARGET_VIEW, template, defaultToolState,
 } from '../AnnotationFormUtils';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import { defaultToolState } from '../AnnotationCreationUtils';
 import AnnotationDrawing from './AnnotationDrawing';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { Debug } from './Debug';
-import {playerReferences} from "../playerReferences";
+import { playerReferences } from '../playerReferences';
 
 /**
  * Image Comment template
@@ -33,7 +32,7 @@ export default function ImageCommentTemplate(
   {
     annotation,
     canvases,
-      currentTime,
+    currentTime,
     closeFormCompanionWindow,
     debugMode,
     saveAnnotation,

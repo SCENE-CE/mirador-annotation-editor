@@ -5,9 +5,9 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { Stage } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
-import ParentComponent from './AnnotationFormOverlay/KonvaDrawing/shapes/ParentComponent';
-import { OVERLAY_TOOL, SHAPES_TOOL } from '../AnnotationCreationUtils';
-import {playerReferences} from "../playerReferences";
+import ParentComponent from './KonvaDrawing/shapes/ParentComponent';
+import { OVERLAY_TOOL, SHAPES_TOOL } from './KonvaDrawing/KonvaUtils';
+import { playerReferences } from '../playerReferences';
 
 /** All the stuff to draw on the canvas */
 export default function AnnotationDrawing({
@@ -38,7 +38,6 @@ export default function AnnotationDrawing({
   });
 
   useEffect(() => {
-
     updateScale(playerReferences.getContainerWidth() / playerReferences.getCanvasWidth());
 
     const newSurfaceData = { ...surfacedata };
@@ -519,7 +518,7 @@ export default function AnnotationDrawing({
       />
     </Stage>
   );
-  let container = playerReferences.getContainer();
+  const container = playerReferences.getContainer();
   if (container) {
     return ReactDOM.createPortal(drawKonvas(), container);
   }

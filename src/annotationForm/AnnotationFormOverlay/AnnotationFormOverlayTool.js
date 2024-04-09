@@ -16,7 +16,7 @@ import {
   isShapesTool,
   OVERLAY_TOOL,
   SHAPES_TOOL,
-} from '../../AnnotationCreationUtils';
+} from '../KonvaDrawing/KonvaUtils';
 import ShapesList from './ShapesList';
 import { KONVA_MODE } from './KonvaDrawing/KonvaUtils';
 
