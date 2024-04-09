@@ -1,5 +1,5 @@
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
-import { mediaTypes } from './AnnotationFormUtils';
+import { mediaTypes } from './annotationForm/AnnotationFormUtils';
 
 export const playerReferences = (function () {
   let _canvases;

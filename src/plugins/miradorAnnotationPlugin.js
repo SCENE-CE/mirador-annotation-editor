@@ -9,8 +9,7 @@ import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases
 import { useDispatch, useSelector } from 'react-redux';
 import SingleCanvasDialog from '../SingleCanvasDialog';
 import AnnotationExportDialog from '../AnnotationExportDialog';
-import LocalStorageAdapter from '../LocalStorageAdapter';
-import {playerReferences} from "../playerReferences";
+import LocalStorageAdapter from '../annotationAdapter/LocalStorageAdapter';
 
 /** Mirador annotation plugin component. Get all the stuff
  * and info to manage annotation functionnality */

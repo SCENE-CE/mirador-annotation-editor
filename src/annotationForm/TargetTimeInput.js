@@ -6,7 +6,7 @@ import { Alarm } from '@mui/icons-material';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import HMSInput from '../HMSInput';
+import HMSInput from './HMSInput';
 import { mediaTypes } from './AnnotationFormUtils';
 import { playerReferences } from '../playerReferences';
 

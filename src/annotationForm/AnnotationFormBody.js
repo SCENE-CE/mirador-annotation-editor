@@ -8,12 +8,12 @@ import { Grid } from '@mui/material';
 import {
   template,
 } from './AnnotationFormUtils';
-import TextCommentTemplate from './annotationForm/TextCommentTemplate';
-import ImageCommentTemplate from './annotationForm/ImageCommentTemplate';
-import NetworkCommentTemplate from './annotationForm/NetworkCommentTemplate';
-import DrawingTemplate from './annotationForm/DrawingTemplate';
-import IIIFTemplate from './annotationForm/IIIFTemplate';
-import TaggingTemplate from './annotationForm/TaggingTemplate';
+import TextCommentTemplate from './TextCommentTemplate';
+import ImageCommentTemplate from './ImageCommentTemplate';
+import NetworkCommentTemplate from './NetworkCommentTemplate';
+import DrawingTemplate from './DrawingTemplate';
+import IIIFTemplate from './IIIFTemplate';
+import TaggingTemplate from './TaggingTemplate';
 
 import './debug.css';
 /**
@@ -23,7 +23,7 @@ export default function AnnotationFormBody(
   {
     annotation,
     templateType,
-      currentTime,
+    currentTime,
     windowId,
     closeFormCompanionWindow,
     saveAnnotation,

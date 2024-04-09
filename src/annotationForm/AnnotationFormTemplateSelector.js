@@ -6,7 +6,6 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { mediaTypes, templateTypes } from './AnnotationFormUtils';
-import {playerReferences} from "./playerReferences";
 /**
  * A component that renders a selection of annotation
  * form templates for different types of comments.

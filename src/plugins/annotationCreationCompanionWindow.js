@@ -2,9 +2,9 @@ import * as actions from 'mirador/dist/es/src/state/actions';
 import { getCompanionWindow } from 'mirador/dist/es/src/state/selectors/companionWindows';
 import { getVisibleCanvasAudioResources, getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
 import { getPresentAnnotationsOnSelectedCanvases } from 'mirador/dist/es/src/state/selectors/annotations';
-import annotationForm from '../AnnotationForm';
-import { playerReferences } from '../playerReferences';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
+import annotationForm from '../annotationForm/AnnotationForm';
+import { playerReferences } from '../playerReferences';
 /** */
 const mapDispatchToProps = (dispatch, { id, windowId }) => ({
   closeCompanionWindow: () => dispatch(

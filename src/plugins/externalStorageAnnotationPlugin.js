@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
 import isEqual from 'lodash/isEqual';
 import * as actions from 'mirador/dist/es/src/state/actions';
-import LocalStorageAdapter from '../LocalStorageAdapter';
-import AnnototAdapter from '../AnnototAdapter';
+import LocalStorageAdapter from '../annotationAdapter/LocalStorageAdapter';
+import AnnototAdapter from '../annotationAdapter/AnnototAdapter';
 import { AnnotationAdapter } from '../annotationAdapter/AnnotationAdapterUtils';
 
 // TODO: Change this classComponent into functional component

@@ -7,7 +7,7 @@ import { Stage } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
 import ParentComponent from './KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from './KonvaDrawing/KonvaUtils';
-import { playerReferences } from '../playerReferences';
+import { playerReferences } from '../../playerReferences';
 
 /** All the stuff to draw on the canvas */
 export default function AnnotationDrawing({

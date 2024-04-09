@@ -9,7 +9,7 @@ import {
   TARGET_VIEW, template, defaultToolState,
 } from './AnnotationFormUtils';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import AnnotationDrawing from './AnnotationDrawing';
+import AnnotationDrawing from './AnnotationFormOverlay/AnnotationDrawing';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { Debug } from './Debug';

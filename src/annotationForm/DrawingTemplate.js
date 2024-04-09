@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import AnnotationDrawing from './AnnotationDrawing';
+import AnnotationDrawing from './AnnotationFormOverlay/AnnotationDrawing';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
 
 import {

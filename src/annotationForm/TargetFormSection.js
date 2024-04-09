@@ -4,7 +4,7 @@ import { Grid, Typography } from '@mui/material';
 import { mediaTypes } from './AnnotationFormUtils';
 import TargetTimeInput from './TargetTimeInput';
 import { TargetSpatialInput } from './TargetSpatialInput';
-import {playerReferences} from "../playerReferences";
+import {playerReferences} from '../playerReferences';
 
 /**
  * Section of Time and Space Target

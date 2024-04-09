@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useLayoutEffect, useState,
+  useEffect, useState,
 } from 'react';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import PropTypes from 'prop-types';
@@ -13,7 +13,7 @@ import {
 } from './AnnotationFormUtils';
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormBody from './AnnotationFormBody';
-import { playerReferences } from './playerReferences';
+import { playerReferences } from '../playerReferences';
 
 /**
  * Component for submitting a form to create or edit an annotation.
