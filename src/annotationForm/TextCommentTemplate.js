@@ -5,7 +5,7 @@ import { Grid } from '@mui/material';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { template } from '../AnnotationFormUtils';
+import { template } from './AnnotationFormUtils';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
 import { getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import {playerReferences} from "../playerReferences";

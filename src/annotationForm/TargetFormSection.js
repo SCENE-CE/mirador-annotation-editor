@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography } from '@mui/material';
-import { mediaTypes } from '../AnnotationFormUtils';
+import { mediaTypes } from './AnnotationFormUtils';
 import TargetTimeInput from './TargetTimeInput';
 import { TargetSpatialInput } from './TargetSpatialInput';
 import {playerReferences} from "../playerReferences";

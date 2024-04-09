@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { JsonEditor as Editor } from 'jsoneditor-react';
 import ace from 'brace';
 import PropTypes from 'prop-types';
-import { mediaTypes } from '../AnnotationFormUtils';
+import { mediaTypes } from './AnnotationFormUtils';
 import {playerReferences} from "../playerReferences";
 
 /** Debug Component * */

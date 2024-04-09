@@ -7,7 +7,7 @@ import TargetFormSection from './TargetFormSection';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
 import {
   TARGET_VIEW, template, defaultToolState,
-} from '../AnnotationFormUtils';
+} from './AnnotationFormUtils';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import AnnotationDrawing from './AnnotationDrawing';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';

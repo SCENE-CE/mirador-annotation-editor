@@ -16,9 +16,9 @@ import {
   isShapesTool,
   OVERLAY_TOOL,
   SHAPES_TOOL,
-} from '../KonvaDrawing/KonvaUtils';
+  KONVA_MODE,
+} from './KonvaDrawing/KonvaUtils';
 import ShapesList from './ShapesList';
-import { KONVA_MODE } from './KonvaDrawing/KonvaUtils';
 
 // TODO WIP code duplicated
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({

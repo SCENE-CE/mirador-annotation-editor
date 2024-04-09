@@ -9,7 +9,7 @@ import {
   TARGET_VIEW,
   template,
   defaultToolState,
-} from '../AnnotationFormUtils';
+} from './AnnotationFormUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';

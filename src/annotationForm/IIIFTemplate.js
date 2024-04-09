@@ -7,7 +7,7 @@ import 'brace/mode/json';
 import 'brace/theme/github';
 import { Paper } from '@mui/material';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { template } from '../AnnotationFormUtils';
+import { template } from './AnnotationFormUtils';
 
 /**
  * IIIFTemplate component
