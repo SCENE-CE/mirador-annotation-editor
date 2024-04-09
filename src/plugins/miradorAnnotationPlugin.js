@@ -60,7 +60,7 @@ function MiradorAnnotation({
     setAnnotationExportDialogOpen(!annotationExportDialogOpen);
   }, [annotationExportDialogOpen]);
 
-  const storageAdapter = config.annotation && config.annotation.adapter('poke');
+  const storageAdapter = config?.annotation?.adapter && config.annotation.adapter('poke');
   const offerExportDialog = config.annotation && storageAdapter instanceof LocalStorageAdapter
       && config.annotation.exportLocalStorageAnnotations;
 
