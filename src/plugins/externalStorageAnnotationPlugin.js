@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
 import isEqual from 'lodash/isEqual';
 import * as actions from 'mirador/dist/es/src/state/actions';
+import LocalStorageAdapter from '../LocalStorageAdapter';
+import AnnototAdapter from '../AnnototAdapter';
+import { AnnotationAdapter } from '../annotationAdapter/AnnotationAdapterUtils';
 
 // TODO: Change this classComponent into functional component
 /** */
@@ -34,7 +37,21 @@ class ExternalStorageAnnotation extends Component {
     const { config, receiveAnnotation } = this.props;
 
     canvases.forEach((canvas) => {
+      // TODO Actually when exporting workspace, adapter is not saved.
+      // So, we can manually add : adapter : 'localStorage' or 'annotot'
+      if (typeof config.annotation.adapter === 'string' && config.annotation.adapter === AnnotationAdapter.LOCAL_STORAGE) {
+        config.annotation.adapter = (canvasId) => new LocalStorageAdapter(`localStorage://?canvasId=${canvasId}`);
+      }
+      if(typeof config.annotation.adapter === 'string' && config.annotation.adapter  === AnnotationAdapter.ANNOTOT) {
+        const endpointUrl = 'http://127.0.0.1:3000/annotations';
+        config.annotation.adapter = (canvasId) => new AnnototAdapter(canvasId, endpointUrl);
+      }
+      if (!config.annotation.adapter) {
+        // Default adapter set to LocalStorageAdapter
+        config.annotation.adapter = (canvasId) => new LocalStorageAdapter(`localStorage://?canvasId=${canvasId}`);
+      }
       const storageAdapter = config.annotation.adapter(canvas.id);
+      console.log(config.annotation);
       storageAdapter.all().then((annoPage) => {
         if (annoPage) {
           receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);
