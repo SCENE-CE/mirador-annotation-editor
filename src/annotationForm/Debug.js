@@ -4,14 +4,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { JsonEditor as Editor } from 'jsoneditor-react';
 import ace from 'brace';
 import PropTypes from 'prop-types';
-import { mediaTypes } from '../AnnotationFormUtils';
+import { mediaTypes } from './AnnotationFormUtils';
+import {playerReferences} from "../playerReferences";
 
 /** Debug Component * */
 export function Debug(
   {
     drawingState,
-    mediaType,
-    overlay,
     scale,
   },
 ) {
@@ -26,7 +25,7 @@ export function Debug(
     }
   };
   /**check if mediaType = video and if it is set border around video**/
-  if (mediaType === mediaTypes.VIDEO) {
+  if (playerReferences.getMediaType() === mediaTypes.VIDEO) {
     const videoElement = document.querySelector('video');
     const parentVideoElement = videoElement.parentElement;
     const grandParentVideoElement = parentVideoElement.parentElement;
@@ -37,13 +36,13 @@ export function Debug(
 
   useEffect(() => {
     console.log('--------------New Render--------------');
-    console.log('canvas Width:', overlay.canvasWidth);
-    console.log('canvas Height:', overlay.canvasHeight);
-    console.log('overlay.containerWidth', overlay.containerWidth);
-    console.log('overlay.containerHeight', overlay.containerHeight);
+    console.log('canvas Width:', playerReferences.getCanvasWidth());
+    console.log('canvas Height:', playerReferences.getCanvasHeight());
+    console.log('overlay.containerWidth', playerReferences.getContainerWidth());
+    console.log('overlay.containerHeight', playerReferences.getContainerHeight());
     console.log('drawingState', drawingState);
     console.log('-------------End of Render---------------');
-  }, [drawingState, scale, overlay, updateComp]);
+  }, [drawingState, scale, updateComp]);
 
   useEffect(() => {
     if (jsonEditorRef.current !== null) {
@@ -64,21 +63,21 @@ export function Debug(
         <Typography variant="subFormSectionTitle">
           Canvas size :
           {' '}
-          {overlay.canvasWidth}
+          {playerReferences.getCanvasWidth()}
           {' '}
           x
           {' '}
-          {overlay.canvasHeight}
+          {playerReferences.getCanvasHeight()}
         </Typography>
       </Grid>
       <Grid item>
         <Typography variant="subFormSectionTitle">
           Container size :
           {' '}
-          {overlay.containerWidth}
+          {playerReferences.getContainerWidth()}
           {' '}
           x
-          {overlay.containerHeight}
+          {playerReferences.getContainerHeight()}
         </Typography>
       </Grid>
       <Grid item>
@@ -165,8 +164,5 @@ export function Debug(
 Debug.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   drawingState: PropTypes.object.isRequired,
-  mediaType: PropTypes.string.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  overlay: PropTypes.object.isRequired,
   scale: PropTypes.string.isRequired,
 };

@@ -3,7 +3,7 @@ import {
   Grid, Link, TextField, Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { isValidUrl } from '../AnnotationFormUtils';
+import { isValidUrl } from './AnnotationFormUtils';
 
 /**
  * Handle Manifest Section

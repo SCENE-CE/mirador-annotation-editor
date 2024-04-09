@@ -1,15 +1,9 @@
 {
   "name": "mirador-annotation-editor",
-  "version": "1.0.3",
+  "version": "1.0.13",
   "description": "mirador-annotation-editor plugin in a React component",
   "main": "lib/index.js",
   "module": "es/index.js",
-  "files": [
-    "css",
-    "es",
-    "lib",
-    "umd"
-  ],
   "scripts": {
     "build": "NODE_ENV=production webpack --mode=production",
     "build:demo": "NODE_ENV=development webpack --mode=development",
@@ -53,7 +47,7 @@
   },
   "peerDependencies": {
     "lodash": "^4.17.11",
-    "mirador": "npm:mirador-video@^1.0.2",
+    "mirador" : "npm:mirador-video@^1.0.4",
     "prop-types": "^15.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.0.0",
@@ -87,7 +81,7 @@
     "jest-canvas-mock": "^2.2.0",
     "jest-junit": "^15.0.0",
     "jest-localstorage-mock": "^2.4.2",
-    "mirador": "npm:mirador-video@^1.0.4",
+    "mirador" : "npm:mirador-video@^1.0.4",
     "prop-types": "^15.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.0",

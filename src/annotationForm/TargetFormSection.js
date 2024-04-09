@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography } from '@mui/material';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
-import { mediaTypes } from '../AnnotationFormUtils';
+import { mediaTypes } from './AnnotationFormUtils';
 import TargetTimeInput from './TargetTimeInput';
 import { TargetSpatialInput } from './TargetSpatialInput';
+import {playerReferences} from '../playerReferences';
 
 /**
  * Section of Time and Space Target
@@ -24,43 +24,32 @@ export default function TargetFormSection(
     currentTime,
     debugMode,
     getMediaAudio,
-    mediaType,
     onChangeTarget,
-    overlay,
-    setCurrentTime,
-    setSeekTo,
     spatialTarget,
     target,
     timeTarget,
     windowId,
-    helloWorld,
   },
 ) {
   if (!target) {
     // eslint-disable-next-line no-param-reassign
     target = {};
-    if (mediaType === mediaTypes.VIDEO) {
-      const mediaVideo = VideosReferences.get(windowId);
+    if (playerReferences.getMediaType() === mediaTypes.VIDEO) {
       // eslint-disable-next-line no-param-reassign
       target.tstart = currentTime || 0;
-      // eslint-disable-next-line max-len,no-underscore-dangle,no-param-reassign
-      target.tend = mediaVideo.props.canvas.__jsonld.duration ? Math.floor(mediaVideo.props.canvas.__jsonld.duration) : 0;
+      target.tend = playerReferences.getMediaDuration() ? Math.floor(playerReferences.getMediaDuration()) : 0;
     }
 
     // TODO Check if its possible to use overlay ?
-    switch (mediaType) {
+    switch (playerReferences.getMediaType()) {
       case mediaTypes.IMAGE:
         // TODO set default xywh
         // eslint-disable-next-line no-param-reassign
         target.fullCanvaXYWH = '0,0,500,1000';
         break;
       case mediaTypes.VIDEO:
-        // eslint-disable-next-line no-case-declarations
-        const mediaVideo = VideosReferences.get(windowId);
-        // eslint-disable-next-line no-underscore-dangle,no-case-declarations
-        const targetHeigth = mediaVideo ? mediaVideo.props.canvas.__jsonld.height : 1000;
-        // eslint-disable-next-line no-underscore-dangle,no-case-declarations
-        const targetWidth = mediaVideo ? mediaVideo.props.canvas.__jsonld.width : 500;
+        const targetHeigth = playerReferences.getHeight();
+        const targetWidth =  playerReferences.getWidth();
         // eslint-disable-next-line no-param-reassign
         target.fullCanvaXYWH = `0,0,${targetWidth},${targetHeigth}`;
         break;
@@ -93,28 +82,21 @@ export default function TargetFormSection(
     });
   };
 
-  if (mediaType === mediaTypes.IMAGE) {
+  if (playerReferences.getMediaType() === mediaTypes.IMAGE) {
     // eslint-disable-next-line no-param-reassign
     timeTarget = false;
   }
 
-  if (mediaType === mediaTypes.AUDIO) {
+  if (playerReferences.getMediaType() === mediaTypes.AUDIO) {
     // eslint-disable-next-line no-param-reassign
     spatialTarget = false;
   }
 
-  console.log(helloWorld);
   return (
     <Grid item container direction="column" spacing={1}>
       <Grid item>
         <Typography variant="formSectionTitle">
           Target
-        </Typography>
-        <Typography>
-          {helloWorld}
-        </Typography>
-        <Typography>
-          toto
         </Typography>
       </Grid>
       {
@@ -126,9 +108,7 @@ export default function TargetFormSection(
             svg={target.svg}
             onChange={onChangeSpatialTargetInput}
             windowId={windowId}
-            mediaType={mediaType}
             targetDrawingState={target.drawingState}
-            overlay={overlay}
             closeFormCompanionWindow={closeFormCompanionWindow}
             debugMode={debugMode}
           />
@@ -144,10 +124,7 @@ export default function TargetFormSection(
               onChange={onChangeTimeTargetInput}
               windowId={windowId}
               currentTime={currentTime}
-              setCurrentTime={setCurrentTime}
-              setSeekTo={setSeekTo}
               getMediaAudio={getMediaAudio}
-              mediaType={mediaType}
               closeFormCompanionWindow={closeFormCompanionWindow}
             />
           </Grid>

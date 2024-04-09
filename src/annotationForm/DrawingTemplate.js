@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import PropTypes from 'prop-types';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import AnnotationDrawing from './AnnotationDrawing';
+import AnnotationDrawing from './AnnotationFormOverlay/AnnotationDrawing';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
 
 import {
-  mediaTypes,
   TARGET_VIEW,
   template,
-} from '../AnnotationFormUtils';
-import { defaultToolState } from '../AnnotationCreationUtils';
+  defaultToolState,
+} from './AnnotationFormUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
@@ -87,13 +84,6 @@ export default function DrawingTemplate(
     });
   };
 
-  let player;
-  if (mediaType === mediaTypes.VIDEO) {
-    player = VideosReferences.get(windowId);
-  }
-  if (mediaType === mediaTypes.IMAGE) {
-    player = OSDReferences.get(windowId);
-  }
   /** save Function * */
   const saveFunction = () => {
     const promises = canvases.map(async (canvas) => {
@@ -246,7 +236,6 @@ export default function DrawingTemplate(
           toolState={toolState}
           annotation={annotation}
           windowId={windowId}
-          player={player}
             // we need to pass the width and height of the image to the annotation drawing component
           width={overlay ? overlay.containerWidth : 1920}
           height={overlay ? overlay.containerHeight : 1080}
@@ -300,10 +289,8 @@ export default function DrawingTemplate(
       />
       <Grid item>
         <Debug
-          overlay={overlay}
           scale={scale}
           drawingState={drawingState}
-          mediaType={mediaType}
         />
       </Grid>
       <Grid item>

@@ -2,19 +2,17 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
-import AnnotationDrawing from './AnnotationDrawing';
-import { targetSVGToolState } from '../AnnotationCreationUtils';
-import { TARGET_VIEW } from '../AnnotationFormUtils';
+import AnnotationDrawing from './AnnotationFormOverlay/AnnotationDrawing';
+import { TARGET_VIEW, targetSVGToolState } from './AnnotationFormUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { Debug } from './Debug';
+import { playerReferences } from '../playerReferences';
 
 /** Handle target spacial for annot templates * */
 export function TargetSpatialInput({
   closeFormCompanionWindow,
   debugMode,
-  mediaType,
-  overlay,
   setTargetDrawingState,
   targetDrawingState,
   windowId,
@@ -26,7 +24,7 @@ export function TargetSpatialInput({
   const [scale, setScale] = useState(1);
   /** Change scale from container / canva */
   const updateScale = () => {
-    setScale(overlay.containerWidth / overlay.canvasWidth);
+    setScale(playerReferences.getContainerWidth() / playerReferences.getCanvasWidth());
   };
 
   const [drawingState, setDrawingState] = useState({
@@ -99,18 +97,16 @@ export function TargetSpatialInput({
               scale={scale}
               windowId={windowId}
             // we need to pass the width and height of the image to the annotation drawing component
-              width={overlay ? overlay.containerWidth : 1920}
-              height={overlay ? overlay.containerHeight : 1080}
-              originalWidth={overlay ? overlay.canvasWidth : 1920}
-              originalHeight={overlay ? overlay.canvasHeight : 1080}
+              width={playerReferences.getContainerWidth()}
+              height={playerReferences.getContainerHeight()}
+              originalWidth={playerReferences.getCanvasWidth()}
+              originalHeight={playerReferences.getCanvasHeight()}
               updateScale={updateScale}
               setColorToolFromCurrentShape={() => {}}
               drawingState={drawingState}
-              overlay={overlay}
               updateCurrentShapeInShapes={updateCurrentShapeInShapes}
               setDrawingState={setDrawingState}
               tabView="edit" // TODO change
-              mediaType={mediaType}
               closeFormCompanionWindow={closeFormCompanionWindow}
               displayMode={KONVA_MODE.TARGET}
               isMouseOverSave={false} // TODO remove
@@ -131,10 +127,8 @@ export function TargetSpatialInput({
           {debugMode && (
           <Grid item>
             <Debug
-              overlay={overlay}
               scale={scale}
               drawingState={drawingState}
-              mediaType={mediaType}
               displayMode={KONVA_MODE.TARGET}
             />
           </Grid>
@@ -147,9 +141,6 @@ export function TargetSpatialInput({
 
 TargetSpatialInput.propTypes = {
   closeFormCompanionWindow: PropTypes.func.isRequired,
-  mediaType: PropTypes.string.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  overlay: PropTypes.object.isRequired,
   setTargetDrawingState: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   targetDrawingState: PropTypes.object.isRequired,

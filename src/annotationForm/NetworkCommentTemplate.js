@@ -6,7 +6,7 @@ import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import ManifestNetworkFormSection from './ManifestNetworkFormSection';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
-import { template } from '../AnnotationFormUtils';
+import { template } from './AnnotationFormUtils';
 import AnnotationFormFooter from './AnnotationFormFooter';
 
 /** Form part for edit annotation content and body */

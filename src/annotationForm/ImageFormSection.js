@@ -6,7 +6,7 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import ImageFormField from './AnnotationFormOverlay/ImageFormField';
-import { defaultToolState } from '../AnnotationFormUtils';
+import { defaultToolState } from './AnnotationFormUtils';
 
 /**
  * Section for Image Template

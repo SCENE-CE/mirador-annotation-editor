@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { VideosReferences } from 'mirador/dist/es/src/plugins/VideosReferences';
-import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
 import {
-   mediaTypes, TARGET_VIEW, template,
-} from '../AnnotationFormUtils';
+  TARGET_VIEW, template, defaultToolState,
+} from './AnnotationFormUtils';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import { defaultToolState } from '../AnnotationCreationUtils';
-import AnnotationDrawing from './AnnotationDrawing';
+import AnnotationDrawing from './AnnotationFormOverlay/AnnotationDrawing';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { Debug } from './Debug';
+import { playerReferences } from '../playerReferences';
 
 /**
  * Image Comment template
@@ -34,14 +32,10 @@ export default function ImageCommentTemplate(
   {
     annotation,
     canvases,
-    closeFormCompanionWindow,
     currentTime,
+    closeFormCompanionWindow,
     debugMode,
-    mediaType,
-    overlay,
     saveAnnotation,
-    setCurrentTime,
-    setSeekTo,
     windowId,
   },
 ) {
@@ -81,13 +75,6 @@ export default function ImageCommentTemplate(
     });
   };
 
-  let player;
-  if (mediaType === mediaTypes.VIDEO) {
-    player = VideosReferences.get(windowId);
-  }
-  if (mediaType === mediaTypes.IMAGE) {
-    player = OSDReferences.get(windowId);
-  }
   /** save Function * */
   const saveFunction = () => {
     const promises = canvases.map(async (canvas) => {
@@ -151,7 +138,7 @@ export default function ImageCommentTemplate(
 
   /** Change scale from container / canva */
   const updateScale = () => {
-    setScale(overlay.containerWidth / overlay.canvasWidth);
+    setScale(playerReferences.getContainerWidth() / playerReferences.getCanvasWidth());
   };
 
   /**
@@ -230,22 +217,15 @@ export default function ImageCommentTemplate(
           annotation={annotation}
           closed={toolState.closedMode === 'closed'}
           windowId={windowId}
-          player={player}
           // we need to pass the width and height of the image to the annotation drawing component
-          width={overlay ? overlay.containerWidth : 1920}
-          height={overlay ? overlay.containerHeight : 1080}
-          originalWidth={overlay ? overlay.canvasWidth : 1920}
-          originalHeight={overlay ? overlay.canvasHeight : 1080}
           updateScale={updateScale}
           setColorToolFromCurrentShape={setColorToolFromCurrentShape}
           drawingState={drawingState}
           isMouseOverSave={isMouseOverSave}
-          overlay={overlay}
           setDrawingState={setDrawingState}
           showFragmentSelector={false}
           tabView={viewTool}
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
-          mediaType={mediaType}
           closeFormCompanionWindow={closeFormCompanionWindow}
           displayMode={KONVA_MODE.IMAGE}
           toolState={toolState}
@@ -272,13 +252,9 @@ export default function ImageCommentTemplate(
       </Grid>
       <TargetFormSection
         currentTime={currentTime}
-        mediaType={mediaType}
         onChangeTarget={updateTargetState}
-        setCurrentTime={setCurrentTime}
-        setSeekTo={setSeekTo}
         target={annotationState.maeData.target}
         windowId={windowId}
-        overlay={overlay}
         closeFormCompanionWindow={closeFormCompanionWindow}
         timeTarget
         spatialTarget={false}
@@ -286,9 +262,7 @@ export default function ImageCommentTemplate(
       />
       <Grid item>
         <Debug
-          overlay={overlay}
           scale={scale}
-          mediaType={mediaType}
           drawingState={drawingState}
         />
       </Grid>

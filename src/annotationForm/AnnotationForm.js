@@ -1,17 +1,19 @@
 import React, {
-  useEffect, useLayoutEffect, useState,
+  useEffect, useState,
 } from 'react';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import PropTypes from 'prop-types';
 import { Grid } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
 import {
   getTemplateType,
+  saveAnnotationInStorageAdapter,
   template,
 } from './AnnotationFormUtils';
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormBody from './AnnotationFormBody';
-import { saveAnnotationInStorageAdapter } from './AnnotationCreationUtils';
+import { playerReferences } from '../playerReferences';
 
 /**
  * Component for submitting a form to create or edit an annotation.
@@ -21,21 +23,17 @@ export default function AnnotationForm(
     annotation,
     canvases,
     closeCompanionWindow,
-    config,
     currentTime,
+    config,
     getMediaAudio,
     id,
-    mediaVideo,
-    osdref,
     receiveAnnotation,
-    setCurrentTime,
-    setSeekTo,
     windowId,
   },
 ) {
   const [templateType, setTemplateType] = useState(null);
   // eslint-disable-next-line no-underscore-dangle
-  const [mediaType, setMediaType] = useState(canvases[0].__jsonld.items[0].items[0].body.type);
+  const [mediaType, setMediaType] = useState(playerReferences.getMediaType());
 
   const debugMode = config.debugMode === true;
 
@@ -52,30 +50,11 @@ export default function AnnotationForm(
     }
   }
 
-  let overlay = null;
-  if (mediaVideo) {
-    overlay = mediaVideo.canvasOverlay;
-  } else if (osdref.current) {
-    overlay = {
-      canvasHeight: osdref.current.canvas.clientHeight,
-      canvasWidth: osdref.current.canvas.clientWidth,
-      containerHeight: osdref.current.canvas.clientHeight,
-      containerWidth: osdref.current.canvas.clientWidth,
-    };
-  } else {
-    overlay = {
-      canvasHeight: 500,
-      canvasWidth: 1000,
-      containerHeight: 500,
-      containerWidth: 1000,
-    };
-  }
-
   // Listen to window resize event
   useEffect(() => {
     setTemplateType(null);
     // eslint-disable-next-line no-underscore-dangle
-    setMediaType(canvases[0].__jsonld.items[0].items[0].body.type);
+    setMediaType(playerReferences.getMediaType());
   }, [canvases[0].index]);
 
   /**
@@ -86,21 +65,21 @@ export default function AnnotationForm(
    *
    * @returns {{height: number, width: number}}
    */
-  const getHeightAndWidth = () => {
-    if (mediaVideo) {
-      return mediaVideo;
-    }
-    // Todo get size from manifest image
-    return {
-      height: 1000,
-      width: 500,
-    };
-  };
-
-  const {
-    height,
-    width,
-  } = getHeightAndWidth();
+  // const getHeightAndWidth = () => {
+  //   if (mediaVideo) {
+  //     return mediaVideo;
+  //   }
+  //   // Todo get size from manifest image
+  //   return {
+  //     height: 1000,
+  //     width: 500,
+  //   };
+  // };
+  //
+  // const {
+  //   height,
+  //   width,
+  // } = getHeightAndWidth();
   // TODO Check the effect to keep and remove the other
   // Add a state to trigger redraw
   const [windowSize, setWindowSize] = useState({
@@ -128,12 +107,12 @@ export default function AnnotationForm(
     };
   }, []);
 
-  // TODO Useless ?
-  useLayoutEffect(() => {
-  }, [{
-    height,
-    width,
-  }]);
+  // // TODO Useless ?
+  // useLayoutEffect(() => {
+  // }, [{
+  //   height,
+  //   width,
+  // }]);
 
   /**
    * Closes the companion window with the specified ID and position.
@@ -146,7 +125,6 @@ export default function AnnotationForm(
       position: 'right',
     });
   };
-
   /** Save function * */
   const saveAnnotation = (annotationToSaved, canvasId) => {
     const storageAdapter = config.annotation.adapter(canvasId);
@@ -157,6 +135,25 @@ export default function AnnotationForm(
       annotationToSaved,
     );
   };
+
+  if (!playerReferences.isInitialized()) {
+    return (
+      <CompanionWindow
+        title="media not supported"
+        windowId={windowId}
+        id={id}
+      >
+        <Grid container>
+          <Grid container>
+            <Typography>
+              One of your canvases has video or audio content, you must install MAEV to edit annotion on  video : https://github.com/SCENE-CE/mirador-annotation-editor-video
+            </Typography>
+            <Typography> Edit annotation on Audio is not supported</Typography>
+          </Grid>
+        </Grid>
+      </CompanionWindow>
+    );
+  }
 
   return (
     <CompanionWindow
@@ -184,17 +181,10 @@ export default function AnnotationForm(
               <AnnotationFormBody
                 templateType={templateType}
                 windowId={windowId}
-                overlay={overlay}
                 annotation={annotation}
-                mediaVideo={mediaVideo}
                 currentTime={currentTime}
-                setCurrentTime={setCurrentTime}
-                setSeekTo={setSeekTo}
-                mediaType={mediaType}
                 closeFormCompanionWindow={closeFormCompanionWindow}
                 saveAnnotation={saveAnnotation}
-                canvases={canvases}
-                osdref={osdref}
                 getMediaAudio={getMediaAudio}
                 debugMode={debugMode}
               />
@@ -244,7 +234,6 @@ AnnotationForm.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   osdref: PropTypes.object.isRequired,
   receiveAnnotation: PropTypes.func.isRequired,
-  setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };
