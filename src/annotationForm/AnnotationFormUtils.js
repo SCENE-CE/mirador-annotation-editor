@@ -158,7 +158,6 @@ export const targetSVGToolState = {
   strokeWidth: 5,
 };
 
-
 export const TARGET_VIEW = 'target';
 export const OVERLAY_VIEW = 'layer';
 export const TAG_VIEW = 'tag';
@@ -190,7 +189,6 @@ export const isValidUrl = (string) => {
     return false;
   }
 };
-
 
 export async function saveAnnotationInStorageAdapter(
   canvasId,
