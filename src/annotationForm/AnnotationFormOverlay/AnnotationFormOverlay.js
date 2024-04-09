@@ -12,10 +12,8 @@ import { styled } from '@mui/material/styles';
 import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../../icons/Cursor';
 import AnnotationFormOverlayTool from './AnnotationFormOverlayTool';
-import { defaultToolState } from '../../AnnotationFormUtils';
-import { OVERLAY_TOOL } from './KonvaDrawing/KonvaUtils';
-import { OVERLAY_VIEW, TARGET_VIEW } from '../../AnnotationFormUtils';
-import { KONVA_MODE } from './KonvaDrawing/KonvaUtils';
+import { defaultToolState, OVERLAY_VIEW, TARGET_VIEW } from '../AnnotationFormUtils';
+import { OVERLAY_TOOL, KONVA_MODE } from './KonvaDrawing/KonvaUtils';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '&:first-of-type': {
