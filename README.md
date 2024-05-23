@@ -1,4 +1,4 @@
-# Mirador Annotation Editor - GPL edition
+# Mirador Annotation Editor - Apache edition
 
 ## Presentation
 
@@ -14,8 +14,11 @@ lot of technical and functional modifications.
 
 #### Licence
 
-Unlike the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugin, this 
-`mirador-annotation-editor` is distributed under the **GPL v3**.
+Like the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugin, this 
+`mirador-annotation-editor` is distributed under the **Apache License Version 2.0**.
+
+Beware that the extention plugin [mirador-annotation-editor-video](https://github.com/SCENE-CE/mirador-annotation-editor-video) 
+that supports video annotation is released under the **GPL v3** license.
 
 Please acknowledge that any modification you make must be distributed under a compatible licence and cannot be closed 
 source.
