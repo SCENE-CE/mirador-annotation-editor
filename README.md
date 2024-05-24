@@ -66,7 +66,13 @@ MAEV**
 plugins`
 - Works with the original [Mirador 4](https://github.com/projectmirador/mirador) if you need only image annotation
 
-## Use in npm project
+## Use in npm projects
+
+## Use in existing npm project with previous plugins
+
+```js
+"mirador-annotation-editor" :"^1.0.10",
+```
 
 You can override existing annotation plugin with your own versions by using npm. We support React 18 and MUI 5.
 
