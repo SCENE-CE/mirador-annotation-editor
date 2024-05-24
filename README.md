@@ -68,11 +68,13 @@ plugins`
 
 ## Use in npm projects
 
+```bash
+npm install mirador-annotation-editor
+```
+
 ## Use in existing npm project with previous plugins
 
-```js
-"mirador-annotation-editor" :"^1.0.10",
-```
+
 
 You can override existing annotation plugin with your own versions by using npm. We support React 18 and MUI 5.
 
