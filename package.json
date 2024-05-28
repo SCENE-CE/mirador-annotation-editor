@@ -21,6 +21,11 @@
     "test:watch": "jest --watch",
     "test:ci": "jest --ci --reporters=default --reporters=jest-junit --watchAll=false"
   },
+  "contributors": [
+    "Anthony Geourjon <anthony.geourjon@tetras-libre.fr> (https://www.tetras-libre.fr)",
+    "David Rouquet <david.rouquet@tetras-libre.fr> (https://www.tetras-libre.fr)",
+    "Antoine Roy <antoine.roy@tetras-libre.fr> (https://www.tetras-libre.fr)"
+  ],
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
