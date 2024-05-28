@@ -44,8 +44,8 @@ const baseConfig = (mode) => ({
     hashFunction: 'md5',
     library: 'MiradorAnnotationEditor',
     libraryExport: 'default',
-    libraryTarget: 'umd',
-    path: path.join(__dirname, 'umd'),
+    libraryTarget: 'es',
+    path: path.join(__dirname, 'es'),
   },
   plugins: [
     new webpack.IgnorePlugin({
