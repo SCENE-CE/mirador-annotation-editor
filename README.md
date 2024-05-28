@@ -50,7 +50,7 @@ The authors of this software are :
 
 ### General functionalities 
 
-- Activate a pannel with tools to create annotations on IIIF documents (manifests) containing images **and videos with 
+- Activate a panel with tools to create annotations on IIIF documents (manifests) containing images **and videos with 
 MAEV**
 - Spatial and temporal targets for annotations
 - Overlay annotations (geometric forms, free hand drawing, text and images)
@@ -74,12 +74,17 @@ npm install mirador-annotation-editor
 
 ## Use in existing npm project with previous plugins
 
-
-
 You can override existing annotation plugin with your own versions by using npm. We support React 18 and MUI 5.
 
+Update your `package.json` file to include the following dependencies and devDependencies:
 ```js
 "mirador-annotations": "npm:mirador-annotation-editor@^1.0.10",
+```
+
+You need also to use the latest version of Mirador 4.
+
+```js
+"mirador" : "4.0.0-alpha.2",
 ```
 
 You can find an example of integration in our Mirador-integration repository : 
@@ -111,10 +116,11 @@ repository.
 
 ### Install with video annotation support
 
+Update your `package.json` file to include the following dependencies and devDependencies:
 
 ```js
-"mirador": "npm:mirador-video@^1.0.2",
-"mirador-annotations": "npm:mirador-annotation-editor-video@^0.0.0",
+"mirador": "npm:mirador-video@^1.0.6",
+"mirador-annotations": "npm:mirador-annotation-editor-video@^1.0.21",
 ```
 
 ## Persisting Annotations
