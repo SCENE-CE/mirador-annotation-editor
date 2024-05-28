@@ -16,20 +16,21 @@ import IIIFTemplate from './IIIFTemplate';
 import TaggingTemplate from './TaggingTemplate';
 
 import './debug.css';
+import { playerReferences } from '../playerReferences';
 /**
  * This function contain the logic for loading annotation and render proper template type
  * * */
 export default function AnnotationFormBody(
   {
     annotation,
-    templateType,
-    currentTime,
-    windowId,
-    closeFormCompanionWindow,
-    saveAnnotation,
     canvases,
-    getMediaAudio,
+    closeFormCompanionWindow,
+    currentTime,
     debugMode,
+    getMediaAudio,
+    saveAnnotation,
+    templateType,
+    windowId,
   },
 ) {
   // TODO At this end we must only have annoSTate, setAnnoState, templateType,
@@ -79,10 +80,11 @@ export default function AnnotationFormBody(
               annotation={annotation}
               canvases={canvases}
               closeFormCompanionWindow={closeFormCompanionWindow}
-              saveAnnotation={saveAnnotation}
               currentTime={currentTime}
-              windowId={windowId}
               debugMode={debugMode}
+              overlay={playerReferences.getOverlay()}
+              saveAnnotation={saveAnnotation}
+              windowId={windowId}
             />
           )
         }
@@ -167,6 +169,7 @@ AnnotationFormBody.propTypes = {
     target: PropTypes.string,
   }).isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
+  currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]),
   // eslint-disable-next-line react/forbid-prop-types
   getMediaAudio: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types

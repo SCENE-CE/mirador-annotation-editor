@@ -24,7 +24,6 @@ import { Debug } from './Debug';
  * @param windowId
  * @param mediaVideo
  * @param annoState
- * @param overlay
  * @param setAnnoState
  * @param setCurrentTime
  * @param setSeekTo
