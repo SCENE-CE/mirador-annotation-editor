@@ -484,18 +484,17 @@ export default function AnnotationDrawing({
   /** */
   const drawKonvas = () => (
     <Stage
-      width={width}
-      height={height}
+      width={playerReferences.getDisplayedImageWidth()}
+      height={playerReferences.getDisplayedImageHeight()}
       style={{
         height: 'auto',
-        left: 0,
+        left: playerReferences.getImagePosition().x,
         objectFit: 'contain',
         overflow: 'clip',
         overflowClipMargin: 'content-box',
         position: 'absolute',
-        top: 0,
-        width: '100%',
-        border: '10px solid black',
+        top: playerReferences.getImagePosition().y,
+        backgroundColor: 'rgba(0, 0, 255, 0.5)',
       }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
