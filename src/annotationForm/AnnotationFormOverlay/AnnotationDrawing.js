@@ -506,7 +506,7 @@ export default function AnnotationDrawing({
         onShapeClick={onShapeClick}
         activeTool={toolState.activeTool}
         selectedShapeId={drawingState.currentShape?.id}
-        scale={scale}
+        scale={playerReferences.getZoom()}
         onTransform={onTransform}
         handleDragEnd={handleDragEnd}
         handleDragStart={handleDragStart}
