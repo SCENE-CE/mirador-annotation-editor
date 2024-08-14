@@ -121,7 +121,8 @@ export const playerReferences = (function () {
     },
     init(state, windowId, playerRef, actions) {
       _canvases = getVisibleCanvases(state, { windowId });
-      _mediaType = _canvases[0].__jsonld.items ? mediaTypes.VIDEO : mediaTypes.IMAGE;
+      // _mediaType = _canvases[0].__jsonld.items ? mediaTypes.VIDEO : mediaTypes.IMAGE;
+      _mediaType = mediaTypes.IMAGE;
       _actions = actions;
       _media = playerRef.get(windowId);
       if(_media) {
