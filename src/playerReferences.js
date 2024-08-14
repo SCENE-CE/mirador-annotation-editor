@@ -108,12 +108,11 @@ export const playerReferences = (function () {
     },
     getZoom() {
       if (_mediaType === mediaTypes.IMAGE) {
-        const zoom = _media.current.viewport.getZoom();
-        const canvasWidth = _canvases[0].__jsonld.width;
-        const canvasHeight = _canvases[0].__jsonld.height;
-        const greaterDimension = Math.max(canvasWidth, canvasHeight);
-        const naturalZoom = zoom * greaterDimension;
-        return naturalZoom;
+        let currentZoom = _media.current.viewport.getZoom();
+        let maxZoom = _media.current.viewport.getMaxZoom();
+        let zoom = currentZoom / maxZoom;
+        zoom = Math.round(zoom * 100) / 100;
+        return zoom
       }
       return undefined;
     },

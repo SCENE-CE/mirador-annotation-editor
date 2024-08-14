@@ -128,7 +128,7 @@ export default function ImageCommentTemplate(
 
   const [drawingState, setDrawingState] = useState(initDrawingState());
 
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(playerReferences.getZoom());
   const [isMouseOverSave, setIsMouseOverSave] = useState(false);
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
 
@@ -138,7 +138,7 @@ export default function ImageCommentTemplate(
 
   /** Change scale from container / canva */
   const updateScale = () => {
-    setScale(playerReferences.getContainerWidth() / playerReferences.getCanvasWidth());
+    setScale(playerReferences.getZoom());
   };
 
   /**

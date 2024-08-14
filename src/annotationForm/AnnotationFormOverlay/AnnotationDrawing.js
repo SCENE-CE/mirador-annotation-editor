@@ -38,7 +38,7 @@ export default function AnnotationDrawing({
   });
 
   useEffect(() => {
-    updateScale(playerReferences.getContainerWidth() / playerReferences.getCanvasWidth());
+    updateScale(playerReferences.getZoom());
 
     const newSurfaceData = { ...surfacedata };
     newSurfaceData.width = playerReferences.getWidth();
@@ -506,7 +506,7 @@ export default function AnnotationDrawing({
         onShapeClick={onShapeClick}
         activeTool={toolState.activeTool}
         selectedShapeId={drawingState.currentShape?.id}
-        scale={playerReferences.getZoom()}
+        scale={scale}
         onTransform={onTransform}
         handleDragEnd={handleDragEnd}
         handleDragStart={handleDragStart}

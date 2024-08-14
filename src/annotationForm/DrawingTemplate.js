@@ -16,6 +16,7 @@ import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { getKonvaAsDataURL, KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { Debug } from './Debug';
+import { playerReferences } from '../playerReferences';
 
 /**
  * Template for Konva annotations (drawing)
@@ -129,7 +130,7 @@ export default function DrawingTemplate(
 
   const [drawingState, setDrawingState] = useState(initDrawingState());
 
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(playerReferences.getZoom());
   const [isMouseOverSave, setIsMouseOverSave] = useState(false);
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
 
@@ -139,7 +140,7 @@ export default function DrawingTemplate(
 
   /** Change scale from container / canva */
   const updateScale = () => {
-    setScale(overlay.containerWidth / overlay.canvasWidth);
+    setScale(playerReferences.getZoom());
   };
 
   // TODO Check how to use it

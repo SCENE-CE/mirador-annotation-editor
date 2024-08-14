@@ -21,10 +21,10 @@ export function TargetSpatialInput({
   const [toolState, setToolState] = useState(targetSVGToolState);
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
 
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(playerReferences.getZoom());
   /** Change scale from container / canva */
   const updateScale = () => {
-    setScale(playerReferences.getContainerWidth() / playerReferences.getCanvasWidth());
+    setScale(playerReferences.getZoom());
   };
 
   const [drawingState, setDrawingState] = useState({
