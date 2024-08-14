@@ -68,7 +68,6 @@ export const playerReferences = (function () {
           const percentageWidth = _canvases[0].__jsonld.width * viewer.viewport.getZoom();
           const containerWidth = viewer.container.clientWidth;
           const actualWidthInPixels = Math.round(containerWidth * percentageWidth);
-          console.log('df actualWidthInPixels', actualWidthInPixels);
           return actualWidthInPixels;
         }
       }
@@ -81,7 +80,6 @@ export const playerReferences = (function () {
           const percentageHeight = _canvases[0].__jsonld.height * viewer.viewport.getZoom();
           const containerWidth = viewer.container.clientWidth;
           const actualHeightInPixels = Math.round(containerWidth * percentageHeight);
-          console.log('df actualHeightInPixels', actualHeightInPixels);
           return actualHeightInPixels;
         }
       }
