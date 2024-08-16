@@ -79,7 +79,8 @@ export default function TaggingTemplate(
         console.log(annotation.maeData);
         annotationState.maeData.target.svg = await getSvg(windowId);
         const overlay = playerReferences.getOverlay();
-        annotationState.maeData.target.scale = overlay.containerWidth / overlay.canvasWidth;
+        annotationState.maeData.target.scale = playerReferences.getHeight() / playerReferences.getDisplayedImageHeight() * playerReferences.getZoom();
+        console.log('annotationState.maeData.target.scale', annotationState.maeData.target.scale);
         // annotationState.maeData.target.dataUrl = await getKonvaAsDataURL(windowId);
         annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
         annotationState.maeData.target.drawingState = JSON.stringify(

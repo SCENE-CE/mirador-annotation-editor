@@ -10,10 +10,12 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
         // eslint-disable-next-line prefer-const
         x, y, width, height, scaleX, scaleY,
       } = maeTarget.drawingState.shapes[0];
-      x = Math.floor(x);
-      y = Math.floor(y);
-      width = Math.floor(width * scaleX);
-      height = Math.floor(height * scaleY);
+      x = Math.floor(x * maeTarget.scale * scaleX);
+      y = Math.floor(y * maeTarget.scale * scaleY);
+      console.log('scaleX',scaleX);
+      console.log('scaleY',scaleY);
+      width = Math.floor(width * maeTarget.scale *  scaleX);
+      height = Math.floor(height * maeTarget.scale * scaleY);
       console.info('Implement target as string with one shape (reactangle or image)');
       // Image have not tstart and tend
       return `${canvasId}#${maeTarget.tend ? `xywh=${x},${y},${width},${height}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${x},${y},${width},${height}`}`;
@@ -22,10 +24,10 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
       let {
         x, y, width, height,
       } = maeTarget.drawingState.shapes[0];
-      x = Math.floor(x);
-      y = Math.floor(y);
-      width = Math.floor(width);
-      height = Math.floor(height);
+      x = Math.floor(x * maeTarget.scale);
+      y = Math.floor(y * maeTarget.scale);
+      width = Math.floor(width * maeTarget.scale);
+      height = Math.floor(height * maeTarget.scale);
       return `${canvasId}#${maeTarget.tend ? `xywh=${x},${y},${width},${height}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${x},${y},${width},${height}`}`;
     }
 
