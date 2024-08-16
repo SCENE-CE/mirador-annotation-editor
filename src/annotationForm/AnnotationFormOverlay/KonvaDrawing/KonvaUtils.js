@@ -6,7 +6,12 @@ import { exportStageSVG } from 'react-konva-to-svg';
  */
 export async function getSvg(windowId) {
   const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
-  let svg = await exportStageSVG(stage, false); // TODO clean
+  // For information :
+  // --> stage.children[0].cache();
+  // With that line the strict export of SVG is working. But all the shapes are group in an image
+  // displayed by the SVG. But it's not possible to use this way to get an SVG for mirador. Damn it
+  stage.draw();
+  let svg = await exportStageSVG(stage); // TODO clean
   svg = svg.replaceAll('"', "'");
   return svg;
 }
