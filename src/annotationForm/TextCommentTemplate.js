@@ -81,7 +81,6 @@ function TextCommentTemplate(
       annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
       // eslint-disable-next-line max-len
       annotationState.maeData.target.drawingState = JSON.stringify(annotationState.maeData.target.drawingState);
-      annotationState.maeData.target.svg = JSON.stringify(annotationState.maeData.target);
       console.log('annotationState', annotationState.target);
       // delete annotationState.maeData.target;
       return saveAnnotation(annotationState, canvas.id);

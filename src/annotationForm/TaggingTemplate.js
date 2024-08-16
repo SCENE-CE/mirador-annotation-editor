@@ -86,7 +86,6 @@ export default function TaggingTemplate(
         annotationState.maeData.target.drawingState = JSON.stringify(
           annotationState.maeData.target.drawingState,
         );
-        annotationState.maeData.target.svg = JSON.stringify(annotationState.maeData.target);
         console.log('annotationState', annotationState.target);
         // delete annotationState.maeData.target;
         return saveAnnotation(annotationState, canvas.id);
