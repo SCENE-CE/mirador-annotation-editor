@@ -82,9 +82,43 @@ export function Debug(
       </Grid>
       <Grid item>
         <Typography variant="subFormSectionTitle">
+          Displayed image size :
+          {' '}
+          {playerReferences.getDisplayedImageWidth()}
+          {' '}
+          x
+          {playerReferences.getDisplayedImageHeight()}
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="subFormSectionTitle">
+          Media size (from manifest):
+          {' '}
+          {playerReferences.getWidth()}
+          {' '}
+          x
+          {playerReferences.getHeight()}
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="subFormSectionTitle">
           Scale :
           {' '}
           {scale}
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="subFormSectionTitle">
+          True scale height (media / displayed image ) :
+          {' '}
+          {playerReferences.getHeight() / playerReferences.getDisplayedImageHeight()}
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="subFormSectionTitle">
+          Composed Scale
+          {' '}
+          {playerReferences.getHeight() / playerReferences.getDisplayedImageHeight() * scale}
         </Typography>
       </Grid>
       {
