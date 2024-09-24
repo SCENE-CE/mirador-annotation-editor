@@ -65,27 +65,27 @@ export default function AnnotationForm(
    *
    * @returns {{height: number, width: number}}
    */
-  // const getHeightAndWidth = () => {
-  //   if (mediaVideo) {
-  //     return mediaVideo;
-  //   }
-  //   // Todo get size from manifest image
-  //   return {
-  //     height: 1000,
-  //     width: 500,
-  //   };
-  // };
-  //
-  // const {
-  //   height,
-  //   width,
-  // } = getHeightAndWidth();
-  // TODO Check the effect to keep and remove the other
-  // Add a state to trigger redraw
+    // const getHeightAndWidth = () => {
+    //   if (mediaVideo) {
+    //     return mediaVideo;
+    //   }
+    //   // Todo get size from manifest image
+    //   return {
+    //     height: 1000,
+    //     width: 500,
+    //   };
+    // };
+    //
+    // const {
+    //   height,
+    //   width,
+    // } = getHeightAndWidth();
+    // TODO Check the effect to keep and remove the other
+    // Add a state to trigger redraw
   const [windowSize, setWindowSize] = useState({
-    height: window.innerHeight,
-    width: window.innerWidth,
-  });
+      height: window.innerHeight,
+      width: window.innerWidth,
+    });
 
   // Listen to window resize event
   useEffect(() => {
@@ -146,7 +146,8 @@ export default function AnnotationForm(
         <Grid container>
           <Grid container>
             <Typography>
-              One of your canvases has video or audio content, you must install MAEV to edit annotion on  video : https://github.com/SCENE-CE/mirador-annotation-editor-video
+              One of your canvases has video or audio content, you must install MAEV to edit
+              annotion on video : https://github.com/SCENE-CE/mirador-annotation-editor-video
             </Typography>
             <Typography> Edit annotation on Audio is not supported</Typography>
           </Grid>
@@ -156,6 +157,7 @@ export default function AnnotationForm(
   }
 
   return (
+
     <CompanionWindow
       title={annotation.id ? 'Edit annotation' : 'New annotation'}
       windowId={windowId}

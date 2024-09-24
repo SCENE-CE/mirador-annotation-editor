@@ -99,7 +99,7 @@ export const playerReferences = (function () {
           // Round the coordinates for consistency
           const position = {
             x: Math.round(topLeft.x),
-            y: Math.round(topLeft.y)
+            y: Math.round(topLeft.y),
           };
           return position;
         }
@@ -108,21 +108,29 @@ export const playerReferences = (function () {
     },
     getZoom() {
       if (_mediaType === mediaTypes.IMAGE) {
-        let currentZoom = _media.current.viewport.getZoom();
-        let maxZoom = _media.current.viewport.getMaxZoom();
+        const currentZoom = _media.current.viewport.getZoom();
+        const maxZoom = _media.current.viewport.getMaxZoom();
         let zoom = currentZoom / maxZoom;
         zoom = Math.round(zoom * 100) / 100;
-        return zoom
+        return zoom;
       }
       return undefined;
     },
     init(state, windowId, playerRef, actions) {
       _canvases = getVisibleCanvases(state, { windowId });
+      console.log('playerReferences.init', _canvases[0]);
       // _mediaType = _canvases[0].__jsonld.items ? mediaTypes.VIDEO : mediaTypes.IMAGE;
-      _mediaType = mediaTypes.IMAGE;
+      // _mediaType = mediaTypes.IMAGE;
       _actions = actions;
       _media = playerRef.get(windowId);
-      if(_media) {
+      if (!_media) {
+        // If we fall here, it means that we use stock MAE without MAEV-MV and we dont have player
+        _mediaType = mediaTypes.VIDEO;
+      }
+      if (_media && _media.current) {
+        // TODO implement logic to get the media type
+        _mediaType = mediaTypes.IMAGE;
+
         switch (_mediaType) {
           case mediaTypes.IMAGE:
             _overlay = {
@@ -139,11 +147,16 @@ export const playerReferences = (function () {
             console.error('Unknown media type');
             break;
         }
+      } else {
+        console.error('No media ref');
+        _mediaType = 'Ca ne devrait pas arriver (video dans MAE at least)';
       }
+      console.debug('Player is initialized', this.isInitialized());
+      console.debug('Player type', _mediaType);
     },
 
-    isInitialized(){
-      return !!_media;
+    isInitialized() {
+      return !!_media && !!_media.current;
     },
 
     // TODO internalize actions

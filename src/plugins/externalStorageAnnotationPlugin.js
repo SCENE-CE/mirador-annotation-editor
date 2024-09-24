@@ -51,7 +51,7 @@ class ExternalStorageAnnotation extends Component {
         config.annotation.adapter = (canvasId) => new LocalStorageAdapter(`localStorage://?canvasId=${canvasId}`);
       }
       const storageAdapter = config.annotation.adapter(canvas.id);
-      console.log(config.annotation);
+
       storageAdapter.all().then((annoPage) => {
         if (annoPage) {
           receiveAnnotation(canvas.id, storageAdapter.annotationPageId, annoPage);

@@ -5,6 +5,7 @@ import { JsonEditor as Editor } from 'jsoneditor-react';
 import ace from 'brace';
 import ToggleButton from '@mui/material/ToggleButton';
 import { Grid } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import {
   template,
 } from './AnnotationFormUtils';
@@ -128,11 +129,14 @@ export default function AnnotationFormBody(
             )}
         </TemplateContainer>
       )}
-      <Grid item style={{
-        bottom: '0',
-        margin: '20px',
-        position: 'absolute',
-      }}>
+      <Grid
+        item
+        style={{
+          bottom: '0',
+          margin: '20px',
+          position: 'absolute',
+        }}
+      >
         <ToggleButton
           value={showAdvanced}
           onChange={() => setShowAdvanced(!showAdvanced)}
@@ -154,6 +158,10 @@ export default function AnnotationFormBody(
           />
         )}
       </Grid>
+      <Typography>
+        { playerReferences.getMediaType() }
+        {' '}
+      </Typography>
     </Grid>
   );
 }
