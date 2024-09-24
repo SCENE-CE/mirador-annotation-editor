@@ -20,6 +20,7 @@ export const mediaTypes = {
   AUDIO: 'Sound',
   IMAGE: 'Image',
   VIDEO: 'Video',
+  UNKNOWN: 'Unknown',
 };
 /** Return template type * */
 export const getTemplateType = (templateType) => templateTypes.find(

@@ -46,9 +46,7 @@ export const playerReferences = (function () {
     getMediaDuration() {
       return _media.props.canvas.__jsonld.duration;
     },
-    getMediaType() {
-      return _mediaType;
-    },
+
     getOverlay() {
       return _overlay;
     },
@@ -116,21 +114,28 @@ export const playerReferences = (function () {
       }
       return undefined;
     },
+    getMediaType() {
+      return _mediaType;
+    },
+    checkMediaType(state, windowId) {
+      let canvas = getVisibleCanvases(state, { windowId })[0];
+      console.debug('checkMediaType', canvas);
+      let mediaType = canvas.__jsonld.items[0].items[0].body.type;
+      if(mediaType === 'Video'){
+        return mediaTypes.VIDEO;
+      }
+      if(mediaType === 'Image'){
+        return mediaTypes.IMAGE;
+      }
+
+      return mediaTypes.UNKNOWN;
+    },
     init(state, windowId, playerRef, actions) {
-      _canvases = getVisibleCanvases(state, { windowId });
-      console.log('playerReferences.init', _canvases[0]);
-      // _mediaType = _canvases[0].__jsonld.items ? mediaTypes.VIDEO : mediaTypes.IMAGE;
-      // _mediaType = mediaTypes.IMAGE;
       _actions = actions;
       _media = playerRef.get(windowId);
-      if (!_media) {
-        // If we fall here, it means that we use stock MAE without MAEV-MV and we dont have player
-        _mediaType = mediaTypes.VIDEO;
-      }
-      if (_media && _media.current) {
-        // TODO implement logic to get the media type
-        _mediaType = mediaTypes.IMAGE;
+      _mediaType = this.checkMediaType(state, windowId);
 
+      if (_media) {
         switch (_mediaType) {
           case mediaTypes.IMAGE:
             _overlay = {
@@ -147,9 +152,6 @@ export const playerReferences = (function () {
             console.error('Unknown media type');
             break;
         }
-      } else {
-        console.error('No media ref');
-        _mediaType = 'Ca ne devrait pas arriver (video dans MAE at least)';
       }
       console.debug('Player is initialized', this.isInitialized());
       console.debug('Player type', _mediaType);
