@@ -158,7 +158,9 @@ export const playerReferences = (function () {
     },
 
     isInitialized() {
-      return !!_media && !!_media.current;
+      // TODO this part must be clarified
+      // Its not exactly initialisation but if the player is available for the media type
+      return _media && (_media.current || _media.video) && (_mediaType !== mediaTypes.UNKNOWN && _mediaType !== mediaTypes.AUDIO);
     },
 
     // TODO internalize actions
