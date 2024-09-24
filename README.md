@@ -17,7 +17,7 @@ lot of technical and functional modifications.
 Like the original [mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) plugin, this 
 `mirador-annotation-editor` is distributed under the **Apache License Version 2.0**.
 
-Beware that the extention plugin [mirador-annotation-editor-video](https://github.com/SCENE-CE/mirador-annotation-editor-video) 
+Beware that the extension plugin [mirador-annotation-editor-video](https://github.com/SCENE-CE/mirador-annotation-editor-video) 
 that supports video annotation is released under the **GPL v3** license.
 
 Please acknowledge that any modification you make must be distributed under a compatible licence and cannot be closed 
@@ -114,14 +114,6 @@ npm start
 available in the [mirador-annotation-editor-video](https://github.com/SCENE-CE/mirador-annotation-editor-video)
 repository.
 
-### Install with video annotation support
-
-Update your `package.json` file to include the following dependencies and devDependencies:
-
-```js
-"mirador": "npm:mirador-video@^1.0.6",
-"mirador-annotations": "npm:mirador-annotation-editor-video@^1.0.21",
-```
 
 ## Persisting Annotations
 Persisting annotations requires implementing a IIIF annotation server. Several 

@@ -124,15 +124,15 @@ export function TargetSpatialInput({
               updateCurrentShapeInShapes={updateCurrentShapeInShapes}
             />
           </Grid>
-          {debugMode && (
-          <Grid item>
-            <Debug
-              scale={scale}
-              drawingState={drawingState}
-              displayMode={KONVA_MODE.TARGET}
-            />
-          </Grid>
-          )}
+          {/* {debugMode && ( */}
+          {/* <Grid item> */}
+          {/*   <Debug */}
+          {/*     scale={scale} */}
+          {/*     drawingState={drawingState} */}
+          {/*     displayMode={KONVA_MODE.TARGET} */}
+          {/*   /> */}
+          {/* </Grid> */}
+          {/* )} */}
         </Grid>
       )}
     </Grid>

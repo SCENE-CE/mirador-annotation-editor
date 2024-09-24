@@ -17,6 +17,8 @@ import TaggingTemplate from './TaggingTemplate';
 
 import './debug.css';
 import { playerReferences } from '../playerReferences';
+import { AdvancedAnnotationEditor } from './AdvancedAnnotationEditor';
+
 /**
  * This function contain the logic for loading annotation and render proper template type
  * * */
@@ -40,11 +42,11 @@ export default function AnnotationFormBody(
   //  mediaVideo must be get only in TargetFormSection
   // TODO annotation is it usefeul in XTemplateProps ?
 
-  const [showDebug, setShowDebug] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   return (
     <Grid container direction="column">
-      { !showDebug && (
+      { !showAdvanced && (
         <TemplateContainer item>
           {
           templateType.id === template.TEXT_TYPE && (
@@ -126,21 +128,30 @@ export default function AnnotationFormBody(
             )}
         </TemplateContainer>
       )}
-      <Grid item>
+      <Grid item style={{
+        bottom: '0',
+        margin: '20px',
+        position: 'absolute',
+      }}>
         <ToggleButton
-          value={showDebug}
-          onChange={() => setShowDebug(!showDebug)}
+          value={showAdvanced}
+          onChange={() => setShowAdvanced(!showAdvanced)}
         >
-          {showDebug ? 'Hide' : 'Show'}
+          {showAdvanced ? 'Hide' : 'Show'}
           {' '}
-          Debug
+          advanced mode
         </ToggleButton>
-        {showDebug && (
-        <Editor
-          value={annotation}
-          ace={ace}
-          theme="ace/theme/github"
-        />
+      </Grid>
+      <Grid item>
+        {showAdvanced && (
+          <AdvancedAnnotationEditor
+            value={annotation}
+            onChange={(updatedAnnotation) => {
+              annotation = updatedAnnotation;
+            }}
+            closeFormCompanionWindow={closeFormCompanionWindow}
+            saveAnnotation={saveAnnotation}
+          />
         )}
       </Grid>
     </Grid>

@@ -287,12 +287,12 @@ export default function DrawingTemplate(
         timeTarget
         debugMode={debugMode}
       />
-      <Grid item>
-        <Debug
-          scale={scale}
-          drawingState={drawingState}
-        />
-      </Grid>
+      {/* <Grid item> */}
+      {/*   <Debug */}
+      {/*     scale={scale} */}
+      {/*     drawingState={drawingState} */}
+      {/*   /> */}
+      {/* </Grid> */}
       <Grid item>
         <AnnotationFormFooter
           closeFormCompanionWindow={closeFormCompanionWindow}
