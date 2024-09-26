@@ -87,6 +87,20 @@ You need also to use the latest version of Mirador 4.
 "mirador" : "4.0.0-alpha.2",
 ```
 
+If you encounter this error : 
+
+```js
+Module not found: Error: Can't resolve 'mirador-annotations/es/LocalStorageAdapter' in '/home/anthony/Documents/2024-scene/mirador-integration/src'
+```
+Update your import :
+
+```js
+# Change your LocalStorageAdapter path import
+import LocalStorageAdapter from 'mirador-annotations/es/LocalStorageAdapter';
+# To that
+import LocalStorageAdapter from 'mirador-annotations/es/annotationAdapter/LocalStorageAdapter';
+```
+
 You can find an example of integration in our Mirador-integration repository : 
 https://github.com/SCENE-CE/mirador-integration
 
