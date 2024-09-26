@@ -12,7 +12,6 @@ import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import AnnotationDrawing from './AnnotationFormOverlay/AnnotationDrawing';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { Debug } from './Debug';
 import { playerReferences } from '../playerReferences';
 
 /**
@@ -20,10 +19,7 @@ import { playerReferences } from '../playerReferences';
  * @param annoState
  * @param commentingType
  * @param currentTime
- * @param mediaType
  * @param setAnnoState
- * @param setCurrentTime
- * @param setSeekTo
  * @param windowId
  * @returns {Element}
  * @constructor
@@ -300,12 +296,8 @@ ImageCommentTemplate.propTypes = {
   canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
-  mediaType: PropTypes.string.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  overlay: PropTypes.object.isRequired,
+  debugMode: PropTypes.bool.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
-  setCurrentTime: PropTypes.func.isRequired,
-  setSeekTo: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 
 };
