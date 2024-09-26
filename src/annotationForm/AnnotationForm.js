@@ -57,30 +57,6 @@ export default function AnnotationForm(
     setMediaType(playerReferences.getMediaType());
   }, [canvases[0].index]);
 
-  /**
-   * Retrieves the height and width of a media element.
-   * If the media element is a video, returns its dimensions.
-   * If not a video, attempts to retrieve dimensions from a manifest image.
-   * If no dimensions are found, default values are returned.
-   *
-   * @returns {{height: number, width: number}}
-   */
-  // const getHeightAndWidth = () => {
-  //   if (mediaVideo) {
-  //     return mediaVideo;
-  //   }
-  //   // Todo get size from manifest image
-  //   return {
-  //     height: 1000,
-  //     width: 500,
-  //   };
-  // };
-  //
-  // const {
-  //   height,
-  //   width,
-  // } = getHeightAndWidth();
-  // TODO Check the effect to keep and remove the other
   // Add a state to trigger redraw
   const [windowSize, setWindowSize] = useState({
     height: window.innerHeight,
@@ -176,7 +152,7 @@ export default function AnnotationForm(
   return (
 
     <CompanionWindow
-      title={`${annotation.id ? 'Edit annotation' : 'New annotation'} on ${playerReferences.getMediaType()}`}
+      title={annotation.id ? 'Edit annotation' : 'New annotation'}
       windowId={windowId}
       id={id}
     >
@@ -243,17 +219,13 @@ AnnotationForm.propTypes = {
         ),
       ),
     }),
+    debugMode: PropTypes.bool,
   }).isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]),
   // eslint-disable-next-line react/forbid-prop-types
   getMediaAudio: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  mediaVideo: PropTypes.object.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  osdref: PropTypes.object.isRequired,
   receiveAnnotation: PropTypes.func.isRequired,
-  setSeekTo: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };
 
