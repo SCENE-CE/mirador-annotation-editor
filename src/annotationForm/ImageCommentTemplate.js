@@ -256,13 +256,6 @@ export default function ImageCommentTemplate(
         spatialTarget={false}
         debugMode={debugMode}
       />
-      {/* <Grid item> */}
-      {/*   <Debug */}
-      {/*     scale={scale} */}
-      {/*     drawingState={drawingState} */}
-      {/*   /> */}
-      {/* </Grid> */}
-
       <Grid item>
         <AnnotationFormFooter
           closeFormCompanionWindow={closeFormCompanionWindow}
