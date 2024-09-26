@@ -277,7 +277,8 @@ ImageCommentTemplate.propTypes = {
         type: PropTypes.string,
         value: PropTypes.string,
       }),
-      drawingState: PropTypes.string,
+      // eslint-disable-next-line react/forbid-prop-types
+      drawingState: PropTypes.object,
       id: PropTypes.string,
       manifestNetwork: PropTypes.string,
       motivation: PropTypes.string,
