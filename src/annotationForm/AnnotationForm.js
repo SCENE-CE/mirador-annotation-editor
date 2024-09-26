@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import PropTypes from 'prop-types';
-import { Grid } from '@mui/material';
+import { Grid, Link } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
 import {
@@ -65,27 +65,27 @@ export default function AnnotationForm(
    *
    * @returns {{height: number, width: number}}
    */
-    // const getHeightAndWidth = () => {
-    //   if (mediaVideo) {
-    //     return mediaVideo;
-    //   }
-    //   // Todo get size from manifest image
-    //   return {
-    //     height: 1000,
-    //     width: 500,
-    //   };
-    // };
-    //
-    // const {
-    //   height,
-    //   width,
-    // } = getHeightAndWidth();
-    // TODO Check the effect to keep and remove the other
-    // Add a state to trigger redraw
+  // const getHeightAndWidth = () => {
+  //   if (mediaVideo) {
+  //     return mediaVideo;
+  //   }
+  //   // Todo get size from manifest image
+  //   return {
+  //     height: 1000,
+  //     width: 500,
+  //   };
+  // };
+  //
+  // const {
+  //   height,
+  //   width,
+  // } = getHeightAndWidth();
+  // TODO Check the effect to keep and remove the other
+  // Add a state to trigger redraw
   const [windowSize, setWindowSize] = useState({
-      height: window.innerHeight,
-      width: window.innerWidth,
-    });
+    height: window.innerHeight,
+    width: window.innerWidth,
+  });
 
   // Listen to window resize event
   useEffect(() => {
@@ -139,19 +139,34 @@ export default function AnnotationForm(
   if (!playerReferences.isInitialized()) {
     return (
       <CompanionWindow
-        title="media not supported"
+        title="Media not supported"
         windowId={windowId}
         id={id}
       >
-        <Grid container>
+        <Grid container padding={1} spacing={1}>
           <Grid item>
             <Typography>
-              One of your canvases has video or audio content, you must install MAEV to edit
-              annotation on video : https://github.com/SCENE-CE/mirador-annotation-editor-video
+              Your current canva media type is not supported by the annotation editor.
             </Typography>
           </Grid>
           <Grid item>
-            <Typography>Note : annotation on Audio is not currently supported in MAEV</Typography>
+            <Typography>
+              We detect
+              {' '}
+              <strong>
+                {playerReferences.getMediaType()}
+                {' '}
+              </strong>
+              {' '}
+              media type.
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography>
+              If you want to annotate video you must install MAEV to create and edit
+              annotation on video :
+              <Link>https://github.com/SCENE-CE/mirador-annotation-editor-video</Link>
+            </Typography>
           </Grid>
         </Grid>
       </CompanionWindow>
@@ -161,7 +176,7 @@ export default function AnnotationForm(
   return (
 
     <CompanionWindow
-      title={annotation.id ? 'Edit annotation' : 'New annotation'}
+      title={`${annotation.id ? 'Edit annotation' : 'New annotation'} on ${playerReferences.getMediaType()}`}
       windowId={windowId}
       id={id}
     >

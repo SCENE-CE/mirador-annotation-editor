@@ -118,13 +118,12 @@ export const playerReferences = (function () {
       return _mediaType;
     },
     checkMediaType(state, windowId) {
-      let canvas = getVisibleCanvases(state, { windowId })[0];
-      console.debug('checkMediaType', canvas);
-      let mediaType = canvas.__jsonld.items[0].items[0].body.type;
-      if(mediaType === 'Video'){
+      const canvas = getVisibleCanvases(state, { windowId })[0];
+      const mediaType = canvas.__jsonld.items[0].items[0].body.type;
+      if (mediaType === 'Video') {
         return mediaTypes.VIDEO;
       }
-      if(mediaType === 'Image'){
+      if (mediaType === 'Image') {
         return mediaTypes.IMAGE;
       }
 
@@ -134,6 +133,7 @@ export const playerReferences = (function () {
       _actions = actions;
       _media = playerRef.get(windowId);
       _mediaType = this.checkMediaType(state, windowId);
+      _canvases = getVisibleCanvases(state, { windowId });
 
       if (_media) {
         switch (_mediaType) {

@@ -11,15 +11,9 @@ const config = {
     exportLocalStorageAnnotations: false, // display annotation JSON export button
   },
   catalog:
-    manifestsCatalog,
+  manifestsCatalog,
   debugMode: true,
   id: 'demo',
-  window: {
-    defaultSideBarPanel: 'annotations',
-    sideBarOpenByDefault: true,
-  },
-  windows: [
-  ],
   themes: {
     light: {
       palette: {
@@ -56,6 +50,14 @@ const config = {
       },
     },
   },
+  // windows: [
+  //   { manifestId: 'https://files.tetras-libre.fr/dev/Heterogeneous-media-on-several-canvases.json' },
+  // ],
+  window: {
+    defaultSideBarPanel: 'annotations',
+    sideBarOpenByDefault: true,
+  },
+  windows: [],
 };
 
 mirador.viewer(config, [...annotationPlugins]);

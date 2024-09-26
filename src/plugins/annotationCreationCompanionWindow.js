@@ -23,8 +23,7 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
   const cw = getCompanionWindow(state, { companionWindowId, windowId });
   const { annotationid } = cw;
   playerReferences.init(state, windowId,OSDReferences, actions);
-  console.log('overlay :',playerReferences.getOverlay())
-  console.log('mediaType :', playerReferences.getMediaType())
+
   // This could be removed but it's serve the useEffect in AnnotationForm for now.
   const canvases = getVisibleCanvases(state, { windowId });
   let annotation = getPresentAnnotationsOnSelectedCanvases(state, { windowId })
