@@ -17,7 +17,7 @@ export const template = {
 };
 
 export const mediaTypes = {
-  AUDIO: 'Sound',
+  AUDIO: 'Audio',
   IMAGE: 'Image',
   UNKNOWN: 'Unknown',
   VIDEO: 'Video',
