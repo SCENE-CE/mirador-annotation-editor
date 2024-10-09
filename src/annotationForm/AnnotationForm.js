@@ -139,7 +139,7 @@ export default function AnnotationForm(
           </Grid>
           <Grid item>
             <Typography>
-              If you want to annotate video you must install MAEV to create and edit
+              If you want to annotate video media you must install MAEV to create and edit
               annotation on video :
               <Link>https://github.com/SCENE-CE/mirador-annotation-editor-video</Link>
             </Typography>
