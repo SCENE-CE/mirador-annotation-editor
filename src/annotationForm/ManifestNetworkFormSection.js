@@ -21,6 +21,10 @@ export default function ManifestNetworkFormSection(
   // TODO probably useless.  check this state
   const [manifestUrl, setManifestUrl] = useState('');
 
+  /**
+   * Handle on change
+   * @param value new value
+   */
   const handlOnChange = (value) => {
     setManifestUrl(value);
     onChange(value);

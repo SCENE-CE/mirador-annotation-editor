@@ -1,4 +1,5 @@
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
+import { getVisibleCanvasAudioResources, getVisibleCanvasVideoResources } from 'mirador/dist/es/src/state/selectors';
 import { mediaTypes } from './annotationForm/AnnotationFormUtils';
 
 export const playerReferences = (function () {
@@ -118,16 +119,17 @@ export const playerReferences = (function () {
       return _mediaType;
     },
     checkMediaType(state, windowId) {
-      const canvas = getVisibleCanvases(state, { windowId })[0];
-      const mediaType = canvas.__jsonld.items[0].items[0].body.type;
-      if (mediaType === 'Video') {
+      const audioResources = getVisibleCanvasAudioResources(state, { windowId }) || [];
+      const videoResources = getVisibleCanvasVideoResources(state, { windowId }) || [];
+
+      if (videoResources.length > 0) {
         return mediaTypes.VIDEO;
       }
-      if (mediaType === 'Image') {
-        return mediaTypes.IMAGE;
+      if (audioResources.length > 0) {
+        return mediaTypes.AUDIO;
       }
 
-      return mediaTypes.UNKNOWN;
+      return mediaTypes.IMAGE;
     },
     init(state, windowId, playerRef, actions) {
       _actions = actions;
