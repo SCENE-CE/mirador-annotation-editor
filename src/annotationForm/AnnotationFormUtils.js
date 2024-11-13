@@ -17,10 +17,10 @@ export const template = {
 };
 
 export const mediaTypes = {
-  AUDIO: 'Sound',
+  AUDIO: 'Audio',
   IMAGE: 'Image',
-  VIDEO: 'Video',
   UNKNOWN: 'Unknown',
+  VIDEO: 'Video',
 };
 /** Return template type * */
 export const getTemplateType = (templateType) => templateTypes.find(
@@ -191,6 +191,14 @@ export const isValidUrl = (string) => {
   }
 };
 
+/**
+ * Save the annotation in the storage adapter
+ * @param canvasId
+ * @param storageAdapter
+ * @param receiveAnnotation
+ * @param annotation
+ * @returns {Promise<void>}
+ */
 export async function saveAnnotationInStorageAdapter(
   canvasId,
   storageAdapter,

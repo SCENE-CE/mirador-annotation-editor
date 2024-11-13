@@ -1,4 +1,5 @@
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
+import { getVisibleCanvasAudioResources, getVisibleCanvasVideoResources } from 'mirador/dist/es/src/state/selectors';
 import { mediaTypes } from './annotationForm/AnnotationFormUtils';
 
 export const playerReferences = (function () {
@@ -69,6 +70,10 @@ export const playerReferences = (function () {
           return actualWidthInPixels;
         }
       }
+      if(_mediaType === mediaTypes.VIDEO){
+       // TODO: Implement displayed width for video
+        return Math.round(_media.video.getBoundingClientRect().width);
+      }
       return undefined;
     },
     getDisplayedImageHeight() {
@@ -80,6 +85,10 @@ export const playerReferences = (function () {
           const actualHeightInPixels = Math.round(containerWidth * percentageHeight);
           return actualHeightInPixels;
         }
+      }
+      if(_mediaType === mediaTypes.VIDEO){
+        // TODO: Implement displayed width for video
+        return Math.round(_media.video.getBoundingClientRect().height);
       }
       return undefined;
     },
@@ -102,6 +111,14 @@ export const playerReferences = (function () {
           return position;
         }
       }
+      if(_mediaType === mediaTypes.VIDEO){
+        const video = _media.video;
+        const position = {
+          x: 0,
+          y: 0,
+        }; // TODO need to implement position on vertical video
+        return position;
+      }
       return undefined;
     },
     getZoom() {
@@ -112,22 +129,27 @@ export const playerReferences = (function () {
         zoom = Math.round(zoom * 100) / 100;
         return zoom;
       }
+      if (_mediaType === mediaTypes.VIDEO) {
+        // TODO: Implement zoom for video
+        return _media.video.getBoundingClientRect().width / _media.video.videoWidth;
+      }
       return undefined;
     },
     getMediaType() {
       return _mediaType;
     },
     checkMediaType(state, windowId) {
-      const canvas = getVisibleCanvases(state, { windowId })[0];
-      const mediaType = canvas.__jsonld.items[0].items[0].body.type;
-      if (mediaType === 'Video') {
+      const audioResources = getVisibleCanvasAudioResources(state, { windowId }) || [];
+      const videoResources = getVisibleCanvasVideoResources(state, { windowId }) || [];
+
+      if (videoResources.length > 0) {
         return mediaTypes.VIDEO;
       }
-      if (mediaType === 'Image') {
-        return mediaTypes.IMAGE;
+      if (audioResources.length > 0) {
+        return mediaTypes.AUDIO;
       }
 
-      return mediaTypes.UNKNOWN;
+      return mediaTypes.IMAGE;
     },
     init(state, windowId, playerRef, actions) {
       _actions = actions;
