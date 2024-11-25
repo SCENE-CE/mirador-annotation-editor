@@ -70,6 +70,10 @@ export const playerReferences = (function () {
           return actualWidthInPixels;
         }
       }
+      if(_mediaType === mediaTypes.VIDEO){
+       // TODO: Implement displayed width for video
+        return Math.round(_media.video.getBoundingClientRect().width);
+      }
       return undefined;
     },
     getDisplayedImageHeight() {
@@ -81,6 +85,10 @@ export const playerReferences = (function () {
           const actualHeightInPixels = Math.round(containerWidth * percentageHeight);
           return actualHeightInPixels;
         }
+      }
+      if(_mediaType === mediaTypes.VIDEO){
+        // TODO: Implement displayed width for video
+        return Math.round(_media.video.getBoundingClientRect().height);
       }
       return undefined;
     },
@@ -103,6 +111,14 @@ export const playerReferences = (function () {
           return position;
         }
       }
+      if(_mediaType === mediaTypes.VIDEO){
+        const video = _media.video;
+        const position = {
+          x: 0,
+          y: 0,
+        }; // TODO need to implement position on vertical video
+        return position;
+      }
       return undefined;
     },
     getZoom() {
@@ -112,6 +128,10 @@ export const playerReferences = (function () {
         let zoom = currentZoom / maxZoom;
         zoom = Math.round(zoom * 100) / 100;
         return zoom;
+      }
+      if (_mediaType === mediaTypes.VIDEO) {
+        // TODO: Implement zoom for video
+        return _media.video.getBoundingClientRect().width / _media.video.videoWidth;
       }
       return undefined;
     },
