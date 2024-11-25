@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Arrow, Transformer } from 'react-konva';
-import {StayPrimaryPortrait} from "@mui/icons-material";
 
 /**
  * Represents a arrow node component.
