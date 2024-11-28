@@ -60,7 +60,7 @@ MAEV**
 
 ### Technical aspects 
 
-- Update to Material UI 5 and React 18 to follow latest Mirador upgrades (React 17 release also available)
+- Update to Material UI 5 and React 18 to follow latest Mirador upgrades (We support mirador": "4.0.0-alpha.2",
 - The [paperjs](http://paperjs.org/ ) library has been replaced with [Konvas](https://konvajs.org) 
 - Major refactoring since the original `[mirador-annotations](https://github.com/ProjectMirador/mirador-annotations/) 
 plugins`
