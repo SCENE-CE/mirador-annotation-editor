@@ -2,6 +2,8 @@ import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases
 import { getVisibleCanvasAudioResources, getVisibleCanvasVideoResources } from 'mirador/dist/es/src/state/selectors';
 import { mediaTypes } from './annotationForm/AnnotationFormUtils';
 
+
+// TODO All the code related to the video player must be moved in MAEV plugin
 export const playerReferences = (function () {
   let _canvases;
   let _media;
@@ -39,7 +41,8 @@ export const playerReferences = (function () {
         return _canvases[0].__jsonld.height;
       }
       if (_mediaType === mediaTypes.VIDEO) {
-        return _media.props.canvas.__jsonld.height;
+        // TODO not perfect becasue we use the canvas size and not the video size
+        return _media.player.props.iiifVideoInfos.getHeight();
       }
       console.error('Unknown media type');
       return undefined;
@@ -56,7 +59,8 @@ export const playerReferences = (function () {
         return _canvases[0].__jsonld.width;
       }
       if (_mediaType === mediaTypes.VIDEO) {
-        return _media.props.canvas.__jsonld.width;
+        // TODO not perfect becasue we use the canvas size and not the video size
+        return _media.player.props.iiifVideoInfos.getWidth();
       }
       return undefined;
     },
@@ -70,10 +74,13 @@ export const playerReferences = (function () {
           return actualWidthInPixels;
         }
       }
-      if(_mediaType === mediaTypes.VIDEO){
-       // TODO: Implement displayed width for video
-        return Math.round(_media.video.getBoundingClientRect().width);
+      if (_mediaType === mediaTypes.VIDEO) {
+        // TODO: Implement displayed width for video
+        // From video file return Math.round(_media.video.getBoundingClientRect().width);
+        // return _media.video.getSize().width;
+        return _overlay.containerWidth;
       }
+
       return undefined;
     },
     getDisplayedImageHeight() {
@@ -86,9 +93,8 @@ export const playerReferences = (function () {
           return actualHeightInPixels;
         }
       }
-      if(_mediaType === mediaTypes.VIDEO){
-        // TODO: Implement displayed width for video
-        return Math.round(_media.video.getBoundingClientRect().height);
+      if (_mediaType === mediaTypes.VIDEO) {
+        return _overlay.containerHeight;
       }
       return undefined;
     },
@@ -111,8 +117,8 @@ export const playerReferences = (function () {
           return position;
         }
       }
-      if(_mediaType === mediaTypes.VIDEO){
-        const video = _media.video;
+      if (_mediaType === mediaTypes.VIDEO) {
+        const { video } = _media;
         const position = {
           x: 0,
           y: 0,
@@ -131,7 +137,10 @@ export const playerReferences = (function () {
       }
       if (_mediaType === mediaTypes.VIDEO) {
         // TODO: Implement zoom for video
-        return _media.video.getBoundingClientRect().width / _media.video.videoWidth;
+
+        return _overlay.containerWidth / this.getWidth();
+
+        // return _media.video.getBoundingClientRect().width / _media.video.videoWidth;
       }
       return undefined;
     },
@@ -177,6 +186,7 @@ export const playerReferences = (function () {
       }
       console.debug('Player is initialized', this.isInitialized());
       console.debug('Player type', _mediaType);
+      console.debug('_media', _media);
     },
 
     isInitialized() {
