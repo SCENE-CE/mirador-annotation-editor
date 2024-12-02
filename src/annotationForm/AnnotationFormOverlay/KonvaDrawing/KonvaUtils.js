@@ -6,8 +6,10 @@ import { exportStageSVG } from 'react-konva-to-svg';
  */
 export async function getSvg(windowId) {
   const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
+  stage.find('Transformer').forEach((node) => node.destroy());
   let svg = await exportStageSVG(stage, false); // TODO clean
   svg = svg.replaceAll('"', "'");
+  console.table(svg)
   return svg;
 }
 
