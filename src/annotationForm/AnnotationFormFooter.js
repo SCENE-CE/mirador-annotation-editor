@@ -17,10 +17,17 @@ function AnnotationFormFooter({
   };
 
   const handleSVG = async (e) => {
+    const {stages} = window.Konva;
+    stages.forEach((stage) => {
+      console.log('Stages', stage.toJSON());
+    });
     const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
-    console.log(stage.toJSON());
-    stage.find('Transformer').forEach((tr) => {tr.destroy();});
-    console.log(stage.toJSON());
+
+
+
+    console.log('Stage sekected', stage.toJSON());
+    // stage.find('Transformer').forEach((tr) => {tr.destroy();});
+    // console.log('Stage sekected', stage.toJSON());
     const result = await exportStageSVG(stage, false);
     console.log(result);
   };
