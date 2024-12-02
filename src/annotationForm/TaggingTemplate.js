@@ -133,6 +133,7 @@ export default function TaggingTemplate(
       </Grid>
       <Grid item>
         <AnnotationFormFooter
+          windowId={windowId}
           closeFormCompanionWindow={closeFormCompanionWindow}
           saveAnnotation={saveFunction}
         />

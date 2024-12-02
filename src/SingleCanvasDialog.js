@@ -71,6 +71,7 @@ SingleCanvasDialog.propTypes = {
   handleClose: PropTypes.func.isRequired,
   open: PropTypes.bool,
   switchToSingleCanvasView: PropTypes.func.isRequired,
+  windowId: PropTypes.string.isRequired,
 };
 
 SingleCanvasDialog.defaultProps = {
