@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { Stage } from 'react-konva';
+import { Layer, Rect, Stage } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
 import ParentComponent from './KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from './KonvaDrawing/KonvaUtils';
@@ -483,7 +483,7 @@ export default function AnnotationDrawing({
 
   /** */
   const drawKonvas = () => (
-    <Stage
+    /*  <Stage
       width={playerReferences.getDisplayedImageWidth()}
       height={playerReferences.getDisplayedImageHeight()}
       style={{
@@ -515,6 +515,38 @@ export default function AnnotationDrawing({
         text={toolState.text}
         displayMode={displayMode}
       />
+    </Stage> */
+    <Stage
+      width={playerReferences.getDisplayedImageWidth()}
+      height={playerReferences.getDisplayedImageHeight()}
+      id={windowId}
+      style={{
+        height: 'auto',
+        left: playerReferences.getImagePosition().x,
+        objectFit: 'contain',
+        overflow: 'clip',
+        overflowClipMargin: 'content-box',
+        position: 'absolute',
+        top: playerReferences.getImagePosition().y,
+        backgroundColor: 'rgba(0, 0, 255, 0.5)',
+      }}
+    >
+      <Layer
+        scaleX={scale}
+        scaleY={scale}
+      >
+        <Rect x={0} y={0} width={80} height={80} fill="red" />
+        <Rect x={width - 80} y={0} width={80} height={80} fill="red" />
+        <Rect
+          x={width - 80}
+          y={height - 80}
+          width={80}
+          height={80}
+          fill="blue"
+          strokeScaleEnabled={false}
+        />
+        <Rect x={0} y={height - 80} width={80} height={80} fill="red" />
+      </Layer>
     </Stage>
   );
   const container = playerReferences.getContainer();

@@ -43,10 +43,6 @@ export default function TargetFormSection(
     // TODO Check if its possible to use overlay ?
     switch (playerReferences.getMediaType()) {
       case mediaTypes.IMAGE:
-        // TODO set default xywh
-        // eslint-disable-next-line no-param-reassign
-        target.fullCanvaXYWH = '0,0,500,1000';
-        break;
       case mediaTypes.VIDEO:
         const targetHeigth = playerReferences.getHeight();
         const targetWidth =  playerReferences.getWidth();
