@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { Stage } from 'react-konva';
+import { Layer, Rect, Stage } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
 import ParentComponent from './KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from './KonvaDrawing/KonvaUtils';
@@ -487,6 +487,7 @@ export default function AnnotationDrawing({
       width={playerReferences.getDisplayedImageWidth()}
       height={playerReferences.getDisplayedImageHeight()}
       style={{
+        backgroundColor: 'rgba(0, 0, 255, 0.2)',
         height: 'auto',
         left: playerReferences.getImagePosition().x,
         objectFit: 'contain',
@@ -494,7 +495,6 @@ export default function AnnotationDrawing({
         overflowClipMargin: 'content-box',
         position: 'absolute',
         top: playerReferences.getImagePosition().y,
-        backgroundColor: 'rgba(0, 0, 255, 0.5)',
       }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}

@@ -68,26 +68,9 @@ function TextCommentTemplate(
     });
   };
 
-  /** SaveFunction for textComment * */
+  /** Save function * */
   const saveFunction = () => {
-    // Iterate over all canvases and save the annotation, then close the form
-
-    const promises = playerReferences.getCanvases().map(async (canvas) => {
-      // Adapt target to the canvas
-      // eslint-disable-next-line no-param-reassign
-      console.log(annotation.maeData);
-      annotationState.maeData.target.svg = await getSvg(windowId);
-      // annotationState.maeData.target.dataUrl = await getKonvaAsDataURL(windowId);
-      annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
-      // eslint-disable-next-line max-len
-      annotationState.maeData.target.drawingState = JSON.stringify(annotationState.maeData.target.drawingState);
-      console.log('annotationState', annotationState.target);
-      // delete annotationState.maeData.target;
-      return saveAnnotation(annotationState, canvas.id);
-    });
-    Promise.all(promises).then(() => {
-      closeFormCompanionWindow();
-    });
+    saveAnnotation(annotationState);
   };
 
   useEffect(() => {

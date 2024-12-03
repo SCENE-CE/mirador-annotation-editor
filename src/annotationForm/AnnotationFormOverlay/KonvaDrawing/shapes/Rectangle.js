@@ -56,7 +56,7 @@ function Rectangle({
         onTransform={onTransform}
         onDragEnd={handleDragEnd}
         onDragStart={handleDragStart}
-        dash={[10, 10]}
+        /* dash={[10, 10]} */
         dashEnabled={displayMode === KONVA_MODE.TARGET}
         strokeScaleEnabled={false}
       />

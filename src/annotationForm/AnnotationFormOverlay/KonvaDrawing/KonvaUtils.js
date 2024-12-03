@@ -1,11 +1,46 @@
 import { exportStageSVG } from 'react-konva-to-svg';
+import { rgbaToObj } from '../AnnotationFormOverlayToolOptions';
+
+/**
+ * Get the Konva stage associated with the windowId
+ * @param windowId
+ * @returns {Stage}
+ */
+export function getKonvaStage(windowId) {
+  return window.Konva.stages.find((s) => s.attrs.id === windowId);
+}
+
+/**
+ * Resize the Konva stage and redraw it
+ * @param windowId
+ * @param width
+ * @param height
+ * @param scale
+ */
+export function resizeKonvaStage(windowId, width, height, scale) {
+  const stage = getKonvaStage(windowId);
+  stage.width(width);
+  stage.height(height);
+  stage.scale({ x: scale, y: scale });
+  // stage.draw();
+}
 
 /**
  * Get SVG picture containing all the stuff draw in the stage (Konva Stage).
  * This image will be put in overlay of the iiif media
  */
 export async function getSvg(windowId) {
-  const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
+  const stage = getKonvaStage(windowId);
+  stage.find('Transformer').forEach((node) => node.destroy());
+
+  stage.find('Rect').map((node) => {
+    const {
+      r, g, b, a,
+    } = rgbaToObj(node.stroke());
+    node.strokeScaleEnabled(true);
+    node.stroke(`rgb(${r},${g},${b}`);
+  });
+
   let svg = await exportStageSVG(stage, false); // TODO clean
   svg = svg.replaceAll('"', "'");
   return svg;
@@ -13,7 +48,7 @@ export async function getSvg(windowId) {
 
 /** Export the stage as a JPG image in a data url */
 export async function getKonvaAsDataURL(windowId) {
-  const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
+  const stage = getKonvaStage(windowId);
   const dataURL = stage.toDataURL({
     mimeType: 'image/png',
     quality: 1,
@@ -28,7 +63,6 @@ export const KONVA_MODE = {
   IMAGE: 'image',
   TARGET: 'target',
 };
-
 
 export const OVERLAY_TOOL = {
   CURSOR: 'cursor',

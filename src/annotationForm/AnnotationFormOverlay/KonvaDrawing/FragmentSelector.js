@@ -48,14 +48,14 @@ function FragmentSelector({
           scaleY={shape.scaleY}
           width={originalSpatialTarget ? shape.width - 30 : shape.width}
           height={originalSpatialTarget ? shape.height - 30 : shape.height}
-          fill="transparent"
+          fill="red"
           stroke="#1967d2"
           strokeWidth={10}
           draggable={showTransformer}
           onTransform={onSpatialTargetFirstTransfromation}
           onDrag={handleDrag}
           onDragEnd={handleDrag}
-          dash={[30 / scale, 30]}
+         /*  dash={[30 / scale, 30]} */
         />
 
         <Transformer

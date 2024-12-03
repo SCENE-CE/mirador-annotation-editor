@@ -131,7 +131,7 @@ function AnnotationFormOverlayTool({
             </ToggleButton>
             {
               (displayMode === KONVA_MODE.DRAW) && (
-                <>
+                <div>
                   <ToggleButton value={SHAPES_TOOL.ELLIPSE} aria-label="add a circle">
                     <CircleIcon />
                   </ToggleButton>
@@ -144,7 +144,7 @@ function AnnotationFormOverlayTool({
                   <ToggleButton value={SHAPES_TOOL.FREEHAND} aria-label="free hand polygon">
                     <GestureIcon />
                   </ToggleButton>
-                </>
+                </div>
               )
             }
           </StyledToggleButtonGroup>

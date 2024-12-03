@@ -158,10 +158,33 @@ export default function AnnotationFormBody(
           />
         )}
       </Grid>
-      <Typography>
-        { playerReferences.getMediaType() }
-        {' '}
-      </Typography>
+      { debugMode && (<>
+        <Typography>
+          { playerReferences.getMediaType() }
+          {' '}
+        </Typography>
+        <Typography>
+          {'Scale'} { playerReferences.getScale() }
+        </Typography>
+        <Typography>
+          {'Zoom'} { playerReferences.getZoom() }
+          {' '}
+        </Typography>
+        <Typography>
+          {'Image true Size'} { playerReferences.getWidth() } x { playerReferences.getHeight() }
+        </Typography>
+        <Typography>
+          {'Container Size'} { playerReferences.getContainerWidth() } x { playerReferences.getContainerHeight() }
+        </Typography>
+        <Typography>
+          {'Image Displayed'} { playerReferences.getDisplayedImageWidth() } x { playerReferences.getDisplayedImageHeight() }
+        </Typography>
+
+
+
+      </>)
+      }
+
     </Grid>
   );
 }

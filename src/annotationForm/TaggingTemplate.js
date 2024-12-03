@@ -3,11 +3,8 @@ import { Grid, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { mediaTypes, template } from './AnnotationFormUtils';
-import { maeTargetToIiifTarget } from '../IIIFUtils';
+import { template } from './AnnotationFormUtils';
 import TargetFormSection from './TargetFormSection';
-import { getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import {playerReferences} from "../playerReferences";
 
 /** Tagging Template* */
 export default function TaggingTemplate(
@@ -49,16 +46,6 @@ export default function TaggingTemplate(
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
 
-  /** Update Target State * */
-  const updateTargetState = (target) => {
-    const newMaeData = annotationState.maeData;
-    newMaeData.target = target;
-    setAnnotationState({
-      ...annotationState,
-      maeData: newMaeData,
-    });
-  };
-
   /** Update annotation with Tag Value * */
   const updateTaggingValue = (newTextValue) => {
     const newBody = annotationState.body;
@@ -69,36 +56,19 @@ export default function TaggingTemplate(
     });
   };
 
+  /** Update Target State * */
+  const updateTargetState = (target) => {
+    const newMaeData = annotationState.maeData;
+    newMaeData.target = target;
+    setAnnotationState({
+      ...annotationState,
+      maeData: newMaeData,
+    });
+  };
+
   /** Save function * */
   const saveFunction = () => {
-    // TODO This code is not DRY, it's the same as in TextCommentTemplate.js
-    if (mediaType !== mediaTypes.AUDIO) {
-      const promises = playerReferences.getCanvases().map(async (canvas) => {
-        // Adapt target to the canvas
-        // eslint-disable-next-line no-param-reassign
-        console.log(annotation.maeData);
-        annotationState.maeData.target.svg = await getSvg(windowId);
-        const overlay = playerReferences.getOverlay();
-        annotationState.maeData.target.scale = playerReferences.getHeight() / playerReferences.getDisplayedImageHeight() * playerReferences.getZoom();
-        console.log('annotationState.maeData.target.scale', annotationState.maeData.target.scale);
-        // annotationState.maeData.target.dataUrl = await getKonvaAsDataURL(windowId);
-        annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
-        annotationState.maeData.target.drawingState = JSON.stringify(
-          annotationState.maeData.target.drawingState,
-        );
-        console.log('annotationState', annotationState.target);
-        // delete annotationState.maeData.target;
-        return saveAnnotation(annotationState, canvas.id);
-      });
-      Promise.all(promises).then(() => {
-        closeFormCompanionWindow();
-      });
-    }
-    // TODO: Proper save for AUDIO media's annotation
-    if (mediaType === mediaTypes.AUDIO) {
-      console.log('TODO: Proper save for AUDIO media\'s annotation');
-      closeFormCompanionWindow();
-    }
+    saveAnnotation(annotationState);
   };
 
   return (
@@ -133,6 +103,7 @@ export default function TaggingTemplate(
       </Grid>
       <Grid item>
         <AnnotationFormFooter
+          windowId={windowId}
           closeFormCompanionWindow={closeFormCompanionWindow}
           saveAnnotation={saveFunction}
         />
@@ -158,6 +129,18 @@ TaggingTemplate.propTypes = {
     manifestNetwork: PropTypes.string,
     target: PropTypes.string,
   }).isRequired,
+  annotationState: PropTypes.shape({
+    body: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.string,
+      }),
+    ),
+    maeData: PropTypes.shape({
+      target: PropTypes.string,
+      templateType: PropTypes.string,
+    }),
+  }).isRequired,
+  setAnnotationState: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,

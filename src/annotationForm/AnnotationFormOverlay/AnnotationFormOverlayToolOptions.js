@@ -16,7 +16,7 @@ const StyledDivButtonImage = styled('div')(({ theme }) => ({
 }));
 
 /** Utils functions to convert string to object */
-const rgbaToObj = (rgba = 'rgba(255,255,255,0.5)') => {
+export const rgbaToObj = (rgba = 'rgba(255,255,255,0.5)') => {
   const rgbaArray = rgba.split(',');
   return {
     // eslint-disable-next-line sort-keys

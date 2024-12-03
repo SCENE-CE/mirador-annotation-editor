@@ -1,6 +1,12 @@
 import { Button, Grid } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { exportStageSVG } from 'react-konva-to-svg';
+import { playerReferences } from '../playerReferences';
+import { getKonvaStage, resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import {
+  rgbaToObj,
+} from './AnnotationFormOverlay/AnnotationFormOverlayToolOptions';
 
 /** Annotation form footer, save or cancel the edition/creation of an annotation */
 function AnnotationFormFooter({
@@ -10,9 +16,7 @@ function AnnotationFormFooter({
   /**
    * Validate form and save annotation
    */
-  const submitAnnotationForm = async (e) => {
-    saveAnnotation();
-  };
+
 
   return (
     <Grid container item spacing={1} justifyContent="flex-end">
@@ -23,7 +27,7 @@ function AnnotationFormFooter({
         variant="contained"
         color="primary"
         type="submit"
-        onClick={submitAnnotationForm}
+        onClick={saveAnnotation}
       >
         Save
       </Button>
@@ -33,6 +37,7 @@ function AnnotationFormFooter({
 AnnotationFormFooter.propTypes = {
   closeFormCompanionWindow: PropTypes.func.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
+  windowId: PropTypes.string.isRequired,
 };
 
 export default AnnotationFormFooter;

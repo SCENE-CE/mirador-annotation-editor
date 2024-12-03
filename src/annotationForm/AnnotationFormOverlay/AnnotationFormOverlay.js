@@ -94,7 +94,7 @@ function AnnotationFormOverlay(
             <CursorIcon />
           </ToggleButton>
           { displayMode !== KONVA_MODE.IMAGE && (
-          <>
+          <div>
 
             <ToggleButton value={OVERLAY_TOOL.SHAPE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
               <CategoryIcon />
@@ -109,7 +109,7 @@ function AnnotationFormOverlay(
             <ToggleButton value={OVERLAY_TOOL.DELETE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>
               <DeleteIcon />
             </ToggleButton>
-          </>
+          </div>
           )}
           { displayMode === KONVA_MODE.IMAGE && (
             <ToggleButton value={OVERLAY_TOOL.IMAGE} aria-label="select cursor" onClick={tabHandler(OVERLAY_VIEW)}>

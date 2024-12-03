@@ -7,13 +7,15 @@ import { Grid, Link } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
 import {
-  getTemplateType,
+  getTemplateType, mediaTypes,
   saveAnnotationInStorageAdapter,
   template,
 } from './AnnotationFormUtils';
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormBody from './AnnotationFormBody';
 import { playerReferences } from '../playerReferences';
+import { convertAnnotationStateToBeSaved } from '../IIIFUtils';
+import { resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
 /**
  * Component for submitting a form to create or edit an annotation.
@@ -35,7 +37,9 @@ export default function AnnotationForm(
   // eslint-disable-next-line no-underscore-dangle
   const [mediaType, setMediaType] = useState(playerReferences.getMediaType());
 
-  const debugMode = config.debugMode === true;
+
+
+  const debugMode = config.debug === true;
 
   // TODO must be improved when parsing annotation
   if (!templateType) {
@@ -101,15 +105,44 @@ export default function AnnotationForm(
       position: 'right',
     });
   };
-  /** Save function * */
-  const saveAnnotation = (annotationToSaved, canvasId) => {
-    const storageAdapter = config.annotation.adapter(canvasId);
-    return saveAnnotationInStorageAdapter(
-      canvasId,
-      storageAdapter,
-      receiveAnnotation,
-      annotationToSaved,
+
+
+  /**
+   * Save the annotation
+   * @param annotationState
+   */
+  const saveAnnotation = (annotationState) => {
+    // Resize Stage to match true size of the media
+    resizeKonvaStage(
+      windowId,
+      playerReferences.getWidth(),
+      playerReferences.getHeight(),
+      1 / playerReferences.getScale(),
     );
+    if (mediaType !== mediaTypes.AUDIO) {
+      const promises = playerReferences.getCanvases()
+        .map(async (canvas) => {
+          const annotationStateToBeSaved = await convertAnnotationStateToBeSaved(annotationState, canvas, windowId);
+          // delete annotationState.maeData.target; // TODO check if necessairy
+
+          // Get storage adapter for the canvas
+          const storageAdapter = config.annotation.adapter(canvas.id);
+          return saveAnnotationInStorageAdapter(
+            canvas.id,
+            storageAdapter,
+            receiveAnnotation,
+            annotationStateToBeSaved,
+          );
+        });
+      Promise.all(promises)
+        .then(() => {
+          closeFormCompanionWindow();
+        });
+    } else {
+      // TODO: Proper save for AUDIO media's annotation
+      console.log('TODO: Proper save for AUDIO media\'s annotation');
+      closeFormCompanionWindow();
+    }
   };
 
   if (!playerReferences.isInitialized()) {
@@ -219,7 +252,7 @@ AnnotationForm.propTypes = {
         ),
       ),
     }),
-    debugMode: PropTypes.bool,
+    debug: PropTypes.bool,
   }).isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]),
   // eslint-disable-next-line react/forbid-prop-types

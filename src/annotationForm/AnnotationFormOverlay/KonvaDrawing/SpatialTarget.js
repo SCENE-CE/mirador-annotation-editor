@@ -55,7 +55,7 @@ function SpatialTarget({
           onTransform={onSpatialTargetFirstTransfromation}
           onDrag={handleDrag}
           onDragEnd={handleDrag}
-          dash={[30 / scale, 30]}
+         /*  dash={[30 / scale, 30]} */
         />
 
         <Transformer
