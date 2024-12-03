@@ -174,6 +174,9 @@ export default function AnnotationFormBody(
           {'Image true Size'} { playerReferences.getWidth() } x { playerReferences.getHeight() }
         </Typography>
         <Typography>
+          {'Container Size'} { playerReferences.getContainerWidth() } x { playerReferences.getContainerHeight() }
+        </Typography>
+        <Typography>
           {'Image Displayed'} { playerReferences.getDisplayedImageWidth() } x { playerReferences.getDisplayedImageHeight() }
         </Typography>
 

@@ -13,7 +13,7 @@ export const playerReferences = (function () {
 
   return {
     getScale() {
-      return this.getContainerWidth() / this.getWidth();
+      return this.getDisplayedImageWidth() / this.getWidth();
     },
     getCanvasHeight() {
       return _overlay.canvasHeight;
