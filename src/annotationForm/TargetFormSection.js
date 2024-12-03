@@ -46,7 +46,7 @@ export default function TargetFormSection(
       case mediaTypes.IMAGE:
       case mediaTypes.VIDEO:
         // eslint-disable-next-line no-param-reassign
-        target.fullCanvaXYWH = `0,0,${playerReferences.getWidth},${playerReferences.getHeight()}`;
+        target.fullCanvaXYWH = `0,0,${playerReferences.getWidth()},${playerReferences.getHeight()}`;
         break;
       default:
         break;

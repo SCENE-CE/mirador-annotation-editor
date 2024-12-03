@@ -95,7 +95,7 @@ export const templateTypes = [
         return true;
       }
       if (mediaType === mediaTypes.IMAGE) {
-        return false;
+        return true;
       }
       if (mediaType === mediaTypes.AUDIO) {
         return false;

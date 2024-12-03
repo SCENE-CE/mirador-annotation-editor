@@ -14,7 +14,11 @@ import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { getKonvaAsDataURL, KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import {
+  getKonvaAsDataURL,
+  KONVA_MODE,
+  resizeKonvaStage
+} from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { Debug } from './Debug';
 import { playerReferences } from '../playerReferences';
 
@@ -74,6 +78,17 @@ export default function DrawingTemplate(
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
+
+  /** Update annotation state with text body* */
+  const updateAnnotationTextualBodyValue = (newTextValue) => {
+    const newBody = annotationState.body;
+    newBody.value = newTextValue;
+    setAnnotationState({
+      ...annotationState,
+      body: newBody,
+    });
+  };
+
   /** Update AnnotationState with Target * */
   const updateTargetState = (target) => {
     const newMaeData = annotationState.maeData;
@@ -85,28 +100,28 @@ export default function DrawingTemplate(
   };
 
   /** save Function * */
-  const saveFunction = () => {
-    const promises = canvases.map(async (canvas) => {
-      // Adapt target to the canvas
-      // eslint-disable-next-line no-param-reassign
-      annotationState.body.id = await getKonvaAsDataURL(windowId);
-      annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
-      annotationState.maeData.drawingState = JSON.stringify(drawingState);
-      // delete annotationState.maeData.target;
-      return saveAnnotation(annotationState, canvas.id);
-    });
-    Promise.all(promises).then(() => {
-      closeFormCompanionWindow();
-    });
-  };
-  /** Update annotation state with text body* */
-  const updateAnnotationTextualBodyValue = (newTextValue) => {
-    const newBody = annotationState.body;
-    newBody.value = newTextValue;
-    setAnnotationState({
-      ...annotationState,
-      body: newBody,
-    });
+  const saveFunction = async () => {
+    resizeKonvaStage(
+      windowId,
+      playerReferences.getWidth(),
+      playerReferences.getHeight(),
+      1 / playerReferences.getScale(),
+    );
+    annotationState.body.id = await getKonvaAsDataURL(windowId);
+    saveAnnotation(annotationState, false);
+
+    /*  const promises = canvases.map(async (canvas) => {
+       // Adapt target to the canvas
+       // eslint-disable-next-line no-param-reassign
+
+       annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
+       annotationState.maeData.drawingState = JSON.stringify(drawingState);
+       // delete annotationState.maeData.target;
+       return saveAnnotation(annotationState, canvas.id);
+     });
+     Promise.all(promises).then(() => {
+       closeFormCompanionWindow();
+     }); */
   };
 
   /** ****************************************
@@ -142,21 +157,6 @@ export default function DrawingTemplate(
   const updateScale = () => {
     setScale(playerReferences.getZoom());
   };
-
-  // TODO Check how to use it
-
-  /*   /!**
-     * Update annoState with the svg and position of kanva item
-     * @param svg
-     * @param xywh
-     *!/
-  const updateGeometry = ({ svg, xywh }) => {
-    setAnnoState((prevState) => ({
-      ...prevState,
-      svg,
-      xywh,
-    }));
-  }; */
 
   /**
      * Updates the tool state by merging the current color state with the existing tool state.
@@ -222,8 +222,8 @@ export default function DrawingTemplate(
 
   return (
     <Grid container direction="column" spacing={1}>
-      {/* Rename AnnotationDrawing in Drawing Stage */}
-      {/* Check the useless props : annotation ?
+      {/* TODO Rename AnnotationDrawing in Drawing Stage */}
+      {/* TODO Check the useless props : annotation ?
       Check the width height originalW originalW */}
       <Grid item>
         <Typography variant="formSectionTitle">

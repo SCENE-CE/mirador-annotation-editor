@@ -61,7 +61,7 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId, windowId) => {
       console.log('scaleY', scaleY);
       width = Math.floor(width * maeTarget.scale * scaleX);
       height = Math.floor(height * maeTarget.scale * scaleY);
-      console.info('Implement target as string with one shape (reactangle or image)');
+      console.info('Implement target as string with one shape (rectangle or image)');
       // Image have not tstart and tend
       return `${canvasId}#${maeTarget.tend ? `xywh=${x},${y},${width},${height}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${x},${y},${width},${height}`}`;
     }

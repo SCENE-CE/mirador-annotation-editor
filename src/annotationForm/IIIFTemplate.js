@@ -49,14 +49,7 @@ export default function IIIFTemplate({
    * @returns {Object}
    */
   const saveFunction = () => {
-    // We return annotation to save it
-    canvases.forEach(async (canvas) => {
-      // Adapt target to the canvas
-      // eslint-disable-next-line no-param-reassign
-      // annotation.target = `${canvas.id}#xywh=${target.xywh}&t=${target.t}`;
-      saveAnnotation(annotationState, canvas.id);
-    });
-    closeFormCompanionWindow();
+    saveAnnotation(annotationState, false);
   };
 
   return (

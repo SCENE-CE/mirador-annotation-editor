@@ -37,8 +37,6 @@ export default function AnnotationForm(
   // eslint-disable-next-line no-underscore-dangle
   const [mediaType, setMediaType] = useState(playerReferences.getMediaType());
 
-
-
   const debugMode = config.debug === true;
 
   // TODO must be improved when parsing annotation
@@ -106,24 +104,34 @@ export default function AnnotationForm(
     });
   };
 
-
   /**
    * Save the annotation
    * @param annotationState
    */
-  const saveAnnotation = (annotationState) => {
-    // Resize Stage to match true size of the media
-    resizeKonvaStage(
-      windowId,
-      playerReferences.getWidth(),
-      playerReferences.getHeight(),
-      1 / playerReferences.getScale(),
-    );
+  const saveAnnotation = (annotationState, forceResizeKonvasStage = true) => {
+    if (forceResizeKonvasStage) {
+      // Resize Stage to match true size of the media
+      resizeKonvaStage(
+        windowId,
+        playerReferences.getWidth(),
+        playerReferences.getHeight(),
+        1 / playerReferences.getScale(),
+      );
+    }
+
     if (mediaType !== mediaTypes.AUDIO) {
       const promises = playerReferences.getCanvases()
         .map(async (canvas) => {
-          const annotationStateToBeSaved = await convertAnnotationStateToBeSaved(annotationState, canvas, windowId);
-          // delete annotationState.maeData.target; // TODO check if necessairy
+          let annotationStateToBeSaved;
+          if (annotationState.maeData.target.drawingState) {
+            annotationStateToBeSaved = await convertAnnotationStateToBeSaved(
+              annotationState,
+              canvas,
+              windowId,
+            );
+          } else {
+            annotationStateToBeSaved = annotationState;
+          }
 
           // Get storage adapter for the canvas
           const storageAdapter = config.annotation.adapter(canvas.id);
