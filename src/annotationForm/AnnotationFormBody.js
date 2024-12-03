@@ -26,8 +26,6 @@ import { AdvancedAnnotationEditor } from './AdvancedAnnotationEditor';
 export default function AnnotationFormBody(
   {
     annotation,
-    annotationState,
-    setAnnotationState,
     canvases,
     closeFormCompanionWindow,
     currentTime,
@@ -127,8 +125,6 @@ export default function AnnotationFormBody(
               annotation={annotation}
               getMediaAudio={getMediaAudio}
               debugMode={debugMode}
-              annotationState={annotationState}
-              setAnnotationState={setAnnotationState}
             />
             )}
         </TemplateContainer>

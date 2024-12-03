@@ -23,35 +23,31 @@ export default function TaggingTemplate(
     setCurrentTime,
     setSeekTo,
     windowId,
-    annotationState,
-    setAnnotationState,
   },
 ) {
   let maeAnnotation = annotation;
 
-  if (!annotationState) {
-    if (!maeAnnotation.id) {
-      // If the annotation does not have maeData, the annotation was not created with mae
-      maeAnnotation = {
-        body: {
-          type: 'Image',
-          value: '',
-        },
-        maeData: {
-          target: null,
-          templateType: template.TAGGING_TYPE,
-        },
-        motivation: 'tagging',
+  if (!maeAnnotation.id) {
+    // If the annotation does not have maeData, the annotation was not created with mae
+    maeAnnotation = {
+      body: {
+        type: 'Image',
+        value: '',
+      },
+      maeData: {
         target: null,
-      };
-    } else if (maeAnnotation.maeData.target.drawingState && typeof maeAnnotation.maeData.target.drawingState === 'string') {
-      maeAnnotation.maeData.target.drawingState = JSON.parse(
-        maeAnnotation.maeData.target.drawingState,
-      );
-    }
-
-    setAnnotationState(maeAnnotation);
+        templateType: template.TAGGING_TYPE,
+      },
+      motivation: 'tagging',
+      target: null,
+    };
+  } else if (maeAnnotation.maeData.target.drawingState && typeof maeAnnotation.maeData.target.drawingState === 'string') {
+    maeAnnotation.maeData.target.drawingState = JSON.parse(
+      maeAnnotation.maeData.target.drawingState,
+    );
   }
+
+  const [annotationState, setAnnotationState] = useState(maeAnnotation);
 
   /** Update Target State * */
   const updateTargetState = (target) => {
@@ -75,7 +71,6 @@ export default function TaggingTemplate(
 
   /** Save function * */
   const saveFunction = () => {
-    // TODO This code is not DRY, it's the same as in TextCommentTemplate.js
     saveAnnotation(annotationState);
   };
 

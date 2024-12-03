@@ -37,7 +37,7 @@ export default function AnnotationForm(
   // eslint-disable-next-line no-underscore-dangle
   const [mediaType, setMediaType] = useState(playerReferences.getMediaType());
 
-  const [annotationState, setAnnotationState] = useState(null);
+
 
   const debugMode = config.debug === true;
 
@@ -105,22 +105,13 @@ export default function AnnotationForm(
       position: 'right',
     });
   };
-  /** Save function * */
-  const saveAnnotationInAdapter = (annotationToSaved, canvasId) => {
-    const storageAdapter = config.annotation.adapter(canvasId);
-    return saveAnnotationInStorageAdapter(
-      canvasId,
-      storageAdapter,
-      receiveAnnotation,
-      annotationToSaved,
-    );
-  };
+
 
   /**
    * Save the annotation
    * @param annotationState
    */
-  const saveAnnotation = () => {
+  const saveAnnotation = (annotationState) => {
     // Resize Stage to match true size of the media
     resizeKonvaStage(
       windowId,
@@ -129,10 +120,6 @@ export default function AnnotationForm(
       1 / playerReferences.getScale(),
     );
     if (mediaType !== mediaTypes.AUDIO) {
-
-
-
-
       const promises = playerReferences.getCanvases()
         .map(async (canvas) => {
           const annotationStateToBeSaved = await convertAnnotationStateToBeSaved(annotationState, canvas, windowId);
@@ -228,8 +215,6 @@ export default function AnnotationForm(
                 saveAnnotation={saveAnnotation}
                 getMediaAudio={getMediaAudio}
                 debugMode={debugMode}
-                annotationState={annotationState}
-                setAnnotationState={setAnnotationState}
               />
             </Grid>
           </Grid>
