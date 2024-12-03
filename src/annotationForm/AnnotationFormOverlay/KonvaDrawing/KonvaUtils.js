@@ -1,4 +1,25 @@
 import { exportStageSVG } from 'react-konva-to-svg';
+import { playerReferences } from '../../../playerReferences';
+
+
+
+
+export function resizeKonvaStage(windowId, width, height, scale) {
+  const { stages } = window.Konva;
+  stages.forEach((stage) => {
+    console.log('Stages', stage.toJSON());
+  });
+  const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
+
+  stage.width(width);
+  stage.height(height);
+  stage.scale({ x: scale, y: scale });
+
+  stage.draw();
+}
+
+
+
 
 /**
  * Get SVG picture containing all the stuff draw in the stage (Konva Stage).
@@ -9,7 +30,6 @@ export async function getSvg(windowId) {
   stage.find('Transformer').forEach((node) => node.destroy());
   let svg = await exportStageSVG(stage, false); // TODO clean
   svg = svg.replaceAll('"', "'");
-  console.table(svg)
   return svg;
 }
 

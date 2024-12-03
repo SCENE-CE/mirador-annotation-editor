@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { exportStageSVG } from 'react-konva-to-svg';
 import { playerReferences } from '../playerReferences';
+import { resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
 /** Annotation form footer, save or cancel the edition/creation of an annotation */
 function AnnotationFormFooter({
@@ -18,38 +19,14 @@ function AnnotationFormFooter({
   };
 
   const resizeStage = () => {
-    const { stages } = window.Konva;
-    stages.forEach((stage) => {
-      console.log('Stages', stage.toJSON());
-    });
-    const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
-
-
-    let scale = 1/playerReferences.getScale();
-
-    stage.width(playerReferences.getWidth());
-    stage.height(playerReferences.getHeight());
-    stage.scale({ x: scale, y: scale });
-
-    stage.draw();
-  }
+    // Resize Konva to the true size of the image
+    resizeKonvaStage(windowId, playerReferences.getWidth(), playerReferences.getHeight(), 1 / playerReferences.getScale());
+  };
 
   const unResizeStage = () => {
-    const { stages } = window.Konva;
-    stages.forEach((stage) => {
-      console.log('Stages', stage.toJSON());
-    });
-    const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
-
-
-    let scale = 1
-
-    stage.width(playerReferences.getDisplayedImageWidth());
-    stage.height(playerReferences.getDisplayedImageHeight());
-    stage.scale({ x: scale, y: scale });
-
-    stage.draw();
-  }
+    // We resize the stage to the previous displayed image size
+    resizeKonvaStage(windowId, playerReferences.getDisplayedImageWidth(), playerReferences.getDisplayedImageHeight(), 1);
+  };
 
   const handleSVG = async (e) => {
     const { stages } = window.Konva;
@@ -83,7 +60,9 @@ function AnnotationFormFooter({
         onClick={resizeStage}
       >
         Resize stage
-      </Button>   <Button
+      </Button>
+      {' '}
+      <Button
         variant="contained"
         color="primary"
         onClick={unResizeStage}
