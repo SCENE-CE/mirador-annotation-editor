@@ -487,6 +487,7 @@ export default function AnnotationDrawing({
       width={playerReferences.getDisplayedImageWidth()}
       height={playerReferences.getDisplayedImageHeight()}
       style={{
+        backgroundColor: 'rgba(0, 0, 255, 0.2)',
         height: 'auto',
         left: playerReferences.getImagePosition().x,
         objectFit: 'contain',
@@ -494,7 +495,6 @@ export default function AnnotationDrawing({
         overflowClipMargin: 'content-box',
         position: 'absolute',
         top: playerReferences.getImagePosition().y,
-        backgroundColor: 'rgba(0, 0, 255, 0.5)',
       }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
@@ -516,35 +516,6 @@ export default function AnnotationDrawing({
         displayMode={displayMode}
       />
     </Stage>
-   // <Stage
-   //    width={playerReferences.getDisplayedImageWidth() }
-   //    height={playerReferences.getDisplayedImageHeight() }
-   //    id={windowId}
-   //    style={{
-   //      height: 'auto',
-   //      left: playerReferences.getImagePosition().x,
-   //      objectFit: 'contain',
-   //      overflow: 'clip',
-   //      overflowClipMargin: 'content-box',
-   //      position: 'absolute',
-   //      top: playerReferences.getImagePosition().y,
-   //      backgroundColor: 'rgba(0, 0, 255, 0.7)',
-   //    }}
-   //  >
-   //    <Layer>
-   //      <Rect x={0} y={0} width={200} height={200} fill="red" />
-   //      <Rect x={playerReferences.getDisplayedImageWidth() - 200} y={0} width={200} height={200} fill="red" />
-   //      <Rect
-   //        x={playerReferences.getDisplayedImageWidth() - 200}
-   //        y={playerReferences.getDisplayedImageHeight() - 200}
-   //        width={200}
-   //        height={200}
-   //        fill="blue"
-   //        strokeScaleEnabled={false}
-   //      />
-   //      <Rect x={0} y={playerReferences.getDisplayedImageHeight() - 200} width={200} height={200} fill="red" />
-   //    </Layer>
-   //  </Stage>
   );
   const container = playerReferences.getContainer();
   if (container) {

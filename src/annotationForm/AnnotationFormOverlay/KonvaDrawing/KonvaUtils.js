@@ -19,13 +19,11 @@ export function getKonvaStage(windowId) {
  */
 export function resizeKonvaStage(windowId, width, height, scale) {
   const stage = getKonvaStage(windowId);
-
   stage.width(width);
   stage.height(height);
   stage.scale({ x: scale, y: scale });
-
-  stage.draw();
-}
+  // stage.draw();
+  }
 
 /**
  * Get SVG picture containing all the stuff draw in the stage (Konva Stage).
