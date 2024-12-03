@@ -1,4 +1,5 @@
 import { exportStageSVG } from 'react-konva-to-svg';
+import { rgbaToObj } from '../AnnotationFormOverlayToolOptions';
 
 /**
  * Get the Konva stage associated with the windowId
@@ -23,8 +24,6 @@ export function resizeKonvaStage(windowId, width, height, scale) {
   stage.height(height);
   stage.scale({ x: scale, y: scale });
 
-
-
   stage.draw();
 }
 
@@ -35,6 +34,15 @@ export function resizeKonvaStage(windowId, width, height, scale) {
 export async function getSvg(windowId) {
   const stage = getKonvaStage(windowId);
   stage.find('Transformer').forEach((node) => node.destroy());
+
+  stage.find('Rect').map((node) => {
+    const {
+      r, g, b, a,
+    } = rgbaToObj(node.stroke());
+    node.strokeScaleEnabled(true);
+    node.stroke(`rgb(${r},${g},${b}`);
+  });
+
   let svg = await exportStageSVG(stage, false); // TODO clean
   svg = svg.replaceAll('"', "'");
   return svg;
