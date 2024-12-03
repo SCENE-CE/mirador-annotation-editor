@@ -4,7 +4,7 @@ import { Grid, Typography } from '@mui/material';
 import { mediaTypes } from './AnnotationFormUtils';
 import TargetTimeInput from './TargetTimeInput';
 import { TargetSpatialInput } from './TargetSpatialInput';
-import {playerReferences} from '../playerReferences';
+import { playerReferences } from '../playerReferences';
 
 /**
  * Section of Time and Space Target
@@ -37,17 +37,16 @@ export default function TargetFormSection(
     if (playerReferences.getMediaType() === mediaTypes.VIDEO) {
       // eslint-disable-next-line no-param-reassign
       target.tstart = currentTime || 0;
-      target.tend = playerReferences.getMediaDuration() ? Math.floor(playerReferences.getMediaDuration()) : 0;
+      // eslint-disable-next-line no-param-reassign
+      target.tend = playerReferences.getMediaDuration()
+        ? Math.floor(playerReferences.getMediaDuration()) : 0;
     }
 
-    // TODO Check if its possible to use overlay ?
     switch (playerReferences.getMediaType()) {
       case mediaTypes.IMAGE:
       case mediaTypes.VIDEO:
-        const targetHeigth = playerReferences.getHeight();
-        const targetWidth =  playerReferences.getWidth();
         // eslint-disable-next-line no-param-reassign
-        target.fullCanvaXYWH = `0,0,${targetWidth},${targetHeigth}`;
+        target.fullCanvaXYWH = `0,0,${playerReferences.getWidth},${playerReferences.getHeight()}`;
         break;
       default:
         break;
@@ -135,11 +134,8 @@ TargetFormSection.propTypes = {
   currentTime: PropTypes.number.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   getMediaAudio: PropTypes.object.isRequired,
-  helloWorld: PropTypes.string.isRequired,
-  mediaType: PropTypes.string.isRequired,
   onChangeTarget: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  overlay: PropTypes.object.isRequired,
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   spatialTarget: PropTypes.bool.isRequired,

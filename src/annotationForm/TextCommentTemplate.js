@@ -8,7 +8,7 @@ import AnnotationFormFooter from './AnnotationFormFooter';
 import { template } from './AnnotationFormUtils';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
 import { getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import {playerReferences} from "../playerReferences";
+import { playerReferences } from '../playerReferences';
 
 /** Form part for edit annotation content and body */
 function TextCommentTemplate(
@@ -73,6 +73,7 @@ function TextCommentTemplate(
     saveAnnotation(annotationState);
   };
 
+  // TODO is this necessary?
   useEffect(() => {
 
   }, [annotationState.maeData.target]);
@@ -80,7 +81,6 @@ function TextCommentTemplate(
   return (
     <Grid container direction="column" spacing={2}>
       <Grid item>
-
         <TextFormSection
           annoHtml={annotationState.body.value}
           updateAnnotationBody={updateAnnotationTextualBodyValue}
@@ -88,7 +88,7 @@ function TextCommentTemplate(
       </Grid>
       <Grid item>
         <TargetFormSection
-            currentTime={currentTime}
+          currentTime={currentTime}
           onChangeTarget={updateTargetState}
           target={annotationState.maeData.target}
           windowId={windowId}
@@ -100,7 +100,6 @@ function TextCommentTemplate(
         />
       </Grid>
       <Grid item>
-
         <AnnotationFormFooter
           closeFormCompanionWindow={closeFormCompanionWindow}
           saveAnnotation={saveFunction}
@@ -126,6 +125,7 @@ TextCommentTemplate.propTypes = {
   setCurrentTime: PropTypes.func.isRequired,
   setSeekTo: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
+  debugMode: PropTypes.bool.isRequired,
 };
 
 export default TextCommentTemplate;
