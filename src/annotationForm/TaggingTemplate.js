@@ -3,11 +3,8 @@ import { Grid, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { mediaTypes, template } from './AnnotationFormUtils';
-import { convertAnnotationStateToBeSaved, maeTargetToIiifTarget } from '../IIIFUtils';
+import { template } from './AnnotationFormUtils';
 import TargetFormSection from './TargetFormSection';
-import { getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import { playerReferences } from '../playerReferences';
 
 /** Tagging Template* */
 export default function TaggingTemplate(
@@ -49,16 +46,6 @@ export default function TaggingTemplate(
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
 
-  /** Update Target State * */
-  const updateTargetState = (target) => {
-    const newMaeData = annotationState.maeData;
-    newMaeData.target = target;
-    setAnnotationState({
-      ...annotationState,
-      maeData: newMaeData,
-    });
-  };
-
   /** Update annotation with Tag Value * */
   const updateTaggingValue = (newTextValue) => {
     const newBody = annotationState.body;
@@ -66,6 +53,16 @@ export default function TaggingTemplate(
     setAnnotationState({
       ...annotationState,
       body: newBody,
+    });
+  };
+
+  /** Update Target State * */
+  const updateTargetState = (target) => {
+    const newMaeData = annotationState.maeData;
+    newMaeData.target = target;
+    setAnnotationState({
+      ...annotationState,
+      maeData: newMaeData,
     });
   };
 
