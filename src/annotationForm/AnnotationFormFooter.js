@@ -12,20 +12,11 @@ import {
 function AnnotationFormFooter({
   closeFormCompanionWindow,
   saveAnnotation,
-  windowId,
 }) {
   /**
    * Validate form and save annotation
    */
-  const submitAnnotationForm = async (e) => {
-    resizeKonvaStage(
-      windowId,
-      playerReferences.getWidth(),
-      playerReferences.getHeight(),
-      1 / playerReferences.getScale(),
-    );
-    saveAnnotation();
-  };
+
 
   return (
     <Grid container item spacing={1} justifyContent="flex-end">
@@ -36,7 +27,7 @@ function AnnotationFormFooter({
         variant="contained"
         color="primary"
         type="submit"
-        onClick={submitAnnotationForm}
+        onClick={saveAnnotation}
       >
         Save
       </Button>

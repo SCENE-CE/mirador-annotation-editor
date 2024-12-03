@@ -15,6 +15,7 @@ import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormBody from './AnnotationFormBody';
 import { playerReferences } from '../playerReferences';
 import { convertAnnotationStateToBeSaved } from '../IIIFUtils';
+import { resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
 /**
  * Component for submitting a form to create or edit an annotation.
@@ -35,6 +36,8 @@ export default function AnnotationForm(
   const [templateType, setTemplateType] = useState(null);
   // eslint-disable-next-line no-underscore-dangle
   const [mediaType, setMediaType] = useState(playerReferences.getMediaType());
+
+  const [annotationState, setAnnotationState] = useState(null);
 
   const debugMode = config.debug === true;
 
@@ -117,13 +120,32 @@ export default function AnnotationForm(
    * Save the annotation
    * @param annotationState
    */
-  const saveAnnotation = (annotationState) => {
+  const saveAnnotation = () => {
+    // Resize Stage to match true size of the media
+    resizeKonvaStage(
+      windowId,
+      playerReferences.getWidth(),
+      playerReferences.getHeight(),
+      1 / playerReferences.getScale(),
+    );
     if (mediaType !== mediaTypes.AUDIO) {
+
+
+
+
       const promises = playerReferences.getCanvases()
         .map(async (canvas) => {
-          await convertAnnotationStateToBeSaved(annotationState, canvas, windowId);
-          // delete annotationState.maeData.target;
-          return saveAnnotation(annotationState, canvas.id);
+          const annotationStateToBeSaved = await convertAnnotationStateToBeSaved(annotationState, canvas, windowId);
+          // delete annotationState.maeData.target; // TODO check if necessairy
+
+          // Get storage adapter for the canvas
+          const storageAdapter = config.annotation.adapter(canvas.id);
+          return saveAnnotationInStorageAdapter(
+            canvas.id,
+            storageAdapter,
+            receiveAnnotation,
+            annotationStateToBeSaved,
+          );
         });
       Promise.all(promises)
         .then(() => {
@@ -206,6 +228,8 @@ export default function AnnotationForm(
                 saveAnnotation={saveAnnotation}
                 getMediaAudio={getMediaAudio}
                 debugMode={debugMode}
+                annotationState={annotationState}
+                setAnnotationState={setAnnotationState}
               />
             </Grid>
           </Grid>

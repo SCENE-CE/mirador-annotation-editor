@@ -23,31 +23,35 @@ export default function TaggingTemplate(
     setCurrentTime,
     setSeekTo,
     windowId,
+    annotationState,
+    setAnnotationState,
   },
 ) {
   let maeAnnotation = annotation;
 
-  if (!maeAnnotation.id) {
-    // If the annotation does not have maeData, the annotation was not created with mae
-    maeAnnotation = {
-      body: {
-        type: 'Image',
-        value: '',
-      },
-      maeData: {
+  if (!annotationState) {
+    if (!maeAnnotation.id) {
+      // If the annotation does not have maeData, the annotation was not created with mae
+      maeAnnotation = {
+        body: {
+          type: 'Image',
+          value: '',
+        },
+        maeData: {
+          target: null,
+          templateType: template.TAGGING_TYPE,
+        },
+        motivation: 'tagging',
         target: null,
-        templateType: template.TAGGING_TYPE,
-      },
-      motivation: 'tagging',
-      target: null,
-    };
-  } else if (maeAnnotation.maeData.target.drawingState && typeof maeAnnotation.maeData.target.drawingState === 'string') {
-    maeAnnotation.maeData.target.drawingState = JSON.parse(
-      maeAnnotation.maeData.target.drawingState,
-    );
-  }
+      };
+    } else if (maeAnnotation.maeData.target.drawingState && typeof maeAnnotation.maeData.target.drawingState === 'string') {
+      maeAnnotation.maeData.target.drawingState = JSON.parse(
+        maeAnnotation.maeData.target.drawingState,
+      );
+    }
 
-  const [annotationState, setAnnotationState] = useState(maeAnnotation);
+    setAnnotationState(maeAnnotation);
+  }
 
   /** Update Target State * */
   const updateTargetState = (target) => {
@@ -133,6 +137,18 @@ TaggingTemplate.propTypes = {
     manifestNetwork: PropTypes.string,
     target: PropTypes.string,
   }).isRequired,
+  annotationState: PropTypes.shape({
+    body: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.string,
+      }),
+    ),
+    maeData: PropTypes.shape({
+      target: PropTypes.string,
+      templateType: PropTypes.string,
+    }),
+  }).isRequired,
+  setAnnotationState: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
