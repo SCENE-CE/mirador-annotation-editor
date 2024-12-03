@@ -163,6 +163,19 @@ export default function AnnotationFormBody(
           { playerReferences.getMediaType() }
           {' '}
         </Typography>
+        <Typography>
+          {'Scale'} { playerReferences.getScale() }
+        </Typography>
+        <Typography>
+          {'Zoom'} { playerReferences.getZoom() }
+          {' '}
+        </Typography>
+        <Typography>
+          {'Image true Size'} { playerReferences.getWidth() } x { playerReferences.getHeight() }
+        </Typography>
+        <Typography>
+          {'Image Displayed'} { playerReferences.getDisplayedImageWidth() } x { playerReferences.getDisplayedImageHeight() }
+        </Typography>
 
 
 

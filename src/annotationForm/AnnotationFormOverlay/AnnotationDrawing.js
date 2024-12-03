@@ -517,8 +517,8 @@ export default function AnnotationDrawing({
       />
     </Stage> */
     <Stage
-      width={playerReferences.getWidth()}
-      height={playerReferences.getHeight()}
+      width={playerReferences.getDisplayedImageWidth() }
+      height={playerReferences.getDisplayedImageHeight() }
       id={windowId}
       style={{
         height: 'auto',
@@ -530,29 +530,26 @@ export default function AnnotationDrawing({
         top: playerReferences.getImagePosition().y,
         backgroundColor: 'rgba(0, 0, 255, 0.7)',
       }}
+     /*  scaleY={playerReferences.getScale()*playerReferences.getZoom()}
+      scaleX={playerReferences.getScale()* playerReferences.getZoom()} */
     >
-      <Layer
-        scaleY={playerReferences.getScale()}
-        scaleX={playerReferences.getScale()}
-      >
-        <Rect x={0} y={0} width={80} height={80} fill="red" />
-        <Rect x={width - 80} y={0} width={80} height={80} fill="red" />
+      <Layer>
+        <Rect x={0} y={0} width={200} height={200} fill="red" />
+        <Rect x={playerReferences.getDisplayedImageWidth() - 200} y={0} width={200} height={200} fill="red" />
         <Rect
-          x={width - 80}
-          y={height - 80}
-          width={80}
-          height={80}
+          x={playerReferences.getDisplayedImageWidth() - 200}
+          y={playerReferences.getDisplayedImageHeight() - 200}
+          width={200}
+          height={200}
           fill="blue"
           strokeScaleEnabled={false}
         />
-        <Rect x={0} y={height - 80} width={80} height={80} fill="red" />
+        <Rect x={0} y={playerReferences.getDisplayedImageHeight() - 200} width={200} height={200} fill="red" />
       </Layer>
     </Stage>
   );
   const container = playerReferences.getContainer();
   if (container) {
-    console.log('zoom', playerReferences.getZoom());
-    console.log('scale', playerReferences.getScale());
     return ReactDOM.createPortal(drawKonvas(), container);
   }
   // eslint-disable-next-line react/jsx-no-useless-fragment
