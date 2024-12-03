@@ -6,7 +6,7 @@ import { playerReferences } from '../playerReferences';
 import { getKonvaStage, resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import {
   rgbaToObj,
-} from '../../es/annotationForm/AnnotationFormOverlay/AnnotationFormOverlayToolOptions';
+} from './AnnotationFormOverlay/AnnotationFormOverlayToolOptions';
 
 /** Annotation form footer, save or cancel the edition/creation of an annotation */
 function AnnotationFormFooter({
