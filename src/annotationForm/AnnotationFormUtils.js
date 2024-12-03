@@ -38,13 +38,13 @@ export const templateTypes = [
     // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === mediaTypes.VIDEO) {
-        return true;
+        return false;
       }
       if (mediaType === mediaTypes.IMAGE) {
-        return true;
+        return false;
       }
       if (mediaType === mediaTypes.AUDIO) {
-        return true;
+        return false;
       }
     },
     label: 'Note',
@@ -74,7 +74,7 @@ export const templateTypes = [
     // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === mediaTypes.VIDEO) {
-        return true;
+        return false;
       }
       if (mediaType === mediaTypes.IMAGE) {
         return false;
@@ -92,7 +92,7 @@ export const templateTypes = [
     // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === mediaTypes.VIDEO) {
-        return true;
+        return false;
       }
       if (mediaType === mediaTypes.IMAGE) {
         return false;
