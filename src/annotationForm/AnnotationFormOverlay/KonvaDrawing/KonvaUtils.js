@@ -23,6 +23,8 @@ export function resizeKonvaStage(windowId, width, height, scale) {
   stage.height(height);
   stage.scale({ x: scale, y: scale });
 
+
+
   stage.draw();
 }
 

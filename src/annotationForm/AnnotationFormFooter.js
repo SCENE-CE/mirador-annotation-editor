@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { exportStageSVG } from 'react-konva-to-svg';
 import { playerReferences } from '../playerReferences';
-import { resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { getKonvaStage, resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import {
+  rgbaToObj,
+} from '../../es/annotationForm/AnnotationFormOverlay/AnnotationFormOverlayToolOptions';
 
 /** Annotation form footer, save or cancel the edition/creation of an annotation */
 function AnnotationFormFooter({
@@ -51,16 +54,39 @@ function AnnotationFormFooter({
    * @returns {Promise<void>}
    */
   const handleSVG = async (e) => {
-    const { stages } = window.Konva;
-    stages.forEach((stage) => {
-      console.log('Stages', stage.toJSON());
-    });
-    const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
+    const stage = getKonvaStage(windowId);
 
-    console.log('Stage sekected', stage.toJSON());
-    // stage.find('Transformer').forEach((tr) => {tr.destroy();});
-    // console.log('Stage sekected', stage.toJSON());
-    const result = await exportStageSVG(stage, false);
+    console.log('Stage selected', stage.toJSON());
+
+    stage.find('Transformer').forEach((node) => node.destroy());
+    console.log('Stage selected after destroy', stage.toJSON());
+    stage.draw();
+
+    resizeStage();
+    console.log('Stage selected after resize', stage.toJSON());
+
+    stage.find('Rect').map((node) => {
+    /*   node.x(Math.floor(node.x() / 100));
+      node.y(Math.floor(node.y() / 100));
+      node.width(Math.floor(node.width() / 100));
+      node.height(Math.floor(node.height() / 100)); */
+      const {
+        r, g, b, a,
+      } = rgbaToObj(node.stroke());
+
+      node.strokeScaleEnabled(true);
+      node.stroke(`rgb(${r},${g},${b}`);
+    });
+
+    stage.draw();
+
+    console.log('Stage selected after draw', stage.toJSON());
+
+    let result = 'toto';
+    result = await exportStageSVG(stage, false, {
+      onBefore: ([stage, layer]) => {},
+      onAfter: ([stage, layer]) => {},
+    });
     console.log(result);
   };
 
