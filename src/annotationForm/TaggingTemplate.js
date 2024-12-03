@@ -7,7 +7,7 @@ import { mediaTypes, template } from './AnnotationFormUtils';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
 import TargetFormSection from './TargetFormSection';
 import { getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import {playerReferences} from "../playerReferences";
+import { playerReferences } from '../playerReferences';
 
 /** Tagging Template* */
 export default function TaggingTemplate(
@@ -76,17 +76,26 @@ export default function TaggingTemplate(
       const promises = playerReferences.getCanvases().map(async (canvas) => {
         // Adapt target to the canvas
         // eslint-disable-next-line no-param-reassign
-        console.log(annotation.maeData);
-        annotationState.maeData.target.svg = await getSvg(windowId);
-        const overlay = playerReferences.getOverlay();
-        annotationState.maeData.target.scale = playerReferences.getHeight() / playerReferences.getDisplayedImageHeight() * playerReferences.getZoom();
-        console.log('annotationState.maeData.target.scale', annotationState.maeData.target.scale);
-        // annotationState.maeData.target.dataUrl = await getKonvaAsDataURL(windowId);
+        console.log('annotationState.maeData.target', annotationState.maeData.target);
+        annotationState.maeData.target = {
+          drawingState: annotationState.maeData.target.drawingState,
+          fullCanvaXYWH: annotationState.maeData.target.fullCanvaXYWH,
+          scale: annotationState.maeData.target.scale,
+        };
+
+        // Complex annotation
+        if (annotationState.maeData.target.drawingState.shapes.length === 1
+          && annotationState.maeData.target.drawingState.shapes[0].type === 'rectangle') {
+          annotationState.maeData.target.svg = await getSvg(windowId);
+        }
+
+        annotationState.maeData.target.scale = playerReferences.getHeight()
+          / playerReferences.getDisplayedImageHeight() * playerReferences.getZoom();
+
         annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
         annotationState.maeData.target.drawingState = JSON.stringify(
           annotationState.maeData.target.drawingState,
         );
-        console.log('annotationState', annotationState.target);
         // delete annotationState.maeData.target;
         return saveAnnotation(annotationState, canvas.id);
       });

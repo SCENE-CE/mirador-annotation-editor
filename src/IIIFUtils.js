@@ -1,5 +1,5 @@
 /** Transform maetarget to IIIF compatible data * */
-export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
+export const maeTargetToIiifTarget = (maeTarget, canvasId, windowId) => {
   if (maeTarget.drawingState) {
     if (maeTarget.drawingState.shapes.length == 0) {
       console.info('Implement target as string on fullSizeCanvas');
