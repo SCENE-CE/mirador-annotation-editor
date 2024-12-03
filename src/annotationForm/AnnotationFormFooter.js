@@ -42,11 +42,11 @@ function AnnotationFormFooter({
     const stage = window.Konva.stages.find((s) => s.attrs.id === windowId);
 
 
-    let scale = playerReferences.getScale();
+    let scale = 1
 
     stage.width(playerReferences.getDisplayedImageWidth());
     stage.height(playerReferences.getDisplayedImageHeight());
-    //stage.scale({ x: scale, y: scale });
+    stage.scale({ x: scale, y: scale });
 
     stage.draw();
   }
