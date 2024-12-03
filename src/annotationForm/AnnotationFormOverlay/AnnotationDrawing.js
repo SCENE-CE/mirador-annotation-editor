@@ -483,7 +483,7 @@ export default function AnnotationDrawing({
 
   /** */
   const drawKonvas = () => (
-    /*  <Stage
+   /*  <Stage
       width={playerReferences.getDisplayedImageWidth()}
       height={playerReferences.getDisplayedImageHeight()}
       style={{
@@ -516,7 +516,7 @@ export default function AnnotationDrawing({
         displayMode={displayMode}
       />
     </Stage> */
-    <Stage
+   <Stage
       width={playerReferences.getDisplayedImageWidth() }
       height={playerReferences.getDisplayedImageHeight() }
       id={windowId}
@@ -530,8 +530,6 @@ export default function AnnotationDrawing({
         top: playerReferences.getImagePosition().y,
         backgroundColor: 'rgba(0, 0, 255, 0.7)',
       }}
-     /*  scaleY={playerReferences.getScale()*playerReferences.getZoom()}
-      scaleX={playerReferences.getScale()* playerReferences.getZoom()} */
     >
       <Layer>
         <Rect x={0} y={0} width={200} height={200} fill="red" />
