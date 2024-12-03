@@ -35,7 +35,7 @@ export default function AnnotationForm(
   // eslint-disable-next-line no-underscore-dangle
   const [mediaType, setMediaType] = useState(playerReferences.getMediaType());
 
-  const debugMode = config.debugMode === true;
+  const debugMode = config.debug === true;
 
   // TODO must be improved when parsing annotation
   if (!templateType) {

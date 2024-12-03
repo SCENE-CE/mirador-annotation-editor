@@ -158,10 +158,17 @@ export default function AnnotationFormBody(
           />
         )}
       </Grid>
-      <Typography>
-        { playerReferences.getMediaType() }
-        {' '}
-      </Typography>
+      { debugMode && (<>
+        <Typography>
+          { playerReferences.getMediaType() }
+          {' '}
+        </Typography>
+
+
+
+      </>)
+      }
+
     </Grid>
   );
 }

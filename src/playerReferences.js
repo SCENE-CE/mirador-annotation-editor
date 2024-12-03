@@ -12,6 +12,9 @@ export const playerReferences = (function () {
   let _actions;
 
   return {
+    getScale() {
+      return this.getContainerWidth() / this.getWidth();
+    },
     getCanvasHeight() {
       return _overlay.canvasHeight;
     },

@@ -12,7 +12,7 @@ const config = {
   },
   catalog:
   manifestsCatalog,
-  debugMode: true,
+  debug: true,
   id: 'demo',
   themes: {
     light: {

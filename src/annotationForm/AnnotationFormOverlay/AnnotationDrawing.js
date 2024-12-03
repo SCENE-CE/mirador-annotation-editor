@@ -517,8 +517,8 @@ export default function AnnotationDrawing({
       />
     </Stage> */
     <Stage
-      width={playerReferences.getDisplayedImageWidth()}
-      height={playerReferences.getDisplayedImageHeight()}
+      width={playerReferences.getWidth()}
+      height={playerReferences.getHeight()}
       id={windowId}
       style={{
         height: 'auto',
@@ -528,12 +528,12 @@ export default function AnnotationDrawing({
         overflowClipMargin: 'content-box',
         position: 'absolute',
         top: playerReferences.getImagePosition().y,
-        backgroundColor: 'rgba(0, 0, 255, 0.5)',
+        backgroundColor: 'rgba(0, 0, 255, 0.7)',
       }}
     >
       <Layer
-        scaleX={scale}
-        scaleY={scale}
+        scaleY={playerReferences.getScale()}
+        scaleX={playerReferences.getScale()}
       >
         <Rect x={0} y={0} width={80} height={80} fill="red" />
         <Rect x={width - 80} y={0} width={80} height={80} fill="red" />
@@ -551,6 +551,8 @@ export default function AnnotationDrawing({
   );
   const container = playerReferences.getContainer();
   if (container) {
+    console.log('zoom', playerReferences.getZoom());
+    console.log('scale', playerReferences.getScale());
     return ReactDOM.createPortal(drawKonvas(), container);
   }
   // eslint-disable-next-line react/jsx-no-useless-fragment
