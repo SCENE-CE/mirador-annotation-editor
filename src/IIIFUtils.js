@@ -1,11 +1,11 @@
 /** Transform maetarget to IIIF compatible data * */
 export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
-  if (maeTarget.drawingState) {
+ /*  if (maeTarget.drawingState) {
     if (maeTarget.drawingState.shapes.length == 0) {
       console.info('Implement target as string on fullSizeCanvas');
       return `${canvasId}#` + `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}`;
-    }
-    if (maeTarget.drawingState.shapes.length === 1 && maeTarget.drawingState.shapes[0].type === 'rectangle') {
+    } */
+    /* if (maeTarget.drawingState.shapes.length === 1 && maeTarget.drawingState.shapes[0].type === 'rectangle') {
       let {
         // eslint-disable-next-line prefer-const
         x, y, width, height, scaleX, scaleY,
@@ -29,7 +29,7 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
       width = Math.floor(width * maeTarget.scale);
       height = Math.floor(height * maeTarget.scale);
       return `${canvasId}#${maeTarget.tend ? `xywh=${x},${y},${width},${height}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${x},${y},${width},${height}`}`;
-    }
+    } */
 
     return {
       selector: [
@@ -44,8 +44,8 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
       ],
       source: canvasId,
     };
-  }
-  return `${canvasId}#${maeTarget.tend}` ? `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${maeTarget.fullCanvaXYWH}`;
+ /*  }
+  return `${canvasId}#${maeTarget.tend}` ? `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${maeTarget.fullCanvaXYWH}`; */
 };
 
 /** ################### SAVE LOGIC UTILS ######################## * */

@@ -15,19 +15,41 @@ function AnnotationFormFooter({
    * Validate form and save annotation
    */
   const submitAnnotationForm = async (e) => {
+    resizeStage();
     saveAnnotation();
   };
 
+  /**
+   * Resize the Konva stage to the true size of the image, trigger by UI
+   */
   const resizeStage = () => {
     // Resize Konva to the true size of the image
-    resizeKonvaStage(windowId, playerReferences.getWidth(), playerReferences.getHeight(), 1 / playerReferences.getScale());
+    resizeKonvaStage(
+      windowId,
+      playerReferences.getWidth(),
+      playerReferences.getHeight(),
+      1 / playerReferences.getScale(),
+    );
   };
 
+  /**
+   * Resize the Konva stage to the true size of the image, trigger by UI
+   */
   const unResizeStage = () => {
     // We resize the stage to the previous displayed image size
-    resizeKonvaStage(windowId, playerReferences.getDisplayedImageWidth(), playerReferences.getDisplayedImageHeight(), 1);
+    resizeKonvaStage(
+      windowId,
+      playerReferences.getDisplayedImageWidth(),
+      playerReferences.getDisplayedImageHeight(),
+      1,
+    );
   };
 
+  /**
+   * Trigger bu UI for debug purpose
+   * @param e
+   * @returns {Promise<void>}
+   */
   const handleSVG = async (e) => {
     const { stages } = window.Konva;
     stages.forEach((stage) => {
