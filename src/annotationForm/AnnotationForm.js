@@ -219,7 +219,7 @@ AnnotationForm.propTypes = {
         ),
       ),
     }),
-    debugMode: PropTypes.bool,
+    debug: PropTypes.bool,
   }).isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]),
   // eslint-disable-next-line react/forbid-prop-types

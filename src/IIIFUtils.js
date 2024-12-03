@@ -1,3 +1,45 @@
+import { getSvg } from './annotationForm/AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { playerReferences } from './playerReferences';
+
+/**
+ * Convert annotation state to be saved. Function change the annotationState object
+ * @param annotationState
+ * @param canvas
+ * @param windowId
+ * @returns {Promise<void>}
+ */
+export const convertAnnotationStateToBeSaved = async (annotationState, canvas, windowId) => {
+  // Adapt target to the canvas
+  // eslint-disable-next-line no-param-reassign
+  console.log('annotationState.maeData.target', annotationState.maeData.target);
+  // eslint-disable-next-line no-param-reassign
+  annotationState.maeData.target = {
+    drawingState: annotationState.maeData.target.drawingState,
+    fullCanvaXYWH: annotationState.maeData.target.fullCanvaXYWH,
+    scale: annotationState.maeData.target.scale,
+  };
+
+  // Complex annotation
+  if (annotationState.maeData.target.drawingState.shapes.length > 0
+    && annotationState.maeData.target.drawingState.shapes[0].type === 'rectangle') {
+    // eslint-disable-next-line no-param-reassign
+    annotationState.maeData.target.svg = await getSvg(windowId);
+  }
+
+  // eslint-disable-next-line no-param-reassign
+  annotationState.maeData.target.scale = playerReferences.getHeight()
+    / playerReferences.getDisplayedImageHeight() * playerReferences.getZoom();
+
+  // eslint-disable-next-line no-param-reassign
+  annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
+  // eslint-disable-next-line no-param-reassign
+  annotationState.maeData.target.drawingState = JSON.stringify(
+    annotationState.maeData.target.drawingState,
+  );
+}
+
+
+
 /** Transform maetarget to IIIF compatible data * */
 export const maeTargetToIiifTarget = (maeTarget, canvasId, windowId) => {
   if (maeTarget.drawingState) {
