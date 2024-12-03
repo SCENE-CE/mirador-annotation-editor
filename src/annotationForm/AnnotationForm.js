@@ -7,13 +7,14 @@ import { Grid, Link } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
 import {
-  getTemplateType,
+  getTemplateType, mediaTypes,
   saveAnnotationInStorageAdapter,
   template,
 } from './AnnotationFormUtils';
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormBody from './AnnotationFormBody';
 import { playerReferences } from '../playerReferences';
+import { convertAnnotationStateToBeSaved } from '../IIIFUtils';
 
 /**
  * Component for submitting a form to create or edit an annotation.
@@ -102,7 +103,7 @@ export default function AnnotationForm(
     });
   };
   /** Save function * */
-  const saveAnnotation = (annotationToSaved, canvasId) => {
+  const saveAnnotationInAdapter = (annotationToSaved, canvasId) => {
     const storageAdapter = config.annotation.adapter(canvasId);
     return saveAnnotationInStorageAdapter(
       canvasId,
@@ -110,6 +111,29 @@ export default function AnnotationForm(
       receiveAnnotation,
       annotationToSaved,
     );
+  };
+
+  /**
+   * Save the annotation
+   * @param annotationState
+   */
+  const saveAnnotation = (annotationState) => {
+    if (mediaType !== mediaTypes.AUDIO) {
+      const promises = playerReferences.getCanvases()
+        .map(async (canvas) => {
+          await convertAnnotationStateToBeSaved(annotationState, canvas, windowId);
+          // delete annotationState.maeData.target;
+          return saveAnnotation(annotationState, canvas.id);
+        });
+      Promise.all(promises)
+        .then(() => {
+          closeFormCompanionWindow();
+        });
+    } else {
+      // TODO: Proper save for AUDIO media's annotation
+      console.log('TODO: Proper save for AUDIO media\'s annotation');
+      closeFormCompanionWindow();
+    }
   };
 
   if (!playerReferences.isInitialized()) {

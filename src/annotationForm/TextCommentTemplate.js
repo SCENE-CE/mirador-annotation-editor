@@ -75,7 +75,6 @@ function TextCommentTemplate(
     const promises = playerReferences.getCanvases().map(async (canvas) => {
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
-      console.log(annotation.maeData);
       annotationState.maeData.target.svg = await getSvg(windowId);
       // annotationState.maeData.target.dataUrl = await getKonvaAsDataURL(windowId);
       annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
