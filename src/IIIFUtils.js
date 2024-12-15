@@ -9,16 +9,25 @@ import { TEMPLATE } from './annotationForm/AnnotationFormUtils';
  * @param windowId
  * @returns {Promise<void>}
  */
-export const convertAnnotationStateToBeSaved = async (annotationState, canvas, windowId, template) => {
+export const convertAnnotationStateToBeSaved = async (
+  annotationState,
+  canvas,
+  windowId,
+  template,
+) => {
   const annotationStateForSaving = annotationState;
   // Adapt target to the canvas
   // eslint-disable-next-line no-param-reassign
   console.log('annotationState.maeData.target', annotationState.maeData.target);
   // eslint-disable-next-line no-param-reassign
+
+  // TODO I dont know why this code is here? To clean the object ?
   annotationStateForSaving.maeData.target = {
     drawingState: annotationStateForSaving.maeData.target.drawingState,
     fullCanvaXYWH: annotationStateForSaving.maeData.target.fullCanvaXYWH,
     scale: annotationStateForSaving.maeData.target.scale,
+    tend: annotationStateForSaving.maeData.target.tend,
+    tstart: annotationStateForSaving.maeData.target.tstart,
   };
 
   if (template == TEMPLATE.TAGGING_TYPE) {
@@ -35,16 +44,17 @@ export const convertAnnotationStateToBeSaved = async (annotationState, canvas, w
     / playerReferences.getDisplayedImageHeight() * playerReferences.getZoom();
 
   // eslint-disable-next-line no-param-reassign
-  annotationStateForSaving.target = maeTargetToIiifTarget(annotationStateForSaving.maeData.target, canvas.id);
+  annotationStateForSaving.target = maeTargetToIiifTarget(
+    annotationStateForSaving.maeData.target,
+    canvas.id,
+  );
   // eslint-disable-next-line no-param-reassign
   annotationStateForSaving.maeData.target.drawingState = JSON.stringify(
     annotationStateForSaving.maeData.target.drawingState,
   );
 
   return annotationStateForSaving;
-}
-
-
+};
 
 /** Transform maetarget to IIIF compatible data * */
 export const maeTargetToIiifTarget = (maeTarget, canvasId, windowId) => {
@@ -60,8 +70,6 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId, windowId) => {
       } = maeTarget.drawingState.shapes[0];
       x = Math.floor(x * maeTarget.scale * scaleX);
       y = Math.floor(y * maeTarget.scale * scaleY);
-      console.log('scaleX', scaleX);
-      console.log('scaleY', scaleY);
       width = Math.floor(width * maeTarget.scale * scaleX);
       height = Math.floor(height * maeTarget.scale * scaleY);
       console.info('Implement target as string with one shape (reactangle or image)');
@@ -87,22 +95,16 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId, windowId) => {
         },
         {
           type: 'FragmentSelector',
-          value: `${canvasId}#${maeTarget.tend}` ? `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${maeTarget.fullCanvaXYWH}`,
+          value: `${canvasId}#${maeTarget.tend ? `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${maeTarget.fullCanvaXYWH}`}`,
         },
       ],
       source: canvasId,
     };
   }
-  return `${canvasId}#${maeTarget.tend}` ? `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${maeTarget.fullCanvaXYWH}`;
+  return `${canvasId}#${maeTarget.tend ? `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${maeTarget.fullCanvaXYWH}`}`;
 };
 
 /** ################### SAVE LOGIC UTILS ######################## * */
-
-const targetTypes = {
-  MULTI: 'multi',
-  STRING: 'string',
-  SVG_SELECTOR: 'SVGSelector',
-};
 
 /** Extract xywh from annotation target */
 export function geomFromAnnoTarget(annotarget) {
