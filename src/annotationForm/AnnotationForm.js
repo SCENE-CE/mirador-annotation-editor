@@ -106,43 +106,26 @@ export default function AnnotationForm(
     });
   };
 
-
   /**
    * Save the annotation
    * @param annotationState
    */
-  const saveAnnotation = (annotationState) => {
+  const saveAnnotation = (annotationState, canvasId) => {
     // Resize Stage to match true size of the media
-    resizeKonvaStage(
-      windowId,
-      playerReferences.getWidth(),
-      playerReferences.getHeight(),
-      1 / playerReferences.getScale(),
-    );
-    if (mediaType !== mediaTypes.AUDIO) {
-      const promises = playerReferences.getCanvases()
-        .map(async (canvas) => {
-          const annotationStateToBeSaved = await convertAnnotationStateToBeSaved(annotationState, canvas, windowId);
-          // delete annotationState.maeData.target; // TODO check if necessairy
 
-          // Get storage adapter for the canvas
-          const storageAdapter = config.annotation.adapter(canvas.id);
-          return saveAnnotationInStorageAdapter(
-            canvas.id,
-            storageAdapter,
-            receiveAnnotation,
-            annotationStateToBeSaved,
-          );
-        });
-      Promise.all(promises)
-        .then(() => {
-          closeFormCompanionWindow();
-        });
-    } else {
-      // TODO: Proper save for AUDIO media's annotation
-      console.log('TODO: Proper save for AUDIO media\'s annotation');
-      closeFormCompanionWindow();
+    if (mediaType !== mediaTypes.AUDIO) {
+      // Get storage adapter for the canvas
+      const storageAdapter = config.annotation.adapter(canvasId);
+      return saveAnnotationInStorageAdapter(
+        canvasId,
+        storageAdapter,
+        receiveAnnotation,
+        annotationState,
+      );
     }
+    // TODO: Proper save for AUDIO media's annotation
+    console.log('TODO: Proper save for AUDIO media\'s annotation');
+    closeFormCompanionWindow();
   };
 
   if (!playerReferences.isInitialized()) {
@@ -215,6 +198,7 @@ export default function AnnotationForm(
                 saveAnnotation={saveAnnotation}
                 getMediaAudio={getMediaAudio}
                 debugMode={debugMode}
+                canvases={canvases}
               />
             </Grid>
           </Grid>

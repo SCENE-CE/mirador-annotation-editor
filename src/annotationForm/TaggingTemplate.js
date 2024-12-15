@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { template } from './AnnotationFormUtils';
 import TargetFormSection from './TargetFormSection';
+import { convertAnnotationStateToBeSaved } from '../IIIFUtils';
+import { resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { playerReferences } from '../playerReferences';
 
 /** Tagging Template* */
 export default function TaggingTemplate(
@@ -67,8 +70,26 @@ export default function TaggingTemplate(
   };
 
   /** Save function * */
-  const saveFunction = () => {
-    saveAnnotation(annotationState);
+  const saveFunction = async () => {
+    resizeKonvaStage(
+      windowId,
+      playerReferences.getWidth(),
+      playerReferences.getHeight(),
+      1 / playerReferences.getScale(),
+    );
+    const promises = playerReferences.getCanvases()
+      .map(async (canvas) => {
+        const annotationStateToBeSaved = await convertAnnotationStateToBeSaved(
+          annotationState,
+          canvas,
+          windowId,
+        );
+        saveAnnotation(annotationStateToBeSaved, canvas.id);
+      });
+    Promise.all(promises)
+      .then(() => {
+        closeFormCompanionWindow();
+      });
   };
 
   return (
