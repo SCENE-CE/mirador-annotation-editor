@@ -54,7 +54,6 @@ function AnnotationFormOverlay(
    * @param tool
    */
   const changeTool = (e, tool) => {
-    console.log('displayMode', displayMode);
     if (!displayMode) { // TODO Why this check ?
       if (tool === OVERLAY_TOOL.SHAPE) {
         setToolState({

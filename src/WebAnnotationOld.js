@@ -15,7 +15,6 @@ export default class WebAnnotation {
     this.manifestId = manifestId;
     this.drawingState = drawingStateSerialized;
 
-    console.log('WebAnnotation constructor', this);
   }
 
   /** */
