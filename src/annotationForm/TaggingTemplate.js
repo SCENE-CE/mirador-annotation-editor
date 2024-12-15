@@ -3,7 +3,7 @@ import { Grid, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { template } from './AnnotationFormUtils';
+import { TEMPLATE } from './AnnotationFormUtils';
 import TargetFormSection from './TargetFormSection';
 import { convertAnnotationStateToBeSaved } from '../IIIFUtils';
 import { resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
@@ -36,7 +36,7 @@ export default function TaggingTemplate(
       },
       maeData: {
         target: null,
-        templateType: template.TAGGING_TYPE,
+        templateType: TEMPLATE.TAGGING_TYPE,
       },
       motivation: 'tagging',
       target: null,

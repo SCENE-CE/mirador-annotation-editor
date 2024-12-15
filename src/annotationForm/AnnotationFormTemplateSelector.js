@@ -5,7 +5,7 @@ import {
   Card, CardActionArea, CardContent, Grid,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { mediaTypes, templateTypes } from './AnnotationFormUtils';
+import { MEDIA_TYPES, TEMPLATE_TYPES } from './AnnotationFormUtils';
 /**
  * A component that renders a selection of annotation
  * form templates for different types of comments.
@@ -21,7 +21,7 @@ export default function AnnotationFormTemplateSelector({
   return (
     <CardContainer>
 
-      {mediaType === mediaTypes.AUDIO ? (
+      {mediaType === MEDIA_TYPES.AUDIO ? (
         <Grid container spacing={1} direction="column">
           <Grid item>
             <Typography>
@@ -31,7 +31,7 @@ export default function AnnotationFormTemplateSelector({
           </Grid>
         </Grid>
       ) : (
-        templateTypes.map((t) => (
+        TEMPLATE_TYPES.map((t) => (
           (t.isCompatibleWithTemplate(mediaType) && (
           <Card>
             <CardActionArea id={t.id} onClick={() => setCommentType(t)}>

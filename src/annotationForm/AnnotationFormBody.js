@@ -7,7 +7,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import {
-  template,
+  TEMPLATE,
 } from './AnnotationFormUtils';
 import TextCommentTemplate from './TextCommentTemplate';
 import ImageCommentTemplate from './ImageCommentTemplate';
@@ -50,7 +50,7 @@ export default function AnnotationFormBody(
       { !showAdvanced && (
         <TemplateContainer item>
           {
-          templateType.id === template.TEXT_TYPE && (
+          templateType.id === TEMPLATE.TEXT_TYPE && (
             <TextCommentTemplate
               annotation={annotation}
               canvases={canvases}
@@ -64,7 +64,7 @@ export default function AnnotationFormBody(
           )
         }
           {
-          templateType.id === template.IMAGE_TYPE && (
+          templateType.id === TEMPLATE.IMAGE_TYPE && (
           <ImageCommentTemplate
             annotation={annotation}
             canvases={canvases}
@@ -78,7 +78,7 @@ export default function AnnotationFormBody(
           )
         }
           {
-          templateType.id === template.KONVA_TYPE && (
+          templateType.id === TEMPLATE.KONVA_TYPE && (
             <DrawingTemplate
               annotation={annotation}
               canvases={canvases}
@@ -92,7 +92,7 @@ export default function AnnotationFormBody(
           )
         }
           {
-          templateType.id === template.MANIFEST_TYPE && (
+          templateType.id === TEMPLATE.MANIFEST_TYPE && (
             <NetworkCommentTemplate
               annotation={annotation}
               canvases={canvases}
@@ -106,7 +106,7 @@ export default function AnnotationFormBody(
           )
         }
           {
-          templateType.id === template.IIIF_TYPE && (
+          templateType.id === TEMPLATE.IIIF_TYPE && (
             <IIIFTemplate
               annotation={annotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
@@ -115,7 +115,7 @@ export default function AnnotationFormBody(
             />
           )
         }
-            {templateType.id === template.TAGGING_TYPE && (
+            {templateType.id === TEMPLATE.TAGGING_TYPE && (
             <TaggingTemplate
               canvases={canvases}
               saveAnnotation={saveAnnotation}

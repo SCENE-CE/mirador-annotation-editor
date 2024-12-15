@@ -6,7 +6,7 @@ import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import ManifestNetworkFormSection from './ManifestNetworkFormSection';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
-import { template } from './AnnotationFormUtils';
+import { TEMPLATE } from './AnnotationFormUtils';
 import AnnotationFormFooter from './AnnotationFormFooter';
 
 /** Form part for edit annotation content and body */
@@ -39,7 +39,7 @@ function NetworkCommentTemplate(
       maeData: {
         manifestNetwork: '',
         target: null,
-        templateType: template.MANIFEST_TYPE,
+        templateType: TEMPLATE.MANIFEST_TYPE,
       },
       motivation: 'commenting',
       target: null,

@@ -1,6 +1,6 @@
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
 import { getVisibleCanvasAudioResources, getVisibleCanvasVideoResources } from 'mirador/dist/es/src/state/selectors';
-import { mediaTypes } from './annotationForm/AnnotationFormUtils';
+import { MEDIA_TYPES } from './annotationForm/AnnotationFormUtils';
 
 
 // TODO All the code related to the video player must be moved in MAEV plugin
@@ -25,10 +25,10 @@ export const playerReferences = (function () {
       return _canvases;
     },
     getContainer() {
-      if (_mediaType === mediaTypes.IMAGE) {
+      if (_mediaType === MEDIA_TYPES.IMAGE) {
         return _media.current.container;
       }
-      if (_mediaType === mediaTypes.VIDEO) {
+      if (_mediaType === MEDIA_TYPES.VIDEO) {
         return _media.ref.current.parentElement;
       }
       return null;
@@ -40,10 +40,10 @@ export const playerReferences = (function () {
       return _overlay.containerWidth;
     },
     getHeight() {
-      if (_mediaType === mediaTypes.IMAGE) {
+      if (_mediaType === MEDIA_TYPES.IMAGE) {
         return _canvases[0].__jsonld.height;
       }
-      if (_mediaType === mediaTypes.VIDEO) {
+      if (_mediaType === MEDIA_TYPES.VIDEO) {
         // TODO not perfect becasue we use the canvas size and not the video size
         return _media.player.props.iiifVideoInfos.getHeight();
       }
@@ -58,17 +58,17 @@ export const playerReferences = (function () {
       return _overlay;
     },
     getWidth() {
-      if (_mediaType === mediaTypes.IMAGE) {
+      if (_mediaType === MEDIA_TYPES.IMAGE) {
         return _canvases[0].__jsonld.width;
       }
-      if (_mediaType === mediaTypes.VIDEO) {
+      if (_mediaType === MEDIA_TYPES.VIDEO) {
         // TODO not perfect becasue we use the canvas size and not the video size
         return _media.player.props.iiifVideoInfos.getWidth();
       }
       return undefined;
     },
     getDisplayedImageWidth() {
-      if (_mediaType === mediaTypes.IMAGE) {
+      if (_mediaType === MEDIA_TYPES.IMAGE) {
         const viewer = _media.current;
         if (viewer && viewer.world.getItemCount() > 0) {
           const percentageWidth = _canvases[0].__jsonld.width * viewer.viewport.getZoom();
@@ -77,7 +77,7 @@ export const playerReferences = (function () {
           return actualWidthInPixels;
         }
       }
-      if (_mediaType === mediaTypes.VIDEO) {
+      if (_mediaType === MEDIA_TYPES.VIDEO) {
         // TODO: Implement displayed width for video
         // From video file return Math.round(_media.video.getBoundingClientRect().width);
         // return _media.video.getSize().width;
@@ -87,7 +87,7 @@ export const playerReferences = (function () {
       return undefined;
     },
     getDisplayedImageHeight() {
-      if (_mediaType === mediaTypes.IMAGE) {
+      if (_mediaType === MEDIA_TYPES.IMAGE) {
         const viewer = _media.current;
         if (viewer) {
           const percentageHeight = _canvases[0].__jsonld.height * viewer.viewport.getZoom();
@@ -96,14 +96,14 @@ export const playerReferences = (function () {
           return actualHeightInPixels;
         }
       }
-      if (_mediaType === mediaTypes.VIDEO) {
+      if (_mediaType === MEDIA_TYPES.VIDEO) {
         return _overlay.containerHeight;
       }
       return undefined;
     },
     getImagePosition() {
       // TODO: Index off the IIIF canvas instead of the first image
-      if (_mediaType === mediaTypes.IMAGE) {
+      if (_mediaType === MEDIA_TYPES.IMAGE) {
         const viewer = _media.current;
         if (viewer) {
           // Assuming one image in OpenSeadragon for now
@@ -120,7 +120,7 @@ export const playerReferences = (function () {
           return position;
         }
       }
-      if (_mediaType === mediaTypes.VIDEO) {
+      if (_mediaType === MEDIA_TYPES.VIDEO) {
         const { video } = _media;
         const position = {
           x: 0,
@@ -131,14 +131,14 @@ export const playerReferences = (function () {
       return undefined;
     },
     getZoom() {
-      if (_mediaType === mediaTypes.IMAGE) {
+      if (_mediaType === MEDIA_TYPES.IMAGE) {
         const currentZoom = _media.current.viewport.getZoom();
         const maxZoom = _media.current.viewport.getMaxZoom();
         let zoom = currentZoom / maxZoom;
         zoom = Math.round(zoom * 100) / 100;
         return zoom;
       }
-      if (_mediaType === mediaTypes.VIDEO) {
+      if (_mediaType === MEDIA_TYPES.VIDEO) {
         // TODO: Implement zoom for video
 
         return _overlay.containerWidth / this.getWidth();
@@ -155,13 +155,13 @@ export const playerReferences = (function () {
       const videoResources = getVisibleCanvasVideoResources(state, { windowId }) || [];
 
       if (videoResources.length > 0) {
-        return mediaTypes.VIDEO;
+        return MEDIA_TYPES.VIDEO;
       }
       if (audioResources.length > 0) {
-        return mediaTypes.AUDIO;
+        return MEDIA_TYPES.AUDIO;
       }
 
-      return mediaTypes.IMAGE;
+      return MEDIA_TYPES.IMAGE;
     },
     init(state, windowId, playerRef, actions) {
       _actions = actions;
@@ -171,7 +171,7 @@ export const playerReferences = (function () {
 
       if (_media) {
         switch (_mediaType) {
-          case mediaTypes.IMAGE:
+          case MEDIA_TYPES.IMAGE:
             _overlay = {
               canvasHeight: _media.current.canvas.clientHeight,
               canvasWidth: _media.current.canvas.clientWidth,
@@ -179,7 +179,7 @@ export const playerReferences = (function () {
               containerWidth: _media.current.canvas.clientWidth,
             };
             break;
-          case mediaTypes.VIDEO:
+          case MEDIA_TYPES.VIDEO:
             _overlay = _media.canvasOverlay;
             break;
           default:
@@ -195,18 +195,18 @@ export const playerReferences = (function () {
     isInitialized() {
       // TODO this part must be clarified
       // Its not exactly initialisation but if the player is available for the media type
-      return _media && (_media.current || _media.video) && (_mediaType !== mediaTypes.UNKNOWN && _mediaType !== mediaTypes.AUDIO);
+      return _media && (_media.current || _media.video) && (_mediaType !== MEDIA_TYPES.UNKNOWN && _mediaType !== MEDIA_TYPES.AUDIO);
     },
 
     // TODO internalize actions
     setCurrentTime(windowId, ...args) {
-      if (_mediaType === mediaTypes.VIDEO) {
+      if (_mediaType === MEDIA_TYPES.VIDEO) {
         return _actions.setWindowCurrentTime(windowId, ...args);
       }
       console.error('Cannot set current time for image');
     },
     setSeekTo(windowId, ...args) {
-      if (_mediaType === mediaTypes.VIDEO) {
+      if (_mediaType === MEDIA_TYPES.VIDEO) {
         return _actions.setWindowSeekTo(windowId, ...args);
       }
       console.error('Cannot seek time for image');

@@ -7,7 +7,7 @@ import { maeTargetToIiifTarget } from '../IIIFUtils';
 
 import {
   TARGET_VIEW,
-  template,
+  TEMPLATE,
   defaultToolState,
 } from './AnnotationFormUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
@@ -66,7 +66,7 @@ export default function DrawingTemplate(
       maeData: {
         drawingState: null, // Add full target
         target: null,
-        templateType: template.KONVA_TYPE,
+        templateType: TEMPLATE.KONVA_TYPE,
       },
       motivation: 'commenting',
       target: null,

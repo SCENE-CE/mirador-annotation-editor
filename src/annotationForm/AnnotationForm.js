@@ -7,9 +7,9 @@ import { Grid, Link } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
 import {
-  getTemplateType, mediaTypes,
+  getTemplateType, MEDIA_TYPES,
   saveAnnotationInStorageAdapter,
-  template,
+  TEMPLATE,
 } from './AnnotationFormUtils';
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormBody from './AnnotationFormBody';
@@ -49,7 +49,7 @@ export default function AnnotationForm(
         setTemplateType(getTemplateType(annotation.maeData.templateType));
       } else {
         // Annotation has been created with other IIIF annotation editor
-        setTemplateType(getTemplateType(template.IIIF_TYPE));
+        setTemplateType(getTemplateType(TEMPLATE.IIIF_TYPE));
       }
     }
   }
@@ -113,7 +113,7 @@ export default function AnnotationForm(
   const saveAnnotation = (annotationState, canvasId) => {
     // Resize Stage to match true size of the media
 
-    if (mediaType !== mediaTypes.AUDIO) {
+    if (mediaType !== MEDIA_TYPES.AUDIO) {
       // Get storage adapter for the canvas
       const storageAdapter = config.annotation.adapter(canvasId);
       return saveAnnotationInStorageAdapter(

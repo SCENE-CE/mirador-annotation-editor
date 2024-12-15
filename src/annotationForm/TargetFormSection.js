@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography } from '@mui/material';
-import { mediaTypes } from './AnnotationFormUtils';
+import { MEDIA_TYPES } from './AnnotationFormUtils';
 import TargetTimeInput from './TargetTimeInput';
 import { TargetSpatialInput } from './TargetSpatialInput';
 import {playerReferences} from '../playerReferences';
@@ -34,7 +34,7 @@ export default function TargetFormSection(
   if (!target) {
     // eslint-disable-next-line no-param-reassign
     target = {};
-    if (playerReferences.getMediaType() === mediaTypes.VIDEO) {
+    if (playerReferences.getMediaType() === MEDIA_TYPES.VIDEO) {
       // eslint-disable-next-line no-param-reassign
       target.tstart = currentTime || 0;
       target.tend = playerReferences.getMediaDuration() ? Math.floor(playerReferences.getMediaDuration()) : 0;
@@ -42,8 +42,8 @@ export default function TargetFormSection(
 
     // TODO Check if its possible to use overlay ?
     switch (playerReferences.getMediaType()) {
-      case mediaTypes.IMAGE:
-      case mediaTypes.VIDEO:
+      case MEDIA_TYPES.IMAGE:
+      case MEDIA_TYPES.VIDEO:
         const targetHeigth = playerReferences.getHeight();
         const targetWidth =  playerReferences.getWidth();
         // eslint-disable-next-line no-param-reassign
@@ -78,12 +78,12 @@ export default function TargetFormSection(
     });
   };
 
-  if (playerReferences.getMediaType() === mediaTypes.IMAGE) {
+  if (playerReferences.getMediaType() === MEDIA_TYPES.IMAGE) {
     // eslint-disable-next-line no-param-reassign
     timeTarget = false;
   }
 
-  if (playerReferences.getMediaType() === mediaTypes.AUDIO) {
+  if (playerReferences.getMediaType() === MEDIA_TYPES.AUDIO) {
     // eslint-disable-next-line no-param-reassign
     spatialTarget = false;
   }

@@ -7,7 +7,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import HMSInput from './HMSInput';
-import { mediaTypes } from './AnnotationFormUtils';
+import { MEDIA_TYPES } from './AnnotationFormUtils';
 import { playerReferences } from '../playerReferences';
 
 const StyledSlider = styled(Slider)(({ theme }) => ({
@@ -40,14 +40,14 @@ function TargetTimeInput({
 }) {
   let duration;
 
-  if (playerReferences.getMediaType() === mediaTypes.VIDEO) {
+  if (playerReferences.getMediaType() === MEDIA_TYPES.VIDEO) {
     duration = playerReferences.getMediaDuration();
   }
 
   let audioDuration;
   let audioElement;
 
-  if (playerReferences.getMediaType() === mediaTypes.AUDIO) {
+  if (playerReferences.getMediaType() === MEDIA_TYPES.AUDIO) {
     const audio = getMediaAudio;
     if (audio[0]) {
       audioDuration = audio[0].__jsonld.duration;

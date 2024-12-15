@@ -7,7 +7,7 @@ import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { OVERLAY_TOOL } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
-export const template = {
+export const TEMPLATE = {
   IIIF_TYPE: 'iiif',
   IMAGE_TYPE: 'image',
   KONVA_TYPE: 'konva',
@@ -16,34 +16,34 @@ export const template = {
   TEXT_TYPE: 'text',
 };
 
-export const mediaTypes = {
+export const MEDIA_TYPES = {
   AUDIO: 'Audio',
   IMAGE: 'Image',
   UNKNOWN: 'Unknown',
   VIDEO: 'Video',
 };
 /** Return template type * */
-export const getTemplateType = (templateType) => templateTypes.find(
+export const getTemplateType = (templateType) => TEMPLATE_TYPES.find(
   (type) => type.id === templateType,
 );
 
 /**
  * List of the template types supported
  */
-export const templateTypes = [
+export const TEMPLATE_TYPES = [
   {
     description: 'Textual note with target',
     icon: <TextFieldsIcon />,
-    id: template.TEXT_TYPE,
+    id: TEMPLATE.TEXT_TYPE,
     // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
-      if (mediaType === mediaTypes.VIDEO) {
-        return false;
+      if (mediaType === MEDIA_TYPES.VIDEO) {
+        return true;
       }
-      if (mediaType === mediaTypes.IMAGE) {
-        return false;
+      if (mediaType === MEDIA_TYPES.IMAGE) {
+        return true;
       }
-      if (mediaType === mediaTypes.AUDIO) {
+      if (mediaType === MEDIA_TYPES.AUDIO) {
         return false;
       }
     },
@@ -52,16 +52,16 @@ export const templateTypes = [
   {
     description: 'Tag with target',
     icon: <LocalOfferIcon fontSize="small" />,
-    id: template.TAGGING_TYPE,
+    id: TEMPLATE.TAGGING_TYPE,
     // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
-      if (mediaType === mediaTypes.VIDEO) {
+      if (mediaType === MEDIA_TYPES.VIDEO) {
         return true;
       }
-      if (mediaType === mediaTypes.IMAGE) {
+      if (mediaType === MEDIA_TYPES.IMAGE) {
         return true;
       }
-      if (mediaType === mediaTypes.AUDIO) {
+      if (mediaType === MEDIA_TYPES.AUDIO) {
         return true;
       }
     },
@@ -70,16 +70,16 @@ export const templateTypes = [
   {
     description: 'Image in overlay with a note',
     icon: <ImageIcon fontSize="small" />,
-    id: template.IMAGE_TYPE,
+    id: TEMPLATE.IMAGE_TYPE,
     // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
-      if (mediaType === mediaTypes.VIDEO) {
+      if (mediaType === MEDIA_TYPES.VIDEO) {
         return false;
       }
-      if (mediaType === mediaTypes.IMAGE) {
+      if (mediaType === MEDIA_TYPES.IMAGE) {
         return false;
       }
-      if (mediaType === mediaTypes.AUDIO) {
+      if (mediaType === MEDIA_TYPES.AUDIO) {
         return false;
       }
     },
@@ -88,16 +88,16 @@ export const templateTypes = [
   {
     description: 'Drawings and text in overlay',
     icon: <CategoryIcon fontSize="small" />,
-    id: template.KONVA_TYPE,
+    id: TEMPLATE.KONVA_TYPE,
     // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
-      if (mediaType === mediaTypes.VIDEO) {
+      if (mediaType === MEDIA_TYPES.VIDEO) {
         return false;
       }
-      if (mediaType === mediaTypes.IMAGE) {
+      if (mediaType === MEDIA_TYPES.IMAGE) {
         return false;
       }
-      if (mediaType === mediaTypes.AUDIO) {
+      if (mediaType === MEDIA_TYPES.AUDIO) {
         return false;
       }
     },
@@ -123,16 +123,16 @@ export const templateTypes = [
   {
     description: 'Edit directly the IIIF json code',
     icon: <DataObjectIcon fontSize="small" />,
-    id: template.IIIF_TYPE,
+    id: TEMPLATE.IIIF_TYPE,
     // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
-      if (mediaType === mediaTypes.VIDEO) {
+      if (mediaType === MEDIA_TYPES.VIDEO) {
         return true;
       }
-      if (mediaType === mediaTypes.IMAGE) {
+      if (mediaType === MEDIA_TYPES.IMAGE) {
         return true;
       }
-      if (mediaType === mediaTypes.AUDIO) {
+      if (mediaType === MEDIA_TYPES.AUDIO) {
         return true;
       }
     },

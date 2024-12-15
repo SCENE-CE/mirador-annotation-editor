@@ -5,10 +5,10 @@ import { Grid } from '@mui/material';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { template } from './AnnotationFormUtils';
+import { TEMPLATE } from './AnnotationFormUtils';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
 import { getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import {playerReferences} from "../playerReferences";
+import { playerReferences } from '../playerReferences';
 
 /** Form part for edit annotation content and body */
 function TextCommentTemplate(
@@ -34,7 +34,7 @@ function TextCommentTemplate(
       },
       maeData: {
         target: null,
-        templateType: template.TEXT_TYPE,
+        templateType: TEMPLATE.TEXT_TYPE,
       },
       motivation: 'commenting',
       target: null,
@@ -88,7 +88,7 @@ function TextCommentTemplate(
       </Grid>
       <Grid item>
         <TargetFormSection
-            currentTime={currentTime}
+          currentTime={currentTime}
           onChangeTarget={updateTargetState}
           target={annotationState.maeData.target}
           windowId={windowId}

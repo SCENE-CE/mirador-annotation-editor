@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { JsonEditor as Editor } from 'jsoneditor-react';
 import ace from 'brace';
 import PropTypes from 'prop-types';
-import { mediaTypes } from './AnnotationFormUtils';
+import { MEDIA_TYPES } from './AnnotationFormUtils';
 import {playerReferences} from "../playerReferences";
 
 /** Debug Component * */
@@ -25,7 +25,7 @@ export function Debug(
     }
   };
   /**check if mediaType = video and if it is set border around video**/
-  if (playerReferences.getMediaType() === mediaTypes.VIDEO) {
+  if (playerReferences.getMediaType() === MEDIA_TYPES.VIDEO) {
     const videoElement = document.querySelector('video');
     const parentVideoElement = videoElement.parentElement;
     const grandParentVideoElement = parentVideoElement.parentElement;

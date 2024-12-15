@@ -6,7 +6,7 @@ import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
 import {
-  TARGET_VIEW, template, defaultToolState,
+  TARGET_VIEW, TEMPLATE, defaultToolState,
 } from './AnnotationFormUtils';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import AnnotationDrawing from './AnnotationFormOverlay/AnnotationDrawing';
@@ -48,7 +48,7 @@ export default function ImageCommentTemplate(
       maeData: {
         drawingState: null, // Add full target
         target: null,
-        templateType: template.IMAGE_TYPE,
+        templateType: TEMPLATE.IMAGE_TYPE,
       },
       motivation: 'commenting',
       target: null,

@@ -1,5 +1,6 @@
 import { getSvg } from './annotationForm/AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { playerReferences } from './playerReferences';
+import { TEMPLATE } from './annotationForm/AnnotationFormUtils';
 
 /**
  * Convert annotation state to be saved. Function change the annotationState object

@@ -7,7 +7,7 @@ import 'brace/mode/json';
 import 'brace/theme/github';
 import { Paper } from '@mui/material';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { template } from './AnnotationFormUtils';
+import { TEMPLATE } from './AnnotationFormUtils';
 
 /**
  * IIIFTemplate component
@@ -35,7 +35,7 @@ export default function IIIFTemplate({
       },
       id: null,
       maeData: {
-        templateType: template.IIIF_TYPE,
+        templateType: TEMPLATE.IIIF_TYPE,
       },
       motivation: '',
       target: '',
