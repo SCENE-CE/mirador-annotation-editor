@@ -9,7 +9,7 @@ import { TEMPLATE } from './annotationForm/AnnotationFormUtils';
  * @param windowId
  * @returns {Promise<void>}
  */
-export const convertAnnotationStateToBeSaved = async (annotationState, canvas, windowId) => {
+export const convertAnnotationStateToBeSaved = async (annotationState, canvas, windowId, template) => {
   const annotationStateForSaving = annotationState;
   // Adapt target to the canvas
   // eslint-disable-next-line no-param-reassign
@@ -21,11 +21,13 @@ export const convertAnnotationStateToBeSaved = async (annotationState, canvas, w
     scale: annotationStateForSaving.maeData.target.scale,
   };
 
-  // Complex annotation
-  if (annotationStateForSaving.maeData.target.drawingState.shapes.length > 0
-    && annotationStateForSaving.maeData.target.drawingState.shapes[0].type === 'rectangle') {
-    // eslint-disable-next-line no-param-reassign
-    annotationStateForSaving.maeData.target.svg = await getSvg(windowId);
+  if (template == TEMPLATE.TAGGING_TYPE) {
+    // Complex annotation
+    if (annotationStateForSaving.maeData.target.drawingState.shapes.length > 0
+      && annotationStateForSaving.maeData.target.drawingState.shapes[0].type === 'rectangle') {
+      // eslint-disable-next-line no-param-reassign
+      annotationStateForSaving.maeData.target.svg = await getSvg(windowId);
+    }
   }
 
   // eslint-disable-next-line no-param-reassign

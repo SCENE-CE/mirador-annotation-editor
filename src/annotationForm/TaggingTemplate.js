@@ -83,6 +83,7 @@ export default function TaggingTemplate(
           annotationState,
           canvas,
           windowId,
+          TEMPLATE.TAGGING_TYPE,
         );
         saveAnnotation(annotationStateToBeSaved, canvas.id);
       });

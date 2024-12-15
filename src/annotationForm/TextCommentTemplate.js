@@ -6,8 +6,8 @@ import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { TEMPLATE } from './AnnotationFormUtils';
-import { maeTargetToIiifTarget } from '../IIIFUtils';
-import { getSvg } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { convertAnnotationStateToBeSaved, maeTargetToIiifTarget } from '../IIIFUtils';
+import { getSvg, resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { playerReferences } from '../playerReferences';
 
 /** Form part for edit annotation content and body */
@@ -70,7 +70,26 @@ function TextCommentTemplate(
 
   /** Save function * */
   const saveFunction = () => {
-    saveAnnotation(annotationState);
+    resizeKonvaStage(
+      windowId,
+      playerReferences.getWidth(),
+      playerReferences.getHeight(),
+      1 / playerReferences.getScale(),
+    );
+    const promises = playerReferences.getCanvases()
+      .map(async (canvas) => {
+        const annotationStateToBeSaved = await convertAnnotationStateToBeSaved(
+          annotationState,
+          canvas,
+          windowId,
+          TEMPLATE.TEXT_TYPE,
+        );
+        saveAnnotation(annotationStateToBeSaved, canvas.id);
+      });
+    Promise.all(promises)
+      .then(() => {
+        closeFormCompanionWindow();
+      });
   };
 
   useEffect(() => {
