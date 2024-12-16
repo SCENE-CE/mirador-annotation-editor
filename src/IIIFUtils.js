@@ -29,10 +29,9 @@ export const convertAnnotationStateToBeSaved = async (
     tstart: annotationStateForSaving.maeData.target.tstart,
   };
 
-  if (annotationStateForSaving.maeData.templateType == TEMPLATE.TAGGING_TYPE) {
+  if (annotationStateForSaving.maeData.templateType == TEMPLATE.TAGGING_TYPE || annotationStateForSaving.maeData.templateType == TEMPLATE.TEXT_TYPE) {
     // Complex annotation
-    if (annotationStateForSaving.maeData.target.drawingState.shapes.length > 0
-      && annotationStateForSaving.maeData.target.drawingState.shapes[0].type === 'rectangle') {
+    if (annotationStateForSaving.maeData.target.drawingState.shapes.length > 0) {
       // eslint-disable-next-line no-param-reassign
       annotationStateForSaving.maeData.target.svg = await getSvg(windowId);
     }

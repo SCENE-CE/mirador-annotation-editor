@@ -38,10 +38,10 @@ export const TEMPLATE_TYPES = [
     // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === MEDIA_TYPES.VIDEO) {
-        return false;
+        return true;
       }
       if (mediaType === MEDIA_TYPES.IMAGE) {
-        return false;
+        return true;
       }
       if (mediaType === MEDIA_TYPES.AUDIO) {
         return false;
