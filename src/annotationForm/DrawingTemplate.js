@@ -14,7 +14,11 @@ import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { getKonvaAsDataURL, KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import {
+  getKonvaAsDataURL,
+  KONVA_MODE,
+  resizeKonvaStage
+} from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { Debug } from './Debug';
 import { playerReferences } from '../playerReferences';
 
@@ -86,11 +90,18 @@ export default function DrawingTemplate(
 
   /** save Function * */
   const saveFunction = () => {
+    resizeKonvaStage(
+      windowId,
+      playerReferences.getWidth(),
+      playerReferences.getHeight(),
+      1 / playerReferences.getScale(),
+    );
+    saveAnnotation(annotationState);
+
+
     const promises = canvases.map(async (canvas) => {
       // Adapt target to the canvas
       // eslint-disable-next-line no-param-reassign
-      annotationState.body.id = await getKonvaAsDataURL(windowId);
-      annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
       annotationState.maeData.drawingState = JSON.stringify(drawingState);
       // delete annotationState.maeData.target;
       return saveAnnotation(annotationState, canvas.id);
