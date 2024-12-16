@@ -43,6 +43,8 @@ export const convertAnnotationStateToBeSaved = async (
 
   if (annotationStateForSaving.maeData.templateType == TEMPLATE.KONVA_TYPE) {
     annotationStateForSaving.body.id = await getKonvaAsDataURL(windowId);
+    annotationStateForSaving.body.format = 'image/jpg';
+    annotationStateForSaving.type = "Annotation";
   }
 
   // eslint-disable-next-line no-param-reassign
@@ -53,18 +55,21 @@ export const convertAnnotationStateToBeSaved = async (
   annotationStateForSaving.target = maeTargetToIiifTarget(
     annotationStateForSaving.maeData.target,
     canvas.id,
+    annotationStateForSaving.maeData.templateType,
   );
   // eslint-disable-next-line no-param-reassign
   annotationStateForSaving.maeData.target.drawingState = JSON.stringify(
     annotationStateForSaving.maeData.target.drawingState,
   );
 
+  debugger;
+
   return annotationStateForSaving;
 };
 
 /** Transform maetarget to IIIF compatible data * */
-export const maeTargetToIiifTarget = (maeTarget, canvasId, windowId) => {
-  if (maeTarget.drawingState) {
+export const maeTargetToIiifTarget = (maeTarget, canvasId, templateType) => {
+  if (maeTarget.drawingState && maeTarget.templateType== TEMPLATE.KONVA_TYPE) {
     if (maeTarget.drawingState.shapes.length == 0) {
       console.info('Implement target as string on fullSizeCanvas');
       return `${canvasId}#` + `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}`;

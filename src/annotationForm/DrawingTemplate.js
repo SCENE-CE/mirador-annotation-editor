@@ -70,6 +70,7 @@ export default function DrawingTemplate(
       maeData: {
         target: {
           drawingState: null,
+          fullCanvaXYWH: `0,0,${playerReferences.getWidth()},${playerReferences.getHeight()}`,
         },
         templateType: TEMPLATE.KONVA_TYPE,
       },
@@ -97,7 +98,7 @@ export default function DrawingTemplate(
       playerReferences.getHeight(),
       1 / playerReferences.getScale(),
     );
-    annotationState.maeData.target.drawingState=drawingState;
+    annotationState.maeData.target.drawingState = drawingState;
     saveAnnotation(annotationState);
   };
   /** Update annotation state with text body* */
