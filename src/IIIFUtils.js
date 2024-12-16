@@ -12,8 +12,7 @@ import { TEMPLATE } from './annotationForm/AnnotationFormUtils';
 export const convertAnnotationStateToBeSaved = async (
   annotationState,
   canvas,
-  windowId,
-  template,
+  windowId
 ) => {
   const annotationStateForSaving = annotationState;
   // Adapt target to the canvas
@@ -30,7 +29,7 @@ export const convertAnnotationStateToBeSaved = async (
     tstart: annotationStateForSaving.maeData.target.tstart,
   };
 
-  if (template == TEMPLATE.TAGGING_TYPE) {
+  if (annotationStateForSaving.maeData.templateType == TEMPLATE.TAGGING_TYPE) {
     // Complex annotation
     if (annotationStateForSaving.maeData.target.drawingState.shapes.length > 0
       && annotationStateForSaving.maeData.target.drawingState.shapes[0].type === 'rectangle') {

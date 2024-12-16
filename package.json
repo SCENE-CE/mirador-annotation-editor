@@ -11,7 +11,7 @@
     "build:cjs": "mkdir -p lib && cp -r src/* lib && NODE_ENV=production MODULE_FORMAT=cjs npx babel lib -d lib",
     "build:demo": "NODE_ENV=development webpack --mode=development",
     "clean": "rm -rf ./umd && rm -rf ./es && rm -rf ./lib && rm -rf ./demo/dist",
-    "clean-dependancies": "rm -rf package-lock.json && rm -rf node_modules",
+    "clean-deps": "rm -rf package-lock.json && rm -rf node_modules",
     "lint": "eslint ./src ./__tests__",
     "prepare": "npm run build",
     "prepublishOnly": "npm run clean && npm run build:es",
