@@ -1,6 +1,6 @@
 import {
   getKonvaAsDataURL,
-  getSvg
+  getSvg,
 } from './annotationForm/AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { playerReferences } from './playerReferences';
 import { TEMPLATE } from './annotationForm/AnnotationFormUtils';
@@ -41,7 +41,7 @@ export const convertAnnotationStateToBeSaved = async (
     }
   }
 
-  if(annotationStateForSaving.maeData.templateType == TEMPLATE.KONVA_TYPE){
+  if (annotationStateForSaving.maeData.templateType == TEMPLATE.KONVA_TYPE) {
     annotationStateForSaving.body.id = await getKonvaAsDataURL(windowId);
   }
 

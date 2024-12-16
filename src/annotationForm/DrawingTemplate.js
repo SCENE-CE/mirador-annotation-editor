@@ -17,7 +17,7 @@ import AnnotationFormFooter from './AnnotationFormFooter';
 import {
   getKonvaAsDataURL,
   KONVA_MODE,
-  resizeKonvaStage
+  resizeKonvaStage,
 } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { Debug } from './Debug';
 import { playerReferences } from '../playerReferences';
@@ -68,8 +68,9 @@ export default function DrawingTemplate(
         value: '',
       },
       maeData: {
-        drawingState: null, // Add full target
-        target: null,
+        target: {
+          drawingState: null,
+        },
         templateType: TEMPLATE.KONVA_TYPE,
       },
       motivation: 'commenting',
@@ -96,19 +97,8 @@ export default function DrawingTemplate(
       playerReferences.getHeight(),
       1 / playerReferences.getScale(),
     );
+    annotationState.maeData.target.drawingState=drawingState;
     saveAnnotation(annotationState);
-
-
-    const promises = canvases.map(async (canvas) => {
-      // Adapt target to the canvas
-      // eslint-disable-next-line no-param-reassign
-      annotationState.maeData.drawingState = JSON.stringify(drawingState);
-      // delete annotationState.maeData.target;
-      return saveAnnotation(annotationState, canvas.id);
-    });
-    Promise.all(promises).then(() => {
-      closeFormCompanionWindow();
-    });
   };
   /** Update annotation state with text body* */
   const updateAnnotationTextualBodyValue = (newTextValue) => {
@@ -126,9 +116,9 @@ export default function DrawingTemplate(
   const [toolState, setToolState] = useState(defaultToolState);
   /** initialise drawing State* */
   const initDrawingState = () => {
-    if (annotationState.maeData.drawingState) {
+    if (annotationState.maeData.target.drawingState) {
       return {
-        ...JSON.parse(annotationState.maeData.drawingState),
+        ...JSON.parse(annotationState.maeData.target.drawingState),
         isDrawing: false,
       };
     }
