@@ -19,7 +19,7 @@ export const convertAnnotationStateToBeSaved = async (
 ) => {
   const annotationStateForSaving = annotationState;
 
-  if (annotationState.maeData.templateType === TEMPLATE.IIIF_TYPE ) {
+  if (annotationState.maeData.templateType === TEMPLATE.IIIF_TYPE) {
     return annotationState;
   }
 
@@ -50,6 +50,13 @@ export const convertAnnotationStateToBeSaved = async (
     annotationStateForSaving.body.id = await getKonvaAsDataURL(windowId);
     annotationStateForSaving.body.format = 'image/jpg';
     annotationStateForSaving.type = 'Annotation';
+  }
+
+  if (annotationStateForSaving.maeData.templateType == TEMPLATE.IMAGE_TYPE) {
+    if (annotationStateForSaving.maeData.target.drawingState.shapes.length == 1) {
+      annotationStateForSaving.body.id = annotationStateForSaving.maeData.target.drawingState.shapes[0].url;
+      annotationStateForSaving.type = 'Annotation';
+    }
   }
 
   // eslint-disable-next-line no-param-reassign

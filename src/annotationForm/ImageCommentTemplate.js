@@ -73,23 +73,8 @@ export default function ImageCommentTemplate(
 
   /** save Function * */
   const saveFunction = () => {
-    const promises = canvases.map(async (canvas) => {
-      // Adapt target to the canvas
-      // eslint-disable-next-line no-param-reassign
-      annotationState.maeData.target.drawingState = drawingState;
-      if (drawingState.shapes) {
-        // TODO check if only one shape is allowed
-        annotationState.body.id = drawingState.shapes[0].url;
-      }
-      annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
-      annotationState.maeData.drawingState = JSON.stringify(drawingState);
-      // delete annotationState.maeData.target;
-      return saveAnnotation(annotationState, canvas.id);
-    });
-    Promise.all(promises)
-      .then(() => {
-        closeFormCompanionWindow();
-      });
+    annotationState.maeData.target.drawingState = drawingState;
+    saveAnnotation(annotationState);
   };
 
   /** Update Annotation with body Text * */
