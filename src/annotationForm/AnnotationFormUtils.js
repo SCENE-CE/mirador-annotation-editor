@@ -74,8 +74,9 @@ export const TEMPLATE_TYPES = [
     // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === MEDIA_TYPES.VIDEO) {
-        return false;
+        return true;
       }
+      // Mirador doesn't support annotation from an image
       if (mediaType === MEDIA_TYPES.IMAGE) {
         return false;
       }
@@ -94,8 +95,9 @@ export const TEMPLATE_TYPES = [
       if (mediaType === MEDIA_TYPES.VIDEO) {
         return true;
       }
+      // Mirador doesnot support annotation from an image
       if (mediaType === MEDIA_TYPES.IMAGE) {
-        return true;
+        return false;
       }
       if (mediaType === MEDIA_TYPES.AUDIO) {
         return false;
