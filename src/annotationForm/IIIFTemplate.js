@@ -31,13 +31,13 @@ export default function IIIFTemplate({
       body: {
         id: '',
         type: '',
-        value: '',
+        value: 'Your annotation',
       },
       id: null,
       maeData: {
         templateType: TEMPLATE.IIIF_TYPE,
       },
-      motivation: '',
+      motivation: 'commenting',
       target: '',
     };
   }
