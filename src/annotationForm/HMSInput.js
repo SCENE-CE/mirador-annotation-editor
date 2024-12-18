@@ -17,7 +17,7 @@ const StyledRoot = styled('div')({
 });
 
 /** Hours minutes seconds form inputs */
-function HMSInput({ seconds, onChange }) {
+function HMSInput({ seconds, onChange, duration }) {
   const [hms, setHms] = useState(secondsToHMSarray(seconds));
 
   useEffect(() => {
@@ -28,12 +28,33 @@ function HMSInput({ seconds, onChange }) {
 
   /** Handle change on one form */
   const someChange = (ev) => {
-    if (!ev.target.value) {
-      return;
+    const { name, value } = ev.target;
+    let numValue = Number(value);
+
+    if (numValue < 0) {
+      numValue = 0;
     }
-    hms[ev.target.name] = Number(ev.target.value);
-    setHms(hms);
-    onChange(hms.hours * 3600 + hms.minutes * 60 + hms.seconds);
+
+    if ((name === 'minutes' || name === 'seconds') && numValue > 59) {
+      numValue = 59;
+    }
+
+    const newHms = {
+      ...hms,
+      [name]: numValue,
+    };
+
+    let totalSeconds = newHms.hours * 3600 + newHms.minutes * 60 + newHms.seconds;
+
+    if (totalSeconds > duration) {
+      totalSeconds = duration; // Clamp to the duration
+      newHms.hours = Math.floor(totalSeconds / 3600);
+      newHms.minutes = Math.floor((totalSeconds % 3600) / 60);
+      newHms.seconds = totalSeconds % 60;
+    }
+
+    setHms({ ...newHms }); // Ensure immutability
+    onChange(totalSeconds);
   };
 
   return (
@@ -47,7 +68,6 @@ function HMSInput({ seconds, onChange }) {
         onChange={someChange}
         dir="rtl"
         inputProps={{ style: { width: '35px' } }}
-
       />
       <StyledHMSLabel style={{ margin: '2px' }}>h</StyledHMSLabel>
       <StyledInput
@@ -77,6 +97,7 @@ function HMSInput({ seconds, onChange }) {
 }
 
 HMSInput.propTypes = {
+  duration: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
   seconds: PropTypes.number.isRequired,
 };

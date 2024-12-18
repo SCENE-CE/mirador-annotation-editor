@@ -14,8 +14,6 @@ import {
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormBody from './AnnotationFormBody';
 import { playerReferences } from '../playerReferences';
-import { convertAnnotationStateToBeSaved } from '../IIIFUtils';
-import { resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
 /**
  * Component for submitting a form to create or edit an annotation.
