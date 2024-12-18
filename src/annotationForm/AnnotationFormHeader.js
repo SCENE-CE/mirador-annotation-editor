@@ -33,7 +33,7 @@ export default function AnnotationFormHeader(
       <Grid item>
         {annotation.id == null
         && (
-          <MiradorMenuButton>
+          <MiradorMenuButton ariaLabel="back" TooltipProps="back">
             <ChevronLeftIcon onClick={goBackToTemplateSelection} />
           </MiradorMenuButton>
         )}

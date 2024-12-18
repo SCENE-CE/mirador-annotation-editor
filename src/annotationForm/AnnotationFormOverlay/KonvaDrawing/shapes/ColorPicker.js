@@ -1,5 +1,5 @@
 import {
-  ClickAwayListener, Divider, Grid, MenuItem, MenuList, Popover,
+    ClickAwayListener, Divider, Grid, MenuItem, MenuList, Popover, Tooltip,
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -46,7 +46,7 @@ export default function ColorPicker(
           {
                 toolState.activeTool !== 'text' && (
                 <>
-
+                    <Tooltip title="select border color">
                   <ToggleButton
                     value="strokeColor"
                     aria-label="select color"
@@ -55,6 +55,8 @@ export default function ColorPicker(
                     <StrokeColorIcon style={{ fill: toolState.strokeColor }} />
                     <ArrowDropDownIcon />
                   </ToggleButton>
+                    </Tooltip>
+                    <Tooltip title="select line weight">
                   <ToggleButton
                     value="strokeColor"
                     aria-label="select line weight"
@@ -63,9 +65,12 @@ export default function ColorPicker(
                     <LineWeightIcon />
                     <ArrowDropDownIcon />
                   </ToggleButton>
+                    </Tooltip>
                 </>
                 )
 }
+<Tooltip title="select fill color">
+
           <ToggleButton
             value="fillColor"
             aria-label="select color"
@@ -74,6 +79,7 @@ export default function ColorPicker(
             <FormatColorFillIcon style={{ fill: toolState.fillColor }} />
             <ArrowDropDownIcon />
           </ToggleButton>
+</Tooltip>
         </ToggleButtonGroup>
 
         <StyledDivider flexItem orientation="vertical" />
