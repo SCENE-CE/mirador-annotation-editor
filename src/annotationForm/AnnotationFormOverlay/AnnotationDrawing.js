@@ -10,20 +10,22 @@ import { OVERLAY_TOOL, SHAPES_TOOL } from './KonvaDrawing/KonvaUtils';
 import { playerReferences } from '../../playerReferences';
 
 /** All the stuff to draw on the canvas */
-export default function AnnotationDrawing({
-  closeFormCompanionWindow,
-  displayMode,
-  drawingState,
-  isMouseOverSave,
-  scale,
-  setColorToolFromCurrentShape,
-  setDrawingState,
-  tabView,
-  toolState,
-  updateCurrentShapeInShapes,
-  updateScale,
-  windowId,
-}) {
+export default function AnnotationDrawing(
+  {
+    closeFormCompanionWindow,
+    displayMode,
+    drawingState,
+    isMouseOverSave,
+    scale,
+    setColorToolFromCurrentShape,
+    setDrawingState,
+    tabView,
+    toolState,
+    updateCurrentShapeInShapes,
+    updateScale,
+    windowId,
+  },
+) {
   const [isDrawing, setIsDrawing] = useState(false);
   const width = playerReferences.getWidth();
   const height = playerReferences.getHeight();
@@ -121,15 +123,15 @@ export default function AnnotationDrawing({
 
     // TODO This comportment must be handle by the text component
     if (drawingState.currentShape.type === 'text') {
-      // Potentially bug during the update
       const newCurrentShape = { ...drawingState.currentShape };
 
-      setDrawingState({
-        ...drawingState,
+      setDrawingState((prevState) => ({
+        ...prevState,
         currentShape: newCurrentShape,
-        // eslint-disable-next-line max-len
-        shapes: drawingState.shapes.map((shape) => (shape.id === drawingState.currentShape.id ? newCurrentShape : shape)),
-      });
+        shapes: prevState.shapes.map((shape) => (shape.id === newCurrentShape.id
+          ? { ...shape, ...newCurrentShape }
+          : shape)),
+      }));
     }
   };
   // TODO Can be removed ? --> move currentSHape and shapes in the same state
@@ -232,7 +234,6 @@ export default function AnnotationDrawing({
    */
   const handleDragStart = (evt) => {
     const modifiedshape = evt.currentTarget.attrs;
-
     setDrawingState({
       ...drawingState,
       currentShape: drawingState.shapes.find((s) => s.id === modifiedshape.id),
@@ -303,7 +304,6 @@ export default function AnnotationDrawing({
             x: pos.x,
             y: pos.y,
           };
-
           setDrawingState({
             ...drawingState,
             currentShape: shape,

@@ -27,7 +27,6 @@ function ParentComponent({
   const [selectedShape, setSelectedShape] = useState(null);
 
   useEffect(() => {
-
   }, [shapes, selectedShapeId]);
 
   useEffect(() => {
@@ -82,7 +81,7 @@ function ParentComponent({
                   onTransform,
                   shape,
                 }}
-                text={text}
+                text={shape.text}
                 key={shape.id}
               />
             );
