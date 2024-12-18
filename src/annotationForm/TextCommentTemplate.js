@@ -76,20 +76,7 @@ function TextCommentTemplate(
       playerReferences.getHeight(),
       1 / playerReferences.getScale(),
     );
-    const promises = playerReferences.getCanvases()
-      .map(async (canvas) => {
-        const annotationStateToBeSaved = await convertAnnotationStateToBeSaved(
-          annotationState,
-          canvas,
-          windowId,
-          TEMPLATE.TEXT_TYPE,
-        );
-        saveAnnotation(annotationStateToBeSaved, canvas.id);
-      });
-    Promise.all(promises)
-      .then(() => {
-        closeFormCompanionWindow();
-      });
+    saveAnnotation(annotationState);
   };
 
   useEffect(() => {

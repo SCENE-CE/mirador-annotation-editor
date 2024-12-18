@@ -50,8 +50,8 @@ export async function getSvg(windowId) {
 export async function getKonvaAsDataURL(windowId) {
   const stage = getKonvaStage(windowId);
   const dataURL = stage.toDataURL({
-    mimeType: 'image/png',
-    quality: 1,
+    mimeType: 'image/jpg',
+    quality: 0.1,
   });
   return dataURL;
 }

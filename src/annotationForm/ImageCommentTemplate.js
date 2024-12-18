@@ -8,7 +8,7 @@ import { maeTargetToIiifTarget } from '../IIIFUtils';
 import {
   TARGET_VIEW, TEMPLATE, defaultToolState,
 } from './AnnotationFormUtils';
-import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { KONVA_MODE, resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import AnnotationDrawing from './AnnotationFormOverlay/AnnotationDrawing';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import AnnotationFormFooter from './AnnotationFormFooter';
@@ -46,17 +46,14 @@ export default function ImageCommentTemplate(
         value: '',
       },
       maeData: {
-        drawingState: null, // Add full target
-        target: null,
+        target: {
+          drawingState: null,
+        }, // Add full target
         templateType: TEMPLATE.IMAGE_TYPE,
       },
       motivation: 'commenting',
       target: null,
     };
-  } else if (maeAnnotation.maeData.target.drawingState && typeof maeAnnotation.maeData.target.drawingState === 'string') {
-    maeAnnotation.maeData.target.drawingState = JSON.parse(
-      maeAnnotation.maeData.target.drawingState,
-    );
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
@@ -73,23 +70,14 @@ export default function ImageCommentTemplate(
 
   /** save Function * */
   const saveFunction = () => {
-    const promises = canvases.map(async (canvas) => {
-      // Adapt target to the canvas
-      // eslint-disable-next-line no-param-reassign
-      annotationState.maeData.target.drawingState = drawingState;
-      if (drawingState.shapes) {
-        // TODO check if only one shape is allowed
-        annotationState.body.id = drawingState.shapes[0].url;
-      }
-      annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
-      annotationState.maeData.drawingState = JSON.stringify(drawingState);
-      // delete annotationState.maeData.target;
-      return saveAnnotation(annotationState, canvas.id);
-    });
-    Promise.all(promises)
-      .then(() => {
-        closeFormCompanionWindow();
-      });
+    resizeKonvaStage(
+      windowId,
+      playerReferences.getWidth(),
+      playerReferences.getHeight(),
+      1 / playerReferences.getScale(),
+    );
+    annotationState.maeData.target.drawingState = drawingState;
+    saveAnnotation(annotationState);
   };
 
   /** Update Annotation with body Text * */
@@ -109,9 +97,9 @@ export default function ImageCommentTemplate(
 
   /** Initialize drawingState * */
   const initDrawingState = () => {
-    if (annotationState.maeData.drawingState) {
+    if (annotationState.maeData.target.drawingState) {
       return {
-        ...JSON.parse(annotationState.maeData.drawingState),
+        ...JSON.parse(annotationState.maeData.target.drawingState),
         isDrawing: false,
       };
     }
