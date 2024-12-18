@@ -46,17 +46,14 @@ export default function ImageCommentTemplate(
         value: '',
       },
       maeData: {
-        drawingState: null, // Add full target
-        target: null,
+        target: {
+          drawingState: null,
+        }, // Add full target
         templateType: TEMPLATE.IMAGE_TYPE,
       },
       motivation: 'commenting',
       target: null,
     };
-  } else if (maeAnnotation.maeData.target.drawingState && typeof maeAnnotation.maeData.target.drawingState === 'string') {
-    maeAnnotation.maeData.target.drawingState = JSON.parse(
-      maeAnnotation.maeData.target.drawingState,
-    );
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
@@ -100,9 +97,9 @@ export default function ImageCommentTemplate(
 
   /** Initialize drawingState * */
   const initDrawingState = () => {
-    if (annotationState.maeData.drawingState) {
+    if (annotationState.maeData.target.drawingState) {
       return {
-        ...JSON.parse(annotationState.maeData.drawingState),
+        ...JSON.parse(annotationState.maeData.target.drawingState),
         isDrawing: false,
       };
     }
