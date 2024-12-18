@@ -169,7 +169,7 @@ function TargetTimeInput({
               </StyledToggleButton>
             </Grid>
           </Grid>
-          <HMSInput seconds={tstart} onChange={updateTstart} />
+          <HMSInput seconds={tstart} onChange={updateTstart} duration={duration}/>
         </Grid>
         <Grid item container>
           <Grid
