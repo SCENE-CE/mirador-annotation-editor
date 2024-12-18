@@ -1,5 +1,5 @@
 import {
-  Accordion, AccordionDetails, AccordionSummary, Divider, IconButton, ListItem, Paper,
+  Accordion, AccordionDetails, AccordionSummary, Divider, IconButton, ListItem, Paper, Tooltip,
 } from '@mui/material';
 import React from 'react';
 import Typography from '@mui/material/Typography';
@@ -28,29 +28,31 @@ const ListItemContent = styled(ListItem)(({ theme }) => ({
 function ShapesList({shapes, deleteShape, currentShapeId,updateCurrentShapeInShapes}) {
 
   return (
-    <MenuList>
-      {shapes.map((shape) => (
-          <div>
-          <ListItemContent sx={{padding:0}}>
+      <MenuList>
+        {shapes.map((shape) => (
             <div>
-            <Typography
-                style={shape.id === currentShapeId ? { fontWeight: 'bold' } : {}}
-                onClick={()=> updateCurrentShapeInShapes(shape)}
-                sx={{color: 'black', cursor: 'pointer'}}
-            >
-              {shape.type}
-            </Typography>
+              <ListItemContent sx={{padding:0}}>
+                <div>
+                  <Typography
+                      style={shape.id === currentShapeId ? { fontWeight: 'bold' } : {}}
+                      onClick={()=> updateCurrentShapeInShapes(shape)}
+                      sx={{color: 'black', cursor: 'pointer'}}
+                  >
+                    {shape.type}
+                  </Typography>
+                </div>
+                <Tooltip title="delete shape">
+                  <IconButton
+                      onClick={() => deleteShape(shape.id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+              </ListItemContent>
+              <Divider/>
             </div>
-          <IconButton
-              onClick={() => deleteShape(shape.id)}
-          >
-            <DeleteIcon />
-          </IconButton>
-          </ListItemContent>
-          <Divider/>
-          </div>
-  ))}
-    </MenuList>
+        ))}
+      </MenuList>
   );
 }
 
