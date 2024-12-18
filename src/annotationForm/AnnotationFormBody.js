@@ -129,7 +129,7 @@ export default function AnnotationFormBody(
             )}
         </TemplateContainer>
       )}
-      <Grid
+    {/*   <Grid
         item
         style={{
           bottom: '0',
@@ -145,7 +145,7 @@ export default function AnnotationFormBody(
           {' '}
           advanced mode
         </ToggleButton>
-      </Grid>
+      </Grid> */}
       <Grid item>
         {showAdvanced && (
           <AdvancedAnnotationEditor
@@ -158,33 +158,52 @@ export default function AnnotationFormBody(
           />
         )}
       </Grid>
-      { debugMode && (<>
+      { debugMode && (
+      <>
         <Typography>
           { playerReferences.getMediaType() }
           {' '}
         </Typography>
         <Typography>
-          {'Scale'} { playerReferences.getScale() }
+          Scale
+          {' '}
+          { playerReferences.getScale() }
         </Typography>
         <Typography>
-          {'Zoom'} { playerReferences.getZoom() }
+          Zoom
+          {' '}
+          { playerReferences.getZoom() }
           {' '}
         </Typography>
         <Typography>
-          {'Image true Size'} { playerReferences.getWidth() } x { playerReferences.getHeight() }
+          Image true Size
+          {' '}
+          { playerReferences.getWidth() }
+          {' '}
+          x
+          {' '}
+          { playerReferences.getHeight() }
         </Typography>
         <Typography>
-          {'Container Size'} { playerReferences.getContainerWidth() } x { playerReferences.getContainerHeight() }
+          Container Size
+          {' '}
+          { playerReferences.getContainerWidth() }
+          {' '}
+          x
+          {' '}
+          { playerReferences.getContainerHeight() }
         </Typography>
         <Typography>
-          {'Image Displayed'} { playerReferences.getDisplayedImageWidth() } x { playerReferences.getDisplayedImageHeight() }
+          Image Displayed
+          {' '}
+          { playerReferences.getDisplayedImageWidth() }
+          {' '}
+          x
+          {' '}
+          { playerReferences.getDisplayedImageHeight() }
         </Typography>
-
-
-
-      </>)
-      }
-
+      </>
+      )}
     </Grid>
   );
 }

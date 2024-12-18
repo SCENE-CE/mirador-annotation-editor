@@ -23,11 +23,6 @@ export const convertAnnotationStateToBeSaved = async (
     return annotationState;
   }
 
-  // Adapt target to the canvas
-  // eslint-disable-next-line no-param-reassign
-  console.log('annotationState.maeData.target', annotationState.maeData.target);
-  // eslint-disable-next-line no-param-reassign
-
   // TODO I dont know why this code is here? To clean the object ?
   annotationStateForSaving.maeData.target = {
     drawingState: annotationStateForSaving.maeData.target.drawingState,
@@ -122,24 +117,3 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
 
   return `${canvasId}#${maeTarget.tend ? `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${maeTarget.fullCanvaXYWH}`}`;
 };
-
-/** ################### SAVE LOGIC UTILS ######################## * */
-
-/** Extract xywh from annotation target */
-export function geomFromAnnoTarget(annotarget) {
-  const r = /xywh=((-?[0-9]+,?)+)/.exec(annotarget);
-  if (!r || r.length !== 3) {
-    return '';
-  }
-  return r[1];
-}
-
-/** Extract time information from annotation target */
-export function timeFromAnnoTarget(annotarget) {
-  // TODO w3c media fragments: t=,10 t=5,
-  const r = /t=([0-9.]+),([0-9.]+)/.exec(annotarget);
-  if (!r || r.length !== 3) {
-    return [0, 0];
-  }
-  return [Number(r[1]), Number(r[2])];
-}

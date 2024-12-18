@@ -187,9 +187,6 @@ export const playerReferences = (function () {
             break;
         }
       }
-      console.debug('Player is initialized', this.isInitialized());
-      console.debug('Player type', _mediaType);
-      console.debug('_media', _media);
     },
 
     isInitialized() {
