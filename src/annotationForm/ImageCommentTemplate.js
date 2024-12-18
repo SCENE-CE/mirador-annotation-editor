@@ -8,7 +8,7 @@ import { maeTargetToIiifTarget } from '../IIIFUtils';
 import {
   TARGET_VIEW, TEMPLATE, defaultToolState,
 } from './AnnotationFormUtils';
-import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { KONVA_MODE, resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import AnnotationDrawing from './AnnotationFormOverlay/AnnotationDrawing';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import AnnotationFormFooter from './AnnotationFormFooter';
@@ -73,6 +73,12 @@ export default function ImageCommentTemplate(
 
   /** save Function * */
   const saveFunction = () => {
+    resizeKonvaStage(
+      windowId,
+      playerReferences.getWidth(),
+      playerReferences.getHeight(),
+      1 / playerReferences.getScale(),
+    );
     annotationState.maeData.target.drawingState = drawingState;
     saveAnnotation(annotationState);
   };
