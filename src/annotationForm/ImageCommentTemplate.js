@@ -8,7 +8,7 @@ import { maeTargetToIiifTarget } from '../IIIFUtils';
 import {
   TARGET_VIEW, TEMPLATE, defaultToolState,
 } from './AnnotationFormUtils';
-import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { KONVA_MODE, resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import AnnotationDrawing from './AnnotationFormOverlay/AnnotationDrawing';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import AnnotationFormFooter from './AnnotationFormFooter';
@@ -73,23 +73,14 @@ export default function ImageCommentTemplate(
 
   /** save Function * */
   const saveFunction = () => {
-    const promises = canvases.map(async (canvas) => {
-      // Adapt target to the canvas
-      // eslint-disable-next-line no-param-reassign
-      annotationState.maeData.target.drawingState = drawingState;
-      if (drawingState.shapes) {
-        // TODO check if only one shape is allowed
-        annotationState.body.id = drawingState.shapes[0].url;
-      }
-      annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
-      annotationState.maeData.drawingState = JSON.stringify(drawingState);
-      // delete annotationState.maeData.target;
-      return saveAnnotation(annotationState, canvas.id);
-    });
-    Promise.all(promises)
-      .then(() => {
-        closeFormCompanionWindow();
-      });
+    resizeKonvaStage(
+      windowId,
+      playerReferences.getWidth(),
+      playerReferences.getHeight(),
+      1 / playerReferences.getScale(),
+    );
+    annotationState.maeData.target.drawingState = drawingState;
+    saveAnnotation(annotationState);
   };
 
   /** Update Annotation with body Text * */

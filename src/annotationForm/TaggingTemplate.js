@@ -77,20 +77,7 @@ export default function TaggingTemplate(
       playerReferences.getHeight(),
       1 / playerReferences.getScale(),
     );
-    const promises = playerReferences.getCanvases()
-      .map(async (canvas) => {
-        const annotationStateToBeSaved = await convertAnnotationStateToBeSaved(
-          annotationState,
-          canvas,
-          windowId,
-          TEMPLATE.TAGGING_TYPE,
-        );
-        saveAnnotation(annotationStateToBeSaved, canvas.id);
-      });
-    Promise.all(promises)
-      .then(() => {
-        closeFormCompanionWindow();
-      });
+    saveAnnotation(annotationState);
   };
 
   return (

@@ -37,8 +37,6 @@ export default function AnnotationForm(
   // eslint-disable-next-line no-underscore-dangle
   const [mediaType, setMediaType] = useState(playerReferences.getMediaType());
 
-
-
   const debugMode = config.debug === true;
 
   // TODO must be improved when parsing annotation
@@ -110,22 +108,26 @@ export default function AnnotationForm(
    * Save the annotation
    * @param annotationState
    */
-  const saveAnnotation = (annotationState, canvasId) => {
-    // Resize Stage to match true size of the media
-
-    if (mediaType !== MEDIA_TYPES.AUDIO) {
-      // Get storage adapter for the canvas
-      const storageAdapter = config.annotation.adapter(canvasId);
-      return saveAnnotationInStorageAdapter(
-        canvasId,
-        storageAdapter,
-        receiveAnnotation,
-        annotationState,
-      );
-    }
-    // TODO: Proper save for AUDIO media's annotation
-    console.log('TODO: Proper save for AUDIO media\'s annotation');
-    closeFormCompanionWindow();
+  const saveAnnotation = (annotationState) => {
+    const promises = playerReferences.getCanvases()
+      .map(async (canvas) => {
+        const annotationStateToBeSaved = await convertAnnotationStateToBeSaved(
+          annotationState,
+          canvas,
+          windowId,
+        );
+        const storageAdapter = config.annotation.adapter(canvas.id);
+        return saveAnnotationInStorageAdapter(
+          canvas.id,
+          storageAdapter,
+          receiveAnnotation,
+          annotationStateToBeSaved,
+        );
+      });
+    Promise.all(promises)
+      .then(() => {
+        closeFormCompanionWindow();
+      });
   };
 
   if (!playerReferences.isInitialized()) {

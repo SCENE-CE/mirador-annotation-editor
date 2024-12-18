@@ -1,4 +1,7 @@
-import { getSvg } from './annotationForm/AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import {
+  getKonvaAsDataURL,
+  getSvg,
+} from './annotationForm/AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { playerReferences } from './playerReferences';
 import { TEMPLATE } from './annotationForm/AnnotationFormUtils';
 
@@ -13,9 +16,13 @@ export const convertAnnotationStateToBeSaved = async (
   annotationState,
   canvas,
   windowId,
-  template,
 ) => {
   const annotationStateForSaving = annotationState;
+
+  if (annotationState.maeData.templateType === TEMPLATE.IIIF_TYPE) {
+    return annotationState;
+  }
+
   // Adapt target to the canvas
   // eslint-disable-next-line no-param-reassign
   console.log('annotationState.maeData.target', annotationState.maeData.target);
@@ -30,12 +37,25 @@ export const convertAnnotationStateToBeSaved = async (
     tstart: annotationStateForSaving.maeData.target.tstart,
   };
 
-  if (template == TEMPLATE.TAGGING_TYPE) {
+  if (annotationStateForSaving.maeData.templateType == TEMPLATE.TAGGING_TYPE
+    || annotationStateForSaving.maeData.templateType == TEMPLATE.TEXT_TYPE) {
     // Complex annotation
-    if (annotationStateForSaving.maeData.target.drawingState.shapes.length > 0
-      && annotationStateForSaving.maeData.target.drawingState.shapes[0].type === 'rectangle') {
+    if (annotationStateForSaving.maeData.target.drawingState.shapes.length > 0) {
       // eslint-disable-next-line no-param-reassign
       annotationStateForSaving.maeData.target.svg = await getSvg(windowId);
+    }
+  }
+
+  if (annotationStateForSaving.maeData.templateType == TEMPLATE.KONVA_TYPE) {
+    annotationStateForSaving.body.id = await getKonvaAsDataURL(windowId);
+    annotationStateForSaving.body.format = 'image/jpg';
+    annotationStateForSaving.type = 'Annotation';
+  }
+
+  if (annotationStateForSaving.maeData.templateType == TEMPLATE.IMAGE_TYPE) {
+    if (annotationStateForSaving.maeData.target.drawingState.shapes.length == 1) {
+      annotationStateForSaving.body.id = annotationStateForSaving.maeData.target.drawingState.shapes[0].url;
+      annotationStateForSaving.type = 'Annotation';
     }
   }
 
@@ -47,6 +67,7 @@ export const convertAnnotationStateToBeSaved = async (
   annotationStateForSaving.target = maeTargetToIiifTarget(
     annotationStateForSaving.maeData.target,
     canvas.id,
+    annotationStateForSaving.maeData.templateType,
   );
   // eslint-disable-next-line no-param-reassign
   annotationStateForSaving.maeData.target.drawingState = JSON.stringify(
@@ -57,36 +78,14 @@ export const convertAnnotationStateToBeSaved = async (
 };
 
 /** Transform maetarget to IIIF compatible data * */
-export const maeTargetToIiifTarget = (maeTarget, canvasId, windowId) => {
-  if (maeTarget.drawingState) {
-    if (maeTarget.drawingState.shapes.length == 0) {
-      console.info('Implement target as string on fullSizeCanvas');
-      return `${canvasId}#` + `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}`;
-    }
-    if (maeTarget.drawingState.shapes.length === 1 && maeTarget.drawingState.shapes[0].type === 'rectangle') {
-      let {
-        // eslint-disable-next-line prefer-const
-        x, y, width, height, scaleX, scaleY,
-      } = maeTarget.drawingState.shapes[0];
-      x = Math.floor(x * maeTarget.scale * scaleX);
-      y = Math.floor(y * maeTarget.scale * scaleY);
-      width = Math.floor(width * maeTarget.scale * scaleX);
-      height = Math.floor(height * maeTarget.scale * scaleY);
-      console.info('Implement target as string with one shape (reactangle or image)');
-      // Image have not tstart and tend
-      return `${canvasId}#${maeTarget.tend ? `xywh=${x},${y},${width},${height}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${x},${y},${width},${height}`}`;
-    }
-    if (maeTarget.drawingState.shapes.length === 1 && maeTarget.drawingState.shapes[0].type === 'image') {
-      let {
-        x, y, width, height,
-      } = maeTarget.drawingState.shapes[0];
-      x = Math.floor(x * maeTarget.scale);
-      y = Math.floor(y * maeTarget.scale);
-      width = Math.floor(width * maeTarget.scale);
-      height = Math.floor(height * maeTarget.scale);
-      return `${canvasId}#${maeTarget.tend ? `xywh=${x},${y},${width},${height}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${x},${y},${width},${height}`}`;
-    }
+export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
+  if (maeTarget.templateType === TEMPLATE.IIIF_TYPE) {
+    // CHeck that one
+    return maeTarget;
+  }
 
+  if (maeTarget.templateType !== TEMPLATE.KONVA_TYPE && maeTarget.drawingState.shapes.length > 1) {
+    console.info('Implement target as SVG/Fragment with shapes');
     return {
       selector: [
         {
@@ -101,6 +100,26 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId, windowId) => {
       source: canvasId,
     };
   }
+
+  if (maeTarget.drawingState.shapes.length == 0) {
+    console.info('Implement target as string on fullSizeCanvas');
+    return `${canvasId}#` + `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}`;
+  }
+
+  if (maeTarget.drawingState.shapes.length === 1 && maeTarget.drawingState.shapes[0].type === 'rectangle' || maeTarget.drawingState.shapes[0].type == 'image') {
+    let {
+      // eslint-disable-next-line prefer-const
+      x, y, width, height, scaleX, scaleY,
+    } = maeTarget.drawingState.shapes[0];
+    x = Math.floor(x * maeTarget.scale * scaleX);
+    y = Math.floor(y * maeTarget.scale * scaleY);
+    width = Math.floor(width * maeTarget.scale * scaleX);
+    height = Math.floor(height * maeTarget.scale * scaleY);
+    console.info('Implement target as string with one shape (reactangle or image)');
+    // Image have not tstart and tend
+    return `${canvasId}#${maeTarget.tend ? `xywh=${x},${y},${width},${height}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${x},${y},${width},${height}`}`;
+  }
+
   return `${canvasId}#${maeTarget.tend ? `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${maeTarget.fullCanvaXYWH}`}`;
 };
 
