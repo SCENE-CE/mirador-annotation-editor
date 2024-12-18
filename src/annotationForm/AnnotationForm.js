@@ -7,13 +7,13 @@ import { Grid, Link } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
 import {
-  getTemplateType, MEDIA_TYPES,
-  saveAnnotationInStorageAdapter,
+  getTemplateType, saveAnnotationInStorageAdapter,
   TEMPLATE,
 } from './AnnotationFormUtils';
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormBody from './AnnotationFormBody';
 import { playerReferences } from '../playerReferences';
+import { convertAnnotationStateToBeSaved } from '../IIIFUtils';
 
 /**
  * Component for submitting a form to create or edit an annotation.
