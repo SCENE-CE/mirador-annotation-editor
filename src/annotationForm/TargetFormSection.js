@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography } from '@mui/material';
-import { MEDIA_TYPES } from './AnnotationFormUtils';
+import { MEDIA_TYPES, TEMPLATE } from './AnnotationFormUtils';
 import TargetTimeInput from './TargetTimeInput';
 import { TargetSpatialInput } from './TargetSpatialInput';
 import { playerReferences } from '../playerReferences';
@@ -53,12 +53,15 @@ export default function TargetFormSection(
         break;
     }
 
-    // eslint-disable-next-line no-param-reassign
-    target.drawingState = {
-      currentShape: null,
-      isDrawing: false,
-      shapes: [],
-    };
+    if (target.templateType !== TEMPLATE.IMAGE_TYPE
+      && target.templateType !== TEMPLATE.KONVA_TYPE) {
+      // eslint-disable-next-line no-param-reassign
+      target.drawingState = {
+        currentShape: null,
+        isDrawing: false,
+        shapes: [],
+      };
+    }
 
     onChangeTarget(target);
   }
