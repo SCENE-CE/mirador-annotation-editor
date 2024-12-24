@@ -4,7 +4,7 @@ import { Grid, Typography } from '@mui/material';
 import { MEDIA_TYPES } from './AnnotationFormUtils';
 import TargetTimeInput from './TargetTimeInput';
 import { TargetSpatialInput } from './TargetSpatialInput';
-import {playerReferences} from '../playerReferences';
+import { playerReferences } from '../playerReferences';
 
 /**
  * Section of Time and Space Target
@@ -45,7 +45,7 @@ export default function TargetFormSection(
       case MEDIA_TYPES.IMAGE:
       case MEDIA_TYPES.VIDEO:
         const targetHeigth = playerReferences.getHeight();
-        const targetWidth =  playerReferences.getWidth();
+        const targetWidth = playerReferences.getWidth();
         // eslint-disable-next-line no-param-reassign
         target.fullCanvaXYWH = `0,0,${targetWidth},${targetHeigth}`;
         break;

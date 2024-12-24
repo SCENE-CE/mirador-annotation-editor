@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import AnnotationDrawing from './AnnotationFormOverlay/AnnotationDrawing';
-import { maeTargetToIiifTarget } from '../IIIFUtils';
-
 import {
   TARGET_VIEW,
   TEMPLATE,
@@ -15,11 +13,9 @@ import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import {
-  getKonvaAsDataURL,
   KONVA_MODE,
   resizeKonvaStage,
 } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import { Debug } from './Debug';
 import { playerReferences } from '../playerReferences';
 
 /**
@@ -68,10 +64,7 @@ export default function DrawingTemplate(
         value: '',
       },
       maeData: {
-        target: {
-          drawingState: null,
-          fullCanvaXYWH: `0,0,${playerReferences.getWidth()},${playerReferences.getHeight()}`,
-        },
+        target: null,
         templateType: TEMPLATE.KONVA_TYPE,
       },
       motivation: 'commenting',
@@ -117,7 +110,7 @@ export default function DrawingTemplate(
   const [toolState, setToolState] = useState(defaultToolState);
   /** initialise drawing State* */
   const initDrawingState = () => {
-    if (annotationState.maeData.target.drawingState) {
+    if (annotationState.maeData.target && annotationState.maeData.target.drawingState) {
       return {
         ...JSON.parse(annotationState.maeData.target.drawingState),
         isDrawing: false,
@@ -144,21 +137,6 @@ export default function DrawingTemplate(
   const updateScale = () => {
     setScale(playerReferences.getZoom());
   };
-
-  // TODO Check how to use it
-
-  /*   /!**
-     * Update annoState with the svg and position of kanva item
-     * @param svg
-     * @param xywh
-     *!/
-  const updateGeometry = ({ svg, xywh }) => {
-    setAnnoState((prevState) => ({
-      ...prevState,
-      svg,
-      xywh,
-    }));
-  }; */
 
   /**
      * Updates the tool state by merging the current color state with the existing tool state.
@@ -289,19 +267,12 @@ export default function DrawingTemplate(
         timeTarget
         debugMode={debugMode}
       />
-      {/* <Grid item> */}
-      {/*   <Debug */}
-      {/*     scale={scale} */}
-      {/*     drawingState={drawingState} */}
-      {/*   /> */}
-      {/* </Grid> */}
       <Grid item>
         <AnnotationFormFooter
           closeFormCompanionWindow={closeFormCompanionWindow}
           saveAnnotation={saveFunction}
         />
       </Grid>
-
     </Grid>
   );
 }

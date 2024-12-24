@@ -74,7 +74,9 @@ export const playerReferences = (function () {
           const percentageWidth = _canvases[0].__jsonld.width * viewer.viewport.getZoom();
           const containerWidth = viewer.container.clientWidth;
           const actualWidthInPixels = Math.round(containerWidth * percentageWidth);
+          //console.log("actualWidthInPixels", actualWidthInPixels);
           return actualWidthInPixels;
+
         }
       }
       if (_mediaType === MEDIA_TYPES.VIDEO) {
@@ -121,7 +123,6 @@ export const playerReferences = (function () {
         }
       }
       if (_mediaType === MEDIA_TYPES.VIDEO) {
-        const { video } = _media;
         const position = {
           x: 0,
           y: 0,
@@ -134,16 +135,13 @@ export const playerReferences = (function () {
       if (_mediaType === MEDIA_TYPES.IMAGE) {
         const currentZoom = _media.current.viewport.getZoom();
         const maxZoom = _media.current.viewport.getMaxZoom();
+        //console.log("Max Zoom", maxZoom);
         let zoom = currentZoom / maxZoom;
         zoom = Math.round(zoom * 100) / 100;
         return zoom;
       }
       if (_mediaType === MEDIA_TYPES.VIDEO) {
-        // TODO: Implement zoom for video
-
         return _overlay.containerWidth / this.getWidth();
-
-        // return _media.video.getBoundingClientRect().width / _media.video.videoWidth;
       }
       return undefined;
     },
