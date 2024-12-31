@@ -217,8 +217,6 @@ export default function DrawingTemplate(
           annotation={annotation}
           windowId={windowId}
             // we need to pass the width and height of the image to the annotation drawing component
-          width={overlay ? overlay.containerWidth : 1920}
-          height={overlay ? overlay.containerHeight : 1080}
           updateScale={updateScale}
           setColorToolFromCurrentShape={setColorToolFromCurrentShape}
           drawingState={drawingState}
@@ -229,7 +227,6 @@ export default function DrawingTemplate(
           tabView={viewTool}
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
           mediaType={mediaType}
-          closeFormCompanionWindow={closeFormCompanionWindow}
           displayMode={KONVA_MODE.DRAW}
         />
       </Grid>

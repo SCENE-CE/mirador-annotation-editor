@@ -199,7 +199,6 @@ export default function ImageCommentTemplate(
           annotation={annotation}
           closed={toolState.closedMode === 'closed'}
           windowId={windowId}
-          // we need to pass the width and height of the image to the annotation drawing component
           updateScale={updateScale}
           setColorToolFromCurrentShape={setColorToolFromCurrentShape}
           drawingState={drawingState}
@@ -208,7 +207,6 @@ export default function ImageCommentTemplate(
           showFragmentSelector={false}
           tabView={viewTool}
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
-          closeFormCompanionWindow={closeFormCompanionWindow}
           displayMode={KONVA_MODE.IMAGE}
           toolState={toolState}
         />

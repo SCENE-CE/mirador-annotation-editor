@@ -93,21 +93,17 @@ export function TargetSpatialInput({
           <Typography variant="subFormSectionTitle">SVG selection</Typography>
           <Grid item direction="row" spacing={2}>
             <AnnotationDrawing
-              scale={scale}
-              windowId={windowId}
-            // we need to pass the width and height of the image to the annotation drawing component
-              width={playerReferences.getContainerWidth()}
-              height={playerReferences.getContainerHeight()}
-              updateScale={updateScale}
-              setColorToolFromCurrentShape={() => {}}
+              displayMode={KONVA_MODE.TARGET}
               drawingState={drawingState}
-              updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+              isMouseOverSave={false} // TODO remove
+              scale={scale}
+              setColorToolFromCurrentShape={() => {}}
               setDrawingState={setDrawingState}
               tabView="edit" // TODO change
-              closeFormCompanionWindow={closeFormCompanionWindow}
-              displayMode={KONVA_MODE.TARGET}
-              isMouseOverSave={false} // TODO remove
               toolState={toolState}
+              updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+              updateScale={updateScale}
+              windowId={windowId}
             />
 
             <AnnotationFormOverlay
