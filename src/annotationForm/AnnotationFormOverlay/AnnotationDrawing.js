@@ -586,8 +586,6 @@ AnnotationDrawing.propTypes = {
   height: PropTypes.number.isRequired,
   isMouseOverSave: PropTypes.bool.isRequired,
   mediaType: PropTypes.string.isRequired,
-  originalHeight: PropTypes.number.isRequired,
-  originalWidth: PropTypes.number.isRequired,
   overlay: PropTypes.shape({
     canvasHeight: PropTypes.number,
     canvasWidth: PropTypes.number,

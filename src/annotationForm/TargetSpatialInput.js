@@ -98,8 +98,6 @@ export function TargetSpatialInput({
             // we need to pass the width and height of the image to the annotation drawing component
               width={playerReferences.getContainerWidth()}
               height={playerReferences.getContainerHeight()}
-              originalWidth={playerReferences.getCanvasWidth()}
-              originalHeight={playerReferences.getCanvasHeight()}
               updateScale={updateScale}
               setColorToolFromCurrentShape={() => {}}
               drawingState={drawingState}

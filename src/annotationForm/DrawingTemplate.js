@@ -219,8 +219,6 @@ export default function DrawingTemplate(
             // we need to pass the width and height of the image to the annotation drawing component
           width={overlay ? overlay.containerWidth : 1920}
           height={overlay ? overlay.containerHeight : 1080}
-          originalWidth={overlay ? overlay.canvasWidth : 1920}
-          originalHeight={overlay ? overlay.canvasHeight : 1080}
           updateScale={updateScale}
           setColorToolFromCurrentShape={setColorToolFromCurrentShape}
           drawingState={drawingState}
