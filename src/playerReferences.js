@@ -2,7 +2,6 @@ import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases
 import { getVisibleCanvasAudioResources, getVisibleCanvasVideoResources } from 'mirador/dist/es/src/state/selectors';
 import { MEDIA_TYPES } from './annotationForm/AnnotationFormUtils';
 
-
 // TODO All the code related to the video player must be moved in MAEV plugin
 export const playerReferences = (function () {
   let _canvases;
@@ -10,7 +9,7 @@ export const playerReferences = (function () {
   let _mediaType;
   let _overlay;
   let _actions;
-  let _audio
+  let _audio;
 
   return {
     getScale() {
@@ -56,11 +55,10 @@ export const playerReferences = (function () {
         return _media.props.canvas.__jsonld.duration;
       }
       if (_mediaType === MEDIA_TYPES.AUDIO) {
-        if(_audio){
-          return _audio[0].__jsonld.duration
-        } else {
-          console.error("Something is wrong about audio")
+        if (_audio) {
+          return _audio[0].__jsonld.duration;
         }
+        console.error('Something is wrong about audio');
       }
     },
 
@@ -143,7 +141,7 @@ export const playerReferences = (function () {
       if (_mediaType === MEDIA_TYPES.IMAGE) {
         const currentZoom = _media.current.viewport.getZoom();
         const maxZoom = _media.current.viewport.getMaxZoom();
-        //console.log("Max Zoom", maxZoom);
+        // console.log("Max Zoom", maxZoom);
         let zoom = currentZoom / maxZoom;
         zoom = Math.round(zoom * 100) / 100;
         return zoom;
@@ -189,8 +187,8 @@ export const playerReferences = (function () {
             _overlay = _media.canvasOverlay;
             break;
           case MEDIA_TYPES.AUDIO:
-             _audio = getVisibleCanvasAudioResources(state, { windowId });
-             break;
+            _audio = getVisibleCanvasAudioResources(state, { windowId });
+            break;
           default:
             console.error('Unknown media type');
             break;
@@ -211,8 +209,8 @@ export const playerReferences = (function () {
       }
       console.error('Cannot set current time for image');
     },
-    getCurrentTime(){
-      if(_mediaType !== mediaTypes.IMAGE){
+    getCurrentTime() {
+      if (_mediaType !== mediaTypes.IMAGE) {
         return _media.props.currentTime;
       }
       return null;
@@ -224,8 +222,8 @@ export const playerReferences = (function () {
       console.error('Cannot seek time for image');
     },
 
-    getAudioElement(){
+    getAudioElement() {
       return document.querySelector('audio');
-    }
+    },
   };
 }());
