@@ -28,7 +28,6 @@ export default function DrawingTemplate(
     closeFormCompanionWindow,
     currentTime,
     debugMode,
-    overlay,
     saveAnnotation,
     windowId,
   },
@@ -236,7 +235,6 @@ export default function DrawingTemplate(
         onChangeTarget={updateTargetState}
         target={annotationState.maeData.target}
         windowId={windowId}
-        overlay={overlay}
         closeFormCompanionWindow={closeFormCompanionWindow}
         timeTarget
         debugMode={debugMode}
@@ -275,7 +273,6 @@ DrawingTemplate.propTypes = {
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   debugMode: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  overlay: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 

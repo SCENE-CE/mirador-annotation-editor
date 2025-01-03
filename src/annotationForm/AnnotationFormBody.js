@@ -52,12 +52,11 @@ export default function AnnotationFormBody(
           templateType.id === TEMPLATE.TEXT_TYPE && (
             <TextCommentTemplate
               annotation={annotation}
-              canvases={canvases}
               closeFormCompanionWindow={closeFormCompanionWindow}
               currentTime={currentTime}
+              debugMode={debugMode}
               saveAnnotation={saveAnnotation}
               windowId={windowId}
-              debugMode={debugMode}
             />
           )
         }
@@ -65,13 +64,11 @@ export default function AnnotationFormBody(
           templateType.id === TEMPLATE.IMAGE_TYPE && (
           <ImageCommentTemplate
             annotation={annotation}
-            canvases={canvases}
             closeFormCompanionWindow={closeFormCompanionWindow}
-            windowId={windowId}
-            templateType={templateType}
-            saveAnnotation={saveAnnotation}
-            debugMode={debugMode}
             currentTime={currentTime}
+            debugMode={debugMode}
+            saveAnnotation={saveAnnotation}
+            windowId={windowId}
           />
           )
         }
@@ -82,7 +79,6 @@ export default function AnnotationFormBody(
               closeFormCompanionWindow={closeFormCompanionWindow}
               currentTime={currentTime}
               debugMode={debugMode}
-              overlay={playerReferences.getOverlay()}
               saveAnnotation={saveAnnotation}
               windowId={windowId}
             />
@@ -113,13 +109,12 @@ export default function AnnotationFormBody(
         }
             {templateType.id === TEMPLATE.TAGGING_TYPE && (
             <TaggingTemplate
-              canvases={canvases}
-              saveAnnotation={saveAnnotation}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-              windowId={windowId}
-              currentTime={currentTime}
               annotation={annotation}
+              closeFormCompanionWindow={closeFormCompanionWindow}
+              currentTime={currentTime}
               debugMode={debugMode}
+              saveAnnotation={saveAnnotation}
+              windowId={windowId}
             />
             )}
         </TemplateContainer>

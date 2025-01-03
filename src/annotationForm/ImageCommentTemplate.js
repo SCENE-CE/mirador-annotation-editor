@@ -4,7 +4,6 @@ import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
-import { maeTargetToIiifTarget } from '../IIIFUtils';
 import {
   TARGET_VIEW, TEMPLATE, defaultToolState,
 } from './AnnotationFormUtils';
@@ -27,9 +26,8 @@ import { playerReferences } from '../playerReferences';
 export default function ImageCommentTemplate(
   {
     annotation,
-    canvases,
-    currentTime,
     closeFormCompanionWindow,
+    currentTime,
     debugMode,
     saveAnnotation,
     windowId,
@@ -271,7 +269,6 @@ ImageCommentTemplate.propTypes = {
     PropTypes.string,
   ]).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   debugMode: PropTypes.bool.isRequired,

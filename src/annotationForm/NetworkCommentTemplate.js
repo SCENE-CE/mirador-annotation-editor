@@ -13,16 +13,16 @@ import AnnotationFormFooter from './AnnotationFormFooter';
 function NetworkCommentTemplate(
   {
     annotation,
+    canvases,
+    closeFormCompanionWindow,
     currentTime,
     debugMode,
     mediaType,
+    overlay,
+    saveAnnotation,
     setCurrentTime,
     setSeekTo,
     windowId,
-    saveAnnotation,
-    closeFormCompanionWindow,
-    canvases,
-    overlay,
   },
 ) {
   let maeAnnotation = annotation;
