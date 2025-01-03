@@ -15,13 +15,6 @@ import { playerReferences } from '../playerReferences';
 
 /**
  * Image Comment template
- * @param annoState
- * @param commentingType
- * @param currentTime
- * @param setAnnoState
- * @param windowId
- * @returns {Element}
- * @constructor
  */
 export default function ImageCommentTemplate(
   {

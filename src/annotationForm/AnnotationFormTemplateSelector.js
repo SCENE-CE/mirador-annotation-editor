@@ -20,7 +20,6 @@ export default function AnnotationFormTemplateSelector({
   const setCommentType = (template) => setCommentingType(template);
   return (
     <CardContainer>
-
       {mediaType === MEDIA_TYPES.AUDIO ? (
         <Grid container spacing={1} direction="column">
           <Grid item>

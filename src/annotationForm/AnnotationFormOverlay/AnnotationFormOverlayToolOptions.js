@@ -1,4 +1,6 @@
-import {Button, Grid, TextField, Tooltip} from '@mui/material';
+import {
+  Button, Grid, TextField,
+} from '@mui/material';
 import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -6,7 +8,7 @@ import { styled } from '@mui/material/styles';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { v4 as uuidv4 } from 'uuid';
 import ImageFormField from './ImageFormField';
-import { isShapesTool, OVERLAY_TOOL , KONVA_MODE } from './KonvaDrawing/KonvaUtils';
+import { isShapesTool, OVERLAY_TOOL, KONVA_MODE } from './KonvaDrawing/KonvaUtils';
 import ColorPicker from './KonvaDrawing/shapes/ColorPicker';
 
 const StyledDivButtonImage = styled('div')(({ theme }) => ({

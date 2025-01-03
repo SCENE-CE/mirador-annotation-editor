@@ -17,11 +17,8 @@ function NetworkCommentTemplate(
     closeFormCompanionWindow,
     currentTime,
     debugMode,
-    mediaType,
     overlay,
     saveAnnotation,
-    setCurrentTime,
-    setSeekTo,
     windowId,
   },
 ) {
@@ -108,8 +105,6 @@ function NetworkCommentTemplate(
       <TargetFormSection
         currentTime={currentTime}
         onChangeTarget={updateTargetState}
-        setCurrentTime={setCurrentTime}
-        setSeekTo={setSeekTo}
         spatialTarget
         target={annotationState.maeData.target}
         timeTarget
@@ -136,12 +131,8 @@ NetworkCommentTemplate.propTypes = {
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.number.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  mediaType: PropTypes.string.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
-  setCurrentTime: PropTypes.func.isRequired,
-  setSeekTo: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };
 

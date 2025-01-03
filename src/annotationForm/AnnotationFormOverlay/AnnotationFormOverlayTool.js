@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import {Button, Tooltip} from '@mui/material';
+import { Button, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from '@mui/material/Typography';
 import AnnotationFormOverlayToolOptions from './AnnotationFormOverlayToolOptions';
@@ -34,14 +34,14 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 
 /** All the form part for the overlay view */
 function AnnotationFormOverlayTool({
-                                     toolState,
-                                     setToolState,
-                                     currentShape,
-                                     updateCurrentShapeInShapes,
-                                     shapes,
-                                     deleteShape,
-                                     displayMode,
-                                   }) {
+  toolState,
+  setToolState,
+  currentShape,
+  updateCurrentShapeInShapes,
+  shapes,
+  deleteShape,
+  displayMode,
+}) {
   /** Change the active overlay tool */
   const changeTool = (e, tool) => {
     setToolState({
@@ -67,125 +67,126 @@ function AnnotationFormOverlayTool({
   }
 
   return (
-      <>
-        {
-            toolState.activeTool === OVERLAY_TOOL.EDIT && (
-                <>
-                  {
-                      currentShape && displayMode === KONVA_MODE.DRAW && (
-                          <div>
-                            <Typography variant="subFormSectionTitle">
-                              Selected object
-                            </Typography>
-                            <AnnotationFormOverlayToolOptions
-                                toolState={{
-                                  ...toolState,
-                                  activeTool: currentShape.type,
-                                  closedMode: currentShape.closedMode,
-                                  fillColor: currentShape.fill,
-                                  image: { id: currentShape.url },
-                                  strokeColor: currentShape.stroke,
-                                  strokeWidth: currentShape.strokeWidth,
-                                  text: currentShape.text,
-                                }}
-                                setToolState={customUpdateToolState}
-                                displayMode={displayMode}
-                            />
-                          </div>
-                      )
-                  }
-                  {
-                      (displayMode === KONVA_MODE.DRAW && shapes.length > 0) && (
-                          <>
-                            <Typography variant="subFormSectionTitle">
-                              Object lists
-                            </Typography>
-                            <ShapesList
-                                currentShapeId={currentShape?.id}
-                                shapes={shapes}
-                                deleteShape={deleteShape}
-                                updateCurrentShapeInShapes={updateCurrentShapeInShapes}
-                            />
-                          </>
-                      )
-                  }
-                </>
-
-            )
-        }
-        {
-            isShapesTool(toolState.activeTool) && (
+    <>
+      {
+        toolState.activeTool === OVERLAY_TOOL.EDIT && (
+          <>
+            {
+              currentShape && displayMode === KONVA_MODE.DRAW && (
+                <div>
+                  <Typography variant="subFormSectionTitle">
+                    Selected object
+                  </Typography>
+                  <AnnotationFormOverlayToolOptions
+                    toolState={{
+                      ...toolState,
+                      activeTool: currentShape.type,
+                      closedMode: currentShape.closedMode,
+                      fillColor: currentShape.fill,
+                      image: { id: currentShape.url },
+                      strokeColor: currentShape.stroke,
+                      strokeWidth: currentShape.strokeWidth,
+                      text: currentShape.text,
+                    }}
+                    setToolState={customUpdateToolState}
+                    displayMode={displayMode}
+                  />
+                </div>
+              )
+            }
+            {
+              (displayMode === KONVA_MODE.DRAW && shapes.length > 0) && (
                 <>
                   <Typography variant="subFormSectionTitle">
-                    Shapes
+                    Object lists
                   </Typography>
-                  <StyledToggleButtonGroup
-                      value={toolState.activeTool} // State or props ?
-                      exclusive
-                      onChange={changeTool}
-                      aria-label="tool selection"
-                      size="small"
-                  >
-                    <ToggleButton value={SHAPES_TOOL.RECTANGLE} aria-label="add a rectangle">
-                      <RectangleIcon />
-                    </ToggleButton>
-                    {
-                        (displayMode === KONVA_MODE.DRAW) && (
-                            <div>
-                              <Tooltip title="circle shape">
-                                <ToggleButton value={SHAPES_TOOL.ELLIPSE} aria-label="add a circle">
-                                  <CircleIcon />
-                                </ToggleButton>
-                              </Tooltip>
-                              <Tooltip title="arrow shape">
-
-                                <ToggleButton value={SHAPES_TOOL.ARROW} aria-label="add an arrow">
-                                  <ArrowOutwardIcon />
-                                </ToggleButton>
-                              </Tooltip>
-                              <Tooltip title="polygon shape">
-                                <ToggleButton value={SHAPES_TOOL.POLYGON} aria-label="add a polygon" style={{ display: 'none' }}>
-                                  <PolygonIcon />
-                                </ToggleButton>
-                              </Tooltip>
-                              <Tooltip title="free hand">
-
-                                <ToggleButton value={SHAPES_TOOL.FREEHAND} aria-label="free hand polygon">
-                                  <GestureIcon />
-                                </ToggleButton>
-                              </Tooltip>
-                            </div>
-                        )
-                    }
-                  </StyledToggleButtonGroup>
+                  <ShapesList
+                    currentShapeId={currentShape?.id}
+                    shapes={shapes}
+                    deleteShape={deleteShape}
+                    updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+                  />
                 </>
-            )
-        }
-        {
-            toolState.activeTool === OVERLAY_TOOL.DELETE && (
-                <>
-                  <Typography variant="overline">
-                    Delete
-                  </Typography>
-                  <p>
-                    Click on object to remove it.
-                  </p>
-                  <Button
-                      onClick={() => deleteShape()}
-                  >
-                    <span>Delete all</span>
-                    <DeleteIcon color="red" />
-                  </Button>
-                </>
-            )
-        }
-        <AnnotationFormOverlayToolOptions
-            toolState={toolState}
-            setToolState={setToolState}
-            displayMode={displayMode}
-            currentShape={currentShape}
-        />
-      </>
+              )
+            }
+          </>
+        )
+      }
+      {
+        isShapesTool(toolState.activeTool) && (
+          <>
+            <Typography variant="subFormSectionTitle">
+              Shapes
+            </Typography>
+            <StyledToggleButtonGroup
+              value={toolState.activeTool} // State or props ?
+              exclusive
+              onChange={changeTool}
+              aria-label="tool selection"
+              size="small"
+            >
+              <ToggleButton value={SHAPES_TOOL.RECTANGLE} aria-label="add a rectangle">
+                <RectangleIcon />
+              </ToggleButton>
+              {
+                (displayMode === KONVA_MODE.DRAW) && (
+                  <div>
+                    <Tooltip title="circle shape">
+                      <ToggleButton value={SHAPES_TOOL.ELLIPSE} aria-label="add a circle">
+                        <CircleIcon />
+                      </ToggleButton>
+                    </Tooltip>
+                    <Tooltip title="arrow shape">
+                      <ToggleButton value={SHAPES_TOOL.ARROW} aria-label="add an arrow">
+                        <ArrowOutwardIcon />
+                      </ToggleButton>
+                    </Tooltip>
+                    <Tooltip title="polygon shape">
+                      <ToggleButton
+                        value={SHAPES_TOOL.POLYGON}
+                        aria-label="add a polygon"
+                        style={{ display: 'none' }}
+                      >
+                        <PolygonIcon />
+                      </ToggleButton>
+                    </Tooltip>
+                    <Tooltip title="free hand">
+                      <ToggleButton value={SHAPES_TOOL.FREEHAND} aria-label="free hand polygon">
+                        <GestureIcon />
+                      </ToggleButton>
+                    </Tooltip>
+                  </div>
+                )
+              }
+            </StyledToggleButtonGroup>
+          </>
+        )
+      }
+      {
+        toolState.activeTool === OVERLAY_TOOL.DELETE && (
+          <>
+            <Typography variant="overline">
+              Delete
+            </Typography>
+            <p>
+              Click on object to remove it.
+            </p>
+            <Button
+              onClick={() => deleteShape()}
+            >
+              <span>Delete all</span>
+              <DeleteIcon color="red" />
+            </Button>
+          </>
+        )
+      }
+      <AnnotationFormOverlayToolOptions
+        toolState={toolState}
+        setToolState={setToolState}
+        displayMode={displayMode}
+        currentShape={currentShape}
+      />
+    </>
   );
 }
 
@@ -209,7 +210,6 @@ AnnotationFormOverlayTool.propTypes = {
     updateColor: PropTypes.func.isRequired,
   }).isRequired,
   updateCurrentShapeInShapes: PropTypes.func.isRequired,
-
 };
 
 export default AnnotationFormOverlayTool;

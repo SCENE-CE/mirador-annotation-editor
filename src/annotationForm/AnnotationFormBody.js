@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { JsonEditor as Editor } from 'jsoneditor-react';
-import ace from 'brace';
-import ToggleButton from '@mui/material/ToggleButton';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import {

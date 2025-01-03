@@ -1,4 +1,4 @@
-import {Button, Grid, Tooltip} from '@mui/material';
+import { Button, Grid, Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 
