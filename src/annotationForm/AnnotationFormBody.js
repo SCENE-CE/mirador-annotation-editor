@@ -81,7 +81,6 @@ export default function AnnotationFormBody(
           templateType.id === TEMPLATE.KONVA_TYPE && (
             <DrawingTemplate
               annotation={annotation}
-              canvases={canvases}
               closeFormCompanionWindow={closeFormCompanionWindow}
               currentTime={currentTime}
               debugMode={debugMode}

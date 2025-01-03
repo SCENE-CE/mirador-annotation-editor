@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import AnnotationDrawing from './AnnotationFormOverlay/AnnotationDrawing';
+
 import {
   TARGET_VIEW,
   TEMPLATE,
@@ -36,7 +37,6 @@ import { playerReferences } from '../playerReferences';
 export default function DrawingTemplate(
   {
     annotation,
-    canvases,
     closeFormCompanionWindow,
     currentTime,
     debugMode,
@@ -57,6 +57,7 @@ export default function DrawingTemplate(
 
   if (!maeAnnotation.id) {
     // If the annotation does not have maeData, the annotation was not created with mae
+    //  fullCanvaXYWH: `0,0,${playerReferences.getWidth()},${playerReferences.getHeight()}`,
     maeAnnotation = {
       body: {
         id: null,
@@ -64,12 +65,17 @@ export default function DrawingTemplate(
         value: '',
       },
       maeData: {
+        drawingState: null,
         target: null,
         templateType: TEMPLATE.KONVA_TYPE,
       },
       motivation: 'commenting',
       target: null,
     };
+  } else if (maeAnnotation.maeData.target.drawingState && typeof maeAnnotation.maeData.target.drawingState === 'string') {
+    maeAnnotation.maeData.target.drawingState = JSON.parse(
+      maeAnnotation.maeData.target.drawingState,
+    );
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
@@ -110,9 +116,9 @@ export default function DrawingTemplate(
   const [toolState, setToolState] = useState(defaultToolState);
   /** initialise drawing State* */
   const initDrawingState = () => {
-    if (annotationState.maeData.target && annotationState.maeData.target.drawingState) {
+    if (annotationState.maeData.drawingState) {
       return {
-        ...JSON.parse(annotationState.maeData.target.drawingState),
+        ...JSON.parse(annotationState.maeData.drawingState),
         isDrawing: false,
       };
     }
@@ -138,11 +144,26 @@ export default function DrawingTemplate(
     setScale(playerReferences.getZoom());
   };
 
+  // TODO Check how to use it
+
+  /*   /!**
+     * Update annoState with the svg and position of kanva item
+     * @param svg
+     * @param xywh
+     *!/
+  const updateGeometry = ({ svg, xywh }) => {
+    setAnnoState((prevState) => ({
+      ...prevState,
+      svg,
+      xywh,
+    }));
+  }; */
+
   /**
-     * Updates the tool state by merging the current color state with the existing tool state.
-     * @param {object} colorState - The color state to be merged with the tool state.
-     * @returns {void}
-     */
+   * Updates the tool state by merging the current color state with the existing tool state.
+   * @param {object} colorState - The color state to be merged with the tool state.
+   * @returns {void}
+   */
   const setColorToolFromCurrentShape = (colorState) => {
     setToolState((prevState) => ({
       ...prevState,
@@ -216,7 +237,11 @@ export default function DrawingTemplate(
           toolState={toolState}
           annotation={annotation}
           windowId={windowId}
-            // we need to pass the width and height of the image to the annotation drawing component
+          // we need to pass the width and height of the image to the annotation drawing component
+          width={overlay ? overlay.containerWidth : 1920}
+          height={overlay ? overlay.containerHeight : 1080}
+          originalWidth={overlay ? overlay.canvasWidth : 1920}
+          originalHeight={overlay ? overlay.canvasHeight : 1080}
           updateScale={updateScale}
           setColorToolFromCurrentShape={setColorToolFromCurrentShape}
           drawingState={drawingState}
@@ -227,6 +252,7 @@ export default function DrawingTemplate(
           tabView={viewTool}
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
           mediaType={mediaType}
+          closeFormCompanionWindow={closeFormCompanionWindow}
           displayMode={KONVA_MODE.DRAW}
         />
       </Grid>
@@ -268,6 +294,7 @@ export default function DrawingTemplate(
           saveAnnotation={saveFunction}
         />
       </Grid>
+
     </Grid>
   );
 }
@@ -291,9 +318,9 @@ DrawingTemplate.propTypes = {
     PropTypes.string,
   ]).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
+  debugMode: PropTypes.bool.isRequired,
   mediaType: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,
