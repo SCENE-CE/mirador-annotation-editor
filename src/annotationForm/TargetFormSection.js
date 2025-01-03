@@ -138,13 +138,8 @@ TargetFormSection.propTypes = {
   currentTime: PropTypes.number.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   getMediaAudio: PropTypes.object.isRequired,
-  helloWorld: PropTypes.string.isRequired,
-  mediaType: PropTypes.string.isRequired,
   onChangeTarget: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  overlay: PropTypes.object.isRequired,
-  setCurrentTime: PropTypes.func.isRequired,
-  setSeekTo: PropTypes.func.isRequired,
   spatialTarget: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   target: PropTypes.object.isRequired,

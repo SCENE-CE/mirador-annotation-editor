@@ -40,7 +40,6 @@ export default function DrawingTemplate(
     closeFormCompanionWindow,
     currentTime,
     debugMode,
-    mediaType,
     overlay,
     setCurrentTime,
     setSeekTo,
@@ -233,27 +232,17 @@ export default function DrawingTemplate(
       </Grid>
       <Grid item>
         <AnnotationDrawing
-          scale={scale}
-          toolState={toolState}
-          annotation={annotation}
-          windowId={windowId}
-          // we need to pass the width and height of the image to the annotation drawing component
-          width={overlay ? overlay.containerWidth : 1920}
-          height={overlay ? overlay.containerHeight : 1080}
-          originalWidth={overlay ? overlay.canvasWidth : 1920}
-          originalHeight={overlay ? overlay.canvasHeight : 1080}
-          updateScale={updateScale}
-          setColorToolFromCurrentShape={setColorToolFromCurrentShape}
+          displayMode={KONVA_MODE.DRAW}
           drawingState={drawingState}
           isMouseOverSave={isMouseOverSave}
-          overlay={overlay}
+          scale={scale}
+          setColorToolFromCurrentShape={setColorToolFromCurrentShape}
           setDrawingState={setDrawingState}
-          showFragmentSelector={false}
           tabView={viewTool}
+          toolState={toolState}
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
-          mediaType={mediaType}
-          closeFormCompanionWindow={closeFormCompanionWindow}
-          displayMode={KONVA_MODE.DRAW}
+          updateScale={updateScale}
+          windowId={windowId}
         />
       </Grid>
       <Grid item>
@@ -277,7 +266,6 @@ export default function DrawingTemplate(
       </Grid>
       <TargetFormSection
         currentTime={currentTime}
-        mediaType={mediaType}
         onChangeTarget={updateTargetState}
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
@@ -321,7 +309,6 @@ DrawingTemplate.propTypes = {
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   debugMode: PropTypes.bool.isRequired,
-  mediaType: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,

@@ -97,7 +97,6 @@ export default function TaggingTemplate(
       <Grid item>
         <TargetFormSection
           currentTime={currentTime}
-          mediaType={mediaType}
           onChangeTarget={updateTargetState}
           setCurrentTime={setCurrentTime}
           setSeekTo={setSeekTo}

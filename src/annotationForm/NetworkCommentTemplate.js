@@ -108,7 +108,6 @@ function NetworkCommentTemplate(
       </Grid>
       <TargetFormSection
         currentTime={currentTime}
-        mediaType={mediaType}
         onChangeTarget={updateTargetState}
         setCurrentTime={setCurrentTime}
         setSeekTo={setSeekTo}
