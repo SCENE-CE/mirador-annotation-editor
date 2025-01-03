@@ -13,7 +13,6 @@ export default function TaggingTemplate(
   {
     annotation,
     closeFormCompanionWindow,
-    debugMode,
     saveAnnotation,
     windowId,
   },
@@ -89,8 +88,6 @@ export default function TaggingTemplate(
       </Grid>
       <Grid item>
         <TargetFormSection
-          closeFormCompanionWindow={closeFormCompanionWindow}
-          debugMode={debugMode}
           onChangeTarget={updateTargetState}
           spatialTarget
           target={annotationState.maeData.target}
@@ -100,7 +97,6 @@ export default function TaggingTemplate(
       </Grid>
       <Grid item>
         <AnnotationFormFooter
-          windowId={windowId}
           closeFormCompanionWindow={closeFormCompanionWindow}
           saveAnnotation={saveFunction}
         />
@@ -125,17 +121,6 @@ TaggingTemplate.propTypes = {
     drawingState: PropTypes.string,
     manifestNetwork: PropTypes.string,
     target: PropTypes.string,
-  }).isRequired,
-  annotationState: PropTypes.shape({
-    body: PropTypes.arrayOf(
-      PropTypes.shape({
-        type: PropTypes.string,
-      }),
-    ),
-    maeData: PropTypes.shape({
-      target: PropTypes.string,
-      templateType: PropTypes.string,
-    }),
   }).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,

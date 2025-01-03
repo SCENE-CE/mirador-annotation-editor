@@ -8,6 +8,8 @@ import ManifestNetworkFormSection from './ManifestNetworkFormSection';
 import { maeTargetToIiifTarget } from '../IIIFUtils';
 import { TEMPLATE } from './AnnotationFormUtils';
 import AnnotationFormFooter from './AnnotationFormFooter';
+import { resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { playerReferences } from '../playerReferences';
 
 /** Form part for edit annotation content and body */
 function NetworkCommentTemplate(
@@ -15,9 +17,6 @@ function NetworkCommentTemplate(
     annotation,
     canvases,
     closeFormCompanionWindow,
-    currentTime,
-    debugMode,
-    overlay,
     saveAnnotation,
     windowId,
   },
@@ -79,13 +78,13 @@ function NetworkCommentTemplate(
 
   /** SaveFunction for Manifest* */
   const saveFunction = () => {
-    canvases.forEach(async (canvas) => {
-      // Adapt target to the canvas
-      // eslint-disable-next-line no-param-reassign
-      annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
-      saveAnnotation(annotationState, canvas.id);
-    });
-    closeFormCompanionWindow();
+    resizeKonvaStage(
+      windowId,
+      playerReferences.getWidth(),
+      playerReferences.getHeight(),
+      1 / playerReferences.getScale(),
+    );
+    saveAnnotation(annotationState);
   };
 
   return (
