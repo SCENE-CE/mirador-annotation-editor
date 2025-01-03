@@ -110,7 +110,6 @@ TextCommentTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   annotation: PropTypes.object.isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
-  debugMode: PropTypes.bool.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };
