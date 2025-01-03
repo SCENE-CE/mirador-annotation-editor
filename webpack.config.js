@@ -23,8 +23,8 @@ const baseConfig = (mode) => ({
         test: /\.(js|mjs|jsx)$/,
       },
       {
-        test: /\.html$/,
         loader: 'html-loader',
+        test: /\.html$/,
       },
       {
         test: /\.css$/, // Targets all CSS files

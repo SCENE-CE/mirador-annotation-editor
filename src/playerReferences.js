@@ -84,9 +84,7 @@ export const playerReferences = (function () {
           const percentageWidth = _canvases[0].__jsonld.width * viewer.viewport.getZoom();
           const containerWidth = viewer.container.clientWidth;
           const actualWidthInPixels = Math.round(containerWidth * percentageWidth);
-          //console.log("actualWidthInPixels", actualWidthInPixels);
           return actualWidthInPixels;
-
         }
       }
       if (_mediaType === MEDIA_TYPES.VIDEO) {
@@ -191,7 +189,8 @@ export const playerReferences = (function () {
             _overlay = _media.canvasOverlay;
             break;
           case MEDIA_TYPES.AUDIO:
-             _audio= getVisibleCanvasAudioResources(state, { windowId });
+             _audio = getVisibleCanvasAudioResources(state, { windowId });
+             break;
           default:
             console.error('Unknown media type');
             break;
