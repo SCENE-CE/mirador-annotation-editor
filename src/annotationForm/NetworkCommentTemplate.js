@@ -5,7 +5,6 @@ import { Grid } from '@mui/material';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import ManifestNetworkFormSection from './ManifestNetworkFormSection';
-import { maeTargetToIiifTarget } from '../IIIFUtils';
 import { TEMPLATE } from './AnnotationFormUtils';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
@@ -15,7 +14,6 @@ import { playerReferences } from '../playerReferences';
 function NetworkCommentTemplate(
   {
     annotation,
-    canvases,
     closeFormCompanionWindow,
     saveAnnotation,
     windowId,
@@ -122,11 +120,7 @@ NetworkCommentTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   annotation: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
-  currentTime: PropTypes.number.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  overlay: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };
