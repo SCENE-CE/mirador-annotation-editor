@@ -28,6 +28,7 @@ export default function AnnotationFormBody(
     currentTime,
     debugMode,
     saveAnnotation,
+    t,
     templateType,
     windowId,
   },
@@ -53,6 +54,7 @@ export default function AnnotationFormBody(
               currentTime={currentTime}
               debugMode={debugMode}
               saveAnnotation={saveAnnotation}
+              t={t}
               windowId={windowId}
             />
           )
@@ -208,6 +210,7 @@ AnnotationFormBody.propTypes = {
   debugMode: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   saveAnnotation: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
   templateType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 };

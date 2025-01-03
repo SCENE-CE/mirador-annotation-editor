@@ -10,6 +10,7 @@ const config = {
     // adapter: (canvasId) => new AnnototAdapter(canvasId, endpointUrl),
     exportLocalStorageAnnotations: false, // display annotation JSON export button
   },
+  language:'fr',
   catalog:
   manifestsCatalog,
   debug: true,

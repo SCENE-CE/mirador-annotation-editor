@@ -6,6 +6,7 @@ import DataObjectIcon from '@mui/icons-material/DataObject';
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { OVERLAY_TOOL } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { useTranslation } from 'react-i18next';
 
 export const TEMPLATE = {
   IIIF_TYPE: 'iiif',
@@ -30,118 +31,63 @@ export const getTemplateType = (templateType) => TEMPLATE_TYPES.find(
 /**
  * List of the template types supported
  */
-export const TEMPLATE_TYPES = [
+export const TEMPLATE_TYPES = (t) => [
   {
-    description: 'Textual note with target',
+    description: t('textual_note_with_target'),
     icon: <TextFieldsIcon />,
     id: TEMPLATE.TEXT_TYPE,
-    // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
-      if (mediaType === MEDIA_TYPES.VIDEO) {
-        return true;
-      }
-      if (mediaType === MEDIA_TYPES.IMAGE) {
-        return true;
-      }
-      if (mediaType === MEDIA_TYPES.AUDIO) {
-        return false;
-      }
+      if (mediaType === MEDIA_TYPES.VIDEO) return true;
+      if (mediaType === MEDIA_TYPES.IMAGE) return true;
+      if (mediaType === MEDIA_TYPES.AUDIO) return false;
     },
-    label: 'Note',
+    label: t('note'),
   },
   {
-    description: 'Tag with target',
+    description: t('tag_with_target'),
     icon: <LocalOfferIcon fontSize="small" />,
     id: TEMPLATE.TAGGING_TYPE,
-    // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
-      if (mediaType === MEDIA_TYPES.VIDEO) {
-        return true;
-      }
-      if (mediaType === MEDIA_TYPES.IMAGE) {
-        return true;
-      }
-      if (mediaType === MEDIA_TYPES.AUDIO) {
-        return true;
-      }
+      if (mediaType === MEDIA_TYPES.VIDEO) return true;
+      if (mediaType === MEDIA_TYPES.IMAGE) return true;
+      if (mediaType === MEDIA_TYPES.AUDIO) return true;
     },
-    label: 'Tag',
+    label: t('tag'),
   },
   {
-    description: 'Image in overlay with a note',
+    description: t('image_in_overlay_with_note'),
     icon: <ImageIcon fontSize="small" />,
     id: TEMPLATE.IMAGE_TYPE,
-    // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
-      if (mediaType === MEDIA_TYPES.VIDEO) {
-        return true;
-      }
-      // Mirador doesn't support annotation from an image
-      if (mediaType === MEDIA_TYPES.IMAGE) {
-        return false;
-      }
-      if (mediaType === MEDIA_TYPES.AUDIO) {
-        return false;
-      }
+      if (mediaType === MEDIA_TYPES.VIDEO) return true;
+      if (mediaType === MEDIA_TYPES.IMAGE) return false; // Mirador doesn't support annotation from an image
+      if (mediaType === MEDIA_TYPES.AUDIO) return false;
     },
-    label: 'Image',
+    label: t('image'),
   },
   {
-    description: 'Drawings and text in overlay',
+    description: t('drawings_and_text_in_overlay'),
     icon: <CategoryIcon fontSize="small" />,
     id: TEMPLATE.KONVA_TYPE,
-    // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
-      if (mediaType === MEDIA_TYPES.VIDEO) {
-        return true;
-      }
-      // Mirador doesnot support annotation from an image
-      if (mediaType === MEDIA_TYPES.IMAGE) {
-        return false;
-      }
-      if (mediaType === MEDIA_TYPES.AUDIO) {
-        return false;
-      }
+      if (mediaType === MEDIA_TYPES.VIDEO) return true;
+      if (mediaType === MEDIA_TYPES.IMAGE) return false; // Mirador doesn't support annotation from an image
+      if (mediaType === MEDIA_TYPES.AUDIO) return false;
     },
-    label: 'Overlay',
+    label: t('overlay'),
   },
-  /*  {
-    description: 'Link target to a manifest',
-    icon: <HubIcon fontSize="small" />,
-    id: template.MANIFEST_TYPE,
-    isCompatibleWithTemplate: (mediaType) => {
-      if (mediaType === mediaTypes.VIDEO) {
-        return true;
-      }
-      if (mediaType === mediaTypes.IMAGE) {
-        return true;
-      }
-      if (mediaType === mediaTypes.AUDIO) {
-        return true;
-      }
-    },
-    label: 'Document',
-  }, */
   {
-    description: 'Edit directly the IIIF json code',
+    description: t('edit_iiif_json_code'),
     icon: <DataObjectIcon fontSize="small" />,
     id: TEMPLATE.IIIF_TYPE,
-    // eslint-disable-next-line consistent-return
     isCompatibleWithTemplate: (mediaType) => {
-      if (mediaType === MEDIA_TYPES.VIDEO) {
-        return true;
-      }
-      if (mediaType === MEDIA_TYPES.IMAGE) {
-        return true;
-      }
-      if (mediaType === MEDIA_TYPES.AUDIO) {
-        return true;
-      }
+      if (mediaType === MEDIA_TYPES.VIDEO) return true;
+      if (mediaType === MEDIA_TYPES.IMAGE) return true;
+      if (mediaType === MEDIA_TYPES.AUDIO) return true;
     },
-    label: 'Expert mode',
+    label: t('expert_mode'),
   },
 ];
-
 export const defaultToolState = {
   activeTool: OVERLAY_TOOL.EDIT,
   closedMode: 'closed',

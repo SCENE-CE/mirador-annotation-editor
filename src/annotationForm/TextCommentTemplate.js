@@ -17,6 +17,7 @@ function TextCommentTemplate(
     currentTime,
     debugMode,
     saveAnnotation,
+    t,
     windowId,
   },
 ) {
@@ -88,6 +89,7 @@ function TextCommentTemplate(
         <TextFormSection
           annoHtml={annotationState.body.value}
           updateAnnotationBody={updateAnnotationTextualBodyValue}
+          t={t}
         />
       </Grid>
       <Grid item>
@@ -120,6 +122,7 @@ TextCommentTemplate.propTypes = {
   currentTime: PropTypes.number.isRequired,
   debugMode: PropTypes.bool.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };
 
