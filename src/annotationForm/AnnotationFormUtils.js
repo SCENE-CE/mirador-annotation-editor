@@ -6,7 +6,6 @@ import DataObjectIcon from '@mui/icons-material/DataObject';
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { OVERLAY_TOOL } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import { useTranslation } from 'react-i18next';
 
 export const TEMPLATE = {
   IIIF_TYPE: 'iiif',
@@ -24,7 +23,7 @@ export const MEDIA_TYPES = {
   VIDEO: 'Video',
 };
 /** Return template type * */
-export const getTemplateType = (templateType) => TEMPLATE_TYPES.find(
+export const getTemplateType = (t,templateType) => TEMPLATE_TYPES(t).find(
   (type) => type.id === templateType,
 );
 
@@ -60,7 +59,8 @@ export const TEMPLATE_TYPES = (t) => [
     id: TEMPLATE.IMAGE_TYPE,
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === MEDIA_TYPES.VIDEO) return true;
-      if (mediaType === MEDIA_TYPES.IMAGE) return false; // Mirador doesn't support annotation from an image
+      // Mirador doesn't support annotation from an image
+      if (mediaType === MEDIA_TYPES.IMAGE) return false;
       if (mediaType === MEDIA_TYPES.AUDIO) return false;
     },
     label: t('image'),
@@ -71,7 +71,8 @@ export const TEMPLATE_TYPES = (t) => [
     id: TEMPLATE.KONVA_TYPE,
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === MEDIA_TYPES.VIDEO) return true;
-      if (mediaType === MEDIA_TYPES.IMAGE) return false; // Mirador doesn't support annotation from an image
+      // Mirador doesn't support annotation from an image
+      if (mediaType === MEDIA_TYPES.IMAGE) return false;
       if (mediaType === MEDIA_TYPES.AUDIO) return false;
     },
     label: t('overlay'),

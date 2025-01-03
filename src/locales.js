@@ -44,7 +44,6 @@ export default {
     zoom: 'Zoom',
   },
   fr: {
-    annotation_form_content: "Le contenu du formulaire d'annotation va ici.",
     cancel: 'Annuler',
     container_size: 'Taille du conteneur',
     create_annotation: 'Créer une annotation',
@@ -84,8 +83,8 @@ export default {
     textual_note_with_target: 'Note textuelle avec cible',
     tool_selection: 'Sélection d’outil',
     unsupported_media_message: "Le type de média de votre canvas actuel n'est pas pris en charge par l'éditeur d'annotations.",
-    video_annotation_instruction: 'Si vous souhaitez annoter des vidéos, vous devez installer MAEV pour créer et modifier des annotations sur les vidéos :',
-    your_tag_here: 'Votre étiquette ici :',
+    video_annotation_instruction: 'Si vous souhaitez annoter des vidéos, vous devez installer le plugin Mirador Annotation Editor Video (MAEV) pour créer et modifier des annotations sur les vidéos :',
+    your_tag_here: 'Votre étiquette',
     zoom: 'Zoom',
   },
 };

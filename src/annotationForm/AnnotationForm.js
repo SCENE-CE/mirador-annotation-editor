@@ -58,10 +58,10 @@ function AnnotationForm(
     if (annotation.id) {
       if (annotation.maeData && annotation.maeData.templateType) {
         // Annotation has been created with MAE
-        setTemplateType(getTemplateType(annotation.maeData.templateType));
+        setTemplateType(getTemplateType(t,annotation.maeData.templateType));
       } else {
         // Annotation has been created with other IIIF annotation editor
-        setTemplateType(getTemplateType(TEMPLATE.IIIF_TYPE));
+        setTemplateType(getTemplateType(t,TEMPLATE.IIIF_TYPE));
       }
     }
   }
