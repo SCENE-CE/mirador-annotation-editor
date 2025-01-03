@@ -22,7 +22,6 @@ function NetworkCommentTemplate(
     saveAnnotation,
     closeFormCompanionWindow,
     canvases,
-    getMediaAudio,
     overlay,
   },
 ) {
@@ -116,7 +115,6 @@ function NetworkCommentTemplate(
         timeTarget
         windowId={windowId}
         closeFormCompanionWindow={closeFormCompanionWindow}
-        getMediaAudio={getMediaAudio}
         overlay={overlay}
         debugMode={debugMode}
       />
@@ -138,7 +136,6 @@ NetworkCommentTemplate.propTypes = {
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.number.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  getMediaAudio: PropTypes.object.isRequired,
   mediaType: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,

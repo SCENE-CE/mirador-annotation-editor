@@ -11,8 +11,6 @@ import { playerReferences } from '../playerReferences';
  * @param templateType
  * @param currentTime
  * @param mediaType
- * @param setCurrentTime
- * @param setSeekTo
  * @param spatialTarget
  * @param windowId
  * @returns {Element}
@@ -23,7 +21,6 @@ export default function TargetFormSection(
     closeFormCompanionWindow,
     currentTime,
     debugMode,
-    getMediaAudio,
     onChangeTarget,
     spatialTarget,
     target,
@@ -123,7 +120,6 @@ export default function TargetFormSection(
               onChange={onChangeTimeTargetInput}
               windowId={windowId}
               currentTime={currentTime}
-              getMediaAudio={getMediaAudio}
               closeFormCompanionWindow={closeFormCompanionWindow}
             />
           </Grid>
@@ -137,11 +133,8 @@ TargetFormSection.propTypes = {
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.number.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  getMediaAudio: PropTypes.object.isRequired,
   onChangeTarget: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   spatialTarget: PropTypes.bool.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   target: PropTypes.object.isRequired,
   timeTarget: PropTypes.bool.isRequired,
   windowId: PropTypes.string.isRequired,

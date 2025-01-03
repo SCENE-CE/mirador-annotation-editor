@@ -16,7 +16,6 @@ export default function TaggingTemplate(
     closeFormCompanionWindow,
     currentTime,
     debugMode,
-    getMediaAudio,
     mediaType,
     overlay,
     saveAnnotation,
@@ -105,7 +104,6 @@ export default function TaggingTemplate(
           timeTarget
           windowId={windowId}
           closeFormCompanionWindow={closeFormCompanionWindow}
-          getMediaAudio={getMediaAudio}
           debugMode={debugMode}
         />
       </Grid>
@@ -153,7 +151,6 @@ TaggingTemplate.propTypes = {
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  getMediaAudio: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   saveAnnotation: PropTypes.func.isRequired,
   setCurrentTime: PropTypes.func.isRequired,

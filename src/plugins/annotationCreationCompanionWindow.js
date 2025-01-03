@@ -45,7 +45,6 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
     annotation,
     canvases,
     config: state.config,
-    getMediaAudio: getVisibleCanvasAudioResources(state, { windowId }),
   };
 }
 

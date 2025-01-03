@@ -35,29 +35,18 @@ function TargetTimeInput({
   tstart,
   tend,
   onChange,
-  getMediaAudio,
-  closeFormCompanionWindow,
 }) {
   let duration;
 
-  if (playerReferences.getMediaType() === MEDIA_TYPES.VIDEO) {
+  if (playerReferences.getMediaType() === MEDIA_TYPES.VIDEO || playerReferences.getMediaType() === MEDIA_TYPES.AUDIO) {
     duration = playerReferences.getMediaDuration();
   }
 
-  let audioDuration;
   let audioElement;
 
   if (playerReferences.getMediaType() === MEDIA_TYPES.AUDIO) {
-    const audio = getMediaAudio;
-    if (audio[0]) {
-      audioDuration = audio[0].__jsonld.duration;
-    } else {
-      closeFormCompanionWindow();
-    }
-    duration = audioDuration;
-    audioElement = document.querySelector('audio');
+    audioElement = playerReferences.getAudioElement();
   }
-  // eslint-disable-next-line no-underscore-dangle
 
   /** set annotation start time to current time */
   const setTstartNow = () => {

@@ -21,18 +21,6 @@ import { playerReferences } from '../playerReferences';
 
 /**
  * Template for Konva annotations (drawing)
- * @param annotation
- * @param currentTime
- * @param windowId
- * @param mediaVideo
- * @param annoState
- * @param setAnnoState
- * @param setCurrentTime
- * @param setSeekTo
- * @param commentingType
- * @param mediaType
- * @returns {Element}
- * @constructor
  */
 export default function DrawingTemplate(
   {
@@ -41,13 +29,10 @@ export default function DrawingTemplate(
     currentTime,
     debugMode,
     overlay,
-    setCurrentTime,
-    setSeekTo,
-    windowId,
     saveAnnotation,
+    windowId,
   },
 ) {
-  // TODO Do something with this
   /** **************************************
    *  Form stuff
    *************************************** */
@@ -143,21 +128,6 @@ export default function DrawingTemplate(
     setScale(playerReferences.getZoom());
   };
 
-  // TODO Check how to use it
-
-  /*   /!**
-     * Update annoState with the svg and position of kanva item
-     * @param svg
-     * @param xywh
-     *!/
-  const updateGeometry = ({ svg, xywh }) => {
-    setAnnoState((prevState) => ({
-      ...prevState,
-      svg,
-      xywh,
-    }));
-  }; */
-
   /**
    * Updates the tool state by merging the current color state with the existing tool state.
    * @param {object} colorState - The color state to be merged with the tool state.
@@ -222,9 +192,6 @@ export default function DrawingTemplate(
 
   return (
     <Grid container direction="column" spacing={1}>
-      {/* Rename AnnotationDrawing in Drawing Stage */}
-      {/* Check the useless props : annotation ?
-      Check the width height originalW originalW */}
       <Grid item>
         <Typography variant="formSectionTitle">
           Overlay
@@ -267,8 +234,6 @@ export default function DrawingTemplate(
       <TargetFormSection
         currentTime={currentTime}
         onChangeTarget={updateTargetState}
-        setCurrentTime={setCurrentTime}
-        setSeekTo={setSeekTo}
         target={annotationState.maeData.target}
         windowId={windowId}
         overlay={overlay}
@@ -312,8 +277,6 @@ DrawingTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
-  setCurrentTime: PropTypes.func.isRequired,
-  setSeekTo: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 
 };

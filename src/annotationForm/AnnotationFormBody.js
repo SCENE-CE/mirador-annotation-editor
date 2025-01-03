@@ -30,7 +30,6 @@ export default function AnnotationFormBody(
     closeFormCompanionWindow,
     currentTime,
     debugMode,
-    getMediaAudio,
     saveAnnotation,
     templateType,
     windowId,
@@ -58,7 +57,6 @@ export default function AnnotationFormBody(
               currentTime={currentTime}
               saveAnnotation={saveAnnotation}
               windowId={windowId}
-              getMediaAudio={getMediaAudio}
               debugMode={debugMode}
             />
           )
@@ -99,7 +97,6 @@ export default function AnnotationFormBody(
               closeFormCompanionWindow={closeFormCompanionWindow}
               saveAnnotation={saveAnnotation}
               windowId={windowId}
-              getMediaAudio={getMediaAudio}
               debugMode={debugMode}
             />
           )
@@ -122,34 +119,17 @@ export default function AnnotationFormBody(
               windowId={windowId}
               currentTime={currentTime}
               annotation={annotation}
-              getMediaAudio={getMediaAudio}
               debugMode={debugMode}
             />
             )}
         </TemplateContainer>
       )}
-    {/*   <Grid
-        item
-        style={{
-          bottom: '0',
-          margin: '20px',
-          position: 'absolute',
-        }}
-      >
-        <ToggleButton
-          value={showAdvanced}
-          onChange={() => setShowAdvanced(!showAdvanced)}
-        >
-          {showAdvanced ? 'Hide' : 'Show'}
-          {' '}
-          advanced mode
-        </ToggleButton>
-      </Grid> */}
       <Grid item>
         {showAdvanced && (
           <AdvancedAnnotationEditor
             value={annotation}
             onChange={(updatedAnnotation) => {
+              // eslint-disable-next-line no-param-reassign
               annotation = updatedAnnotation;
             }}
             closeFormCompanionWindow={closeFormCompanionWindow}
@@ -235,7 +215,6 @@ AnnotationFormBody.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   debugMode: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  getMediaAudio: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   templateType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,

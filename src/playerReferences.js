@@ -10,6 +10,7 @@ export const playerReferences = (function () {
   let _mediaType;
   let _overlay;
   let _actions;
+  let _audio
 
   return {
     getScale() {
@@ -51,7 +52,16 @@ export const playerReferences = (function () {
       return undefined;
     },
     getMediaDuration() {
-      return _media.props.canvas.__jsonld.duration;
+      if (_mediaType === MEDIA_TYPES.VIDEO) {
+        return _media.props.canvas.__jsonld.duration;
+      }
+      if (_mediaType === MEDIA_TYPES.AUDIO) {
+        if(_audio){
+          return _audio[0].__jsonld.duration
+        } else {
+          console.error("Something is wrong about audio")
+        }
+      }
     },
 
     getOverlay() {
@@ -180,6 +190,8 @@ export const playerReferences = (function () {
           case MEDIA_TYPES.VIDEO:
             _overlay = _media.canvasOverlay;
             break;
+          case MEDIA_TYPES.AUDIO:
+             _audio= getVisibleCanvasAudioResources(state, { windowId });
           default:
             console.error('Unknown media type');
             break;
@@ -206,5 +218,9 @@ export const playerReferences = (function () {
       }
       console.error('Cannot seek time for image');
     },
+
+    getAudioElement(){
+      return document.querySelector('audio');
+    }
   };
 }());

@@ -17,7 +17,6 @@ function TextCommentTemplate(
     closeFormCompanionWindow,
     currentTime,
     debugMode,
-    getMediaAudio,
     saveAnnotation,
     windowId,
   },
@@ -101,7 +100,6 @@ function TextCommentTemplate(
           timeTarget
           spatialTarget
           closeFormCompanionWindow={closeFormCompanionWindow}
-          getMediaAudio={getMediaAudio}
           debugMode={debugMode}
         />
       </Grid>
@@ -124,7 +122,6 @@ TextCommentTemplate.propTypes = {
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.number.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  getMediaAudio: PropTypes.object.isRequired,
   mediaType: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,
