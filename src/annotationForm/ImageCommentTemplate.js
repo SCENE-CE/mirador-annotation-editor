@@ -37,6 +37,7 @@ export default function ImageCommentTemplate(
         value: '',
       },
       maeData: {
+        drawingState: null,
         target: null,
         templateType: TEMPLATE.IMAGE_TYPE,
       },
@@ -86,7 +87,7 @@ export default function ImageCommentTemplate(
 
   /** Initialize drawingState * */
   const initDrawingState = () => {
-    if (annotationState.maeData.target?.drawingState) {
+    if (annotationState.maeData.drawingState) {
       return {
         ...JSON.parse(annotationState.maeData.target.drawingState),
         isDrawing: false,
