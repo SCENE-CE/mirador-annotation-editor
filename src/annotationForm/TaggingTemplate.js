@@ -16,6 +16,7 @@ export default function TaggingTemplate(
     currentTime,
     debugMode,
     saveAnnotation,
+    t,
     windowId,
   },
 ) {
@@ -77,12 +78,12 @@ export default function TaggingTemplate(
   return (
     <Grid container direction="column" spacing={2}>
       <Grid item>
-        <Typography variant="formSectionTitle">Tag</Typography>
+        <Typography variant="formSectionTitle">{t('tag')} </Typography>
       </Grid>
       <Grid item>
         <TextField
           id="outlined-basic"
-          label="Your tag here :"
+          label={t('your_tag_here')}
           value={annotationState.body.value}
           variant="outlined"
           onChange={(event) => updateTaggingValue(event.target.value)}
@@ -97,6 +98,7 @@ export default function TaggingTemplate(
           spatialTarget
           target={annotationState.maeData.target}
           timeTarget
+          t={t}
           windowId={windowId}
         />
       </Grid>
@@ -105,6 +107,7 @@ export default function TaggingTemplate(
           windowId={windowId}
           closeFormCompanionWindow={closeFormCompanionWindow}
           saveAnnotation={saveFunction}
+          t={t}
         />
       </Grid>
     </Grid>
@@ -145,5 +148,6 @@ TaggingTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   // eslint-disable-next-line react/forbid-prop-types
   saveAnnotation: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };

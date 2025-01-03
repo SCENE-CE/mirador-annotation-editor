@@ -196,8 +196,6 @@ function TargetTimeInput({
 TargetTimeInput.propTypes = {
   currentTime: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
-  setCurrentTime: PropTypes.func.isRequired,
-  setSeekTo: PropTypes.func.isRequired,
   tend: PropTypes.number.isRequired,
   tstart: PropTypes.number.isRequired,
   windowId: PropTypes.string.isRequired,

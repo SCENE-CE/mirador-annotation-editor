@@ -23,6 +23,7 @@ export default function TargetFormSection(
     debugMode,
     onChangeTarget,
     spatialTarget,
+    t,
     target,
     timeTarget,
     windowId,
@@ -92,11 +93,10 @@ export default function TargetFormSection(
     <Grid item container direction="column" spacing={1}>
       <Grid item>
         <Typography variant="formSectionTitle">
-          Target
+          {t('target')}
         </Typography>
       </Grid>
-      {
-        spatialTarget && (
+      {spatialTarget && (
         <Grid item container direction="column">
           <TargetSpatialInput
             setTargetDrawingState={onChangeSpatialTargetInput}
@@ -107,24 +107,23 @@ export default function TargetFormSection(
             targetDrawingState={target.drawingState}
             closeFormCompanionWindow={closeFormCompanionWindow}
             debugMode={debugMode}
+            t={t}
           />
         </Grid>
-        )
-      }
-      {
-        timeTarget && (
-          <Grid item container direction="column">
-            <TargetTimeInput
-              tstart={target.tstart}
-              tend={target.tend}
-              onChange={onChangeTimeTargetInput}
-              windowId={windowId}
-              currentTime={currentTime}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-            />
-          </Grid>
-        )
-        }
+      )}
+      {timeTarget && (
+        <Grid item container direction="column">
+          <TargetTimeInput
+            tstart={target.tstart}
+            tend={target.tend}
+            onChange={onChangeTimeTargetInput}
+            windowId={windowId}
+            currentTime={currentTime}
+            closeFormCompanionWindow={closeFormCompanionWindow}
+            t={t}
+          />
+        </Grid>
+      )}
     </Grid>
   );
 }
@@ -135,6 +134,7 @@ TargetFormSection.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   onChangeTarget: PropTypes.func.isRequired,
   spatialTarget: PropTypes.bool.isRequired,
+  t: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   target: PropTypes.object.isRequired,
   timeTarget: PropTypes.bool.isRequired,

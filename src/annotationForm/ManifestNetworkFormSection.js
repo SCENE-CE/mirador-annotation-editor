@@ -16,6 +16,7 @@ export default function ManifestNetworkFormSection(
   {
     manifestNetwork,
     onChange,
+    t,
   },
 ) {
   // TODO probably useless.  check this state
@@ -34,14 +35,14 @@ export default function ManifestNetworkFormSection(
     <Grid item container direction="column" spacing={1}>
       <Grid item>
         <Typography variant="formSectionTitle">
-          Document
+          {t('document')}
         </Typography>
       </Grid>
       <Grid item>
         <TextField
           value={manifestNetwork}
           onChange={(event) => handlOnChange(event.target.value.trim())}
-          label="Manifest URL"
+          label={t('manifest_url')}
           type="url"
           error={!isValidUrl(manifestNetwork)}
         />
@@ -50,23 +51,18 @@ export default function ManifestNetworkFormSection(
         <Link href={manifestUrl}>{manifestUrl}</Link>
       </Grid>
       <Grid item>
-        {
-          isValidUrl(manifestNetwork) && (
-            // Add a link
-            <Link href={manifestNetwork} target="_blank" rel="noreferrer">
-              {manifestNetwork}
-            </Link>
-          )
-        }
+        {isValidUrl(manifestNetwork) && (
+          <Link href={manifestNetwork} target="_blank" rel="noreferrer">
+            {manifestNetwork}
+          </Link>
+        )}
       </Grid>
       <Grid item>
-        {
-          !isValidUrl(manifestNetwork) && (
-            <Typography variant="caption" color="error">
-              Invalid URL
-            </Typography>
-          )
-        }
+        {!isValidUrl(manifestNetwork) && (
+          <Typography variant="caption" color="error">
+            {t('invalid_url')}
+          </Typography>
+        )}
       </Grid>
     </Grid>
   );
@@ -75,4 +71,5 @@ export default function ManifestNetworkFormSection(
 ManifestNetworkFormSection.propTypes = {
   manifestNetwork: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
 };

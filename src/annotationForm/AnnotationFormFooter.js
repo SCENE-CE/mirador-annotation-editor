@@ -6,6 +6,7 @@ import React from 'react';
 function AnnotationFormFooter({
   closeFormCompanionWindow,
   saveAnnotation,
+  t,
 }) {
   /**
      * Validate form and save annotation
@@ -13,19 +14,19 @@ function AnnotationFormFooter({
 
   return (
     <Grid container item spacing={1} justifyContent="flex-end">
-      <Tooltip title="cancel">
+      <Tooltip title={t('cancel')}>
         <Button onClick={closeFormCompanionWindow}>
-          Cancel
+          {t('cancel')}
         </Button>
       </Tooltip>
-      <Tooltip title="save">
+      <Tooltip title={t('save')}>
         <Button
           variant="contained"
           color="primary"
           type="submit"
           onClick={saveAnnotation}
         >
-          Save
+          {t('save')}
         </Button>
       </Tooltip>
     </Grid>
@@ -34,6 +35,7 @@ function AnnotationFormFooter({
 AnnotationFormFooter.propTypes = {
   closeFormCompanionWindow: PropTypes.func.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };
 

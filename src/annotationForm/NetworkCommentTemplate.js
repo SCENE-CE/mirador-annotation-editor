@@ -19,6 +19,7 @@ function NetworkCommentTemplate(
     debugMode,
     overlay,
     saveAnnotation,
+    t,
     windowId,
   },
 ) {
@@ -94,12 +95,14 @@ function NetworkCommentTemplate(
         <ManifestNetworkFormSection
           manifestNetwork={annotation.maeData.manifestNetwork}
           onChange={updateManifestNetwork}
+          t={t}
         />
       </Grid>
       <Grid item>
         <TextFormSection
           annoHtml={annotationState.body.value}
           updateAnnotationBody={updateAnnotationTextBody}
+          t={t}
         />
       </Grid>
       <TargetFormSection
@@ -112,11 +115,13 @@ function NetworkCommentTemplate(
         closeFormCompanionWindow={closeFormCompanionWindow}
         overlay={overlay}
         debugMode={debugMode}
+        t={t}
       />
       <Grid item>
         <AnnotationFormFooter
           closeFormCompanionWindow={closeFormCompanionWindow}
           saveAnnotation={saveFunction}
+          t={t}
         />
       </Grid>
     </Grid>
@@ -133,6 +138,7 @@ NetworkCommentTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };
 

@@ -85,7 +85,6 @@ function TextCommentTemplate(
   return (
     <Grid container direction="column" spacing={2}>
       <Grid item>
-
         <TextFormSection
           annoHtml={annotationState.body.value}
           updateAnnotationBody={updateAnnotationTextualBodyValue}
@@ -102,13 +101,14 @@ function TextCommentTemplate(
           spatialTarget
           closeFormCompanionWindow={closeFormCompanionWindow}
           debugMode={debugMode}
+          t={t}
         />
       </Grid>
       <Grid item>
-
         <AnnotationFormFooter
           closeFormCompanionWindow={closeFormCompanionWindow}
           saveAnnotation={saveFunction}
+          t={t}
         />
       </Grid>
     </Grid>

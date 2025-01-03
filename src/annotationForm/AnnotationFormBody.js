@@ -68,6 +68,7 @@ export default function AnnotationFormBody(
             debugMode={debugMode}
             saveAnnotation={saveAnnotation}
             windowId={windowId}
+            t={t}
           />
           )
         }
@@ -79,6 +80,7 @@ export default function AnnotationFormBody(
               currentTime={currentTime}
               debugMode={debugMode}
               saveAnnotation={saveAnnotation}
+              t={t}
               windowId={windowId}
             />
           )
@@ -91,6 +93,7 @@ export default function AnnotationFormBody(
               currentTime={currentTime}
               closeFormCompanionWindow={closeFormCompanionWindow}
               saveAnnotation={saveAnnotation}
+              t={t}
               windowId={windowId}
               debugMode={debugMode}
             />
@@ -103,6 +106,7 @@ export default function AnnotationFormBody(
               closeFormCompanionWindow={closeFormCompanionWindow}
               saveAnnotation={saveAnnotation}
               canvases={canvases}
+              t={t}
             />
           )
         }
@@ -113,6 +117,7 @@ export default function AnnotationFormBody(
               currentTime={currentTime}
               debugMode={debugMode}
               saveAnnotation={saveAnnotation}
+              t={t}
               windowId={windowId}
             />
             )}
@@ -128,53 +133,30 @@ export default function AnnotationFormBody(
             }}
             closeFormCompanionWindow={closeFormCompanionWindow}
             saveAnnotation={saveAnnotation}
+            t={t}
           />
         )}
       </Grid>
       { debugMode && (
       <>
-        <Typography>
-          { playerReferences.getMediaType() }
-          {' '}
-        </Typography>
-        <Typography>
-          Scale
-          {' '}
-          { playerReferences.getScale() }
-        </Typography>
-        <Typography>
-          Zoom
-          {' '}
-          { playerReferences.getZoom() }
-          {' '}
-        </Typography>
-        <Typography>
-          Image true Size
-          {' '}
-          { playerReferences.getWidth() }
-          {' '}
-          x
-          {' '}
-          { playerReferences.getHeight() }
-        </Typography>
-        <Typography>
-          Container Size
-          {' '}
-          { playerReferences.getContainerWidth() }
-          {' '}
-          x
-          {' '}
-          { playerReferences.getContainerHeight() }
-        </Typography>
-        <Typography>
-          Image Displayed
-          {' '}
-          { playerReferences.getDisplayedImageWidth() }
-          {' '}
-          x
-          {' '}
-          { playerReferences.getDisplayedImageHeight() }
-        </Typography>
+          <Typography>
+              {playerReferences.getMediaType()}
+          </Typography>
+          <Typography>
+              {t('scale')}: {playerReferences.getScale()}
+          </Typography>
+          <Typography>
+              {t('zoom')}: {playerReferences.getZoom()}
+          </Typography>
+          <Typography>
+              {t('image_true_size')}: {playerReferences.getWidth()} x {playerReferences.getHeight()}
+          </Typography>
+          <Typography>
+              {t('container_size')}: {playerReferences.getContainerWidth()} x {playerReferences.getContainerHeight()}
+          </Typography>
+          <Typography>
+              {t('image_displayed')}: {playerReferences.getDisplayedImageWidth()} x {playerReferences.getDisplayedImageHeight()}
+          </Typography>
       </>
       )}
     </Grid>
