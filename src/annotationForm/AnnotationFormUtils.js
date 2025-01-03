@@ -78,7 +78,7 @@ export const TEMPLATE_TYPES = [
       }
       // Mirador doesn't support annotation from an image
       if (mediaType === MEDIA_TYPES.IMAGE) {
-        return false;
+        return true;
       }
       if (mediaType === MEDIA_TYPES.AUDIO) {
         return false;
