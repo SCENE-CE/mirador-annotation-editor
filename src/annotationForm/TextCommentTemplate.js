@@ -14,7 +14,6 @@ function TextCommentTemplate(
   {
     annotation,
     closeFormCompanionWindow,
-    currentTime,
     debugMode,
     saveAnnotation,
     windowId,
@@ -92,14 +91,13 @@ function TextCommentTemplate(
       </Grid>
       <Grid item>
         <TargetFormSection
-          currentTime={currentTime}
-          onChangeTarget={updateTargetState}
-          target={annotationState.maeData.target}
-          windowId={windowId}
-          timeTarget
-          spatialTarget
           closeFormCompanionWindow={closeFormCompanionWindow}
           debugMode={debugMode}
+          onChangeTarget={updateTargetState}
+          spatialTarget
+          target={annotationState.maeData.target}
+          timeTarget
+          windowId={windowId}
         />
       </Grid>
       <Grid item>
@@ -117,7 +115,6 @@ TextCommentTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   annotation: PropTypes.object.isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
-  currentTime: PropTypes.number.isRequired,
   debugMode: PropTypes.bool.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,

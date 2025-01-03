@@ -98,13 +98,8 @@ export default function TargetFormSection(
         <Grid item container direction="column">
           <TargetSpatialInput
             setTargetDrawingState={onChangeSpatialTargetInput}
-            xywh={target.xywh}
-            svg={target.svg}
-            onChange={onChangeSpatialTargetInput}
-            windowId={windowId}
             targetDrawingState={target.drawingState}
-            closeFormCompanionWindow={closeFormCompanionWindow}
-            debugMode={debugMode}
+            windowId={windowId}
           />
         </Grid>
         )
