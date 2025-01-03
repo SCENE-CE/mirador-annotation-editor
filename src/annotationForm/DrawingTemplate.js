@@ -26,8 +26,6 @@ export default function DrawingTemplate(
   {
     annotation,
     closeFormCompanionWindow,
-    currentTime,
-    debugMode,
     saveAnnotation,
     t,
     windowId,
@@ -77,8 +75,8 @@ export default function DrawingTemplate(
   const saveFunction = () => {
     resizeKonvaStage(
       windowId,
-      playerReferences.getWidth(),
-      playerReferences.getHeight(),
+      playerReferences.getMediaTrueWidth(),
+      playerReferences.getMediaTrueHeight(),
       1 / playerReferences.getScale(),
     );
     annotationState.maeData.target.drawingState = drawingState;
@@ -234,13 +232,10 @@ export default function DrawingTemplate(
         />
       </Grid>
       <TargetFormSection
-        currentTime={currentTime}
         onChangeTarget={updateTargetState}
         target={annotationState.maeData.target}
-        windowId={windowId}
-        closeFormCompanionWindow={closeFormCompanionWindow}
         timeTarget
-        debugMode={debugMode}
+        windowId={windowId}
         t={t}
       />
       <Grid item>
@@ -274,8 +269,6 @@ DrawingTemplate.propTypes = {
   ]).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,
-  currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
-  debugMode: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   saveAnnotation: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,

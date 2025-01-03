@@ -25,7 +25,6 @@ export default function AnnotationFormBody(
     annotation,
     canvases,
     closeFormCompanionWindow,
-    currentTime,
     debugMode,
     saveAnnotation,
     t,
@@ -33,13 +32,6 @@ export default function AnnotationFormBody(
     windowId,
   },
 ) {
-  // TODO At this end we must only have annoSTate, setAnnoState, templateType,
-  //  mediaType, windowId in XTemplateProps
-  // TODO Search where overlay is used. Only in Konva ?
-  // TODO setSeekTo, setCurrentTime, overlay, currentTime,
-  //  mediaVideo must be get only in TargetFormSection
-  // TODO annotation is it usefeul in XTemplateProps ?
-
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   return (
@@ -51,8 +43,6 @@ export default function AnnotationFormBody(
             <TextCommentTemplate
               annotation={annotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
-              currentTime={currentTime}
-              debugMode={debugMode}
               saveAnnotation={saveAnnotation}
               t={t}
               windowId={windowId}
@@ -64,8 +54,6 @@ export default function AnnotationFormBody(
           <ImageCommentTemplate
             annotation={annotation}
             closeFormCompanionWindow={closeFormCompanionWindow}
-            currentTime={currentTime}
-            debugMode={debugMode}
             saveAnnotation={saveAnnotation}
             windowId={windowId}
             t={t}
@@ -77,8 +65,6 @@ export default function AnnotationFormBody(
             <DrawingTemplate
               annotation={annotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
-              currentTime={currentTime}
-              debugMode={debugMode}
               saveAnnotation={saveAnnotation}
               t={t}
               windowId={windowId}
@@ -89,13 +75,10 @@ export default function AnnotationFormBody(
           templateType.id === TEMPLATE.MANIFEST_TYPE && (
             <NetworkCommentTemplate
               annotation={annotation}
-              canvases={canvases}
-              currentTime={currentTime}
               closeFormCompanionWindow={closeFormCompanionWindow}
               saveAnnotation={saveAnnotation}
               t={t}
               windowId={windowId}
-              debugMode={debugMode}
             />
           )
         }
@@ -114,8 +97,6 @@ export default function AnnotationFormBody(
             <TaggingTemplate
               annotation={annotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
-              currentTime={currentTime}
-              debugMode={debugMode}
               saveAnnotation={saveAnnotation}
               t={t}
               windowId={windowId}
@@ -139,24 +120,43 @@ export default function AnnotationFormBody(
       </Grid>
       { debugMode && (
       <>
-          <Typography>
-              {playerReferences.getMediaType()}
-          </Typography>
-          <Typography>
-              {t('scale')}: {playerReferences.getScale()}
-          </Typography>
-          <Typography>
-              {t('zoom')}: {playerReferences.getZoom()}
-          </Typography>
-          <Typography>
-              {t('image_true_size')}: {playerReferences.getWidth()} x {playerReferences.getHeight()}
-          </Typography>
-          <Typography>
-              {t('container_size')}: {playerReferences.getContainerWidth()} x {playerReferences.getContainerHeight()}
-          </Typography>
-          <Typography>
-              {t('image_displayed')}: {playerReferences.getDisplayedImageWidth()} x {playerReferences.getDisplayedImageHeight()}
-          </Typography>
+        <Typography>
+          {playerReferences.getMediaType()}
+        </Typography>
+        <Typography>
+          {t('scale')}
+          :
+          {playerReferences.getScale()}
+        </Typography>
+        <Typography>
+          {t('zoom')}
+          :
+          {playerReferences.getZoom()}
+        </Typography>
+        <Typography>
+          {t('image_true_size')}
+          :
+          {playerReferences.getMediaTrueWidth()}
+          {' '}
+          x
+          {playerReferences.getMediaTrueHeight()}
+        </Typography>
+        <Typography>
+          {t('container_size')}
+          :
+          {playerReferences.getContainerWidth()}
+          {' '}
+          x
+          {playerReferences.getContainerHeight()}
+        </Typography>
+        <Typography>
+          {t('image_displayed')}
+          :
+          {playerReferences.getDisplayedMediaWidth()}
+          {' '}
+          x
+          {playerReferences.getDisplayedMediaHeight()}
+        </Typography>
       </>
       )}
     </Grid>
@@ -187,8 +187,6 @@ AnnotationFormBody.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   canvases: PropTypes.object.isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
-  currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   debugMode: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   saveAnnotation: PropTypes.func.isRequired,

@@ -13,19 +13,24 @@ import { playerReferences } from '../playerReferences';
 import { convertAnnotationStateToBeSaved } from '../IIIFUtils';
 import '../118n';
 
-// eslint-disable-next-line require-jsdoc
-function AnnotationForm({
-  annotation,
-  canvases,
-  closeCompanionWindow,
-  currentTime,
-  config,
-  id,
-  receiveAnnotation,
-  windowId,
-  t,
-}) {
+/**
+ * Component for submitting a form to create or edit an annotation.
+ * */
+function AnnotationForm(
+  {
+    annotation,
+    canvases,
+    closeCompanionWindow,
+    config,
+    currentTime,
+    id,
+    receiveAnnotation,
+    t,
+    windowId,
+  },
+) {
   const [templateType, setTemplateType] = useState(null);
+  // eslint-disable-next-line no-underscore-dangle
   const [mediaType, setMediaType] = useState(playerReferences.getMediaType());
 
   const debugMode = config.debug === true;
@@ -52,8 +57,10 @@ function AnnotationForm({
   if (!templateType) {
     if (annotation.id) {
       if (annotation.maeData && annotation.maeData.templateType) {
+        // Annotation has been created with MAE
         setTemplateType(getTemplateType(annotation.maeData.templateType));
       } else {
+        // Annotation has been created with other IIIF annotation editor
         setTemplateType(getTemplateType(TEMPLATE.IIIF_TYPE));
       }
     }
@@ -64,10 +71,45 @@ function AnnotationForm({
     setMediaType(playerReferences.getMediaType());
   }, [canvases[0].index]);
 
+  // Add a state to trigger redraw
+  const [windowSize, setWindowSize] = useState({
+    height: window.innerHeight,
+    width: window.innerWidth,
+  });
+
+  // Listen to window resize event
+  useEffect(() => {
+    /**
+     * Updates the state with the current window size when the window is resized.
+     * @function handleResize
+     * @returns {void}
+     */
+    const handleResize = () => {
+      setWindowSize({
+        height: window.innerHeight,
+        width: window.innerWidth,
+      });
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  /**
+   * Closes the companion window with the specified ID and position.
+   *
+   * @returns {void}
+   */
   const closeFormCompanionWindow = () => {
     closeCompanionWindow('annotationCreation', { id, position: 'right' });
   };
 
+  /**
+   * Save the annotation
+   * @param annotationState
+   */
   const saveAnnotation = (annotationState) => {
     const promises = playerReferences.getCanvases().map(async (canvas) => {
       const annotationStateToBeSaved = await convertAnnotationStateToBeSaved(
@@ -88,6 +130,7 @@ function AnnotationForm({
       closeFormCompanionWindow();
     });
   };
+
   if (!playerReferences.isInitialized()) {
     return (
       <CompanionWindow title={t('media_not_supported')} windowId={windowId} id={id}>
@@ -120,36 +163,37 @@ function AnnotationForm({
       windowId={windowId}
       id={id}
     >
-      {templateType === null ? (
-        <AnnotationFormTemplateSelector
-          setCommentingType={setTemplateType}
-          mediaType={mediaType}
-          t={t}
-        />
-      ) : (
-        <Grid container direction="column" spacing={1}>
-          <Grid item container>
-            <AnnotationFormHeader
-              setCommentingType={setTemplateType}
-              templateType={templateType}
-              annotation={annotation}
-            />
+      {templateType === null
+        ? (
+          <AnnotationFormTemplateSelector
+            setCommentingType={setTemplateType}
+            mediaType={mediaType}
+            t={t}
+          />
+        )
+        : (
+          <Grid container direction="column" spacing={1}>
+            <Grid item container>
+              <AnnotationFormHeader
+                setCommentingType={setTemplateType}
+                templateType={templateType}
+                annotation={annotation}
+              />
+            </Grid>
+            <Grid item>
+              <AnnotationFormBody
+                annotation={annotation}
+                canvases={canvases}
+                closeFormCompanionWindow={closeFormCompanionWindow}
+                debugMode={debugMode}
+                saveAnnotation={saveAnnotation}
+                t={t}
+                templateType={templateType}
+                windowId={windowId}
+              />
+            </Grid>
           </Grid>
-          <Grid item>
-            <AnnotationFormBody
-              templateType={templateType}
-              windowId={windowId}
-              annotation={annotation}
-              currentTime={currentTime}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-              saveAnnotation={saveAnnotation}
-              t={t}
-              debugMode={debugMode}
-              canvases={canvases}
-            />
-          </Grid>
-        </Grid>
-      )}
+        )}
     </CompanionWindow>
   );
 }

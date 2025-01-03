@@ -13,8 +13,6 @@ export default function TaggingTemplate(
   {
     annotation,
     closeFormCompanionWindow,
-    currentTime,
-    debugMode,
     saveAnnotation,
     t,
     windowId,
@@ -68,8 +66,8 @@ export default function TaggingTemplate(
   const saveFunction = async () => {
     resizeKonvaStage(
       windowId,
-      playerReferences.getWidth(),
-      playerReferences.getHeight(),
+      playerReferences.getMediaTrueWidth(),
+      playerReferences.getMediaTrueHeight(),
       1 / playerReferences.getScale(),
     );
     saveAnnotation(annotationState);
@@ -91,9 +89,6 @@ export default function TaggingTemplate(
       </Grid>
       <Grid item>
         <TargetFormSection
-          closeFormCompanionWindow={closeFormCompanionWindow}
-          currentTime={currentTime}
-          debugMode={debugMode}
           onChangeTarget={updateTargetState}
           spatialTarget
           target={annotationState.maeData.target}
@@ -104,7 +99,6 @@ export default function TaggingTemplate(
       </Grid>
       <Grid item>
         <AnnotationFormFooter
-          windowId={windowId}
           closeFormCompanionWindow={closeFormCompanionWindow}
           saveAnnotation={saveFunction}
           t={t}
@@ -131,21 +125,8 @@ TaggingTemplate.propTypes = {
     manifestNetwork: PropTypes.string,
     target: PropTypes.string,
   }).isRequired,
-  annotationState: PropTypes.shape({
-    body: PropTypes.arrayOf(
-      PropTypes.shape({
-        type: PropTypes.string,
-      }),
-    ),
-    maeData: PropTypes.shape({
-      target: PropTypes.string,
-      templateType: PropTypes.string,
-    }),
-  }).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,
-  currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   // eslint-disable-next-line react/forbid-prop-types
   saveAnnotation: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,

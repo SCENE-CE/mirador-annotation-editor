@@ -9,7 +9,6 @@ import { playerReferences } from '../playerReferences';
 /**
  * Section of Time and Space Target
  * @param templateType
- * @param currentTime
  * @param mediaType
  * @param spatialTarget
  * @param windowId
@@ -18,9 +17,6 @@ import { playerReferences } from '../playerReferences';
  */
 export default function TargetFormSection(
   {
-    closeFormCompanionWindow,
-    currentTime,
-    debugMode,
     onChangeTarget,
     spatialTarget,
     t,
@@ -34,7 +30,7 @@ export default function TargetFormSection(
     target = {};
     if (playerReferences.getMediaType() === MEDIA_TYPES.VIDEO) {
       // eslint-disable-next-line no-param-reassign
-      target.tstart = currentTime || 0;
+      target.tstart = playerReferences.getCurrentTime() || 0;
       target.tend = playerReferences.getMediaDuration() ? Math.floor(playerReferences.getMediaDuration()) : 0;
     }
 
@@ -42,8 +38,8 @@ export default function TargetFormSection(
     switch (playerReferences.getMediaType()) {
       case MEDIA_TYPES.IMAGE:
       case MEDIA_TYPES.VIDEO:
-        const targetHeigth = playerReferences.getHeight();
-        const targetWidth = playerReferences.getWidth();
+        const targetHeigth = playerReferences.getMediaTrueHeight();
+        const targetWidth = playerReferences.getMediaTrueWidth();
         // eslint-disable-next-line no-param-reassign
         target.fullCanvaXYWH = `0,0,${targetWidth},${targetHeigth}`;
         break;
@@ -96,41 +92,36 @@ export default function TargetFormSection(
           {t('target')}
         </Typography>
       </Grid>
-      {spatialTarget && (
+      {
+        spatialTarget && (
         <Grid item container direction="column">
           <TargetSpatialInput
             setTargetDrawingState={onChangeSpatialTargetInput}
-            xywh={target.xywh}
-            svg={target.svg}
-            onChange={onChangeSpatialTargetInput}
-            windowId={windowId}
             targetDrawingState={target.drawingState}
-            closeFormCompanionWindow={closeFormCompanionWindow}
-            debugMode={debugMode}
-            t={t}
-          />
-        </Grid>
-      )}
-      {timeTarget && (
-        <Grid item container direction="column">
-          <TargetTimeInput
-            tstart={target.tstart}
-            tend={target.tend}
-            onChange={onChangeTimeTargetInput}
             windowId={windowId}
-            currentTime={currentTime}
-            closeFormCompanionWindow={closeFormCompanionWindow}
             t={t}
           />
         </Grid>
-      )}
+        )
+      }
+      {
+        timeTarget && (
+          <Grid item container direction="column">
+            <TargetTimeInput
+              tstart={target.tstart}
+              tend={target.tend}
+              onChange={onChangeTimeTargetInput}
+              windowId={windowId}
+              t={t}
+            />
+          </Grid>
+        )
+        }
     </Grid>
   );
 }
 
 TargetFormSection.propTypes = {
-  closeFormCompanionWindow: PropTypes.func.isRequired,
-  currentTime: PropTypes.number.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   onChangeTarget: PropTypes.func.isRequired,
   spatialTarget: PropTypes.bool.isRequired,

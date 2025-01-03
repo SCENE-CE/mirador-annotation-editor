@@ -5,19 +5,16 @@ import { Grid } from '@mui/material';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import ManifestNetworkFormSection from './ManifestNetworkFormSection';
-import { maeTargetToIiifTarget } from '../IIIFUtils';
 import { TEMPLATE } from './AnnotationFormUtils';
 import AnnotationFormFooter from './AnnotationFormFooter';
+import { resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { playerReferences } from '../playerReferences';
 
 /** Form part for edit annotation content and body */
 function NetworkCommentTemplate(
   {
     annotation,
-    canvases,
     closeFormCompanionWindow,
-    currentTime,
-    debugMode,
-    overlay,
     saveAnnotation,
     t,
     windowId,
@@ -80,13 +77,13 @@ function NetworkCommentTemplate(
 
   /** SaveFunction for Manifest* */
   const saveFunction = () => {
-    canvases.forEach(async (canvas) => {
-      // Adapt target to the canvas
-      // eslint-disable-next-line no-param-reassign
-      annotationState.target = maeTargetToIiifTarget(annotationState.maeData.target, canvas.id);
-      saveAnnotation(annotationState, canvas.id);
-    });
-    closeFormCompanionWindow();
+    resizeKonvaStage(
+      windowId,
+      playerReferences.getMediaTrueWidth(),
+      playerReferences.getMediaTrueHeight(),
+      1 / playerReferences.getScale(),
+    );
+    saveAnnotation(annotationState);
   };
 
   return (
@@ -106,16 +103,12 @@ function NetworkCommentTemplate(
         />
       </Grid>
       <TargetFormSection
-        currentTime={currentTime}
         onChangeTarget={updateTargetState}
         spatialTarget
+        t={t}
         target={annotationState.maeData.target}
         timeTarget
         windowId={windowId}
-        closeFormCompanionWindow={closeFormCompanionWindow}
-        overlay={overlay}
-        debugMode={debugMode}
-        t={t}
       />
       <Grid item>
         <AnnotationFormFooter
@@ -132,11 +125,7 @@ NetworkCommentTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   annotation: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
-  currentTime: PropTypes.number.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  overlay: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
