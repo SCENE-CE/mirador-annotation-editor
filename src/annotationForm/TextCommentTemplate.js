@@ -91,8 +91,6 @@ function TextCommentTemplate(
       </Grid>
       <Grid item>
         <TargetFormSection
-          closeFormCompanionWindow={closeFormCompanionWindow}
-          debugMode={debugMode}
           onChangeTarget={updateTargetState}
           spatialTarget
           target={annotationState.maeData.target}

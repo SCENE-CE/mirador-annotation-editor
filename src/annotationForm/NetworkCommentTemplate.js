@@ -103,15 +103,11 @@ function NetworkCommentTemplate(
         />
       </Grid>
       <TargetFormSection
-        currentTime={currentTime}
         onChangeTarget={updateTargetState}
         spatialTarget
         target={annotationState.maeData.target}
         timeTarget
         windowId={windowId}
-        closeFormCompanionWindow={closeFormCompanionWindow}
-        overlay={overlay}
-        debugMode={debugMode}
       />
       <Grid item>
         <AnnotationFormFooter

@@ -17,8 +17,6 @@ import { playerReferences } from '../playerReferences';
  */
 export default function TargetFormSection(
   {
-    closeFormCompanionWindow,
-    debugMode,
     onChangeTarget,
     spatialTarget,
     target,
@@ -121,7 +119,6 @@ export default function TargetFormSection(
 }
 
 TargetFormSection.propTypes = {
-  closeFormCompanionWindow: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   onChangeTarget: PropTypes.func.isRequired,
   spatialTarget: PropTypes.bool.isRequired,

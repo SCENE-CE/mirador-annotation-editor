@@ -223,14 +223,11 @@ export default function ImageCommentTemplate(
         />
       </Grid>
       <TargetFormSection
-        currentTime={currentTime}
         onChangeTarget={updateTargetState}
-        target={annotationState.maeData.target}
-        windowId={windowId}
-        closeFormCompanionWindow={closeFormCompanionWindow}
-        timeTarget
         spatialTarget={false}
-        debugMode={debugMode}
+        target={annotationState.maeData.target}
+        timeTarget
+        windowId={windowId}
       />
       <Grid item>
         <AnnotationFormFooter

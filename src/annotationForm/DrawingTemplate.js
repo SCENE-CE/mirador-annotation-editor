@@ -231,13 +231,10 @@ export default function DrawingTemplate(
         />
       </Grid>
       <TargetFormSection
-        currentTime={currentTime}
         onChangeTarget={updateTargetState}
         target={annotationState.maeData.target}
-        windowId={windowId}
-        closeFormCompanionWindow={closeFormCompanionWindow}
         timeTarget
-        debugMode={debugMode}
+        windowId={windowId}
       />
       <Grid item>
         <AnnotationFormFooter
