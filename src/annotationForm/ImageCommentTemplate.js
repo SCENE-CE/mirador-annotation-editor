@@ -20,8 +20,6 @@ export default function ImageCommentTemplate(
   {
     annotation,
     closeFormCompanionWindow,
-    currentTime,
-    debugMode,
     saveAnnotation,
     windowId,
   },
@@ -62,8 +60,8 @@ export default function ImageCommentTemplate(
   const saveFunction = () => {
     resizeKonvaStage(
       windowId,
-      playerReferences.getWidth(),
-      playerReferences.getHeight(),
+      playerReferences.getMediaTrueWidth(),
+      playerReferences.getMediaTrueHeight(),
       1 / playerReferences.getScale(),
     );
     annotationState.maeData.target.drawingState = drawingState;
@@ -223,14 +221,11 @@ export default function ImageCommentTemplate(
         />
       </Grid>
       <TargetFormSection
-        currentTime={currentTime}
         onChangeTarget={updateTargetState}
-        target={annotationState.maeData.target}
-        windowId={windowId}
-        closeFormCompanionWindow={closeFormCompanionWindow}
-        timeTarget
         spatialTarget={false}
-        debugMode={debugMode}
+        target={annotationState.maeData.target}
+        timeTarget
+        windowId={windowId}
       />
       <Grid item>
         <AnnotationFormFooter
@@ -264,8 +259,6 @@ ImageCommentTemplate.propTypes = {
   ]).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,
-  currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
-  debugMode: PropTypes.bool.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 

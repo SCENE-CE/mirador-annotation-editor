@@ -14,8 +14,6 @@ function TextCommentTemplate(
   {
     annotation,
     closeFormCompanionWindow,
-    currentTime,
-    debugMode,
     saveAnnotation,
     windowId,
   },
@@ -70,8 +68,8 @@ function TextCommentTemplate(
   const saveFunction = () => {
     resizeKonvaStage(
       windowId,
-      playerReferences.getWidth(),
-      playerReferences.getHeight(),
+      playerReferences.getMediaTrueWidth(),
+      playerReferences.getMediaTrueHeight(),
       1 / playerReferences.getScale(),
     );
     saveAnnotation(annotationState);
@@ -84,7 +82,6 @@ function TextCommentTemplate(
   return (
     <Grid container direction="column" spacing={2}>
       <Grid item>
-
         <TextFormSection
           annoHtml={annotationState.body.value}
           updateAnnotationBody={updateAnnotationTextualBodyValue}
@@ -92,18 +89,14 @@ function TextCommentTemplate(
       </Grid>
       <Grid item>
         <TargetFormSection
-          currentTime={currentTime}
           onChangeTarget={updateTargetState}
-          target={annotationState.maeData.target}
-          windowId={windowId}
-          timeTarget
           spatialTarget
-          closeFormCompanionWindow={closeFormCompanionWindow}
-          debugMode={debugMode}
+          target={annotationState.maeData.target}
+          timeTarget
+          windowId={windowId}
         />
       </Grid>
       <Grid item>
-
         <AnnotationFormFooter
           closeFormCompanionWindow={closeFormCompanionWindow}
           saveAnnotation={saveFunction}
@@ -117,8 +110,6 @@ TextCommentTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   annotation: PropTypes.object.isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
-  currentTime: PropTypes.number.isRequired,
-  debugMode: PropTypes.bool.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };

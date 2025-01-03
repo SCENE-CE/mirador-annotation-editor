@@ -25,20 +25,12 @@ export default function AnnotationFormBody(
     annotation,
     canvases,
     closeFormCompanionWindow,
-    currentTime,
     debugMode,
     saveAnnotation,
     templateType,
     windowId,
   },
 ) {
-  // TODO At this end we must only have annoSTate, setAnnoState, templateType,
-  //  mediaType, windowId in XTemplateProps
-  // TODO Search where overlay is used. Only in Konva ?
-  // TODO setSeekTo, setCurrentTime, overlay, currentTime,
-  //  mediaVideo must be get only in TargetFormSection
-  // TODO annotation is it usefeul in XTemplateProps ?
-
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   return (
@@ -50,8 +42,6 @@ export default function AnnotationFormBody(
             <TextCommentTemplate
               annotation={annotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
-              currentTime={currentTime}
-              debugMode={debugMode}
               saveAnnotation={saveAnnotation}
               windowId={windowId}
             />
@@ -62,8 +52,6 @@ export default function AnnotationFormBody(
           <ImageCommentTemplate
             annotation={annotation}
             closeFormCompanionWindow={closeFormCompanionWindow}
-            currentTime={currentTime}
-            debugMode={debugMode}
             saveAnnotation={saveAnnotation}
             windowId={windowId}
           />
@@ -74,8 +62,6 @@ export default function AnnotationFormBody(
             <DrawingTemplate
               annotation={annotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
-              currentTime={currentTime}
-              debugMode={debugMode}
               saveAnnotation={saveAnnotation}
               windowId={windowId}
             />
@@ -85,12 +71,9 @@ export default function AnnotationFormBody(
           templateType.id === TEMPLATE.MANIFEST_TYPE && (
             <NetworkCommentTemplate
               annotation={annotation}
-              canvases={canvases}
-              currentTime={currentTime}
               closeFormCompanionWindow={closeFormCompanionWindow}
               saveAnnotation={saveAnnotation}
               windowId={windowId}
-              debugMode={debugMode}
             />
           )
         }
@@ -108,8 +91,6 @@ export default function AnnotationFormBody(
             <TaggingTemplate
               annotation={annotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
-              currentTime={currentTime}
-              debugMode={debugMode}
               saveAnnotation={saveAnnotation}
               windowId={windowId}
             />
@@ -149,11 +130,11 @@ export default function AnnotationFormBody(
         <Typography>
           Image true Size
           {' '}
-          { playerReferences.getWidth() }
+          { playerReferences.getMediaTrueWidth() }
           {' '}
           x
           {' '}
-          { playerReferences.getHeight() }
+          { playerReferences.getMediaTrueHeight() }
         </Typography>
         <Typography>
           Container Size
@@ -167,11 +148,11 @@ export default function AnnotationFormBody(
         <Typography>
           Image Displayed
           {' '}
-          { playerReferences.getDisplayedImageWidth() }
+          { playerReferences.getDisplayedMediaWidth() }
           {' '}
           x
           {' '}
-          { playerReferences.getDisplayedImageHeight() }
+          { playerReferences.getDisplayedMediaHeight() }
         </Typography>
       </>
       )}
@@ -203,8 +184,6 @@ AnnotationFormBody.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   canvases: PropTypes.object.isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
-  currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   debugMode: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   saveAnnotation: PropTypes.func.isRequired,

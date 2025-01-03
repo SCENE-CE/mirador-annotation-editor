@@ -25,8 +25,8 @@ export default function AnnotationDrawing(
     windowId,
   },
 ) {
-  const width = playerReferences.getWidth();
-  const height = playerReferences.getHeight();
+  const width = playerReferences.getMediaTrueWidth();
+  const height = playerReferences.getMediaTrueHeight();
 
   const [isDrawing, setIsDrawing] = useState(false);
   const [surfacedata, setSurfaceData] = useState({
@@ -42,8 +42,8 @@ export default function AnnotationDrawing(
     updateScale(playerReferences.getZoom());
 
     const newSurfaceData = { ...surfacedata };
-    newSurfaceData.width = playerReferences.getWidth();
-    newSurfaceData.height = playerReferences.getHeight();
+    newSurfaceData.width = playerReferences.getMediaTrueWidth();
+    newSurfaceData.height = playerReferences.getMediaTrueHeight();
     // compare newSurfaceData and surfacedata, if different, update surfacedata
     // eslint-disable-next-line max-len
     if (newSurfaceData.width !== surfacedata.width || newSurfaceData.height !== surfacedata.height) {
@@ -478,8 +478,8 @@ export default function AnnotationDrawing(
   /** */
   const drawKonvas = () => (
     <Stage
-      width={playerReferences.getDisplayedImageWidth()}
-      height={playerReferences.getDisplayedImageHeight()}
+      width={playerReferences.getDisplayedMediaWidth()}
+      height={playerReferences.getDisplayedMediaHeight()}
       style={{
         backgroundColor: 'rgba(0, 0, 255, 0.2)',
         height: 'auto',

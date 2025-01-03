@@ -30,15 +30,15 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 
 /** Form part with time mangement, dual slider + double input. Mange Tstart and Tend value */
 function TargetTimeInput({
-  windowId,
-  currentTime,
-  tstart,
-  tend,
   onChange,
+  tend,
+  tstart,
+  windowId,
 }) {
   let duration;
 
-  if (playerReferences.getMediaType() === MEDIA_TYPES.VIDEO || playerReferences.getMediaType() === MEDIA_TYPES.AUDIO) {
+  if (playerReferences.getMediaType() === MEDIA_TYPES.VIDEO
+    || playerReferences.getMediaType() === MEDIA_TYPES.AUDIO) {
     duration = playerReferences.getMediaDuration();
   }
 
@@ -51,14 +51,14 @@ function TargetTimeInput({
   /** set annotation start time to current time */
   const setTstartNow = () => {
     onChange({
-      tstart: Math.floor(currentTime),
+      tstart: Math.floor(playerReferences.getCurrentTime()),
     });
   };
 
   /** set annotation end time to current time */
   const setTendNow = () => {
     onChange({
-      tend: Math.floor(currentTime),
+      tend: Math.floor(playerReferences.getCurrentTime()),
     });
   };
 
@@ -158,7 +158,7 @@ function TargetTimeInput({
               </StyledToggleButton>
             </Grid>
           </Grid>
-          <HMSInput seconds={tstart} onChange={updateTstart} duration={duration}/>
+          <HMSInput seconds={tstart} onChange={updateTstart} duration={duration} />
         </Grid>
         <Grid item container>
           <Grid
@@ -194,10 +194,7 @@ function TargetTimeInput({
 }
 
 TargetTimeInput.propTypes = {
-  currentTime: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
-  setCurrentTime: PropTypes.func.isRequired,
-  setSeekTo: PropTypes.func.isRequired,
   tend: PropTypes.number.isRequired,
   tstart: PropTypes.number.isRequired,
   windowId: PropTypes.string.isRequired,

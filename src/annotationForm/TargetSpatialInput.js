@@ -6,13 +6,10 @@ import AnnotationDrawing from './AnnotationFormOverlay/AnnotationDrawing';
 import { TARGET_VIEW, targetSVGToolState } from './AnnotationFormUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import { Debug } from './Debug';
 import { playerReferences } from '../playerReferences';
 
 /** Handle target spacial for annot templates * */
 export function TargetSpatialInput({
-  closeFormCompanionWindow,
-  debugMode,
   setTargetDrawingState,
   targetDrawingState,
   windowId,
@@ -117,15 +114,6 @@ export function TargetSpatialInput({
               updateCurrentShapeInShapes={updateCurrentShapeInShapes}
             />
           </Grid>
-          {/* {debugMode && ( */}
-          {/* <Grid item> */}
-          {/*   <Debug */}
-          {/*     scale={scale} */}
-          {/*     drawingState={drawingState} */}
-          {/*     displayMode={KONVA_MODE.TARGET} */}
-          {/*   /> */}
-          {/* </Grid> */}
-          {/* )} */}
         </Grid>
       )}
     </Grid>
@@ -133,7 +121,6 @@ export function TargetSpatialInput({
 }
 
 TargetSpatialInput.propTypes = {
-  closeFormCompanionWindow: PropTypes.func.isRequired,
   setTargetDrawingState: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   targetDrawingState: PropTypes.object.isRequired,
