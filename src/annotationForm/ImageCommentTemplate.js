@@ -60,8 +60,8 @@ export default function ImageCommentTemplate(
   const saveFunction = () => {
     resizeKonvaStage(
       windowId,
-      playerReferences.getWidth(),
-      playerReferences.getHeight(),
+      playerReferences.getMediaTrueWidth(),
+      playerReferences.getMediaTrueHeight(),
       1 / playerReferences.getScale(),
     );
     annotationState.maeData.target.drawingState = drawingState;

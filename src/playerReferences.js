@@ -35,6 +35,10 @@ export const playerReferences = (function () {
     return MEDIA_TYPES.IMAGE;
   }
 
+  /**
+   * Return MEDIA_TYPE (so fat Image, Video, Audio
+   * @returns {*}
+   */
   function getMediaType() {
     return mediaType;
   }
@@ -45,21 +49,42 @@ export const playerReferences = (function () {
   function getCanvases() {
     return canvases;
   }
+
+  /** *****************
+   * Get audioElement linked
+   * @returns {HTMLAudioElement}
+   */
   function getAudioElement() {
-    return document.querySelector('audio');
+    if (mediaType === MEDIA_TYPES.AUDIO) {
+      return document.querySelector('audio');
+    }
+    console.error('Something is wrong with audio ressource');
+    return null;
   }
 
   /** ***********************************************************
    * Spatial stuff
    *********************************************************** */
+  /**
+   * Get IIIF Canvas Height
+   * @returns {*}
+   */
   function getCanvasHeight() {
     return overlay.canvasHeight;
   }
 
+  /**
+   * Get IIIF Canvas Width
+   * @returns {*}
+   */
   function getCanvasWidth() {
     return overlay.canvasWidth;
   }
 
+  /**
+   * Get container aka the player
+   * @returns {HTMLElement|*|null}
+   */
   function getContainer() {
     if (mediaType === MEDIA_TYPES.IMAGE) {
       return media.current.container;
@@ -70,15 +95,27 @@ export const playerReferences = (function () {
     return null;
   }
 
+  /**
+   * Get container height aka player height
+   * @returns {*}
+   */
   function getContainerHeight() {
     return overlay.containerHeight;
   }
 
+  /**
+   * Get container width aka player width
+   * @returns {*}
+   */
   function getContainerWidth() {
     return overlay.containerWidth;
   }
 
-  function getDisplayedImageHeight() {
+  /**
+   * Get displayed height of the media. It include zoom and scale stuff
+   * @returns {undefined|*|number}
+   */
+  function getDisplayedMediaHeight() {
     // TODO This function can cause problem in multiple window context
     if (mediaType === MEDIA_TYPES.IMAGE) {
       const viewer = media.current;
@@ -95,7 +132,11 @@ export const playerReferences = (function () {
     return undefined;
   }
 
-  function getDisplayedImageWidth() {
+  /**
+   * Get displayed width of the media. It include zoom and scale stuff
+   * @returns {undefined|*|number}
+   */
+  function getDisplayedMediaWidth() {
     // TODO This function can cause problem in multiple window context
     if (mediaType === MEDIA_TYPES.IMAGE) {
       const viewer = media.current;
@@ -116,7 +157,11 @@ export const playerReferences = (function () {
     return undefined;
   }
 
-  function getHeight() {
+  /**
+   * Get media height as described in manifest
+   * @returns {undefined|*}
+   */
+  function getMediaTrueHeight() {
     // TODO This function can cause problem in multiple window context
     if (mediaType === MEDIA_TYPES.IMAGE) {
       return canvases[0].__jsonld.height;
@@ -129,11 +174,11 @@ export const playerReferences = (function () {
     return undefined;
   }
 
-  function getScale() {
-    return this.getDisplayedImageWidth() / this.getWidth();
-  }
-
-  function getWidth() {
+  /**
+   * Get true width of the media
+   * @returns {undefined|*}
+   */
+  function getMediaTrueWidth() {
     if (mediaType === MEDIA_TYPES.IMAGE) {
       return canvases[0].__jsonld.width;
     }
@@ -144,6 +189,18 @@ export const playerReferences = (function () {
     return undefined;
   }
 
+  /**
+   * Get scale between true size of media and size displayed
+   * @returns {number}
+   */
+  function getScale() {
+    return this.getDisplayedImageWidth() / this.getMediaTrueWidth();
+  }
+
+  /**
+   * Some players allow zoom/unzoom
+   * @returns {undefined|number}
+   */
   function getZoom() {
     if (mediaType === MEDIA_TYPES.IMAGE) {
       const currentZoom = media.current.viewport.getZoom();
@@ -154,10 +211,15 @@ export const playerReferences = (function () {
       return zoom;
     }
     if (mediaType === MEDIA_TYPES.VIDEO) {
-      return overlay.containerWidth / this.getWidth();
+      return this.getDisplayedMediaWidth() / this.getMediaTrueWidth();
     }
     return undefined;
   }
+
+  /**
+   * Some players allow to move on the image
+   * @returns {undefined|{x: number, y: number}}
+   */
   function getImagePosition() {
     if (mediaType === MEDIA_TYPES.IMAGE) {
       const viewer = media.current;
@@ -189,6 +251,11 @@ export const playerReferences = (function () {
   /** ***********************************************************
    * Time stuff
    *********************************************************** */
+
+  /**
+   * Get Current time of the media
+   * @returns {*|null}
+   */
   function getCurrentTime() {
     if (mediaType !== MEDIA_TYPES.IMAGE) {
       return media.props.currentTime;
@@ -196,6 +263,10 @@ export const playerReferences = (function () {
     return null;
   }
 
+  /**
+   * Get media duration
+   * @returns {*}
+   */
   function getMediaDuration() {
     if (mediaType === MEDIA_TYPES.VIDEO) {
       return media.props.canvas.__jsonld.duration;
@@ -206,8 +277,15 @@ export const playerReferences = (function () {
       }
       console.error('Something is wrong about audio');
     }
+    return 0;
   }
 
+  /**
+   * Send setCurrentTime action to mirador
+   * @param windowId
+   * @param args
+   * @returns {*}
+   */
   function setCurrentTime(windowId, ...args) {
     if (mediaType === MEDIA_TYPES.VIDEO) {
       return actions.setWindowCurrentTime(windowId, ...args);
@@ -215,6 +293,12 @@ export const playerReferences = (function () {
     console.error('Cannot set current time for image');
   }
 
+  /**
+   * Send setSeekToAction to mirador
+   * @param windowId
+   * @param args
+   * @returns {*}
+   */
   function setSeekTo(windowId, ...args) {
     if (mediaType === MEDIA_TYPES.VIDEO) {
       return actions.setWindowSeekTo(windowId, ...args);
@@ -254,6 +338,10 @@ export const playerReferences = (function () {
     }
   }
 
+  /**
+   * Get player initialisation status
+   * @returns {*|boolean}
+   */
   function isInitialized() {
     // TODO this part must be clarified
     // Its not exactly initialisation but if the player is available for the media type
@@ -271,14 +359,14 @@ export const playerReferences = (function () {
     getContainerHeight,
     getContainerWidth,
     getCurrentTime,
-    getDisplayedImageHeight,
-    getDisplayedImageWidth,
-    getHeight,
+    getDisplayedMediaHeight,
+    getDisplayedMediaWidth,
     getImagePosition,
     getMediaDuration,
+    getMediaTrueHeight,
+    getMediaTrueWidth,
     getMediaType,
     getScale,
-    getWidth,
     getZoom,
     init,
     isInitialized,

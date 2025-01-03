@@ -130,11 +130,11 @@ export default function AnnotationFormBody(
         <Typography>
           Image true Size
           {' '}
-          { playerReferences.getWidth() }
+          { playerReferences.getMediaTrueWidth() }
           {' '}
           x
           {' '}
-          { playerReferences.getHeight() }
+          { playerReferences.getMediaTrueHeight() }
         </Typography>
         <Typography>
           Container Size
@@ -148,11 +148,11 @@ export default function AnnotationFormBody(
         <Typography>
           Image Displayed
           {' '}
-          { playerReferences.getDisplayedImageWidth() }
+          { playerReferences.getDisplayedMediaWidth() }
           {' '}
           x
           {' '}
-          { playerReferences.getDisplayedImageHeight() }
+          { playerReferences.getDisplayedMediaHeight() }
         </Typography>
       </>
       )}

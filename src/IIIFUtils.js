@@ -55,8 +55,8 @@ export const convertAnnotationStateToBeSaved = async (
   }
 
   // eslint-disable-next-line no-param-reassign
-  annotationStateForSaving.maeData.target.scale = playerReferences.getHeight()
-    / playerReferences.getDisplayedImageHeight() * playerReferences.getZoom();
+  annotationStateForSaving.maeData.target.scale = playerReferences.getMediaTrueHeight()
+    / playerReferences.getDisplayedMediaHeight() * playerReferences.getZoom();
 
   // eslint-disable-next-line no-param-reassign
   annotationStateForSaving.target = maeTargetToIiifTarget(

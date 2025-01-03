@@ -78,8 +78,8 @@ function NetworkCommentTemplate(
   const saveFunction = () => {
     resizeKonvaStage(
       windowId,
-      playerReferences.getWidth(),
-      playerReferences.getHeight(),
+      playerReferences.getMediaTrueWidth(),
+      playerReferences.getMediaTrueHeight(),
       1 / playerReferences.getScale(),
     );
     saveAnnotation(annotationState);

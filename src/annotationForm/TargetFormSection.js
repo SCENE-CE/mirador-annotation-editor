@@ -37,8 +37,8 @@ export default function TargetFormSection(
     switch (playerReferences.getMediaType()) {
       case MEDIA_TYPES.IMAGE:
       case MEDIA_TYPES.VIDEO:
-        const targetHeigth = playerReferences.getHeight();
-        const targetWidth = playerReferences.getWidth();
+        const targetHeigth = playerReferences.getMediaTrueHeight();
+        const targetWidth = playerReferences.getMediaTrueWidth();
         // eslint-disable-next-line no-param-reassign
         target.fullCanvaXYWH = `0,0,${targetWidth},${targetHeigth}`;
         break;

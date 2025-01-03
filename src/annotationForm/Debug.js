@@ -84,20 +84,20 @@ export function Debug(
         <Typography variant="subFormSectionTitle">
           Displayed image size :
           {' '}
-          {playerReferences.getDisplayedImageWidth()}
+          {playerReferences.getDisplayedMediaWidth()}
           {' '}
           x
-          {playerReferences.getDisplayedImageHeight()}
+          {playerReferences.getDisplayedMediaHeight()}
         </Typography>
       </Grid>
       <Grid item>
         <Typography variant="subFormSectionTitle">
           Media size (from manifest):
           {' '}
-          {playerReferences.getWidth()}
+          {playerReferences.getMediaTrueWidth()}
           {' '}
           x
-          {playerReferences.getHeight()}
+          {playerReferences.getMediaTrueHeight()}
         </Typography>
       </Grid>
       <Grid item>
@@ -111,14 +111,14 @@ export function Debug(
         <Typography variant="subFormSectionTitle">
           True scale height (media / displayed image ) :
           {' '}
-          {playerReferences.getHeight() / playerReferences.getDisplayedImageHeight()}
+          {playerReferences.getMediaTrueHeight() / playerReferences.getDisplayedMediaHeight()}
         </Typography>
       </Grid>
       <Grid item>
         <Typography variant="subFormSectionTitle">
           Composed Scale
           {' '}
-          {playerReferences.getHeight() / playerReferences.getDisplayedImageHeight() * scale}
+          {playerReferences.getMediaTrueHeight() / playerReferences.getDisplayedMediaHeight() * scale}
         </Typography>
       </Grid>
       {
