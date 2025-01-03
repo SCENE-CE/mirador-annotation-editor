@@ -23,8 +23,8 @@ export default function AnnotationForm(
     annotation,
     canvases,
     closeCompanionWindow,
-    currentTime,
     config,
+    currentTime,
     id,
     receiveAnnotation,
     windowId,
@@ -189,14 +189,13 @@ export default function AnnotationForm(
             </Grid>
             <Grid item>
               <AnnotationFormBody
+                annotation={annotation}
+                canvases={canvases}
+                closeFormCompanionWindow={closeFormCompanionWindow}
+                debugMode={debugMode}
+                saveAnnotation={saveAnnotation}
                 templateType={templateType}
                 windowId={windowId}
-                annotation={annotation}
-                currentTime={currentTime}
-                closeFormCompanionWindow={closeFormCompanionWindow}
-                saveAnnotation={saveAnnotation}
-                debugMode={debugMode}
-                canvases={canvases}
               />
             </Grid>
           </Grid>
