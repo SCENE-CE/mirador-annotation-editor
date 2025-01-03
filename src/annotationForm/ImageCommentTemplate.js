@@ -20,8 +20,6 @@ export default function ImageCommentTemplate(
   {
     annotation,
     closeFormCompanionWindow,
-    currentTime,
-    debugMode,
     saveAnnotation,
     windowId,
   },
@@ -261,8 +259,6 @@ ImageCommentTemplate.propTypes = {
   ]).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,
-  currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
-  debugMode: PropTypes.bool.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 

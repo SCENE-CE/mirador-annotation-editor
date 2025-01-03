@@ -74,8 +74,6 @@ export default function AnnotationFormBody(
             <DrawingTemplate
               annotation={annotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
-              currentTime={currentTime}
-              debugMode={debugMode}
               saveAnnotation={saveAnnotation}
               windowId={windowId}
             />
