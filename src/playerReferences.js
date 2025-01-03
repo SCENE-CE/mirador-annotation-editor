@@ -211,6 +211,12 @@ export const playerReferences = (function () {
       }
       console.error('Cannot set current time for image');
     },
+    getCurrentTime(){
+      if(_mediaType !== mediaTypes.IMAGE){
+        return _media.props.currentTime;
+      }
+      return null;
+    },
     setSeekTo(windowId, ...args) {
       if (_mediaType === MEDIA_TYPES.VIDEO) {
         return _actions.setWindowSeekTo(windowId, ...args);
