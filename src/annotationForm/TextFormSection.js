@@ -14,13 +14,14 @@ export default function TextFormSection(
   {
     annoHtml,
     updateAnnotationBody,
+    t,
   },
 ) {
   return (
     <Grid container direction="column" spacing={1}>
       <Grid container item>
         <Typography variant="formSectionTitle">
-          Note
+          {t('note')}
         </Typography>
       </Grid>
       <Grid container item>
@@ -35,5 +36,6 @@ export default function TextFormSection(
 
 TextFormSection.propTypes = {
   annoHtml: PropTypes.string.isRequired,
+  t: PropTypes.func.isRequired,
   updateAnnotationBody: PropTypes.func.isRequired,
 };

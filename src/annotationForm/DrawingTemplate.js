@@ -27,6 +27,7 @@ export default function DrawingTemplate(
     annotation,
     closeFormCompanionWindow,
     saveAnnotation,
+    t,
     windowId,
   },
 ) {
@@ -191,7 +192,7 @@ export default function DrawingTemplate(
     <Grid container direction="column" spacing={1}>
       <Grid item>
         <Typography variant="formSectionTitle">
-          Overlay
+          {t('overlay')}
         </Typography>
       </Grid>
       <Grid item>
@@ -220,12 +221,14 @@ export default function DrawingTemplate(
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
           showStyleTools
           displayMode={KONVA_MODE.DRAW}
+          t={t}
         />
       </Grid>
       <Grid item>
         <TextFormSection
           annoHtml={annotationState.body.value}
           updateAnnotationBody={updateAnnotationTextualBodyValue}
+          t={t}
         />
       </Grid>
       <TargetFormSection
@@ -233,14 +236,15 @@ export default function DrawingTemplate(
         target={annotationState.maeData.target}
         timeTarget
         windowId={windowId}
+        t={t}
       />
       <Grid item>
         <AnnotationFormFooter
           closeFormCompanionWindow={closeFormCompanionWindow}
           saveAnnotation={saveFunction}
+          t={t}
         />
       </Grid>
-
     </Grid>
   );
 }
@@ -267,6 +271,7 @@ DrawingTemplate.propTypes = {
   closeFormCompanionWindow: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   saveAnnotation: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 
 };

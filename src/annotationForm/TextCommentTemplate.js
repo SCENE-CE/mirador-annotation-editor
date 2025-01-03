@@ -15,6 +15,7 @@ function TextCommentTemplate(
     annotation,
     closeFormCompanionWindow,
     saveAnnotation,
+    t,
     windowId,
   },
 ) {
@@ -85,12 +86,14 @@ function TextCommentTemplate(
         <TextFormSection
           annoHtml={annotationState.body.value}
           updateAnnotationBody={updateAnnotationTextualBodyValue}
+          t={t}
         />
       </Grid>
       <Grid item>
         <TargetFormSection
           onChangeTarget={updateTargetState}
           spatialTarget
+          t={t}
           target={annotationState.maeData.target}
           timeTarget
           windowId={windowId}
@@ -100,6 +103,7 @@ function TextCommentTemplate(
         <AnnotationFormFooter
           closeFormCompanionWindow={closeFormCompanionWindow}
           saveAnnotation={saveFunction}
+          t={t}
         />
       </Grid>
     </Grid>
@@ -111,6 +115,7 @@ TextCommentTemplate.propTypes = {
   annotation: PropTypes.object.isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };
 

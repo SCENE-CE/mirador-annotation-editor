@@ -4,6 +4,7 @@ import externalStorageAnnotationPlugin from './plugins/externalStorageAnnotation
 import canvasAnnotationsPlugin from './plugins/canvasAnnotationsPlugin';
 import annotationCreationCompanionWindow from './plugins/annotationCreationCompanionWindow';
 import windowSideBarButtonsPlugin from './plugins/windowSideBarButtonsPlugin';
+import translations from './locales';
 
 export {
   miradorAnnotationPlugin, externalStorageAnnotationPlugin,
@@ -14,6 +15,9 @@ export {
 export default [
   {
     component: miradorAnnotationPlugin,
+    config: {
+      translations,
+    },
     mode: 'wrap',
     target: 'AnnotationSettings',
   },

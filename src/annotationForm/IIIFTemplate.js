@@ -22,7 +22,7 @@ export default function IIIFTemplate({
   saveAnnotation,
   closeFormCompanionWindow,
   canvases,
-
+t,
 }) {
   let maeAnnotation = annotation;
   if (!annotation.id) {
@@ -75,6 +75,7 @@ export default function IIIFTemplate({
       <AnnotationFormFooter
         closeFormCompanionWindow={closeFormCompanionWindow}
         saveAnnotation={saveFunction}
+        t={t}
       />
     </>
   );
@@ -100,4 +101,5 @@ IIIFTemplate.propTypes = {
   canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
 };

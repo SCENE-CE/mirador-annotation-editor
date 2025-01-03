@@ -13,40 +13,41 @@ import { MEDIA_TYPES, TEMPLATE_TYPES } from './AnnotationFormUtils';
 export default function AnnotationFormTemplateSelector({
   mediaType,
   setCommentingType,
+  t,
 }) {
   /**
      * Sets the comment type for the application.
      */
   const setCommentType = (template) => setCommentingType(template);
+  const templates = TEMPLATE_TYPES(t);
+
   return (
     <CardContainer>
       {mediaType === MEDIA_TYPES.AUDIO ? (
         <Grid container spacing={1} direction="column">
           <Grid item>
             <Typography>
-              Mirador Annotation Editor Plugin does not support
-              annotation on audio media yet.
+              {t('audio_not_supported')}
             </Typography>
           </Grid>
         </Grid>
       ) : (
-        TEMPLATE_TYPES.map((t) => (
-          (t.isCompatibleWithTemplate(mediaType) && (
-          <Card>
-            <CardActionArea id={t.id} onClick={() => setCommentType(t)}>
-              <CardContent>
-                <CardTypography variant="h6" component="div">
-                  {t.label}
-                  {t.icon}
-                  {t.isCompatibleWithTemplate(mediaType)}
-                </CardTypography>
-                <DescriptionCardTypography component="div" variant="body2">
-                  {t.description}
-                </DescriptionCardTypography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-          ))
+        templates.map((template) => (
+          template.isCompatibleWithTemplate(mediaType) && (
+            <Card key={template.id}>
+              <CardActionArea id={template.id} onClick={() => setCommentType(template)}>
+                <CardContent>
+                  <CardTypography variant="h6" component="div">
+                    {t(template.label)}
+                    {template.icon}
+                  </CardTypography>
+                  <DescriptionCardTypography component="div" variant="body2">
+                    {t(template.description)}
+                  </DescriptionCardTypography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          )
         ))
       )}
     </CardContainer>
@@ -75,4 +76,5 @@ const DescriptionCardTypography = styled(Typography, { name: 'CompanionWindow', 
 AnnotationFormTemplateSelector.propTypes = {
   mediaType: PropTypes.string.isRequired,
   setCommentingType: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
 };

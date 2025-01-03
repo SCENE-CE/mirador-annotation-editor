@@ -7,7 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
-import {Tooltip} from "@mui/material";
+import { Tooltip } from '@mui/material';
 
 /**
  * Dialog to enforce single view for annotation creation / editing
@@ -34,38 +34,40 @@ class SingleCanvasDialog extends Component {
     const {
       handleClose,
       open,
+      t,
     } = this.props;
     return (
-        <Dialog
-            aria-labelledby="single-canvas-dialog-title"
-            fullWidth
-            maxWidth="sm"
-            onClose={handleClose}
-            onEscapeKeyDown={handleClose}
-            open={open}
-        >
-          <DialogTitle id="single-canvas-dialog-title" disableTypography>
-            <Typography variant="h2">
-              Switch view type to single view?
-            </Typography>
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText variant="body1" color="inherit">
-              Annotations can only be edited in single canvas view type.
-              Switch view type to single view now?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Tooltip title="cancel">
-              <Button onClick={handleClose}>
-                Cancel
-              </Button>
-            </Tooltip>
-            <Button color="primary" onClick={this.confirm} variant="contained">
-              Switch to single view
+      <Dialog
+        aria-labelledby="single-canvas-dialog-title"
+        fullWidth
+        maxWidth="sm"
+        onClose={handleClose}
+        onEscapeKeyDown={handleClose}
+        open={open}
+      >
+        <DialogTitle id="single-canvas-dialog-title" disableTypography>
+          <Typography variant="h2">
+            {t('switch_view_h2')}
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText variant="body1" color="inherit">
+            {t('question_switch_view')}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Tooltip title={t('cancel')}>
+            <Button onClick={handleClose}>
+              {t('cancel')}
             </Button>
-          </DialogActions>
-        </Dialog>
+          </Tooltip>
+          <Tooltip title={t('switch_view')}>
+            <Button color="primary" onClick={this.confirm} variant="contained">
+              {t('switch_view')}
+            </Button>
+          </Tooltip>
+        </DialogActions>
+      </Dialog>
     );
   }
 }
@@ -74,7 +76,7 @@ SingleCanvasDialog.propTypes = {
   handleClose: PropTypes.func.isRequired,
   open: PropTypes.bool,
   switchToSingleCanvasView: PropTypes.func.isRequired,
-  windowId: PropTypes.string.isRequired,
+  t: PropTypes.func.isRequired,
 };
 
 SingleCanvasDialog.defaultProps = {

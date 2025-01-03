@@ -27,6 +27,7 @@ export default function AnnotationFormBody(
     closeFormCompanionWindow,
     debugMode,
     saveAnnotation,
+    t,
     templateType,
     windowId,
   },
@@ -43,6 +44,7 @@ export default function AnnotationFormBody(
               annotation={annotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
               saveAnnotation={saveAnnotation}
+              t={t}
               windowId={windowId}
             />
           )
@@ -54,6 +56,7 @@ export default function AnnotationFormBody(
             closeFormCompanionWindow={closeFormCompanionWindow}
             saveAnnotation={saveAnnotation}
             windowId={windowId}
+            t={t}
           />
           )
         }
@@ -63,6 +66,7 @@ export default function AnnotationFormBody(
               annotation={annotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
               saveAnnotation={saveAnnotation}
+              t={t}
               windowId={windowId}
             />
           )
@@ -73,6 +77,7 @@ export default function AnnotationFormBody(
               annotation={annotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
               saveAnnotation={saveAnnotation}
+              t={t}
               windowId={windowId}
             />
           )
@@ -84,6 +89,7 @@ export default function AnnotationFormBody(
               closeFormCompanionWindow={closeFormCompanionWindow}
               saveAnnotation={saveAnnotation}
               canvases={canvases}
+              t={t}
             />
           )
         }
@@ -92,6 +98,7 @@ export default function AnnotationFormBody(
               annotation={annotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
               saveAnnotation={saveAnnotation}
+              t={t}
               windowId={windowId}
             />
             )}
@@ -107,52 +114,48 @@ export default function AnnotationFormBody(
             }}
             closeFormCompanionWindow={closeFormCompanionWindow}
             saveAnnotation={saveAnnotation}
+            t={t}
           />
         )}
       </Grid>
       { debugMode && (
       <>
         <Typography>
-          { playerReferences.getMediaType() }
-          {' '}
+          {playerReferences.getMediaType()}
         </Typography>
         <Typography>
-          Scale
-          {' '}
-          { playerReferences.getScale() }
+          {t('scale')}
+          :
+          {playerReferences.getScale()}
         </Typography>
         <Typography>
-          Zoom
-          {' '}
-          { playerReferences.getZoom() }
-          {' '}
+          {t('zoom')}
+          :
+          {playerReferences.getZoom()}
         </Typography>
         <Typography>
-          Image true Size
-          {' '}
-          { playerReferences.getMediaTrueWidth() }
+          {t('image_true_size')}
+          :
+          {playerReferences.getMediaTrueWidth()}
           {' '}
           x
-          {' '}
-          { playerReferences.getMediaTrueHeight() }
+          {playerReferences.getMediaTrueHeight()}
         </Typography>
         <Typography>
-          Container Size
-          {' '}
-          { playerReferences.getContainerWidth() }
+          {t('container_size')}
+          :
+          {playerReferences.getContainerWidth()}
           {' '}
           x
-          {' '}
-          { playerReferences.getContainerHeight() }
+          {playerReferences.getContainerHeight()}
         </Typography>
         <Typography>
-          Image Displayed
-          {' '}
-          { playerReferences.getDisplayedMediaWidth() }
+          {t('image_displayed')}
+          :
+          {playerReferences.getDisplayedMediaWidth()}
           {' '}
           x
-          {' '}
-          { playerReferences.getDisplayedMediaHeight() }
+          {playerReferences.getDisplayedMediaHeight()}
         </Typography>
       </>
       )}
@@ -187,6 +190,7 @@ AnnotationFormBody.propTypes = {
   debugMode: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   saveAnnotation: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
   templateType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 };

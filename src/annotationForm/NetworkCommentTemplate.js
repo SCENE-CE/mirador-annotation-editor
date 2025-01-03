@@ -16,6 +16,7 @@ function NetworkCommentTemplate(
     annotation,
     closeFormCompanionWindow,
     saveAnnotation,
+    t,
     windowId,
   },
 ) {
@@ -91,17 +92,20 @@ function NetworkCommentTemplate(
         <ManifestNetworkFormSection
           manifestNetwork={annotation.maeData.manifestNetwork}
           onChange={updateManifestNetwork}
+          t={t}
         />
       </Grid>
       <Grid item>
         <TextFormSection
           annoHtml={annotationState.body.value}
           updateAnnotationBody={updateAnnotationTextBody}
+          t={t}
         />
       </Grid>
       <TargetFormSection
         onChangeTarget={updateTargetState}
         spatialTarget
+        t={t}
         target={annotationState.maeData.target}
         timeTarget
         windowId={windowId}
@@ -110,6 +114,7 @@ function NetworkCommentTemplate(
         <AnnotationFormFooter
           closeFormCompanionWindow={closeFormCompanionWindow}
           saveAnnotation={saveFunction}
+          t={t}
         />
       </Grid>
     </Grid>
@@ -122,6 +127,7 @@ NetworkCommentTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };
 

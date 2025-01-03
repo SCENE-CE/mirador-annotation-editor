@@ -12,6 +12,7 @@ export function AdvancedAnnotationEditor({
   onChange,
   closeFormCompanionWindow,
   saveAnnotation,
+  t
 }) {
   return (
     <Grid container direction="column" spacing={1} justifyContent="flex-end" padding={1}>
@@ -27,6 +28,7 @@ export function AdvancedAnnotationEditor({
         <AnnotationFormFooter
           closeFormCompanionWindow={closeFormCompanionWindow}
           saveAnnotation={saveAnnotation}
+          t={t}
         />
       </Grid>
     </Grid>
@@ -57,4 +59,5 @@ AdvancedAnnotationEditor.propTypes = {
     manifestNetwork: PropTypes.string,
     target: PropTypes.string,
   }).isRequired,
+  t: PropTypes.func.isRequired,
 };

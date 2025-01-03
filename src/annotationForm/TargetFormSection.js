@@ -19,6 +19,7 @@ export default function TargetFormSection(
   {
     onChangeTarget,
     spatialTarget,
+    t,
     target,
     timeTarget,
     windowId,
@@ -88,7 +89,7 @@ export default function TargetFormSection(
     <Grid item container direction="column" spacing={1}>
       <Grid item>
         <Typography variant="formSectionTitle">
-          Target
+          {t('target')}
         </Typography>
       </Grid>
       {
@@ -98,6 +99,7 @@ export default function TargetFormSection(
             setTargetDrawingState={onChangeSpatialTargetInput}
             targetDrawingState={target.drawingState}
             windowId={windowId}
+            t={t}
           />
         </Grid>
         )
@@ -110,6 +112,7 @@ export default function TargetFormSection(
               tend={target.tend}
               onChange={onChangeTimeTargetInput}
               windowId={windowId}
+              t={t}
             />
           </Grid>
         )
@@ -122,6 +125,7 @@ TargetFormSection.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   onChangeTarget: PropTypes.func.isRequired,
   spatialTarget: PropTypes.bool.isRequired,
+  t: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   target: PropTypes.object.isRequired,
   timeTarget: PropTypes.bool.isRequired,

@@ -11,6 +11,7 @@ import { playerReferences } from '../playerReferences';
 /** Handle target spacial for annot templates * */
 export function TargetSpatialInput({
   setTargetDrawingState,
+    t,
   targetDrawingState,
   windowId,
 }) {
@@ -87,7 +88,9 @@ export function TargetSpatialInput({
     <Grid container direction="column">
       { showSVGSelector && (
         <Grid item container direction="column">
-          <Typography variant="subFormSectionTitle">SVG selection</Typography>
+          <Typography variant="subFormSectionTitle">
+            {t('svg_selection')}
+          </Typography>
           <Grid item direction="row" spacing={2}>
             <AnnotationDrawing
               displayMode={KONVA_MODE.TARGET}
@@ -110,6 +113,7 @@ export function TargetSpatialInput({
               shapes={drawingState.shapes}
               currentShape={drawingState.currentShape}
               setViewTool={setViewTool}
+              t={t}
               displayMode={KONVA_MODE.TARGET}
               updateCurrentShapeInShapes={updateCurrentShapeInShapes}
             />
@@ -122,6 +126,7 @@ export function TargetSpatialInput({
 
 TargetSpatialInput.propTypes = {
   setTargetDrawingState: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   targetDrawingState: PropTypes.object.isRequired,
   windowId: PropTypes.string.isRequired,

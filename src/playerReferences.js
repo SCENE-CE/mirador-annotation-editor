@@ -194,7 +194,7 @@ export const playerReferences = (function () {
    * @returns {number}
    */
   function getScale() {
-    return this.getDisplayedImageWidth() / this.getMediaTrueWidth();
+    return this.getDisplayedMediaWidth() / this.getMediaTrueWidth();
   }
 
   /**

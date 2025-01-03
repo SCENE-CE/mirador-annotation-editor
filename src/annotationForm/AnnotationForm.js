@@ -1,24 +1,22 @@
-import React, {
-  useEffect, useState,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import PropTypes from 'prop-types';
 import { Grid, Link } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import { withTranslation } from 'react-i18next';
+import i18n from 'i18next';
 import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
-import {
-  getTemplateType, saveAnnotationInStorageAdapter,
-  TEMPLATE,
-} from './AnnotationFormUtils';
+import { getTemplateType, saveAnnotationInStorageAdapter, TEMPLATE } from './AnnotationFormUtils';
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormBody from './AnnotationFormBody';
 import { playerReferences } from '../playerReferences';
 import { convertAnnotationStateToBeSaved } from '../IIIFUtils';
+import '../118n';
 
 /**
  * Component for submitting a form to create or edit an annotation.
  * */
-export default function AnnotationForm(
+function AnnotationForm(
   {
     annotation,
     canvases,
@@ -27,6 +25,7 @@ export default function AnnotationForm(
     currentTime,
     id,
     receiveAnnotation,
+    t,
     windowId,
   },
 ) {
@@ -36,23 +35,39 @@ export default function AnnotationForm(
 
   const debugMode = config.debug === true;
 
-  // TODO must be improved when parsing annotation
+  // Add translations from config to i18n
+  useEffect(() => {
+    if (i18n.isInitialized && config.translations) {
+      Object.keys(config.translations).forEach((language) => {
+        i18n.addResourceBundle(
+          language,
+          'translation',
+          config.translations[language],
+          true,
+          true,
+        );
+      });
+
+      if (config.language) {
+        i18n.changeLanguage(config.language);
+      }
+    }
+  }, [config.translations, config.language]);
+
   if (!templateType) {
     if (annotation.id) {
       if (annotation.maeData && annotation.maeData.templateType) {
         // Annotation has been created with MAE
-        setTemplateType(getTemplateType(annotation.maeData.templateType));
+        setTemplateType(getTemplateType(t,annotation.maeData.templateType));
       } else {
         // Annotation has been created with other IIIF annotation editor
-        setTemplateType(getTemplateType(TEMPLATE.IIIF_TYPE));
+        setTemplateType(getTemplateType(t,TEMPLATE.IIIF_TYPE));
       }
     }
   }
 
-  // Listen to window resize event
   useEffect(() => {
     setTemplateType(null);
-    // eslint-disable-next-line no-underscore-dangle
     setMediaType(playerReferences.getMediaType());
   }, [canvases[0].index]);
 
@@ -82,23 +97,13 @@ export default function AnnotationForm(
     };
   }, []);
 
-  // // TODO Useless ?
-  // useLayoutEffect(() => {
-  // }, [{
-  //   height,
-  //   width,
-  // }]);
-
   /**
    * Closes the companion window with the specified ID and position.
    *
    * @returns {void}
    */
   const closeFormCompanionWindow = () => {
-    closeCompanionWindow('annotationCreation', {
-      id,
-      position: 'right',
-    });
+    closeCompanionWindow('annotationCreation', { id, position: 'right' });
   };
 
   /**
@@ -106,57 +111,45 @@ export default function AnnotationForm(
    * @param annotationState
    */
   const saveAnnotation = (annotationState) => {
-    const promises = playerReferences.getCanvases()
-      .map(async (canvas) => {
-        const annotationStateToBeSaved = await convertAnnotationStateToBeSaved(
-          annotationState,
-          canvas,
-          windowId,
-        );
-        const storageAdapter = config.annotation.adapter(canvas.id);
-        return saveAnnotationInStorageAdapter(
-          canvas.id,
-          storageAdapter,
-          receiveAnnotation,
-          annotationStateToBeSaved,
-        );
-      });
-    Promise.all(promises)
-      .then(() => {
-        closeFormCompanionWindow();
-      });
+    const promises = playerReferences.getCanvases().map(async (canvas) => {
+      const annotationStateToBeSaved = await convertAnnotationStateToBeSaved(
+        annotationState,
+        canvas,
+        windowId,
+      );
+      const storageAdapter = config.annotation.adapter(canvas.id);
+      return saveAnnotationInStorageAdapter(
+        canvas.id,
+        storageAdapter,
+        receiveAnnotation,
+        annotationStateToBeSaved,
+      );
+    });
+
+    Promise.all(promises).then(() => {
+      closeFormCompanionWindow();
+    });
   };
 
   if (!playerReferences.isInitialized()) {
     return (
-      <CompanionWindow
-        title="Media not supported"
-        windowId={windowId}
-        id={id}
-      >
+      <CompanionWindow title={t('media_not_supported')} windowId={windowId} id={id}>
         <Grid container padding={1} spacing={1}>
           <Grid item>
+            <Typography>{t('media_not_supported')}</Typography>
+          </Grid>
+          <Grid item>
             <Typography>
-              Your current canva media type is not supported by the annotation editor.
+              {t('detected_media_type', { mediaType: playerReferences.getMediaType() })}
             </Typography>
           </Grid>
           <Grid item>
             <Typography>
-              We detect
+              {t('video_annotation_instruction')}
               {' '}
-              <strong>
-                {playerReferences.getMediaType()}
-                {' '}
-              </strong>
-              {' '}
-              media type.
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography>
-              If you want to annotate video media you must install MAEV to create and edit
-              annotation on video :
-              <Link>https://github.com/SCENE-CE/mirador-annotation-editor-video</Link>
+              <Link href="https://github.com/SCENE-CE/mirador-annotation-editor-video" target="_blank" rel="noopener noreferrer">
+                {t('maev_github_link')}
+              </Link>
             </Typography>
           </Grid>
         </Grid>
@@ -165,9 +158,8 @@ export default function AnnotationForm(
   }
 
   return (
-
     <CompanionWindow
-      title={annotation.id ? 'Edit annotation' : 'New annotation'}
+      title={annotation.id ? t('edit_annotation') : t('new_annotation')}
       windowId={windowId}
       id={id}
     >
@@ -176,6 +168,7 @@ export default function AnnotationForm(
           <AnnotationFormTemplateSelector
             setCommentingType={setTemplateType}
             mediaType={mediaType}
+            t={t}
           />
         )
         : (
@@ -194,6 +187,7 @@ export default function AnnotationForm(
                 closeFormCompanionWindow={closeFormCompanionWindow}
                 debugMode={debugMode}
                 saveAnnotation={saveAnnotation}
+                t={t}
                 templateType={templateType}
                 windowId={windowId}
               />
@@ -221,30 +215,30 @@ AnnotationForm.propTypes = {
     }),
     PropTypes.string,
   ]),
-  // eslint-disable-next-line react/forbid-prop-types
   canvases: PropTypes.object.isRequired,
   closeCompanionWindow: PropTypes.func,
   config: PropTypes.shape({
     annotation: PropTypes.shape({
       adapter: PropTypes.func,
       defaults: PropTypes.objectOf(
-        PropTypes.oneOfType(
-          [PropTypes.bool, PropTypes.func, PropTypes.number, PropTypes.string],
-        ),
+        PropTypes.oneOfType([PropTypes.bool, PropTypes.func, PropTypes.number, PropTypes.string]),
       ),
     }),
     debug: PropTypes.bool,
+    translations: PropTypes.objectOf(PropTypes.object),
+    language: PropTypes.string,
   }).isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]),
-  // eslint-disable-next-line react/forbid-prop-types
   id: PropTypes.string.isRequired,
   receiveAnnotation: PropTypes.func.isRequired,
+  t: PropTypes.func,
   windowId: PropTypes.string.isRequired,
 };
 
 AnnotationForm.defaultProps = {
   annotation: null,
-  closeCompanionWindow: () => {
-  },
+  closeCompanionWindow: () => {},
   currentTime: null,
 };
+
+export default withTranslation()(AnnotationForm);

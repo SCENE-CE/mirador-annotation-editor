@@ -22,10 +22,10 @@ export default function ImageCommentTemplate(
     closeFormCompanionWindow,
     saveAnnotation,
     windowId,
+    t,
   },
 ) {
   let maeAnnotation = annotation;
-
   if (!maeAnnotation.id) {
     // If the annotation does not have maeData, the annotation was not created with mae
     maeAnnotation = {
@@ -180,7 +180,7 @@ export default function ImageCommentTemplate(
     <Grid container direction="column" spacing={1}>
       <Grid item>
         <Typography variant="formSectionTitle">
-          Image
+          {t('image')}
         </Typography>
       </Grid>
       <Grid item>
@@ -212,12 +212,14 @@ export default function ImageCommentTemplate(
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
           showStyleTools
           displayMode={KONVA_MODE.IMAGE}
+          t={t}
         />
       </Grid>
       <Grid item>
         <TextFormSection
           annoHtml={annotationState.body.value}
           updateAnnotationBody={updateAnnotationTextualBodyValue}
+          t={t}
         />
       </Grid>
       <TargetFormSection
@@ -233,7 +235,6 @@ export default function ImageCommentTemplate(
           saveAnnotation={saveFunction}
         />
       </Grid>
-
     </Grid>
   );
 }
@@ -260,6 +261,7 @@ ImageCommentTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
+  t:PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 
 };

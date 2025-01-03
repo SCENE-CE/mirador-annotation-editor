@@ -10,10 +10,10 @@ const config = {
     // adapter: (canvasId) => new AnnototAdapter(canvasId, endpointUrl),
     exportLocalStorageAnnotations: false, // display annotation JSON export button
   },
-  catalog:
-  manifestsCatalog,
+  catalog: manifestsCatalog,
   debug: true,
   id: 'demo',
+  language: 'en',
   themes: {
     light: {
       palette: {
