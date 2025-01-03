@@ -9,7 +9,6 @@ import { playerReferences } from '../playerReferences';
 /**
  * Section of Time and Space Target
  * @param templateType
- * @param currentTime
  * @param mediaType
  * @param spatialTarget
  * @param windowId
@@ -19,7 +18,6 @@ import { playerReferences } from '../playerReferences';
 export default function TargetFormSection(
   {
     closeFormCompanionWindow,
-    currentTime,
     debugMode,
     onChangeTarget,
     spatialTarget,
@@ -33,7 +31,7 @@ export default function TargetFormSection(
     target = {};
     if (playerReferences.getMediaType() === MEDIA_TYPES.VIDEO) {
       // eslint-disable-next-line no-param-reassign
-      target.tstart = currentTime || 0;
+      target.tstart = playerReferences.getCurrentTime() || 0;
       target.tend = playerReferences.getMediaDuration() ? Math.floor(playerReferences.getMediaDuration()) : 0;
     }
 
@@ -119,8 +117,6 @@ export default function TargetFormSection(
               tend={target.tend}
               onChange={onChangeTimeTargetInput}
               windowId={windowId}
-              currentTime={currentTime}
-              closeFormCompanionWindow={closeFormCompanionWindow}
             />
           </Grid>
         )
@@ -131,7 +127,6 @@ export default function TargetFormSection(
 
 TargetFormSection.propTypes = {
   closeFormCompanionWindow: PropTypes.func.isRequired,
-  currentTime: PropTypes.number.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   onChangeTarget: PropTypes.func.isRequired,
   spatialTarget: PropTypes.bool.isRequired,
