@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { TEMPLATE } from './AnnotationFormUtils';
 import TargetFormSection from './TargetFormSection';
-import { convertAnnotationStateToBeSaved } from '../IIIFUtils';
 import { resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { playerReferences } from '../playerReferences';
 
@@ -16,12 +15,7 @@ export default function TaggingTemplate(
     closeFormCompanionWindow,
     currentTime,
     debugMode,
-    getMediaAudio,
-    mediaType,
-    overlay,
     saveAnnotation,
-    setCurrentTime,
-    setSeekTo,
     windowId,
   },
 ) {
@@ -96,18 +90,14 @@ export default function TaggingTemplate(
       </Grid>
       <Grid item>
         <TargetFormSection
+          closeFormCompanionWindow={closeFormCompanionWindow}
           currentTime={currentTime}
-          mediaType={mediaType}
+          debugMode={debugMode}
           onChangeTarget={updateTargetState}
-          setCurrentTime={setCurrentTime}
-          setSeekTo={setSeekTo}
           spatialTarget
           target={annotationState.maeData.target}
           timeTarget
           windowId={windowId}
-          closeFormCompanionWindow={closeFormCompanionWindow}
-          getMediaAudio={getMediaAudio}
-          debugMode={debugMode}
         />
       </Grid>
       <Grid item>
@@ -149,15 +139,11 @@ TaggingTemplate.propTypes = {
       templateType: PropTypes.string,
     }),
   }).isRequired,
-  setAnnotationState: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  getMediaAudio: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   saveAnnotation: PropTypes.func.isRequired,
-  setCurrentTime: PropTypes.func.isRequired,
-  setSeekTo: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };

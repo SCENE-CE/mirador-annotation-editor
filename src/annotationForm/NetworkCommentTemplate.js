@@ -13,17 +13,13 @@ import AnnotationFormFooter from './AnnotationFormFooter';
 function NetworkCommentTemplate(
   {
     annotation,
+    canvases,
+    closeFormCompanionWindow,
     currentTime,
     debugMode,
-    mediaType,
-    setCurrentTime,
-    setSeekTo,
-    windowId,
-    saveAnnotation,
-    closeFormCompanionWindow,
-    canvases,
-    getMediaAudio,
     overlay,
+    saveAnnotation,
+    windowId,
   },
 ) {
   let maeAnnotation = annotation;
@@ -108,16 +104,12 @@ function NetworkCommentTemplate(
       </Grid>
       <TargetFormSection
         currentTime={currentTime}
-        mediaType={mediaType}
         onChangeTarget={updateTargetState}
-        setCurrentTime={setCurrentTime}
-        setSeekTo={setSeekTo}
         spatialTarget
         target={annotationState.maeData.target}
         timeTarget
         windowId={windowId}
         closeFormCompanionWindow={closeFormCompanionWindow}
-        getMediaAudio={getMediaAudio}
         overlay={overlay}
         debugMode={debugMode}
       />
@@ -139,13 +131,8 @@ NetworkCommentTemplate.propTypes = {
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.number.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  getMediaAudio: PropTypes.object.isRequired,
-  mediaType: PropTypes.string.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   overlay: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
-  setCurrentTime: PropTypes.func.isRequired,
-  setSeekTo: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };
 

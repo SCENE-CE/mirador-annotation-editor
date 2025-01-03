@@ -1,18 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography } from '@mui/material';
-import { MEDIA_TYPES } from './AnnotationFormUtils';
+import { MEDIA_TYPES, TEMPLATE } from './AnnotationFormUtils';
 import TargetTimeInput from './TargetTimeInput';
 import { TargetSpatialInput } from './TargetSpatialInput';
-import {playerReferences} from '../playerReferences';
+import { playerReferences } from '../playerReferences';
 
 /**
  * Section of Time and Space Target
  * @param templateType
  * @param currentTime
  * @param mediaType
- * @param setCurrentTime
- * @param setSeekTo
  * @param spatialTarget
  * @param windowId
  * @returns {Element}
@@ -23,7 +21,6 @@ export default function TargetFormSection(
     closeFormCompanionWindow,
     currentTime,
     debugMode,
-    getMediaAudio,
     onChangeTarget,
     spatialTarget,
     target,
@@ -45,7 +42,7 @@ export default function TargetFormSection(
       case MEDIA_TYPES.IMAGE:
       case MEDIA_TYPES.VIDEO:
         const targetHeigth = playerReferences.getHeight();
-        const targetWidth =  playerReferences.getWidth();
+        const targetWidth = playerReferences.getWidth();
         // eslint-disable-next-line no-param-reassign
         target.fullCanvaXYWH = `0,0,${targetWidth},${targetHeigth}`;
         break;
@@ -53,12 +50,15 @@ export default function TargetFormSection(
         break;
     }
 
-    // eslint-disable-next-line no-param-reassign
-    target.drawingState = {
-      currentShape: null,
-      isDrawing: false,
-      shapes: [],
-    };
+    if (target.templateType !== TEMPLATE.IMAGE_TYPE
+      && target.templateType !== TEMPLATE.KONVA_TYPE) {
+      // eslint-disable-next-line no-param-reassign
+      target.drawingState = {
+        currentShape: null,
+        isDrawing: false,
+        shapes: [],
+      };
+    }
 
     onChangeTarget(target);
   }
@@ -120,7 +120,6 @@ export default function TargetFormSection(
               onChange={onChangeTimeTargetInput}
               windowId={windowId}
               currentTime={currentTime}
-              getMediaAudio={getMediaAudio}
               closeFormCompanionWindow={closeFormCompanionWindow}
             />
           </Grid>
@@ -134,14 +133,7 @@ TargetFormSection.propTypes = {
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.number.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  getMediaAudio: PropTypes.object.isRequired,
-  helloWorld: PropTypes.string.isRequired,
-  mediaType: PropTypes.string.isRequired,
   onChangeTarget: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  overlay: PropTypes.object.isRequired,
-  setCurrentTime: PropTypes.func.isRequired,
-  setSeekTo: PropTypes.func.isRequired,
   spatialTarget: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   target: PropTypes.object.isRequired,

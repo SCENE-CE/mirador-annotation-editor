@@ -10,6 +10,7 @@ export const playerReferences = (function () {
   let _mediaType;
   let _overlay;
   let _actions;
+  let _audio
 
   return {
     getScale() {
@@ -51,7 +52,16 @@ export const playerReferences = (function () {
       return undefined;
     },
     getMediaDuration() {
-      return _media.props.canvas.__jsonld.duration;
+      if (_mediaType === MEDIA_TYPES.VIDEO) {
+        return _media.props.canvas.__jsonld.duration;
+      }
+      if (_mediaType === MEDIA_TYPES.AUDIO) {
+        if(_audio){
+          return _audio[0].__jsonld.duration
+        } else {
+          console.error("Something is wrong about audio")
+        }
+      }
     },
 
     getOverlay() {
@@ -121,7 +131,6 @@ export const playerReferences = (function () {
         }
       }
       if (_mediaType === MEDIA_TYPES.VIDEO) {
-        const { video } = _media;
         const position = {
           x: 0,
           y: 0,
@@ -134,16 +143,13 @@ export const playerReferences = (function () {
       if (_mediaType === MEDIA_TYPES.IMAGE) {
         const currentZoom = _media.current.viewport.getZoom();
         const maxZoom = _media.current.viewport.getMaxZoom();
+        //console.log("Max Zoom", maxZoom);
         let zoom = currentZoom / maxZoom;
         zoom = Math.round(zoom * 100) / 100;
         return zoom;
       }
       if (_mediaType === MEDIA_TYPES.VIDEO) {
-        // TODO: Implement zoom for video
-
         return _overlay.containerWidth / this.getWidth();
-
-        // return _media.video.getBoundingClientRect().width / _media.video.videoWidth;
       }
       return undefined;
     },
@@ -182,6 +188,9 @@ export const playerReferences = (function () {
           case MEDIA_TYPES.VIDEO:
             _overlay = _media.canvasOverlay;
             break;
+          case MEDIA_TYPES.AUDIO:
+             _audio = getVisibleCanvasAudioResources(state, { windowId });
+             break;
           default:
             console.error('Unknown media type');
             break;
@@ -208,5 +217,9 @@ export const playerReferences = (function () {
       }
       console.error('Cannot seek time for image');
     },
+
+    getAudioElement(){
+      return document.querySelector('audio');
+    }
   };
 }());

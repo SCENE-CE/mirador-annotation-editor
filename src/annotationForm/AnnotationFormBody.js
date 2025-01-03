@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { JsonEditor as Editor } from 'jsoneditor-react';
-import ace from 'brace';
-import ToggleButton from '@mui/material/ToggleButton';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import {
@@ -30,7 +27,6 @@ export default function AnnotationFormBody(
     closeFormCompanionWindow,
     currentTime,
     debugMode,
-    getMediaAudio,
     saveAnnotation,
     templateType,
     windowId,
@@ -53,13 +49,11 @@ export default function AnnotationFormBody(
           templateType.id === TEMPLATE.TEXT_TYPE && (
             <TextCommentTemplate
               annotation={annotation}
-              canvases={canvases}
               closeFormCompanionWindow={closeFormCompanionWindow}
               currentTime={currentTime}
+              debugMode={debugMode}
               saveAnnotation={saveAnnotation}
               windowId={windowId}
-              getMediaAudio={getMediaAudio}
-              debugMode={debugMode}
             />
           )
         }
@@ -67,13 +61,11 @@ export default function AnnotationFormBody(
           templateType.id === TEMPLATE.IMAGE_TYPE && (
           <ImageCommentTemplate
             annotation={annotation}
-            canvases={canvases}
             closeFormCompanionWindow={closeFormCompanionWindow}
-            windowId={windowId}
-            templateType={templateType}
-            saveAnnotation={saveAnnotation}
-            debugMode={debugMode}
             currentTime={currentTime}
+            debugMode={debugMode}
+            saveAnnotation={saveAnnotation}
+            windowId={windowId}
           />
           )
         }
@@ -81,11 +73,9 @@ export default function AnnotationFormBody(
           templateType.id === TEMPLATE.KONVA_TYPE && (
             <DrawingTemplate
               annotation={annotation}
-              canvases={canvases}
               closeFormCompanionWindow={closeFormCompanionWindow}
               currentTime={currentTime}
               debugMode={debugMode}
-              overlay={playerReferences.getOverlay()}
               saveAnnotation={saveAnnotation}
               windowId={windowId}
             />
@@ -100,7 +90,6 @@ export default function AnnotationFormBody(
               closeFormCompanionWindow={closeFormCompanionWindow}
               saveAnnotation={saveAnnotation}
               windowId={windowId}
-              getMediaAudio={getMediaAudio}
               debugMode={debugMode}
             />
           )
@@ -117,40 +106,22 @@ export default function AnnotationFormBody(
         }
             {templateType.id === TEMPLATE.TAGGING_TYPE && (
             <TaggingTemplate
-              canvases={canvases}
-              saveAnnotation={saveAnnotation}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-              windowId={windowId}
-              currentTime={currentTime}
               annotation={annotation}
-              getMediaAudio={getMediaAudio}
+              closeFormCompanionWindow={closeFormCompanionWindow}
+              currentTime={currentTime}
               debugMode={debugMode}
+              saveAnnotation={saveAnnotation}
+              windowId={windowId}
             />
             )}
         </TemplateContainer>
       )}
-    {/*   <Grid
-        item
-        style={{
-          bottom: '0',
-          margin: '20px',
-          position: 'absolute',
-        }}
-      >
-        <ToggleButton
-          value={showAdvanced}
-          onChange={() => setShowAdvanced(!showAdvanced)}
-        >
-          {showAdvanced ? 'Hide' : 'Show'}
-          {' '}
-          advanced mode
-        </ToggleButton>
-      </Grid> */}
       <Grid item>
         {showAdvanced && (
           <AdvancedAnnotationEditor
             value={annotation}
             onChange={(updatedAnnotation) => {
+              // eslint-disable-next-line no-param-reassign
               annotation = updatedAnnotation;
             }}
             closeFormCompanionWindow={closeFormCompanionWindow}
@@ -236,7 +207,6 @@ AnnotationFormBody.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   debugMode: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  getMediaAudio: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   templateType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,

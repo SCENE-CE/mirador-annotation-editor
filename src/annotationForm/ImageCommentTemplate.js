@@ -4,7 +4,6 @@ import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
-import { maeTargetToIiifTarget } from '../IIIFUtils';
 import {
   TARGET_VIEW, TEMPLATE, defaultToolState,
 } from './AnnotationFormUtils';
@@ -16,20 +15,12 @@ import { playerReferences } from '../playerReferences';
 
 /**
  * Image Comment template
- * @param annoState
- * @param commentingType
- * @param currentTime
- * @param setAnnoState
- * @param windowId
- * @returns {Element}
- * @constructor
  */
 export default function ImageCommentTemplate(
   {
     annotation,
-    canvases,
-    currentTime,
     closeFormCompanionWindow,
+    currentTime,
     debugMode,
     saveAnnotation,
     windowId,
@@ -46,9 +37,7 @@ export default function ImageCommentTemplate(
         value: '',
       },
       maeData: {
-        target: {
-          drawingState: null,
-        }, // Add full target
+        target: null,
         templateType: TEMPLATE.IMAGE_TYPE,
       },
       motivation: 'commenting',
@@ -97,7 +86,7 @@ export default function ImageCommentTemplate(
 
   /** Initialize drawingState * */
   const initDrawingState = () => {
-    if (annotationState.maeData.target.drawingState) {
+    if (annotationState.maeData.target?.drawingState) {
       return {
         ...JSON.parse(annotationState.maeData.target.drawingState),
         isDrawing: false,
@@ -201,7 +190,6 @@ export default function ImageCommentTemplate(
           annotation={annotation}
           closed={toolState.closedMode === 'closed'}
           windowId={windowId}
-          // we need to pass the width and height of the image to the annotation drawing component
           updateScale={updateScale}
           setColorToolFromCurrentShape={setColorToolFromCurrentShape}
           drawingState={drawingState}
@@ -210,7 +198,6 @@ export default function ImageCommentTemplate(
           showFragmentSelector={false}
           tabView={viewTool}
           updateCurrentShapeInShapes={updateCurrentShapeInShapes}
-          closeFormCompanionWindow={closeFormCompanionWindow}
           displayMode={KONVA_MODE.IMAGE}
           toolState={toolState}
         />
@@ -275,7 +262,6 @@ ImageCommentTemplate.propTypes = {
     PropTypes.string,
   ]).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]).isRequired,
   debugMode: PropTypes.bool.isRequired,

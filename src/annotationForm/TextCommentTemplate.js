@@ -6,8 +6,7 @@ import TextFormSection from './TextFormSection';
 import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { TEMPLATE } from './AnnotationFormUtils';
-import { convertAnnotationStateToBeSaved, maeTargetToIiifTarget } from '../IIIFUtils';
-import { getSvg, resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 import { playerReferences } from '../playerReferences';
 
 /** Form part for edit annotation content and body */
@@ -17,7 +16,6 @@ function TextCommentTemplate(
     closeFormCompanionWindow,
     currentTime,
     debugMode,
-    getMediaAudio,
     saveAnnotation,
     windowId,
   },
@@ -101,7 +99,6 @@ function TextCommentTemplate(
           timeTarget
           spatialTarget
           closeFormCompanionWindow={closeFormCompanionWindow}
-          getMediaAudio={getMediaAudio}
           debugMode={debugMode}
         />
       </Grid>
@@ -119,18 +116,10 @@ function TextCommentTemplate(
 TextCommentTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   annotation: PropTypes.object.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  canvases: PropTypes.arrayOf(PropTypes.object).isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
   currentTime: PropTypes.number.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  getMediaAudio: PropTypes.object.isRequired,
-  mediaType: PropTypes.string.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  overlay: PropTypes.object.isRequired,
+  debugMode: PropTypes.bool.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
-  setCurrentTime: PropTypes.func.isRequired,
-  setSeekTo: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 };
 

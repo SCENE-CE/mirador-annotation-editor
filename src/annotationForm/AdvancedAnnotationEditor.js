@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Grid } from '@mui/material';
 import { JsonEditor as Editor } from 'jsoneditor-react';
 import ace from 'brace';
@@ -7,7 +7,6 @@ import AnnotationFormFooter from './AnnotationFormFooter';
 
 /** Advanced Annotation Editor * */
 /** This component is used to render the advanced annotation editor */
-
 export function AdvancedAnnotationEditor({
   value,
   onChange,

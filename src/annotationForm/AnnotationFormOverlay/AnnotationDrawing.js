@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { Layer, Rect, Stage } from 'react-konva';
+import { Stage } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
 import ParentComponent from './KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from './KonvaDrawing/KonvaUtils';
@@ -12,7 +12,6 @@ import { playerReferences } from '../../playerReferences';
 /** All the stuff to draw on the canvas */
 export default function AnnotationDrawing(
   {
-    closeFormCompanionWindow,
     displayMode,
     drawingState,
     isMouseOverSave,
@@ -26,10 +25,10 @@ export default function AnnotationDrawing(
     windowId,
   },
 ) {
-  const [isDrawing, setIsDrawing] = useState(false);
   const width = playerReferences.getWidth();
   const height = playerReferences.getHeight();
-  // TODO target from the annotation
+
+  const [isDrawing, setIsDrawing] = useState(false);
   const [surfacedata, setSurfaceData] = useState({
     height: height / scale,
     scaleX: 1,
@@ -74,9 +73,6 @@ export default function AnnotationDrawing(
     }
   }, [toolState]);
 
-  /** */
-
-  /** */
   useEffect(() => {
     if (!isDrawing) {
       const newCurrentShape = drawingState[drawingState.shapes.length - 1];
@@ -102,6 +98,28 @@ export default function AnnotationDrawing(
       updateCurrentShapeInShapes(drawingState.currentShape);
     }
   }, [toolState]);
+
+  // TODO Can be removed ? --> move currentSHape and shapes in the same state
+  // eslint-disable-next-line consistent-return
+  useLayoutEffect(() => {
+    if (drawingState.shapes.find((s) => s.id === drawingState.currentShape?.id)) {
+      window.addEventListener('keydown', handleKeyPress);
+
+      // Set here all the properties of the current shape for the tool options
+      setColorToolFromCurrentShape(
+        {
+          fillColor: drawingState.currentShape.fill,
+          strokeColor: drawingState.currentShape.stroke,
+          strokeWidth: drawingState.currentShape.strokeWidth,
+          text: drawingState.currentShape.text,
+        },
+      );
+
+      return () => {
+        window.removeEventListener('keydown', handleKeyPress);
+      };
+    }
+  }, [drawingState.currentShape]);
 
   /** */
   const handleKeyPress = (e) => {
@@ -134,27 +152,6 @@ export default function AnnotationDrawing(
       }));
     }
   };
-  // TODO Can be removed ? --> move currentSHape and shapes in the same state
-  // eslint-disable-next-line consistent-return
-  useLayoutEffect(() => {
-    if (drawingState.shapes.find((s) => s.id === drawingState.currentShape?.id)) {
-      window.addEventListener('keydown', handleKeyPress);
-
-      // Set here all the properties of the current shape for the tool options
-      setColorToolFromCurrentShape(
-        {
-          fillColor: drawingState.currentShape.fill,
-          strokeColor: drawingState.currentShape.stroke,
-          strokeWidth: drawingState.currentShape.strokeWidth,
-          text: drawingState.currentShape.text,
-        },
-      );
-
-      return () => {
-        window.removeEventListener('keydown', handleKeyPress);
-      };
-    }
-  }, [drawingState.currentShape]);
 
   /** */
   const onShapeClick = async (shp) => {
@@ -514,6 +511,10 @@ export default function AnnotationDrawing(
       />
     </Stage>
   );
+
+  /** ***************************
+   * Return
+   **************************** */
   const container = playerReferences.getContainer();
   if (container) {
     return ReactDOM.createPortal(drawKonvas(), container);
@@ -547,7 +548,6 @@ const shapeObjectPropTypes = PropTypes.shape({
 });
 
 AnnotationDrawing.propTypes = {
-  closeFormCompanionWindow: PropTypes.func.isRequired,
   displayMode: PropTypes.string.isRequired,
   drawingState: PropTypes.oneOfType([
     PropTypes.shape({
@@ -583,11 +583,7 @@ AnnotationDrawing.propTypes = {
       }),
     ),
   ]).isRequired,
-  height: PropTypes.number.isRequired,
   isMouseOverSave: PropTypes.bool.isRequired,
-  mediaType: PropTypes.string.isRequired,
-  originalHeight: PropTypes.number.isRequired,
-  originalWidth: PropTypes.number.isRequired,
   overlay: PropTypes.shape({
     canvasHeight: PropTypes.number,
     canvasWidth: PropTypes.number,
@@ -613,6 +609,5 @@ AnnotationDrawing.propTypes = {
   ).isRequired,
   updateCurrentShapeInShapes: PropTypes.func.isRequired,
   updateScale: PropTypes.func.isRequired,
-  width: PropTypes.number.isRequired,
   windowId: PropTypes.string.isRequired,
 };

@@ -25,7 +25,6 @@ export default function AnnotationForm(
     closeCompanionWindow,
     currentTime,
     config,
-    getMediaAudio,
     id,
     receiveAnnotation,
     windowId,
@@ -196,7 +195,6 @@ export default function AnnotationForm(
                 currentTime={currentTime}
                 closeFormCompanionWindow={closeFormCompanionWindow}
                 saveAnnotation={saveAnnotation}
-                getMediaAudio={getMediaAudio}
                 debugMode={debugMode}
                 canvases={canvases}
               />
@@ -240,7 +238,6 @@ AnnotationForm.propTypes = {
   }).isRequired,
   currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]),
   // eslint-disable-next-line react/forbid-prop-types
-  getMediaAudio: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
   receiveAnnotation: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
