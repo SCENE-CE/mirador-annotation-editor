@@ -345,8 +345,10 @@ export const playerReferences = (function () {
   function isInitialized() {
     // TODO this part must be clarified
     // Its not exactly initialisation but if the player is available for the media type
-    return media && (media.current || media.video)
-      && (mediaType !== MEDIA_TYPES.UNKNOWN && mediaType !== MEDIA_TYPES.AUDIO);
+    // Hot fix for demo
+    return true;
+    // return media && (media.current || media.video)
+    //&& (mediaType !== MEDIA_TYPES.UNKNOWN && mediaType !== MEDIA_TYPES.AUDIO);
   }
 
   return {
