@@ -62,7 +62,6 @@ export const convertAnnotationStateToBeSaved = async (
   annotationStateForSaving.target = maeTargetToIiifTarget(
     annotationStateForSaving.maeData.target,
     canvas.id,
-    annotationStateForSaving.maeData.templateType,
   );
   // eslint-disable-next-line no-param-reassign
   annotationStateForSaving.maeData.target.drawingState = JSON.stringify(
