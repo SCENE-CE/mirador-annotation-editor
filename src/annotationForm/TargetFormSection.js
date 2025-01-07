@@ -59,15 +59,8 @@ export default function TargetFormSection(
     onChangeTarget(target);
   }
 
-  /** Handle timeTargetInput * */
-  const onChangeTimeTargetInput = (newData) => {
-    onChangeTarget({
-      ...target,
-      ...newData,
-    });
-  };
-  /** Handle spatialTarget Changes * */
-  const onChangeSpatialTargetInput = (newData) => {
+  /** Handle timeTargetInput  and spatialTargetInput* */
+  const onChangeTargetInput = (newData) => {
     onChangeTarget({
       ...target,
       ...newData,
@@ -79,11 +72,6 @@ export default function TargetFormSection(
     timeTarget = false;
   }
 
-  if (playerReferences.getMediaType() === MEDIA_TYPES.AUDIO) {
-    // eslint-disable-next-line no-param-reassign
-    spatialTarget = false;
-  }
-
   return (
     <Grid item container direction="column" spacing={1}>
       <Grid item>
@@ -92,24 +80,24 @@ export default function TargetFormSection(
         </Typography>
       </Grid>
       {
-        spatialTarget && (
-        <Grid item container direction="column">
-          <TargetSpatialInput
-            setTargetDrawingState={onChangeSpatialTargetInput}
-            targetDrawingState={target.drawingState}
-            windowId={windowId}
-            t={t}
-          />
-        </Grid>
+        (spatialTarget && playerReferences.getMediaType() !== MEDIA_TYPES.AUDIO) && (
+          <Grid item container direction="column">
+            <TargetSpatialInput
+              setTargetDrawingState={onChangeTargetInput}
+              targetDrawingState={target.drawingState}
+              windowId={windowId}
+              t={t}
+            />
+          </Grid>
         )
       }
       {
-        timeTarget && (
+        (timeTarget && playerReferences.getMediaType() !== MEDIA_TYPES.IMAGE) && (
           <Grid item container direction="column">
             <TargetTimeInput
               tstart={target.tstart}
               tend={target.tend}
-              onChange={onChangeTimeTargetInput}
+              onChange={onChangeTargetInput}
               windowId={windowId}
               t={t}
             />
