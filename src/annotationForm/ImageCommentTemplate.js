@@ -225,6 +225,7 @@ export default function ImageCommentTemplate(
       <TargetFormSection
         onChangeTarget={updateTargetState}
         spatialTarget={false}
+        t={t}
         target={annotationState.maeData.target}
         timeTarget
         windowId={windowId}
