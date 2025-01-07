@@ -31,17 +31,16 @@ export default function TargetFormSection(
     if (playerReferences.getMediaType() === MEDIA_TYPES.VIDEO) {
       // eslint-disable-next-line no-param-reassign
       target.tstart = playerReferences.getCurrentTime() || 0;
-      target.tend = playerReferences.getMediaDuration() ? Math.floor(playerReferences.getMediaDuration()) : 0;
+      target.tend = playerReferences.getMediaDuration()
+        ? Math.floor(playerReferences.getMediaDuration()) : 0;
     }
 
     // TODO Check if its possible to use overlay ?
     switch (playerReferences.getMediaType()) {
       case MEDIA_TYPES.IMAGE:
       case MEDIA_TYPES.VIDEO:
-        const targetHeigth = playerReferences.getMediaTrueHeight();
-        const targetWidth = playerReferences.getMediaTrueWidth();
         // eslint-disable-next-line no-param-reassign
-        target.fullCanvaXYWH = `0,0,${targetWidth},${targetHeigth}`;
+        target.fullCanvaXYWH = `0,0,${playerReferences.getMediaTrueWidth()},${playerReferences.getMediaTrueHeight()}`;
         break;
       default:
         break;

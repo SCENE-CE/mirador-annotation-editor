@@ -91,9 +91,9 @@ export default function TaggingTemplate(
         <TargetFormSection
           onChangeTarget={updateTargetState}
           spatialTarget
+          t={t}
           target={annotationState.maeData.target}
           timeTarget
-          t={t}
           windowId={windowId}
         />
       </Grid>

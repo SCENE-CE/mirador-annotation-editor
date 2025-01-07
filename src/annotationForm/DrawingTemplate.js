@@ -233,10 +233,10 @@ export default function DrawingTemplate(
       </Grid>
       <TargetFormSection
         onChangeTarget={updateTargetState}
+        t={t}
         target={annotationState.maeData.target}
         timeTarget
         windowId={windowId}
-        t={t}
       />
       <Grid item>
         <AnnotationFormFooter
