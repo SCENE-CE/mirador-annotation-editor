@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -8,10 +8,14 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import PropTypes, { bool } from 'prop-types';
+import PropTypes from 'prop-types';
 import { styled } from '@mui/system';
 
-/** */
+/**
+ * Styles for AnnotationExportDialog
+ * @param theme
+ * @returns {{listitem: {'&:focus': {backgroundColor}, '&:hover': {backgroundColor: *}}}}
+ */
 const styles = (theme) => ({
   listitem: {
     '&:focus': {
@@ -22,25 +26,42 @@ const styles = (theme) => ({
     },
   },
 });
-// TODO: Change this classComponent into functional component
 
-/** */
-class AnnotationExportDialog extends Component {
-  /** */
-  constructor(props) {
-    super(props);
-    this.state = {
-      exportLinks: [],
-    };
-    this.closeDialog = this.closeDialog.bind(this);
-  }
+/**
+ *
+ * @param canvases
+ * @param classes
+ * @param config
+ * @param handleClose
+ * @param open
+ * @param t
+ * @returns {JSX.Element}
+ * @constructor AnnotationExportDialog
+ */
+function AnnotationExportDialog({
+  canvases,
+  classes,
+  config,
+  handleClose,
+  open,
+  t,
+}) {
+  const [exportLinks, setExportLinks] = useState([]);
 
-  /** */
-  componentDidUpdate(prevProps) {
-    const { canvases, config, open } = this.props;
-    const { open: prevOpen } = prevProps || {};
-    if (prevOpen !== open && open) {
-      /** */
+  useEffect(() => {
+    if (!open) return;
+
+    /**
+     * Fetch export links for annotations
+     * @returns {Promise<void>}
+     */
+    const fetchExportLinks = async () => {
+      /**
+       * Reducer function to fetch annotations for each canvas
+       * @param acc
+       * @param canvas
+       * @returns {Promise<[...*,{canvasId, id: *, label: *, url: string}]|*>}
+       */
       const reducer = async (acc, canvas) => {
         const store = config.annotation.adapter(canvas.id);
         const resolvedAcc = await acc;
@@ -59,86 +80,78 @@ class AnnotationExportDialog extends Component {
         }
         return resolvedAcc;
       };
+
       if (canvases && canvases.length > 0) {
-        canvases.reduce(reducer, []).then((exportLinks) => {
-          this.setState({ exportLinks });
-        });
+        const links = await canvases.reduce(reducer, []);
+        setExportLinks(links);
       }
-    }
-  }
+    };
 
-  /** */
-  closeDialog() {
-    const { handleClose } = this.props;
-    this.setState({ exportLinks: [] });
+    fetchExportLinks();
+  }, [canvases, config, open]);
+
+  /**
+   * Close dialog window
+   */
+  const closeDialog = () => {
+    setExportLinks([]);
     handleClose();
-  }
+  };
 
-  /** */
-  render() {
-    const {
-      classes, handleClose, open, t,
-    } = this.props;
-    const { exportLinks } = this.state;
-    return (
-      <Dialog
-        aria-labelledby="annotation-export-dialog-title"
-        id="annotation-export-dialog"
-        onClose={handleClose}
-        onEscapeKeyDown={this.closeDialog}
-        open={open}
-      >
-        <DialogTitle id="annotation-export-dialog-title" disableTypography>
-          <Typography variant="h2">{t('export_annotation')}</Typography>
-        </DialogTitle>
-        <DialogContent>
-          { exportLinks === undefined || exportLinks.length === 0 ? (
-            <Typography variant="body1">{t('no_annotation')}</Typography>
-          ) : (
-            <MenuList>
-              { exportLinks.map((dl) => (
-                <MenuItem
-                  button
-                  className={classes.listitem}
-                  component="a"
-                  key={dl.canvasId}
-                  aria-label={t('export_annotation_for')}
-                  href={dl.url}
-                  download={`${dl.id}.json`}
-                >
-                  <ListItemIcon>
-                    <GetAppIcon />
-                  </ListItemIcon>
-                  <ListItemText>
-                    {t('export_annotation_for')}
-                  </ListItemText>
-                </MenuItem>
-              ))}
-            </MenuList>
-          )}
-        </DialogContent>
-      </Dialog>
-    );
-  }
+  return (
+    <Dialog
+      aria-labelledby="annotation-export-dialog-title"
+      id="annotation-export-dialog"
+      onClose={handleClose}
+      onEscapeKeyDown={closeDialog}
+      open={open}
+    >
+      <DialogTitle id="annotation-export-dialog-title" disableTypography>
+        <Typography variant="h2">{t('export_annotation')}</Typography>
+      </DialogTitle>
+      <DialogContent>
+        {exportLinks.length === 0 ? (
+          <Typography variant="body1">{t('no_annotation')}</Typography>
+        ) : (
+          <MenuList>
+            {exportLinks.map((dl) => (
+              <MenuItem
+                button
+                className={classes.listitem}
+                component="a"
+                key={dl.canvasId}
+                aria-label={t('export_annotation_for')}
+                href={dl.url}
+                download={`${dl.id}.json`}
+              >
+                <ListItemIcon>
+                  <GetAppIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  {t('export_annotation_for')}
+                </ListItemText>
+              </MenuItem>
+            ))}
+          </MenuList>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 AnnotationExportDialog.propTypes = {
   canvases: PropTypes.arrayOf(
     PropTypes.shape({ id: PropTypes.string }),
   ).isRequired,
-  classes: PropTypes.objectOf(PropTypes.string),
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   config: PropTypes.shape({
     annotation: PropTypes.shape({
       adapter: PropTypes.func,
     }),
   }).isRequired,
   handleClose: PropTypes.func.isRequired,
-  open: bool.isRequired,
+  open: PropTypes.bool.isRequired,
   t: PropTypes.func.isRequired,
-};
-
-AnnotationExportDialog.defaultProps = {
-  classes: {},
 };
 
 export default styled(styles)(AnnotationExportDialog);
