@@ -1,5 +1,5 @@
 import React, {
-  useState, useContext, forwardRef, useEffect,
+  useState, useContext, forwardRef
 } from 'react';
 import PropTypes from 'prop-types';
 import DeleteIcon from '@mui/icons-material/DeleteForever';

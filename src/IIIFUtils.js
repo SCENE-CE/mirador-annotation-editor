@@ -80,6 +80,7 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
 
   if (maeTarget.templateType !== TEMPLATE.KONVA_TYPE && maeTarget.drawingState.shapes.length > 1) {
     console.info('Implement target as SVG/Fragment with shapes');
+    const fragmentTarget = `${maeTarget.tend ? `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${maeTarget.fullCanvaXYWH}`}`;
     return {
       selector: [
         {
@@ -88,7 +89,7 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
         },
         {
           type: 'FragmentSelector',
-          value: `${canvasId}#${maeTarget.tend ? `xywh=${maeTarget.fullCanvaXYWH}&t=${maeTarget.tstart},${maeTarget.tend}` : `xywh=${maeTarget.fullCanvaXYWH}`}`,
+          value: `${canvasId}#${fragmentTarget}`,
         },
       ],
       source: canvasId,
