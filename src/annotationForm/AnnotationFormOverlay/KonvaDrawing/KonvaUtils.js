@@ -1,5 +1,4 @@
 import { exportStageSVG } from 'react-konva-to-svg';
-import { rgbaToObj } from '../AnnotationFormOverlayToolOptions';
 
 /**
  * Get the Konva stage associated with the windowId
