@@ -14,6 +14,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   marginTop: '0',
 }));
 
+// TODO Missing TRAD
 /** imageUrl input field for the annotation form */
 function ImageFormField({ imageUrl, onChange }) {
   const inputRef = useRef(null);

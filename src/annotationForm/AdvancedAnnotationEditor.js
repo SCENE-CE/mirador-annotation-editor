@@ -8,11 +8,11 @@ import AnnotationFormFooter from './AnnotationFormFooter';
 /** Advanced Annotation Editor * */
 /** This component is used to render the advanced annotation editor */
 export function AdvancedAnnotationEditor({
-  value,
-  onChange,
   closeFormCompanionWindow,
+  onChange,
   saveAnnotation,
-  t
+  t,
+  value,
 }) {
   return (
     <Grid container direction="column" spacing={1} justifyContent="flex-end" padding={1}>

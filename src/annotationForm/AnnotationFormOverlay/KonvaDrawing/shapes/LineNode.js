@@ -6,7 +6,10 @@ import { Line, Transformer } from 'react-konva';
  * @returns {JSX.Element} The TextNode component.
  */
 function LineNode({
-  onShapeClick, shape, activeTool, selectedShapeId,
+  onShapeClick,
+  shape,
+  activeTool,
+  selectedShapeId,
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -29,7 +32,7 @@ function LineNode({
         ref={shapeRef}
         x={shape.x || 0}
         y={shape.y || 0}
-        points={shape.points }
+        points={shape.points}
         fill={shape.fill}
         stroke={shape.fill}
         strokeWidth={shape.strokeWidth || 1}
@@ -50,11 +53,8 @@ function LineNode({
 
 LineNode.propTypes = {
   activeTool: PropTypes.string.isRequired,
-  handleDragEnd: PropTypes.func.isRequired,
-  handleDragStart: PropTypes.func.isRequired,
-  isSelected: PropTypes.bool.isRequired,
   onShapeClick: PropTypes.func.isRequired,
-  onTransform: PropTypes.func.isRequired,
+  selectedShapeId: PropTypes.string.isRequired,
   shape: PropTypes.shape({
     id: PropTypes.string,
     rotation: PropTypes.number,
@@ -64,7 +64,7 @@ LineNode.propTypes = {
     url: PropTypes.string,
     x: PropTypes.number,
     y: PropTypes.number,
-  }).isRequired,};
-
+  }).isRequired,
+};
 
 export default LineNode;

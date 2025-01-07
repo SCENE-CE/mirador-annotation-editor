@@ -7,10 +7,9 @@ import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
-import {styled} from "@mui/material/styles";
+import { styled } from '@mui/material/styles';
 import ListItemText from '@mui/material/ListItemText';
-import MenuList from "@mui/material/MenuList";
-
+import MenuList from '@mui/material/MenuList';
 
 /**
  * Accordion presentation of shapes
@@ -25,34 +24,47 @@ const ListItemContent = styled(ListItem)(({ theme }) => ({
   justifyContent: 'space-between',
 }));
 
-function ShapesList({shapes, deleteShape, currentShapeId,updateCurrentShapeInShapes}) {
-
+/**
+ *
+ * @param shapes
+ * @param deleteShape
+ * @param currentShapeId
+ * @param updateCurrentShapeInShapes
+ * @returns {JSX.Element}
+ * @constructor
+ */
+function ShapesList({
+  currentShapeId,
+  deleteShape,
+  shapes,
+  updateCurrentShapeInShapes,
+}) {
   return (
-      <MenuList>
-        {shapes.map((shape) => (
+    <MenuList>
+      {shapes.map((shape) => (
+        <div>
+          <ListItemContent sx={{ padding: 0 }}>
             <div>
-              <ListItemContent sx={{padding:0}}>
-                <div>
-                  <Typography
-                      style={shape.id === currentShapeId ? { fontWeight: 'bold' } : {}}
-                      onClick={()=> updateCurrentShapeInShapes(shape)}
-                      sx={{color: 'black', cursor: 'pointer'}}
-                  >
-                    {shape.type}
-                  </Typography>
-                </div>
-                <Tooltip title="delete shape">
-                  <IconButton
-                      onClick={() => deleteShape(shape.id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
-              </ListItemContent>
-              <Divider/>
+              <Typography
+                style={shape.id === currentShapeId ? { fontWeight: 'bold' } : {}}
+                onClick={() => updateCurrentShapeInShapes(shape)}
+                sx={{ color: 'black', cursor: 'pointer' }}
+              >
+                {shape.type}
+              </Typography>
             </div>
-        ))}
-      </MenuList>
+            <Tooltip title="delete shape">
+              <IconButton
+                onClick={() => deleteShape(shape.id)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </ListItemContent>
+          <Divider />
+        </div>
+      ))}
+    </MenuList>
   );
 }
 

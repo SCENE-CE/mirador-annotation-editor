@@ -7,14 +7,14 @@ import { KONVA_MODE } from '../KonvaUtils';
  * @returns {JSX.Element} The TextNode component.
  */
 function Rectangle({
-  displayMode,
-  shape,
-  onShapeClick,
   activeTool,
-  isSelected,
-  onTransform,
+  displayMode,
   handleDragEnd,
   handleDragStart,
+  isSelected,
+  onShapeClick,
+  onTransform,
+  shape,
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -71,6 +71,7 @@ function Rectangle({
 
 Rectangle.propTypes = {
   activeTool: PropTypes.string.isRequired,
+  displayMode: PropTypes.string.isRequired,
   handleDragEnd: PropTypes.func.isRequired,
   handleDragStart: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,

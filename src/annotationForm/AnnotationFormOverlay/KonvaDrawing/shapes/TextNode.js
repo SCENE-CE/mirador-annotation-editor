@@ -6,8 +6,14 @@ import PropTypes from 'prop-types';
  * @returns {JSX.Element} The TextNode component.
  */
 function TextNode({
-  shape, onShapeClick, activeTool, isSelected,
-  onTransform, handleDragEnd, handleDragStart,text
+  shape,
+  onShapeClick,
+  activeTool,
+  isSelected,
+  onTransform,
+  handleDragEnd,
+  handleDragStart,
+  text,
 }) {
   const shapeRef = useRef();
   const trRef = useRef();

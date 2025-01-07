@@ -29,7 +29,7 @@ function SpatialTarget({
    * @param {Event} event - The event triggering the transformation.
    * @returns {void}
    */
-  const onSpatialTargetFirstTransfromation = (event) => {
+  const onSpatialTargetFirstTransformation = (event) => {
     onTransform(event);
     setOriginalSpatialTarget(false);
   };
@@ -52,10 +52,9 @@ function SpatialTarget({
           stroke="#1967d2"
           strokeWidth={10}
           draggable={showTransformer}
-          onTransform={onSpatialTargetFirstTransfromation}
+          onTransform={onSpatialTargetFirstTransformation}
           onDrag={handleDrag}
           onDragEnd={handleDrag}
-         /*  dash={[30 / scale, 30]} */
         />
 
         <Transformer

@@ -19,6 +19,7 @@ const StyledDivButtonImage = styled('div')(({ theme }) => ({
   marginTop: '5px',
 }));
 
+// TODO Missing trad
 /** All the tools options for the overlay options */
 function AnnotationFormOverlayToolOptions({
   currentShape,

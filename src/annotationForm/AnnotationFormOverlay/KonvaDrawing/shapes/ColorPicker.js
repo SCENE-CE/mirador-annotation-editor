@@ -16,6 +16,8 @@ import { styled } from '@mui/material/styles';
 import * as Proptypes from 'prop-types';
 import PropTypes from 'prop-types';
 import { defaultLineWeightChoices } from '../KonvaUtils';
+
+// TODO Missing TRAD
 /** Display color picker and border * */
 export default function ColorPicker(
   {
