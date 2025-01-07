@@ -76,7 +76,7 @@ export default function AnnotationDrawing(
   useEffect(() => {
     if (!isDrawing) {
       const newCurrentShape = drawingState[drawingState.shapes.length - 1];
-      // get latest shape in the list
+      // get the latest shape in the list
       if (newCurrentShape) {
         updateCurrentShapeInShapes(newCurrentShape);
       }
@@ -99,7 +99,7 @@ export default function AnnotationDrawing(
     }
   }, [toolState]);
 
-  // TODO Can be removed ? --> move currentSHape and shapes in the same state
+  // TODO Can be removed ? --> move currentShape and shapes in the same state
   // eslint-disable-next-line consistent-return
   useLayoutEffect(() => {
     if (drawingState.shapes.find((s) => s.id === drawingState.currentShape?.id)) {
@@ -192,14 +192,14 @@ export default function AnnotationDrawing(
    * @param {Object} evt - The event object containing the target shape's modified attributes.
    */
   const onTransform = (evt) => {
-    const modifiedshape = evt.target.attrs;
+    const modifiedShape = evt.target.attrs;
 
-    const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
+    const shape = drawingState.shapes.find((s) => s.id === modifiedShape.id);
 
-    Object.assign(shape, modifiedshape);
+    Object.assign(shape, modifiedShape);
     if (shape.type === 'image') {
-      shape.width = modifiedshape.image.width * modifiedshape.scaleX;
-      shape.height = modifiedshape.image.height * modifiedshape.scaleY;
+      shape.width = modifiedShape.image.width * modifiedShape.scaleX;
+      shape.height = modifiedShape.image.height * modifiedShape.scaleY;
     }
     updateCurrentShapeInShapes(shape);
   };
@@ -209,16 +209,16 @@ export default function AnnotationDrawing(
    * @param {Event} evt - The drag end event object.
    */
   const handleDragEnd = (evt) => {
-    const modifiedshape = evt.currentTarget.attrs;
-    const shape = drawingState.shapes.find((s) => s.id === modifiedshape.id);
+    const editedShape = evt.currentTarget.attrs;
+    const shape = drawingState.shapes.find((s) => s.id === editedShape.id);
 
-    Object.assign(shape, modifiedshape);
-    shape.x = modifiedshape.x;
-    shape.y = modifiedshape.y;
+    Object.assign(shape, editedShape);
+    shape.x = editedShape.x;
+    shape.y = editedShape.y;
 
     if (shape.type === 'image') {
-      shape.width = modifiedshape.image.width * modifiedshape.scaleX;
-      shape.height = modifiedshape.image.height * modifiedshape.scaleY;
+      shape.width = editedShape.image.width * editedShape.scaleX;
+      shape.height = editedShape.image.height * editedShape.scaleY;
     }
 
     updateCurrentShapeInShapes(shape);
@@ -230,10 +230,10 @@ export default function AnnotationDrawing(
    * @returns {void}
    */
   const handleDragStart = (evt) => {
-    const modifiedshape = evt.currentTarget.attrs;
+    const editedShape = evt.currentTarget.attrs;
     setDrawingState({
       ...drawingState,
-      currentShape: drawingState.shapes.find((s) => s.id === modifiedshape.id),
+      currentShape: drawingState.shapes.find((s) => s.id === editedShape.id),
     });
   };
 
@@ -425,7 +425,7 @@ export default function AnnotationDrawing(
           break;
         case SHAPES_TOOL.FREEHAND:
           // eslint-disable-next-line max-len,no-case-declarations
-          const freehandShape = drawingState.currentShape; // TODO Check if not nuse { ...drawingState.currentShape };
+          const freehandShape = drawingState.currentShape;
           freehandShape.lines.push({
             points: [pos.x, pos.y, pos.x, pos.y],
             stroke: toolState.strokeColor,
@@ -496,18 +496,17 @@ export default function AnnotationDrawing(
       id={windowId}
     >
       <ParentComponent
-        shapes={drawingState.shapes}
-        onShapeClick={onShapeClick}
         activeTool={toolState.activeTool}
-        selectedShapeId={drawingState.currentShape?.id}
-        scale={scale}
-        onTransform={onTransform}
+        displayMode={displayMode}
         handleDragEnd={handleDragEnd}
         handleDragStart={handleDragStart}
         isMouseOverSave={isMouseOverSave}
+        onShapeClick={onShapeClick}
+        onTransform={onTransform}
+        scale={scale}
+        selectedShapeId={drawingState.currentShape?.id}
+        shapes={drawingState.shapes}
         trview={tabView !== 'target'}
-        text={toolState.text}
-        displayMode={displayMode}
       />
     </Stage>
   );

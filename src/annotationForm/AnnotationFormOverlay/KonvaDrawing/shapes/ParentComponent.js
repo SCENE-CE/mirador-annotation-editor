@@ -11,7 +11,6 @@ import ImageShape from './Image';
 
 /** Loads Konva and display in function of their type */
 function ParentComponent({
-  text,
   activeTool,
   displayMode,
   handleDragEnd,
@@ -188,7 +187,6 @@ ParentComponent.propTypes = {
     x: PropTypes.number,
     y: PropTypes.number,
   })).isRequired,
-  text: PropTypes.string.isRequired,
   trview: PropTypes.bool.isRequired,
 };
 export default ParentComponent;
