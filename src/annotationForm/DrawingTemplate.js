@@ -79,8 +79,9 @@ export default function DrawingTemplate(
       playerReferences.getMediaTrueHeight(),
       1 / playerReferences.getScale(),
     );
-    annotationState.maeData.target.drawingState = drawingState;
+    annotationState.maeData.target.drawingState = JSON.parse(JSON.stringify(drawingState));
     saveAnnotation(annotationState);
+    setAnnotationState(annotationState);
   };
   /** Update annotation state with text body* */
   const updateAnnotationTextualBodyValue = (newTextValue) => {
@@ -98,9 +99,9 @@ export default function DrawingTemplate(
   const [toolState, setToolState] = useState(defaultToolState);
   /** initialise drawing State* */
   const initDrawingState = () => {
-    if (annotationState.maeData.drawingState) {
+    if (annotationState.maeData.target && annotationState.maeData.target.drawingState) {
       return {
-        ...JSON.parse(annotationState.maeData.drawingState),
+        ...annotationState.maeData.target.drawingState,
         isDrawing: false,
       };
     }
