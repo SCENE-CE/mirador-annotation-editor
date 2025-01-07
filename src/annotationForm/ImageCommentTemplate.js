@@ -35,7 +35,6 @@ export default function ImageCommentTemplate(
         value: '',
       },
       maeData: {
-        drawingState: null,
         target: null,
         templateType: TEMPLATE.IMAGE_TYPE,
       },
