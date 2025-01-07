@@ -22,7 +22,6 @@ function AnnotationForm(
     canvases,
     closeCompanionWindow,
     config,
-    currentTime,
     id,
     receiveAnnotation,
     t,
@@ -214,9 +213,10 @@ AnnotationForm.propTypes = {
       target: PropTypes.string,
     }),
     PropTypes.string,
-  ]),
+  ]).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   canvases: PropTypes.object.isRequired,
-  closeCompanionWindow: PropTypes.func,
+  closeCompanionWindow: PropTypes.func.isRequired,
   config: PropTypes.shape({
     annotation: PropTypes.shape({
       adapter: PropTypes.func,
@@ -225,20 +225,14 @@ AnnotationForm.propTypes = {
       ),
     }),
     debug: PropTypes.bool,
-    translations: PropTypes.objectOf(PropTypes.object),
     language: PropTypes.string,
+    // eslint-disable-next-line react/forbid-prop-types
+    translations: PropTypes.objectOf(PropTypes.object),
   }).isRequired,
-  currentTime: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]),
   id: PropTypes.string.isRequired,
   receiveAnnotation: PropTypes.func.isRequired,
-  t: PropTypes.func,
+  t: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
-};
-
-AnnotationForm.defaultProps = {
-  annotation: null,
-  closeCompanionWindow: () => {},
-  currentTime: null,
 };
 
 export default withTranslation()(AnnotationForm);

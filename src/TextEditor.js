@@ -37,13 +37,8 @@ function TextEditor({ annoHtml, updateAnnotationBody }) {
 }
 
 TextEditor.propTypes = {
-  annoHtml: PropTypes.string,
-  updateAnnotationBody: PropTypes.func,
-};
-
-TextEditor.defaultProps = {
-  annoHtml: '',
-  updateAnnotationBody: () => {},
+  annoHtml: PropTypes.string.isRequired,
+  updateAnnotationBody: PropTypes.func.isRequired,
 };
 
 export default TextEditor;
