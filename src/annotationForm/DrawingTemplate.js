@@ -47,7 +47,6 @@ export default function DrawingTemplate(
         value: '',
       },
       maeData: {
-        drawingState: null,
         target: null,
         templateType: TEMPLATE.KONVA_TYPE,
       },
