@@ -128,17 +128,19 @@ function AnnotationFormOverlayTool({
               aria-label="tool selection"
               size="small"
             >
-              <ToggleButton value={SHAPES_TOOL.RECTANGLE} aria-label="add a rectangle">
-                <RectangleIcon />
-              </ToggleButton>
+              <Tooltip title="rectangle shape">
+                <ToggleButton value={SHAPES_TOOL.RECTANGLE} aria-label="add a rectangle">
+                  <RectangleIcon/>
+                </ToggleButton>
+              </Tooltip>
+              <Tooltip title="circle shape">
+                <ToggleButton value={SHAPES_TOOL.ELLIPSE} aria-label="add a circle">
+                  <CircleIcon />
+                </ToggleButton>
+              </Tooltip>
               {
                 (displayMode === KONVA_MODE.DRAW) && (
                   <div>
-                    <Tooltip title="circle shape">
-                      <ToggleButton value={SHAPES_TOOL.ELLIPSE} aria-label="add a circle">
-                        <CircleIcon />
-                      </ToggleButton>
-                    </Tooltip>
                     <Tooltip title="arrow shape">
                       <ToggleButton value={SHAPES_TOOL.ARROW} aria-label="add an arrow">
                         <ArrowOutwardIcon />
