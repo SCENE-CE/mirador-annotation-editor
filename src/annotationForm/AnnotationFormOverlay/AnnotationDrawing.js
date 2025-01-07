@@ -39,7 +39,7 @@ export default function AnnotationDrawing(
   });
 
   useEffect(() => {
-    updateScale(playerReferences.getZoom());
+    updateScale(playerReferences.getScale());
 
     const newSurfaceData = { ...surfacedata };
     newSurfaceData.width = playerReferences.getMediaTrueWidth();
