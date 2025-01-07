@@ -11,7 +11,7 @@ import { playerReferences } from '../playerReferences';
 /** Handle target spacial for annot templates * */
 export function TargetSpatialInput({
   setTargetDrawingState,
-    t,
+  t,
   targetDrawingState,
   windowId,
 }) {

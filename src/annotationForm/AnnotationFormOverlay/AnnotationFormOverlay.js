@@ -124,13 +124,14 @@ function AnnotationFormOverlay(
           )}
         </StyledToggleButtonGroup>
         <AnnotationFormOverlayTool
-          toolState={toolState}
-          setToolState={setToolState}
           currentShape={currentShape}
-          shapes={shapes}
           deleteShape={deleteShape}
-          updateCurrentShapeInShapes={updateCurrentShapeInShapes}
           displayMode={displayMode}
+          setToolState={setToolState}
+          shapes={shapes}
+          t={t}
+          toolState={toolState}
+          updateCurrentShapeInShapes={updateCurrentShapeInShapes}
         />
       </OverlayIconAndTitleContainer>
     </Grid>

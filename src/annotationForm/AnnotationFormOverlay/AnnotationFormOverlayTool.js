@@ -32,15 +32,17 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
+// TODO TRAD missing
 /** All the form part for the overlay view */
 function AnnotationFormOverlayTool({
-  toolState,
-  setToolState,
   currentShape,
-  updateCurrentShapeInShapes,
-  shapes,
   deleteShape,
   displayMode,
+  setToolState,
+  shapes,
+  t,
+  toolState,
+  updateCurrentShapeInShapes,
 }) {
   /** Change the active overlay tool */
   const changeTool = (e, tool) => {
@@ -78,6 +80,7 @@ function AnnotationFormOverlayTool({
                     Selected object
                   </Typography>
                   <AnnotationFormOverlayToolOptions
+                    t={t}
                     toolState={{
                       ...toolState,
                       activeTool: currentShape.type,
@@ -198,6 +201,7 @@ AnnotationFormOverlayTool.propTypes = {
   setToolState: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   shapes: PropTypes.array.isRequired,
+  t: PropTypes.func.isRequired,
   toolState: PropTypes.shape({
     activeTool: PropTypes.string.isRequired,
     closedMode: PropTypes.bool.isRequired,
