@@ -79,6 +79,7 @@ export default function DrawingTemplate(
       1 / playerReferences.getScale(),
     );
     annotationState.maeData.target.drawingState = JSON.parse(JSON.stringify(drawingState));
+    annotationState.maeData.target.drawingState.currentShape = null;
     saveAnnotation(annotationState);
     setAnnotationState(annotationState);
   };
@@ -101,6 +102,7 @@ export default function DrawingTemplate(
     if (annotationState.maeData.target && annotationState.maeData.target.drawingState) {
       return {
         ...annotationState.maeData.target.drawingState,
+        currentShape: null,
         isDrawing: false,
       };
     }

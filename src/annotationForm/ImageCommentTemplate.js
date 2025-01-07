@@ -86,7 +86,8 @@ export default function ImageCommentTemplate(
   const initDrawingState = () => {
     if (annotationState.maeData.target && annotationState.maeData.target.drawingState) {
       return {
-        ...JSON.parse(annotationState.maeData.target.drawingState),
+        ...annotationState.maeData.target.drawingState,
+        currentShape: null,
         isDrawing: false,
       };
     }
