@@ -78,7 +78,9 @@ export default function DrawingTemplate(
       playerReferences.getMediaTrueHeight(),
       1 / playerReferences.getScale(),
     );
-    annotationState.maeData.target.drawingState = JSON.parse(JSON.stringify(drawingState));
+    // Save drawing state in annotation
+    annotationState.maeData.target.drawingState = drawingState;
+    // Unselect current shape
     annotationState.maeData.target.drawingState.currentShape = null;
     saveAnnotation(annotationState);
     setAnnotationState(annotationState);
@@ -100,6 +102,7 @@ export default function DrawingTemplate(
   /** initialise drawing State* */
   const initDrawingState = () => {
     if (annotationState.maeData.target && annotationState.maeData.target.drawingState) {
+      // So far, we only reused shapes in the drawing state
       return {
         ...annotationState.maeData.target.drawingState,
         currentShape: null,
