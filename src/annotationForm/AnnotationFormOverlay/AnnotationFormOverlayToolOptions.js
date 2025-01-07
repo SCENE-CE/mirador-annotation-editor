@@ -8,7 +8,9 @@ import { styled } from '@mui/material/styles';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { v4 as uuidv4 } from 'uuid';
 import ImageFormField from './ImageFormField';
-import { isShapesTool, OVERLAY_TOOL, KONVA_MODE } from './KonvaDrawing/KonvaUtils';
+import {
+  isShapesTool, OVERLAY_TOOL, KONVA_MODE, rgbaToObj, objToRgba,
+} from './KonvaDrawing/KonvaUtils';
 import ColorPicker from './KonvaDrawing/shapes/ColorPicker';
 
 const StyledDivButtonImage = styled('div')(({ theme }) => ({
@@ -16,27 +18,6 @@ const StyledDivButtonImage = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
   marginTop: '5px',
 }));
-
-/** Utils functions to convert string to object */
-export const rgbaToObj = (rgba = 'rgba(255,255,255,0.5)') => {
-  const rgbaArray = rgba.split(',');
-  return {
-    // eslint-disable-next-line sort-keys
-    r: Number(rgbaArray[0].split('(')[1]),
-    // eslint-disable-next-line sort-keys
-    g: Number(rgbaArray[1]),
-    // eslint-disable-next-line sort-keys
-    b: Number(rgbaArray[2]),
-    // eslint-disable-next-line sort-keys
-    a: Number(rgbaArray[3].split(')')[0]),
-  };
-};
-
-/** Convert color object to rgba string */
-const objToRgba = (obj = {
-  // eslint-disable-next-line sort-keys
-  r: 255, g: 255, b: 255, a: 0.5,
-}) => `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
 
 /** All the tools options for the overlay options */
 function AnnotationFormOverlayToolOptions({
@@ -207,9 +188,9 @@ function AnnotationFormOverlayToolOptions({
                     handleLineWeightSelect={handleLineWeightSelect}
                     openChooseColor={openChooseColor}
                     openChooseLineWeight={openChooseLineWeight}
-                    updateColor={updateColor}
                     toolOptions={toolOptions}
                     toolState={toolState}
+                    updateColor={updateColor}
                   />
                 </Grid>
               </>

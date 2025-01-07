@@ -87,3 +87,24 @@ export function isShapesTool(activeTool) {
   // Find if active tool in the list of overlay tools. I want a boolean in return
   return Object.values(SHAPES_TOOL).find((tool) => tool === activeTool);
 }
+
+/** Utils functions to convert string to object */
+export const rgbaToObj = (rgba = 'rgba(255,255,255,0.5)') => {
+  const rgbaArray = rgba.split(',');
+  return {
+    // eslint-disable-next-line sort-keys
+    r: Number(rgbaArray[0].split('(')[1]),
+    // eslint-disable-next-line sort-keys
+    g: Number(rgbaArray[1]),
+    // eslint-disable-next-line sort-keys
+    b: Number(rgbaArray[2]),
+    // eslint-disable-next-line sort-keys
+    a: Number(rgbaArray[3].split(')')[0]),
+  };
+};
+
+/** Convert color object to rgba string */
+export const objToRgba = (obj = {
+  // eslint-disable-next-line sort-keys
+  r: 255, g: 255, b: 255, a: 0.5,
+}) => `rgba(${obj.r},${obj.g},${obj.b},${obj.a})`;
