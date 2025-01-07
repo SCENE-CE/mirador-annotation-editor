@@ -18,10 +18,10 @@ export function TargetSpatialInput({
   // TODO the targetSVGToolSTate is not used. Why the defaultToolState is used?
   const [toolState, setToolState] = useState(targetSVGToolState);
   const [viewTool, setViewTool] = useState(TARGET_VIEW);
-  const [scale, setScale] = useState(playerReferences.getZoom());
+  const [scale, setScale] = useState(playerReferences.getScale());
   /** Change scale from container / canva */
   const updateScale = () => {
-    setScale(playerReferences.getZoom());
+    setScale(playerReferences.getScale());
   };
 
   const [drawingState, setDrawingState] = useState({
