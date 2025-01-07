@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { getVisibleCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
 import * as actions from 'mirador/dist/es/src/state/actions';
@@ -7,77 +7,58 @@ import { getCompanionWindowsForContent } from 'mirador/dist/es/src/state/selecto
 import CanvasListItem from '../CanvasListItem';
 import AnnotationActionsContext from '../AnnotationActionsContext';
 import SingleCanvasDialog from '../SingleCanvasDialog';
-// TODO: Change this classComponent into functional component
-/** */
-class CanvasAnnotationsWrapper extends Component {
-  /** */
-  constructor(props) {
-    super(props);
-    this.state = {
-      singleCanvasDialogOpen: false,
-    };
-    this.toggleSingleCanvasDialogOpen = this.toggleSingleCanvasDialogOpen.bind(this);
-  }
 
-  /** */
-  toggleSingleCanvasDialogOpen() {
-    const { singleCanvasDialogOpen } = this.state;
-    this.setState({
-      singleCanvasDialogOpen: !singleCanvasDialogOpen,
-    });
-  }
+/** Functional Component */
+const CanvasAnnotationsWrapper = ({
+  addCompanionWindow,
+  annotationsOnCanvases,
+  canvases,
+  config,
+  receiveAnnotation,
+  switchToSingleCanvasView,
+  TargetComponent,
+  targetProps,
+  windowViewType,
+  containerRef,
+  annotationEditCompanionWindowIsOpened,
+}) => {
+  const [singleCanvasDialogOpen, setSingleCanvasDialogOpen] = useState(false);
 
-  /** */
-  render() {
-    const {
-      addCompanionWindow,
-      annotationsOnCanvases,
-      canvases,
-      config,
-      receiveAnnotation,
-      switchToSingleCanvasView,
-      TargetComponent,
-      targetProps,
-      windowViewType,
-      containerRef,
-      annotationEditCompanionWindowIsOpened,
-    } = this.props;
-    const { singleCanvasDialogOpen } = this.state;
-    const props = {
-      ...targetProps,
-      listContainerComponent: CanvasListItem,
-    };
+  const toggleSingleCanvasDialogOpen = () => {
+    setSingleCanvasDialogOpen((prev) => !prev);
+  };
 
-    return (
-      <AnnotationActionsContext.Provider
-        value={{
-          addCompanionWindow,
-          annotationEditCompanionWindowIsOpened,
-          annotationsOnCanvases,
-          canvases,
-          config,
-          receiveAnnotation,
-          storageAdapter: config.annotation.adapter,
-          toggleSingleCanvasDialogOpen: this.toggleSingleCanvasDialogOpen,
-          windowId: targetProps.windowId,
-          windowViewType,
-        }}
-      >
-        <TargetComponent
-          {...props}
-          ref={containerRef}
+  const props = {
+    ...targetProps,
+    listContainerComponent: CanvasListItem,
+  };
+
+  return (
+    <AnnotationActionsContext.Provider
+      value={{
+        addCompanionWindow,
+        annotationEditCompanionWindowIsOpened,
+        annotationsOnCanvases,
+        canvases,
+        config,
+        receiveAnnotation,
+        storageAdapter: config.annotation.adapter,
+        toggleSingleCanvasDialogOpen,
+        windowId: targetProps.windowId,
+        windowViewType,
+      }}
+    >
+      <TargetComponent {...props} ref={containerRef} />
+      {windowViewType !== 'single' && (
+        <SingleCanvasDialog
+          handleClose={toggleSingleCanvasDialogOpen}
+          open={singleCanvasDialogOpen}
+          switchToSingleCanvasView={switchToSingleCanvasView}
         />
-        {windowViewType !== 'single' && (
-          <SingleCanvasDialog
-            handleClose={this.toggleSingleCanvasDialogOpen}
-            open={singleCanvasDialogOpen}
-            switchToSingleCanvasView={switchToSingleCanvasView}
-          />
-        )}
-      </AnnotationActionsContext.Provider>
-    );
-  }
-}
+      )}
+    </AnnotationActionsContext.Provider>
+  );
+};
 
 CanvasAnnotationsWrapper.propTypes = {
   addCompanionWindow: PropTypes.func.isRequired,
