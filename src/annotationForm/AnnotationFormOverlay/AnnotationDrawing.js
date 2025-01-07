@@ -142,7 +142,6 @@ export default function AnnotationDrawing(
     // TODO This comportment must be handle by the text component
     if (drawingState.currentShape.type === 'text') {
       const newCurrentShape = { ...drawingState.currentShape };
-
       setDrawingState((prevState) => ({
         ...prevState,
         currentShape: newCurrentShape,
@@ -424,41 +423,36 @@ export default function AnnotationDrawing(
 
           break;
         case SHAPES_TOOL.FREEHAND:
-          // eslint-disable-next-line max-len,no-case-declarations
-          const freehandShape = drawingState.currentShape;
-          freehandShape.lines.push({
+          // eslint-disable-next-line react/prop-types
+          drawingState.lines.push({
             points: [pos.x, pos.y, pos.x, pos.y],
             stroke: toolState.strokeColor,
             strokeWidth: toolState.strokeWidth,
           });
-          updateCurrentShapeInShapes(freehandShape);
+          updateCurrentShapeInShapes({
+            ...drawingState.currentShape,
+          });
           break;
         case SHAPES_TOOL.POLYGON:
-          // eslint-disable-next-line no-case-declarations
-          const polygonShape = drawingState.currentShape;
-          polygonShape.points[2] = pos.x;
-          polygonShape.points[3] = pos.y;
-          updateCurrentShapeInShapes(polygonShape);
+          drawingState.currentShape.points.splice(2, 2, pos.x, pos.y);
+          updateCurrentShapeInShapes(drawingState.currentShape);
           break;
         case SHAPES_TOOL.ARROW:
-          // TODO improve
-          // eslint-disable-next-line no-case-declarations
-          const arrowShape = {};
-          // update points
-          // eslint-disable-next-line max-len
-          arrowShape.points = [drawingState.currentShape.points[0], drawingState.currentShape.points[1], pos.x, pos.y];
-          arrowShape.id = drawingState.currentShape.id;
-          arrowShape.type = drawingState.currentShape.type;
-          arrowShape.pointerLength = drawingState.currentShape.pointerLength;
-          arrowShape.pointerWidth = drawingState.currentShape.pointerWidth;
-          arrowShape.x = drawingState.currentShape.x;
-          arrowShape.y = drawingState.currentShape.y;
-          arrowShape.fill = toolState.fillColor;
-          arrowShape.stroke = toolState.strokeColor;
-          arrowShape.strokeWidth = toolState.strokeWidth;
-          updateCurrentShapeInShapes(arrowShape);
+          updateCurrentShapeInShapes({
+            ...drawingState.currentShape,
+            fill: toolState.fillColor,
+            points: [
+              drawingState.currentShape.points[0],
+              drawingState.currentShape.points[1],
+              pos.x,
+              pos.y,
+            ],
+            stroke: toolState.strokeColor,
+            strokeWidth: toolState.strokeWidth,
+          });
           setIsDrawing(true);
           break;
+
         default:
           break;
       }
