@@ -73,6 +73,7 @@ export const OVERLAY_TOOL = {
 };
 
 export const SHAPES_TOOL = {
+  ARC: 'arc',
   ARROW: 'arrow',
   ELLIPSE: 'ellipse',
   FREEHAND: 'freehand',

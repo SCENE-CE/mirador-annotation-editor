@@ -8,6 +8,7 @@ import ArrowNode from './ArrowNode';
 import Polygon from './Polygon';
 import Freehand from './Freehand';
 import ImageShape from './Image';
+import ArcNode from './ArcNode';
 
 /** Loads Konva and display in function of their type */
 function ParentComponent({
@@ -87,6 +88,21 @@ function ParentComponent({
           case 'ellipse':
             return (
               <EllipseNode
+                {...{
+                  activeTool,
+                  handleDragEnd,
+                  handleDragStart,
+                  isSelected,
+                  onShapeClick: handleShapeClick,
+                  onTransform,
+                  shape,
+                }}
+                key={shape.id}
+              />
+            );
+          case 'arc':
+            return (
+              <ArcNode
                 {...{
                   activeTool,
                   handleDragEnd,

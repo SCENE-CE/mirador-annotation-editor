@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Ellipse, Transformer } from 'react-konva';
+import { Arc, Circle, Transformer } from 'react-konva';
 /**
  * Represents a Elipse node component.
  * @returns {JSX.Element} The TextNode component.
  */
-function EllipseNode({
+function ArcNode({
   onShapeClick, shape, activeTool, isSelected,
   onTransform, handleDragEnd, handleDragStart,
 }) {
@@ -31,7 +31,7 @@ function EllipseNode({
 
   return (
     <>
-      <Ellipse
+      <Circle
         ref={shapeRef}
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
@@ -45,6 +45,7 @@ function EllipseNode({
         strokeWidth={shape.strokeWidth || 1}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
+        radius={30}
         onClick={handleClick}
         onMousedown={handleClick}
         onTransform={onTransform}
@@ -60,7 +61,7 @@ function EllipseNode({
   );
 }
 
-EllipseNode.propTypes = {
+ArcNode.propTypes = {
   activeTool: PropTypes.string.isRequired,
   handleDragEnd: PropTypes.func.isRequired,
   handleDragStart: PropTypes.func.isRequired,
@@ -83,4 +84,4 @@ EllipseNode.propTypes = {
     y: PropTypes.number,
   }).isRequired,
 };
-export default EllipseNode;
+export default ArcNode;

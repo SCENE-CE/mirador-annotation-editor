@@ -287,6 +287,30 @@ export default function AnnotationDrawing(
             shapes: [...drawingState.shapes, shape],
           });
           break;
+        case SHAPES_TOOL.ARC:
+          shape = {
+            angle: 360,
+            fill: toolState.fillColor,
+            height: 1,
+            id: uuidv4(),
+            radiusX: 1,
+            radiusY: 1,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            stroke: toolState.strokeColor,
+            strokeWidth: toolState.strokeWidth,
+            type: toolState.activeTool,
+            width: 1,
+            x: pos.x,
+            y: pos.y,
+          };
+          setDrawingState({
+            currentShape: shape,
+            isDrawing: true,
+            shapes: [...drawingState.shapes, shape],
+          });
+          break;
         case 'text':
           shape = {
             fill: toolState.fillColor,
@@ -422,6 +446,22 @@ export default function AnnotationDrawing(
           });
 
           break;
+        case SHAPES_TOOL.ARC:
+          if (pos.x < drawingState.currentShape.x) {
+            pos.x = drawingState.currentShape.x;
+          }
+          if (pos.y < drawingState.currentShape.y) {
+            pos.y = drawingState.currentShape.y;
+          }
+
+          updateCurrentShapeInShapes({
+            ...drawingState.currentShape,
+            height: pos.y - drawingState.currentShape.y,
+            radiusX: (pos.x - drawingState.currentShape.x) / 2,
+            radiusY: (pos.y - drawingState.currentShape.y) / 2,
+            width: pos.x - drawingState.currentShape.x,
+          });
+
         case SHAPES_TOOL.FREEHAND:
           // eslint-disable-next-line react/prop-types
           drawingState.lines.push({

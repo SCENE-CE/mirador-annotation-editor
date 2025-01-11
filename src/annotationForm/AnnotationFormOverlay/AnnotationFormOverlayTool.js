@@ -133,8 +133,13 @@ function AnnotationFormOverlayTool({
                   <RectangleIcon/>
                 </ToggleButton>
               </Tooltip>
-              <Tooltip title="circle shape">
-                <ToggleButton value={SHAPES_TOOL.ELLIPSE} aria-label="add a circle">
+              <Tooltip title="Ellipse shape">
+                <ToggleButton value={SHAPES_TOOL.ELLIPSE} aria-label="add an ellipse">
+                  <CircleIcon />
+                </ToggleButton>
+              </Tooltip>
+              <Tooltip title="Circle shape">
+                <ToggleButton value={SHAPES_TOOL.ARC} aria-label="add a circle">
                   <CircleIcon />
                 </ToggleButton>
               </Tooltip>
