@@ -37,9 +37,8 @@ function Polygon({
         points={shape.points}
         stroke={shape.stroke}
         strokeWidth={shape.strokeWidth || 5}
-        tension={0.5}
         lineCap="round"
-        lineJoin="round"
+        lineJoin='round'
         closed={false}
         onMousedown={handleClick}
         onClick={handleClick}

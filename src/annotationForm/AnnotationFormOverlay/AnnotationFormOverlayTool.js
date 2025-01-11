@@ -143,31 +143,31 @@ function AnnotationFormOverlayTool({
                   <CircleIcon />
                 </ToggleButton>
               </Tooltip>
-              {
-                (displayMode === KONVA_MODE.DRAW) && (
-                  <div>
-                    <Tooltip title="arrow shape">
-                      <ToggleButton value={SHAPES_TOOL.ARROW} aria-label="add an arrow">
-                        <ArrowOutwardIcon />
-                      </ToggleButton>
-                    </Tooltip>
-                    <Tooltip title="polygon shape">
-                      <ToggleButton
-                        value={SHAPES_TOOL.POLYGON}
-                        aria-label="add a polygon"
-                        style={{ display: 'none' }}
-                      >
-                        <PolygonIcon />
-                      </ToggleButton>
-                    </Tooltip>
-                    <Tooltip title="free hand">
-                      <ToggleButton value={SHAPES_TOOL.FREEHAND} aria-label="free hand polygon">
-                        <GestureIcon />
-                      </ToggleButton>
-                    </Tooltip>
-                  </div>
-                )
-              }
+              <Tooltip title="arrow shape">
+                <ToggleButton value={SHAPES_TOOL.ARROW} aria-label="add an arrow">
+                  <ArrowOutwardIcon />
+                </ToggleButton>
+              </Tooltip>
+              <div>
+                <Tooltip title="polygon shape">
+                  <ToggleButton
+                    value={SHAPES_TOOL.POLYGON}
+                    aria-label="add a polygon"
+                  >
+                    <PolygonIcon />
+                  </ToggleButton>
+                </Tooltip>
+                <Tooltip title="free hand">
+                  <ToggleButton value={SHAPES_TOOL.FREEHAND} aria-label="free hand polygon">
+                    <GestureIcon />
+                  </ToggleButton>
+                </Tooltip>
+              </div>
+              {/* { */}
+              {/*   (displayMode === KONVA_MODE.DRAW) && ( */}
+              {/*     */}
+              {/*   ) */}
+              {/* } */}
             </StyledToggleButtonGroup>
           </>
         )
