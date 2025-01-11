@@ -8,7 +8,8 @@ import ArrowNode from './ArrowNode';
 import Polygon from './Polygon';
 import Freehand from './Freehand';
 import ImageShape from './Image';
-import ArcNode from './ArcNode';
+import CircleNode from './CircleNode';
+import { SHAPES_TOOL } from '../KonvaUtils';
 
 /** Loads Konva and display in function of their type */
 function ParentComponent({
@@ -52,7 +53,7 @@ function ParentComponent({
         // eslint-disable-next-line max-len
         const isSelected = selectedShapeId === shape.id && !isMouseOverSave && trview;
         switch (shape.type) {
-          case 'rectangle':
+          case SHAPES_TOOL.RECTANGLE:
             return (
               <Rectangle
                 {...{
@@ -85,7 +86,7 @@ function ParentComponent({
                 key={shape.id}
               />
             );
-          case 'ellipse':
+          case SHAPES_TOOL.ELLIPSE:
             return (
               <EllipseNode
                 {...{
@@ -100,9 +101,9 @@ function ParentComponent({
                 key={shape.id}
               />
             );
-          case 'arc':
+          case SHAPES_TOOL.CIRCLE:
             return (
-              <ArcNode
+              <CircleNode
                 {...{
                   activeTool,
                   handleDragEnd,
@@ -115,7 +116,7 @@ function ParentComponent({
                 key={shape.id}
               />
             );
-          case 'freehand':
+          case SHAPES_TOOL.FREEHAND:
             return (
               <Freehand
                 {...{
@@ -130,7 +131,7 @@ function ParentComponent({
                 key={shape.id}
               />
             );
-          case 'polygon':
+          case SHAPES_TOOL.POLYGON:
             return (
               <Polygon
                 {...{
@@ -145,7 +146,7 @@ function ParentComponent({
                 key={shape.id}
               />
             );
-          case 'arrow':
+          case SHAPES_TOOL.ARROW:
             return (
               <ArrowNode
                 {...{
@@ -160,7 +161,7 @@ function ParentComponent({
                 key={shape.id}
               />
             );
-          case 'image':
+          case SHAPES_TOOL.IMAGE:
             return (
               <ImageShape
                 {...{

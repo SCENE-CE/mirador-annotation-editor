@@ -287,9 +287,8 @@ export default function AnnotationDrawing(
             shapes: [...drawingState.shapes, shape],
           });
           break;
-        case SHAPES_TOOL.ARC:
+        case SHAPES_TOOL.CIRCLE:
           shape = {
-            angle: 360,
             fill: toolState.fillColor,
             height: 1,
             id: uuidv4(),
@@ -446,7 +445,7 @@ export default function AnnotationDrawing(
           });
 
           break;
-        case SHAPES_TOOL.ARC:
+        case SHAPES_TOOL.CIRCLE:
           if (pos.x < drawingState.currentShape.x) {
             pos.x = drawingState.currentShape.x;
           }
@@ -457,8 +456,7 @@ export default function AnnotationDrawing(
           updateCurrentShapeInShapes({
             ...drawingState.currentShape,
             height: pos.y - drawingState.currentShape.y,
-            radiusX: (pos.x - drawingState.currentShape.x) / 2,
-            radiusY: (pos.y - drawingState.currentShape.y) / 2,
+            radius: 30,
             width: pos.x - drawingState.currentShape.x,
           });
 

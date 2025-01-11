@@ -5,7 +5,7 @@ import { Arc, Circle, Transformer } from 'react-konva';
  * Represents a Elipse node component.
  * @returns {JSX.Element} The TextNode component.
  */
-function ArcNode({
+function CircleNode({
   onShapeClick, shape, activeTool, isSelected,
   onTransform, handleDragEnd, handleDragStart,
 }) {
@@ -61,7 +61,7 @@ function ArcNode({
   );
 }
 
-ArcNode.propTypes = {
+CircleNode.propTypes = {
   activeTool: PropTypes.string.isRequired,
   handleDragEnd: PropTypes.func.isRequired,
   handleDragStart: PropTypes.func.isRequired,
@@ -84,4 +84,4 @@ ArcNode.propTypes = {
     y: PropTypes.number,
   }).isRequired,
 };
-export default ArcNode;
+export default CircleNode;
