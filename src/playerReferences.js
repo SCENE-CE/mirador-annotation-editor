@@ -205,7 +205,6 @@ export const playerReferences = (function () {
     if (mediaType === MEDIA_TYPES.IMAGE) {
       const currentZoom = media.current.viewport.getZoom();
       const maxZoom = media.current.viewport.getMaxZoom();
-      // console.log("Max Zoom", maxZoom);
       let zoom = currentZoom / maxZoom;
       zoom = Math.round(zoom * 100) / 100;
       return zoom;

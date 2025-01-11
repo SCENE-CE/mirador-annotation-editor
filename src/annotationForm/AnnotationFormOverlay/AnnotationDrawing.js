@@ -144,10 +144,7 @@ export default function AnnotationDrawing(
 
     // release the drawing
     if (e.key === 'Escape') {
-      console.log('Escape');
-
-      if(toolState.activeTool === SHAPES_TOOL.POLYGON) {
-        console.log('Escape polygon');
+      if (toolState.activeTool === SHAPES_TOOL.POLYGON) {
         drawingState.currentShape.points.splice(-2, 2);
         updateCurrentShapeInShapes({
           points: [drawingState.currentShape.points],
@@ -243,9 +240,7 @@ export default function AnnotationDrawing(
       shape.height = editedShape.image.height * editedShape.scaleY;
     }
 
-    let xDelta =
-
-    updateCurrentShapeInShapes(shape);
+    const xDelta = updateCurrentShapeInShapes(shape);
   };
 
   /**
@@ -385,7 +380,6 @@ export default function AnnotationDrawing(
           if (drawingState.isDrawing) {
             drawingState.currentShape.points.splice(-2, 2, pos.x, pos.y);
             drawingState.currentShape.points.push(pos.x, pos.y);
-            console.log('drawingState.currentShpae.points', drawingState.currentShape.points);
             updateCurrentShapeInShapes({
               points: [drawingState.currentShape.points],
               ...drawingState.currentShape,
@@ -510,7 +504,6 @@ export default function AnnotationDrawing(
           break;
         case SHAPES_TOOL.POLYGON:
           drawingState.currentShape.points.splice(-2, 2, pos.x, pos.y);
-          console.log('drawingState.currentShpae.points', drawingState.currentShape.points);
           updateCurrentShapeInShapes({
             ...drawingState.currentShape,
           });
