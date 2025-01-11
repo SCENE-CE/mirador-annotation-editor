@@ -143,6 +143,14 @@ export default function AnnotationDrawing(
       return;
     }
 
+    if(e.key === 'Escape') {
+      console.log('Escape');
+      setDrawingState({
+        ...drawingState,
+        isDrawing: false,
+      });
+    }
+
     // TODO This comportment must be handle by the text component
     if (drawingState.currentShape.type === 'text') {
       const newCurrentShape = { ...drawingState.currentShape };
