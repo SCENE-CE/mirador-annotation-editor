@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Arc, Circle, Transformer } from 'react-konva';
+import { Circle, Transformer } from 'react-konva';
 /**
  * Represents a Elipse node component.
  * @returns {JSX.Element} The TextNode component.

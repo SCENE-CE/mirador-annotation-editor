@@ -461,7 +461,7 @@ export default function AnnotationDrawing(
             ),
             width: pos.x - drawingState.currentShape.x,
           });
-
+          break;
         case SHAPES_TOOL.FREEHAND:
           // eslint-disable-next-line react/prop-types
           drawingState.lines.push({
