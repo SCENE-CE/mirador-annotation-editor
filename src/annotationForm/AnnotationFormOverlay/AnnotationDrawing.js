@@ -247,14 +247,14 @@ export default function AnnotationDrawing(
         case SHAPES_TOOL.RECTANGLE:
           shape = {
             fill: toolState.fillColor,
-            height: 1,
+            height: 30,
             id: uuidv4(),
             scaleX: 1,
             scaleY: 1,
             stroke: toolState.strokeColor,
             strokeWidth: toolState.strokeWidth,
             type: toolState.activeTool,
-            width: 1,
+            width: 30,
             x: pos.x,
             y: pos.y,
           };
@@ -292,8 +292,7 @@ export default function AnnotationDrawing(
             fill: toolState.fillColor,
             height: 1,
             id: uuidv4(),
-            radiusX: 1,
-            radiusY: 1,
+            radius: 30,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
@@ -456,7 +455,10 @@ export default function AnnotationDrawing(
           updateCurrentShapeInShapes({
             ...drawingState.currentShape,
             height: pos.y - drawingState.currentShape.y,
-            radius: 30,
+            radius: Math.sqrt(
+              (pos.x - drawingState.currentShape.x) ** 2
+              + (pos.y - drawingState.currentShape.y) ** 2,
+            ),
             width: pos.x - drawingState.currentShape.x,
           });
 

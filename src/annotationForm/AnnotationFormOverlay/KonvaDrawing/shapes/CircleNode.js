@@ -38,14 +38,14 @@ function CircleNode({
         rotation={shape.rotation}
         x={shape.x}
         y={shape.y}
-        radiusX={shape.width}
-        radiusY={shape.height}
+        width={shape.width}
+        height={shape.height}
         fill={shape.fill}
         stroke={shape.stroke}
         strokeWidth={shape.strokeWidth || 1}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
-        radius={30}
+        radius={shape.radius}
         onClick={handleClick}
         onMousedown={handleClick}
         onTransform={onTransform}
@@ -72,6 +72,7 @@ CircleNode.propTypes = {
     fill: PropTypes.string,
     height: PropTypes.number,
     id: PropTypes.string,
+    radius: PropTypes.number,
     rotation: PropTypes.number,
     scaleX: PropTypes.number,
     scaleY: PropTypes.number,
