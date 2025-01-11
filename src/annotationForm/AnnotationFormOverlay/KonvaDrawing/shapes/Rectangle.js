@@ -39,26 +39,25 @@ function Rectangle({
   return (
     <>
       <Rect
-        ref={shapeRef}
-        x={shape.x || 0}
-        y={shape.y || 0}
-        scaleX={shape.scaleX}
-        scaleY={shape.scaleY}
-        width={shape.width}
-        height={shape.height}
-        fill={shape.fill}
-        stroke={shape.stroke}
-        strokeWidth={shape.strokeWidth}
-        id={shape.id}
+        dashEnabled={displayMode === KONVA_MODE.TARGET}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
+        fill={shape.fill}
+        height={shape.height}
+        id={shape.id}
         onClick={handleClick}
-        onMousedown={handleClick}
-        onTransform={onTransform}
         onDragEnd={handleDragEnd}
         onDragStart={handleDragStart}
-        /* dash={[10, 10]} */
-        dashEnabled={displayMode === KONVA_MODE.TARGET}
+        onMousedown={handleClick}
+        onTransform={onTransform}
+        ref={shapeRef}
+        scaleX={shape.scaleX}
+        scaleY={shape.scaleY}
+        stroke={shape.stroke}
         strokeScaleEnabled={false}
+        strokeWidth={shape.strokeWidth}
+        width={shape.width}
+        x={shape.x || 0}
+        y={shape.y || 0}
       />
       <Transformer
         rotateEnabled={displayMode !== 'target'}

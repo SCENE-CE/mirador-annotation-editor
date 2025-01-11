@@ -52,7 +52,6 @@ export default function AnnotationDrawing(
     }
   }, [{ width }]);
 
-
   useEffect(() => {
     // TODO clean
     if (toolState.imageEvent && toolState.imageEvent.id) {
@@ -143,12 +142,24 @@ export default function AnnotationDrawing(
       return;
     }
 
-    if(e.key === 'Escape') {
+    // release the drawing
+    if (e.key === 'Escape') {
       console.log('Escape');
+
+      if(toolState.activeTool === SHAPES_TOOL.POLYGON) {
+        console.log('Escape polygon');
+        drawingState.currentShape.points.splice(-2, 2);
+        updateCurrentShapeInShapes({
+          points: [drawingState.currentShape.points],
+          ...drawingState.currentShape,
+        });
+      }
+
       setDrawingState({
         ...drawingState,
         isDrawing: false,
       });
+      return;
     }
 
     // TODO This comportment must be handle by the text component
@@ -231,6 +242,8 @@ export default function AnnotationDrawing(
       shape.width = editedShape.image.width * editedShape.scaleX;
       shape.height = editedShape.image.height * editedShape.scaleY;
     }
+
+    let xDelta =
 
     updateCurrentShapeInShapes(shape);
   };
