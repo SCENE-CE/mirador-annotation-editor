@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Ellipse, Transformer } from 'react-konva';
+import { Circle, Transformer } from 'react-konva';
 /**
  * Represents a Elipse node component.
  * @returns {JSX.Element} The TextNode component.
  */
-function EllipseNode({
+function CircleNode({
   onShapeClick, shape, activeTool, isSelected,
   onTransform, handleDragEnd, handleDragStart,
 }) {
@@ -31,20 +31,21 @@ function EllipseNode({
 
   return (
     <>
-      <Ellipse
+      <Circle
         ref={shapeRef}
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
         rotation={shape.rotation}
         x={shape.x}
         y={shape.y}
-        radiusX={shape.width}
-        radiusY={shape.height}
+        width={shape.width}
+        height={shape.height}
         fill={shape.fill}
         stroke={shape.stroke}
         strokeWidth={shape.strokeWidth || 1}
         id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
+        radius={shape.radius}
         onClick={handleClick}
         onMousedown={handleClick}
         onTransform={onTransform}
@@ -60,7 +61,7 @@ function EllipseNode({
   );
 }
 
-EllipseNode.propTypes = {
+CircleNode.propTypes = {
   activeTool: PropTypes.string.isRequired,
   handleDragEnd: PropTypes.func.isRequired,
   handleDragStart: PropTypes.func.isRequired,
@@ -71,6 +72,7 @@ EllipseNode.propTypes = {
     fill: PropTypes.string,
     height: PropTypes.number,
     id: PropTypes.string,
+    radius: PropTypes.number,
     rotation: PropTypes.number,
     scaleX: PropTypes.number,
     scaleY: PropTypes.number,
@@ -83,4 +85,4 @@ EllipseNode.propTypes = {
     y: PropTypes.number,
   }).isRequired,
 };
-export default EllipseNode;
+export default CircleNode;

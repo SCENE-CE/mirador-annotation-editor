@@ -247,14 +247,14 @@ export default function AnnotationDrawing(
         case SHAPES_TOOL.RECTANGLE:
           shape = {
             fill: toolState.fillColor,
-            height: 1,
+            height: 30,
             id: uuidv4(),
             scaleX: 1,
             scaleY: 1,
             stroke: toolState.strokeColor,
             strokeWidth: toolState.strokeWidth,
             type: toolState.activeTool,
-            width: 1,
+            width: 30,
             x: pos.x,
             y: pos.y,
           };
@@ -271,6 +271,28 @@ export default function AnnotationDrawing(
             id: uuidv4(),
             radiusX: 1,
             radiusY: 1,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            stroke: toolState.strokeColor,
+            strokeWidth: toolState.strokeWidth,
+            type: toolState.activeTool,
+            width: 1,
+            x: pos.x,
+            y: pos.y,
+          };
+          setDrawingState({
+            currentShape: shape,
+            isDrawing: true,
+            shapes: [...drawingState.shapes, shape],
+          });
+          break;
+        case SHAPES_TOOL.CIRCLE:
+          shape = {
+            fill: toolState.fillColor,
+            height: 1,
+            id: uuidv4(),
+            radius: 30,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
@@ -421,6 +443,24 @@ export default function AnnotationDrawing(
             width: pos.x - drawingState.currentShape.x,
           });
 
+          break;
+        case SHAPES_TOOL.CIRCLE:
+          if (pos.x < drawingState.currentShape.x) {
+            pos.x = drawingState.currentShape.x;
+          }
+          if (pos.y < drawingState.currentShape.y) {
+            pos.y = drawingState.currentShape.y;
+          }
+
+          updateCurrentShapeInShapes({
+            ...drawingState.currentShape,
+            height: pos.y - drawingState.currentShape.y,
+            radius: Math.sqrt(
+              (pos.x - drawingState.currentShape.x) ** 2
+              + (pos.y - drawingState.currentShape.y) ** 2,
+            ),
+            width: pos.x - drawingState.currentShape.x,
+          });
           break;
         case SHAPES_TOOL.FREEHAND:
           // eslint-disable-next-line react/prop-types
