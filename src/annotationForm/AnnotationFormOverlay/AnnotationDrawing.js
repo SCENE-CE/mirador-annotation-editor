@@ -183,6 +183,7 @@ export default function AnnotationDrawing(
       const newShapes = drawingState.shapes.filter((s) => s.id !== shape.id);
       setDrawingState({
         ...drawingState,
+        currentShape: null,
         shapes: newShapes,
       });
       return;
