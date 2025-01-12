@@ -113,7 +113,7 @@ export const maeTargetToIiifTarget = (maeTarget, canvasId) => {
     };
   }
 
-  if (maeTarget.drawingState.shapes.length === 1 && maeTarget.drawingState.shapes[0].type === 'rectangle' || maeTarget.drawingState.shapes[0].type == 'image') {
+  if (maeTarget.drawingState.shapes.length === 1 && (maeTarget.drawingState.shapes[0].type === 'rectangle' || maeTarget.drawingState.shapes[0].type == 'image')) {
     let {
       // eslint-disable-next-line prefer-const
       x, y, width, height,
