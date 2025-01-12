@@ -29,7 +29,6 @@ export default function AnnotationDrawing(
   const height = playerReferences.getMediaTrueHeight();
 
   const [isDrawing, setIsDrawing] = useState(false);
-  const [isDrawingPolygon, setIsDrawingPolygon] = useState(false);
   const [surfacedata, setSurfaceData] = useState({
     height: height / scale,
     scaleX: 1,
@@ -154,6 +153,7 @@ export default function AnnotationDrawing(
 
       setDrawingState({
         ...drawingState,
+        currentShape: null,
         isDrawing: false,
       });
       return;
@@ -377,6 +377,7 @@ export default function AnnotationDrawing(
           });
           break;
         case SHAPES_TOOL.POLYGON:
+          console.log("pos x y", pos.x, pos.y);
           if (drawingState.isDrawing) {
             drawingState.currentShape.points.splice(-2, 2, pos.x, pos.y);
             drawingState.currentShape.points.push(pos.x, pos.y);
@@ -403,6 +404,7 @@ export default function AnnotationDrawing(
               isDrawing: true,
               shapes: [...drawingState.shapes, shape],
             });
+            setIsDrawing(true);
           }
           break;
         case SHAPES_TOOL.ARROW:

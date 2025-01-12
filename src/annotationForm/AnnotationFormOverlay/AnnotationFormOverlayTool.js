@@ -133,26 +133,17 @@ function AnnotationFormOverlayTool({
                   <RectangleIcon />
                 </ToggleButton>
               </Tooltip>
-              {/*  <Tooltip title="Ellipse shape">
-                <ToggleButton value={SHAPES_TOOL.ELLIPSE} aria-label="add an ellipse">
-                  <CircleIcon />
-                </ToggleButton>
-              </Tooltip> */}
+
               <Tooltip title="Circle shape">
                 <ToggleButton value={SHAPES_TOOL.CIRCLE} aria-label="add a circle">
                   <CircleIcon />
                 </ToggleButton>
               </Tooltip>
-              <Tooltip title="arrow shape">
-                <ToggleButton value={SHAPES_TOOL.ARROW} aria-label="add an arrow">
-                  <ArrowOutwardIcon />
-                </ToggleButton>
-              </Tooltip>
               <div>
-                <Tooltip title="polygon shape">
+                <Tooltip title="polygon line">
                   <ToggleButton
                     value={SHAPES_TOOL.POLYGON}
-                    aria-label="add a polygon"
+                    aria-label="add line"
                   >
                     <PolygonIcon />
                   </ToggleButton>
@@ -163,11 +154,22 @@ function AnnotationFormOverlayTool({
                   </ToggleButton>
                 </Tooltip>
               </div>
-              {/* { */}
-              {/*   (displayMode === KONVA_MODE.DRAW) && ( */}
-              {/*     */}
-              {/*   ) */}
-              {/* } */}
+              {
+                (displayMode === KONVA_MODE.DRAW) && (
+                  <>
+                    {/*  <Tooltip title="Ellipse shape">
+                      <ToggleButton value={SHAPES_TOOL.ELLIPSE} aria-label="add an ellipse">
+                        <CircleIcon />
+                      </ToggleButton>
+                    </Tooltip> */}
+                    <Tooltip title="arrow shape">
+                      <ToggleButton value={SHAPES_TOOL.ARROW} aria-label="add an arrow">
+                        <ArrowOutwardIcon />
+                      </ToggleButton>
+                    </Tooltip>
+                  </>
+                )
+              }
             </StyledToggleButtonGroup>
           </>
         )
