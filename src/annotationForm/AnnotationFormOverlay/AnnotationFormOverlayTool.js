@@ -105,7 +105,7 @@ function AnnotationFormOverlayTool({
         isShapesTool(toolState.activeTool) && (
           <>
             <Typography variant="subFormSectionTitle">
-              Shapes
+              {t('shape')}
             </Typography>
             <StyledToggleButtonGroup
               value={toolState.activeTool} // State or props ?
@@ -134,8 +134,10 @@ function AnnotationFormOverlayTool({
                     <PolygonIcon />
                   </ToggleButton>
                 </Tooltip>
-                {/*   <Tooltip title={t('free_hand_shape')}>
-                  <ToggleButton value={SHAPES_TOOL.FREEHAND} aria-label={t('add_a_free_hand_shape')}>
+                {/* <Tooltip title={t('free_hand_shape')}>
+                  <ToggleButton
+                    value={SHAPES_TOOL.FREEHAND}
+                    aria-label={t('add_a_free_hand_shape')}>
                     <GestureIcon />
                   </ToggleButton>
                 </Tooltip> */}
@@ -179,6 +181,7 @@ function AnnotationFormOverlayTool({
         )
       }
       <AnnotationFormOverlayToolOptions
+        t={t}
         toolState={toolState}
         setToolState={setToolState}
         displayMode={displayMode}

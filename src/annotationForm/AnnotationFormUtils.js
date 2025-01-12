@@ -74,7 +74,7 @@ export const TEMPLATE_TYPES = (t) => [
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === MEDIA_TYPES.VIDEO) return true;
       // Mirador doesn't support annotation from an image
-      if (mediaType === MEDIA_TYPES.IMAGE) return false;
+      if (mediaType === MEDIA_TYPES.IMAGE) return true;
       if (mediaType === MEDIA_TYPES.AUDIO) return false;
     },
     label: t('overlay'),
