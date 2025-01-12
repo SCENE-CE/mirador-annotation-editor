@@ -35,14 +35,13 @@ export default function AnnotationDrawing(
   }, [{ width }]);
 
   useEffect(() => {
-    // TODO clean
-    if (toolState.imageEvent && toolState.imageEvent.id) {
+    if (toolState.imageEvent?.id) {
       const imageShape = {
         id: uuidv4(),
         rotation: 0,
         scaleX: 1,
         scaleY: 1,
-        type: 'image',
+        type: SHAPES_TOOL.IMAGE,
         url: toolState.imageEvent.id,
         x: 30,
         y: 30,
@@ -52,7 +51,6 @@ export default function AnnotationDrawing(
         ...drawingState,
         currentShape: imageShape,
         shapes: [...drawingState.shapes, imageShape],
-
       });
     }
     setIsDrawing(false);
@@ -84,7 +82,6 @@ export default function AnnotationDrawing(
     }
   }, [toolState]);
 
-  // TODO Can be removed ? --> move currentShape and shapes in the same state
   // eslint-disable-next-line consistent-return
   useLayoutEffect(() => {
     if (drawingState.shapes.find((s) => s.id === drawingState.currentShape?.id)) {
@@ -142,7 +139,6 @@ export default function AnnotationDrawing(
       return;
     }
 
-    // TODO This comportment must be handle by the text component
     if (drawingState.currentShape.type === 'text') {
       const newCurrentShape = { ...drawingState.currentShape };
       setDrawingState((prevState) => ({
