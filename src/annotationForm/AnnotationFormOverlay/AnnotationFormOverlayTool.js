@@ -114,13 +114,13 @@ function AnnotationFormOverlayTool({
               aria-label={t('tool_selection')}
               size="small"
             >
-              <Tooltip title={t('rectangle_shape')}>
+              <Tooltip title={t('rectangle')}>
                 <ToggleButton value={SHAPES_TOOL.RECTANGLE} aria-label={t('add_a_rectangle')}>
                   <RectangleIcon />
                 </ToggleButton>
               </Tooltip>
 
-              <Tooltip title={t('circle_shape')}>
+              <Tooltip title={t('circle')}>
                 <ToggleButton value={SHAPES_TOOL.CIRCLE} aria-label={t('add_a_circle')}>
                   <CircleIcon />
                 </ToggleButton>
@@ -134,7 +134,7 @@ function AnnotationFormOverlayTool({
                     <PolygonIcon />
                   </ToggleButton>
                 </Tooltip>
-                {/* <Tooltip title={t('free_hand_shape')}>
+                {/* <Tooltip title={t('freehand')}>
                   <ToggleButton
                     value={SHAPES_TOOL.FREEHAND}
                     aria-label={t('add_a_free_hand_shape')}>
@@ -150,7 +150,7 @@ function AnnotationFormOverlayTool({
                         <CircleIcon />
                       </ToggleButton>
                     </Tooltip> */}
-                    <Tooltip title={t('arrow shape')}>
+                    <Tooltip title={t('arrow')}>
                       <ToggleButton value={SHAPES_TOOL.ARROW} aria-label={t('add an arrow')}>
                         <ArrowOutwardIcon />
                       </ToggleButton>
