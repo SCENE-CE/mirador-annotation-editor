@@ -55,8 +55,10 @@ export default {
     add_an_arrow_shape: 'Add an arrow shape',
     delete: 'Delete',
     click_to_delete_shape: 'Click on shape to delete it',
-    deleete_all: 'Delete all',
+    delete_all: 'Delete all',
     selected_object: 'Selected object',
+    imageUrl: 'Image URL',
+    loading_failed: 'Loading failed',
   },
   fr: {
     cancel: 'Annuler',

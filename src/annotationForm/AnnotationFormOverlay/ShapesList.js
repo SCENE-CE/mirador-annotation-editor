@@ -73,6 +73,7 @@ ShapesList.propTypes = {
   deleteShape: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   shapes: PropTypes.array.isRequired,
+  t: PropTypes.func.isRequired,
   updateCurrentShapeInShapes: PropTypes.func.isRequired,
 };
 
