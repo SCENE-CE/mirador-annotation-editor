@@ -3,7 +3,6 @@ import RectangleIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import PolygonIcon from '@mui/icons-material/Timeline';
-import GestureIcon from '@mui/icons-material/Gesture';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { styled } from '@mui/material/styles';
@@ -133,39 +132,41 @@ function AnnotationFormOverlayTool({
                   <RectangleIcon />
                 </ToggleButton>
               </Tooltip>
-              {/*  <Tooltip title="Ellipse shape">
-                <ToggleButton value={SHAPES_TOOL.ELLIPSE} aria-label="add an ellipse">
-                  <CircleIcon />
-                </ToggleButton>
-              </Tooltip> */}
+
               <Tooltip title="Circle shape">
                 <ToggleButton value={SHAPES_TOOL.CIRCLE} aria-label="add a circle">
                   <CircleIcon />
                 </ToggleButton>
               </Tooltip>
+              <div>
+                <Tooltip title="polygon line">
+                  <ToggleButton
+                    value={SHAPES_TOOL.POLYGON}
+                    aria-label="add line"
+                  >
+                    <PolygonIcon />
+                  </ToggleButton>
+                </Tooltip>
+                {/*   <Tooltip title="free hand">
+                  <ToggleButton value={SHAPES_TOOL.FREEHAND} aria-label="free hand polygon">
+                    <GestureIcon />
+                  </ToggleButton>
+                </Tooltip> */}
+              </div>
               {
                 (displayMode === KONVA_MODE.DRAW) && (
-                  <div>
+                  <>
+                    {/*  <Tooltip title="Ellipse shape">
+                      <ToggleButton value={SHAPES_TOOL.ELLIPSE} aria-label="add an ellipse">
+                        <CircleIcon />
+                      </ToggleButton>
+                    </Tooltip> */}
                     <Tooltip title="arrow shape">
                       <ToggleButton value={SHAPES_TOOL.ARROW} aria-label="add an arrow">
                         <ArrowOutwardIcon />
                       </ToggleButton>
                     </Tooltip>
-                    <Tooltip title="polygon shape">
-                      <ToggleButton
-                        value={SHAPES_TOOL.POLYGON}
-                        aria-label="add a polygon"
-                        style={{ display: 'none' }}
-                      >
-                        <PolygonIcon />
-                      </ToggleButton>
-                    </Tooltip>
-                    <Tooltip title="free hand">
-                      <ToggleButton value={SHAPES_TOOL.FREEHAND} aria-label="free hand polygon">
-                        <GestureIcon />
-                      </ToggleButton>
-                    </Tooltip>
-                  </div>
+                  </>
                 )
               }
             </StyledToggleButtonGroup>

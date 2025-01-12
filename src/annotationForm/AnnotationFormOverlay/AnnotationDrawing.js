@@ -69,8 +69,10 @@ export default function AnnotationDrawing(
         ...drawingState,
         currentShape: imageShape,
         shapes: [...drawingState.shapes, imageShape],
+
       });
     }
+    setIsDrawing(false);
   }, [toolState]);
 
   useEffect(() => {
@@ -139,6 +141,24 @@ export default function AnnotationDrawing(
       return;
     }
 
+    // release the drawing
+    if (e.key === 'Escape') {
+      if (toolState.activeTool === SHAPES_TOOL.POLYGON) {
+        drawingState.currentShape.points.splice(-2, 2);
+        updateCurrentShapeInShapes({
+          points: [drawingState.currentShape.points],
+          ...drawingState.currentShape,
+        });
+      }
+
+      setDrawingState({
+        ...drawingState,
+        currentShape: null,
+        isDrawing: false,
+      });
+      return;
+    }
+
     // TODO This comportment must be handle by the text component
     if (drawingState.currentShape.type === 'text') {
       const newCurrentShape = { ...drawingState.currentShape };
@@ -163,6 +183,7 @@ export default function AnnotationDrawing(
       const newShapes = drawingState.shapes.filter((s) => s.id !== shape.id);
       setDrawingState({
         ...drawingState,
+        currentShape: null,
         shapes: newShapes,
       });
       return;
@@ -219,8 +240,6 @@ export default function AnnotationDrawing(
       shape.width = editedShape.image.width * editedShape.scaleX;
       shape.height = editedShape.image.height * editedShape.scaleY;
     }
-
-    updateCurrentShapeInShapes(shape);
   };
 
   /**
@@ -357,24 +376,34 @@ export default function AnnotationDrawing(
           });
           break;
         case SHAPES_TOOL.POLYGON:
-          shape = {
-            fill: toolState.fillColor,
-            id: uuidv4(),
-            points: [pos.x, pos.y],
-            rotation: 0,
-            scaleX: 1,
-            scaleY: 1,
-            stroke: toolState.strokeColor,
-            strokeWidth: toolState.strokeWidth,
-            type: SHAPES_TOOL.POLYGON,
-            x: 0,
-            y: 0,
-          };
-          setDrawingState({
-            currentShape: shape,
-            isDrawing: true,
-            shapes: [...drawingState.shapes, shape],
-          });
+          if (drawingState.isDrawing) {
+            drawingState.currentShape.points.splice(-2, 2, pos.x, pos.y);
+            drawingState.currentShape.points.push(pos.x, pos.y);
+            updateCurrentShapeInShapes({
+              points: [drawingState.currentShape.points],
+              ...drawingState.currentShape,
+            });
+          } else {
+            shape = {
+              fill: toolState.fillColor,
+              id: uuidv4(),
+              points: [pos.x, pos.y, pos.x, pos.y],
+              rotation: 0,
+              scaleX: 1,
+              scaleY: 1,
+              stroke: toolState.strokeColor,
+              strokeWidth: toolState.strokeWidth,
+              type: SHAPES_TOOL.POLYGON,
+              x: 0,
+              y: 0,
+            };
+            setDrawingState({
+              currentShape: shape,
+              isDrawing: true,
+              shapes: [...drawingState.shapes, shape],
+            });
+            setIsDrawing(true);
+          }
           break;
         case SHAPES_TOOL.ARROW:
           shape = {
@@ -474,8 +503,10 @@ export default function AnnotationDrawing(
           });
           break;
         case SHAPES_TOOL.POLYGON:
-          drawingState.currentShape.points.splice(2, 2, pos.x, pos.y);
-          updateCurrentShapeInShapes(drawingState.currentShape);
+          drawingState.currentShape.points.splice(-2, 2, pos.x, pos.y);
+          updateCurrentShapeInShapes({
+            ...drawingState.currentShape,
+          });
           break;
         case SHAPES_TOOL.ARROW:
           updateCurrentShapeInShapes({
@@ -503,10 +534,12 @@ export default function AnnotationDrawing(
 
   /** Stop drawing */
   const handleMouseUp = () => {
-    setDrawingState({
-      ...drawingState,
-      isDrawing: false,
-    });
+    if (toolState.activeTool !== SHAPES_TOOL.POLYGON) {
+      setDrawingState({
+        ...drawingState,
+        isDrawing: false,
+      });
+    }
   };
 
   /** */

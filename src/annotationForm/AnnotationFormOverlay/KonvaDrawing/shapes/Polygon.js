@@ -4,8 +4,13 @@ import { Transformer, Shape, Line } from 'react-konva';
 
 /** FreeHand shape displaying */
 function Polygon({
-  activeTool, onShapeClick, isSelected, shape,
-  onTransform, handleDragEnd, handleDragStart,
+  activeTool,
+  handleDragEnd,
+  handleDragStart,
+  isSelected,
+  onShapeClick,
+  onTransform,
+  shape,
 }) {
   // TODO check if selectedShapeId is needed
   const shapeRef = useRef();
@@ -32,29 +37,27 @@ function Polygon({
 
     <>
       <Line
-        ref={shapeRef}
+        closed={false}
+        draggable={activeTool === 'cursor' || activeTool === 'edit'}
+        fill={shape.fill}
+        globalCompositeOperation="source-over"
         id={shape.id}
-        points={shape.points}
-        stroke={shape.stroke}
-        strokeWidth={shape.strokeWidth || 5}
-        tension={0.5}
         lineCap="round"
         lineJoin="round"
-        closed={false}
-        onMousedown={handleClick}
         onClick={handleClick}
-        fill={shape.fill}
-        draggable={activeTool === 'cursor' || activeTool === 'edit'}
-        globalCompositeOperation="source-over"
-        onTransform={onTransform}
-        scaleX={shape.scaleX}
-        scaleY={shape.scaleY}
-        rotation={shape.rotation}
-        x={shape.x}
-        y={shape.y}
         onDragEnd={handleDragEnd}
         onDragStart={handleDragStart}
-
+        onMousedown={handleClick}
+        onTransform={onTransform}
+        points={shape.points}
+        ref={shapeRef}
+        rotation={shape.rotation}
+        scaleX={shape.scaleX}
+        scaleY={shape.scaleY}
+        stroke={shape.stroke}
+        strokeWidth={shape.strokeWidth || 5}
+        x={shape.x}
+        y={shape.y}
       />
       <Transformer
         ref={trRef}
