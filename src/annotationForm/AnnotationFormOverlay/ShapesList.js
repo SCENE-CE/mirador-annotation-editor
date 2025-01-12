@@ -1,14 +1,11 @@
 import {
-  Accordion, AccordionDetails, AccordionSummary, Divider, IconButton, ListItem, Paper, Tooltip,
+  Divider, IconButton, ListItem, Tooltip,
 } from '@mui/material';
 import React from 'react';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import { styled } from '@mui/material/styles';
-import ListItemText from '@mui/material/ListItemText';
 import MenuList from '@mui/material/MenuList';
 
 /**
@@ -69,9 +66,11 @@ function ShapesList({
 }
 
 ShapesList.propTypes = {
-  shapes: PropTypes.array.isRequired,
-  deleteShape: PropTypes.func.isRequired,
   currentShapeId: PropTypes.string.isRequired,
+  deleteShape: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  shapes: PropTypes.array.isRequired,
+  updateCurrentShapeInShapes: PropTypes.func.isRequired,
 };
 
 export default ShapesList;

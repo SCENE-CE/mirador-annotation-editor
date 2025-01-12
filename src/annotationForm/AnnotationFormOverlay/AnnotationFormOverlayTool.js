@@ -5,8 +5,6 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import PolygonIcon from '@mui/icons-material/Timeline';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { styled } from '@mui/material/styles';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { Button, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from '@mui/material/Typography';
@@ -18,18 +16,7 @@ import {
   KONVA_MODE,
 } from './KonvaDrawing/KonvaUtils';
 import ShapesList from './ShapesList';
-
-// TODO WIP code duplicated
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  '&:first-of-type': {
-    borderRadius: theme.shape.borderRadius,
-  },
-  '&:not(:first-of-type)': {
-    borderRadius: theme.shape.borderRadius,
-  },
-  border: 'none',
-  margin: theme.spacing(0.5),
-}));
+import { StyledToggleButtonGroup } from '../AnnotationFormUtils';
 
 // TODO TRAD missing
 /** All the form part for the overlay view */

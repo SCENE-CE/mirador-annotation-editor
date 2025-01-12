@@ -5,6 +5,8 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { styled } from '@mui/material/styles';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { OVERLAY_TOOL } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
 
 export const TEMPLATE = {
@@ -23,7 +25,7 @@ export const MEDIA_TYPES = {
   VIDEO: 'Video',
 };
 /** Return template type * */
-export const getTemplateType = (t,templateType) => TEMPLATE_TYPES(t).find(
+export const getTemplateType = (t, templateType) => TEMPLATE_TYPES(t).find(
   (type) => type.id === templateType,
 );
 
@@ -169,3 +171,14 @@ export async function saveAnnotationInStorageAdapter(
       });
   }
 }
+
+export const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+  '&:first-of-type': {
+    borderRadius: theme.shape.borderRadius,
+  },
+  '&:not(:first-of-type)': {
+    borderRadius: theme.shape.borderRadius,
+  },
+  border: 'none',
+  margin: theme.spacing(0.5),
+}));

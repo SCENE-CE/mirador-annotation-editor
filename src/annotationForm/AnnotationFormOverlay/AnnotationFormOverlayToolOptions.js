@@ -2,7 +2,7 @@ import {
   Button, Grid, TextField,
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
@@ -36,10 +36,6 @@ function AnnotationFormOverlayToolOptions({
     popoverLineWeightAnchorEl: null,
   });
 
-  useEffect(() => {
-    // TODO: This useEffect fix the bug on konva to svg but may be useless
-
-  }, []);
   // Set unused default color to avoid error on render
   const currentColor = toolOptions.currentColorType ? rgbaToObj(toolState[toolOptions.currentColorType]) : 'rgba(255, 0, 0, 0.5)';
 

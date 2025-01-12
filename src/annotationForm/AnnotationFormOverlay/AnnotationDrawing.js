@@ -26,40 +26,23 @@ export default function AnnotationDrawing(
   },
 ) {
   const width = playerReferences.getMediaTrueWidth();
-  const height = playerReferences.getMediaTrueHeight();
 
   const [isDrawing, setIsDrawing] = useState(false);
-  const [surfacedata, setSurfaceData] = useState({
-    height: height / scale,
-    scaleX: 1,
-    scaleY: 1,
-    width: width / scale,
-    x: 1,
-    y: 1,
-  });
 
+  // This useEffect is necessary to update the scale when the window is resized. If not drawing
+  // stage is not aligned with the image.
   useEffect(() => {
     updateScale(playerReferences.getZoom());
-
-    const newSurfaceData = { ...surfacedata };
-    newSurfaceData.width = playerReferences.getMediaTrueWidth();
-    newSurfaceData.height = playerReferences.getMediaTrueHeight();
-    // compare newSurfaceData and surfacedata, if different, update surfacedata
-    // eslint-disable-next-line max-len
-    if (newSurfaceData.width !== surfacedata.width || newSurfaceData.height !== surfacedata.height) {
-      setSurfaceData(newSurfaceData);
-    }
   }, [{ width }]);
 
   useEffect(() => {
-    // TODO clean
-    if (toolState.imageEvent && toolState.imageEvent.id) {
+    if (toolState.imageEvent?.id) {
       const imageShape = {
         id: uuidv4(),
         rotation: 0,
         scaleX: 1,
         scaleY: 1,
-        type: 'image',
+        type: SHAPES_TOOL.IMAGE,
         url: toolState.imageEvent.id,
         x: 30,
         y: 30,
@@ -69,7 +52,6 @@ export default function AnnotationDrawing(
         ...drawingState,
         currentShape: imageShape,
         shapes: [...drawingState.shapes, imageShape],
-
       });
     }
     setIsDrawing(false);
@@ -101,7 +83,6 @@ export default function AnnotationDrawing(
     }
   }, [toolState]);
 
-  // TODO Can be removed ? --> move currentShape and shapes in the same state
   // eslint-disable-next-line consistent-return
   useLayoutEffect(() => {
     if (drawingState.shapes.find((s) => s.id === drawingState.currentShape?.id)) {
@@ -159,7 +140,6 @@ export default function AnnotationDrawing(
       return;
     }
 
-    // TODO This comportment must be handle by the text component
     if (drawingState.currentShape.type === 'text') {
       const newCurrentShape = { ...drawingState.currentShape };
       setDrawingState((prevState) => ({
