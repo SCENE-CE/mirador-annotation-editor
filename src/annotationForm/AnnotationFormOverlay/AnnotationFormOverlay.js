@@ -12,19 +12,13 @@ import { styled } from '@mui/material/styles';
 import CategoryIcon from '@mui/icons-material/Category';
 import CursorIcon from '../../icons/Cursor';
 import AnnotationFormOverlayTool from './AnnotationFormOverlayTool';
-import { defaultToolState, OVERLAY_VIEW, TARGET_VIEW } from '../AnnotationFormUtils';
+import {
+  defaultToolState,
+  OVERLAY_VIEW,
+  StyledToggleButtonGroup,
+  TARGET_VIEW,
+} from '../AnnotationFormUtils';
 import { OVERLAY_TOOL, KONVA_MODE } from './KonvaDrawing/KonvaUtils';
-
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  '&:first-of-type': {
-    borderRadius: theme.shape.borderRadius,
-  },
-  '&:not(:first-of-type)': {
-    borderRadius: theme.shape.borderRadius,
-  },
-  border: 'none',
-  margin: theme.spacing(0.5),
-}));
 
 const OverlayIconAndTitleContainer = styled(Grid)(({ theme }) => ({
   display: 'flex',
@@ -54,7 +48,7 @@ function AnnotationFormOverlay(
    * @param tool
    */
   const changeTool = (e, tool) => {
-    if (!displayMode) { // TODO Why this check ?
+    if (!displayMode) {
       if (tool === OVERLAY_TOOL.SHAPE) {
         setToolState({
           ...defaultToolState,
