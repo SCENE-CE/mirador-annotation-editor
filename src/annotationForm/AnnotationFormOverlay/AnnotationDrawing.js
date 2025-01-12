@@ -26,10 +26,11 @@ export default function AnnotationDrawing(
   },
 ) {
   const width = playerReferences.getMediaTrueWidth();
-  const height = playerReferences.getMediaTrueHeight();
 
   const [isDrawing, setIsDrawing] = useState(false);
 
+  // This useEffect is necessary to update the scale when the window is resized. If not drawing
+  // stage is not aligned with the image.
   useEffect(() => {
     updateScale(playerReferences.getZoom());
   }, [{ width }]);
