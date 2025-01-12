@@ -240,8 +240,6 @@ export default function AnnotationDrawing(
       shape.width = editedShape.image.width * editedShape.scaleX;
       shape.height = editedShape.image.height * editedShape.scaleY;
     }
-
-    const xDelta = updateCurrentShapeInShapes(shape);
   };
 
   /**
@@ -378,7 +376,6 @@ export default function AnnotationDrawing(
           });
           break;
         case SHAPES_TOOL.POLYGON:
-          console.log("pos x y", pos.x, pos.y);
           if (drawingState.isDrawing) {
             drawingState.currentShape.points.splice(-2, 2, pos.x, pos.y);
             drawingState.currentShape.points.push(pos.x, pos.y);
