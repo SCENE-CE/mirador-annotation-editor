@@ -21,8 +21,6 @@ const ListItemContent = styled(ListItem)(({ theme }) => ({
   justifyContent: 'space-between',
 }));
 
-// TODO TRAD missing
-
 /**
  *
  * @param shapes
