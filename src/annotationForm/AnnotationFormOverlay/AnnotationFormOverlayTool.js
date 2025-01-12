@@ -3,7 +3,6 @@ import RectangleIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import PolygonIcon from '@mui/icons-material/Timeline';
-import GestureIcon from '@mui/icons-material/Gesture';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { styled } from '@mui/material/styles';
