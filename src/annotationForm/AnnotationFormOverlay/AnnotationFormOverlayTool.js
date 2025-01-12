@@ -148,11 +148,11 @@ function AnnotationFormOverlayTool({
                     <PolygonIcon />
                   </ToggleButton>
                 </Tooltip>
-                <Tooltip title="free hand">
+              {/*   <Tooltip title="free hand">
                   <ToggleButton value={SHAPES_TOOL.FREEHAND} aria-label="free hand polygon">
                     <GestureIcon />
                   </ToggleButton>
-                </Tooltip>
+                </Tooltip> */}
               </div>
               {
                 (displayMode === KONVA_MODE.DRAW) && (

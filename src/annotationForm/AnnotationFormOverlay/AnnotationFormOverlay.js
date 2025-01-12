@@ -102,11 +102,15 @@ function AnnotationFormOverlay(
                 </ToggleButton>
               </Tooltip>
               {displayMode === KONVA_MODE.DRAW && (
-              <Tooltip title={t('text')}>
-                <ToggleButton value={OVERLAY_TOOL.TEXT} aria-label={t('select_text')} onClick={tabHandler(OVERLAY_VIEW)}>
-                  <TitleIcon />
-                </ToggleButton>
-              </Tooltip>
+                <Tooltip title={t('text')}>
+                  <ToggleButton
+                    value={OVERLAY_TOOL.TEXT}
+                    aria-label={t('select_text')}
+                    onClick={tabHandler(OVERLAY_VIEW)}
+                  >
+                    <TitleIcon />
+                  </ToggleButton>
+                </Tooltip>
               )}
               <Tooltip title={t('delete')}>
                 <ToggleButton value={OVERLAY_TOOL.DELETE} aria-label={t('select_cursor')} onClick={tabHandler(OVERLAY_VIEW)}>
