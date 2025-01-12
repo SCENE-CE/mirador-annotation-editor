@@ -14,9 +14,12 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   marginTop: '0',
 }));
 
-// TODO Missing TRAD
 /** imageUrl input field for the annotation form */
-function ImageFormField({ imageUrl, onChange }) {
+function ImageFormField({
+  imageUrl,
+  onChange,
+  t,
+}) {
   const inputRef = useRef(null);
   const [imgIsValid, setImgIsValid] = useState(false);
 
@@ -36,12 +39,12 @@ function ImageFormField({ imageUrl, onChange }) {
         onChange={(ev) => onChange(ev.target.value)}
         error={imgUrl !== '' && !imgIsValid}
         margin="dense"
-        label="imageUrl URL"
+        label={t('imageURL')}
         type="url"
         fullWidth
         inputRef={inputRef}
       />
-      {imgIsValid && <img src={imageUrl} width="100%" height="auto" alt="loading failed" />}
+      {imgIsValid && <img src={imageUrl} width="100%" height="auto" alt={t('loading_failed')} />}
     </StyledRoot>
   );
 }
@@ -49,6 +52,7 @@ function ImageFormField({ imageUrl, onChange }) {
 ImageFormField.propTypes = {
   imageUrl: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
 };
 
 export default ImageFormField;

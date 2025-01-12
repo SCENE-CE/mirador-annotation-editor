@@ -1,5 +1,5 @@
 import {
-    ClickAwayListener, Divider, Grid, MenuItem, MenuList, Popover, Tooltip,
+  ClickAwayListener, Divider, Grid, MenuItem, MenuList, Popover, Tooltip,
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -15,9 +15,8 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import * as Proptypes from 'prop-types';
 import PropTypes from 'prop-types';
-import { defaultLineWeightChoices } from '../KonvaUtils';
+import { defaultLineWeightChoices, OVERLAY_TOOL } from '../KonvaUtils';
 
-// TODO Missing TRAD
 /** Display color picker and border * */
 export default function ColorPicker(
   {
@@ -28,6 +27,7 @@ export default function ColorPicker(
     handleLineWeightSelect,
     openChooseColor,
     openChooseLineWeight,
+    t,
     toolOptions,
     toolState,
     updateColor,
@@ -37,51 +37,51 @@ export default function ColorPicker(
     <Grid container spacing={1}>
       <Grid item xs={12}>
         <Typography variant="overline">
-          Style
+          {t('style')}
         </Typography>
       </Grid>
       <Grid item xs={12}>
         <ToggleButtonGroup
-          aria-label="style selection"
+          aria-label={t('style_selection')}
           size="small"
         >
           {
-                toolState.activeTool !== 'text' && (
+                toolState.activeTool !== OVERLAY_TOOL.TEXT && (
                 <>
-                    <Tooltip title="select border color">
-                  <ToggleButton
-                    value="strokeColor"
-                    aria-label="select color"
-                    onClick={openChooseColor}
-                  >
-                    <StrokeColorIcon style={{ fill: toolState.strokeColor }} />
-                    <ArrowDropDownIcon />
-                  </ToggleButton>
-                    </Tooltip>
-                    <Tooltip title="select line weight">
-                  <ToggleButton
-                    value="strokeColor"
-                    aria-label="select line weight"
-                    onClick={openChooseLineWeight}
-                  >
-                    <LineWeightIcon />
-                    <ArrowDropDownIcon />
-                  </ToggleButton>
-                    </Tooltip>
+                  <Tooltip title={t('border_color')}>
+                    <ToggleButton
+                      value="strokeColor"
+                      aria-label={t('border_color')}
+                      onClick={openChooseColor}
+                    >
+                      <StrokeColorIcon style={{ fill: toolState.strokeColor }} />
+                      <ArrowDropDownIcon />
+                    </ToggleButton>
+                  </Tooltip>
+                  <Tooltip title={t('line_weight')}>
+                    <ToggleButton
+                      value="strokeColor"
+                      aria-label={t('line_weight')}
+                      onClick={openChooseLineWeight}
+                    >
+                      <LineWeightIcon />
+                      <ArrowDropDownIcon />
+                    </ToggleButton>
+                  </Tooltip>
                 </>
                 )
 }
-<Tooltip title="select fill color">
+          <Tooltip title={t('fill_color')}>
 
-          <ToggleButton
-            value="fillColor"
-            aria-label="select color"
-            onClick={openChooseColor}
-          >
-            <FormatColorFillIcon style={{ fill: toolState.fillColor }} />
-            <ArrowDropDownIcon />
-          </ToggleButton>
-</Tooltip>
+            <ToggleButton
+              value="fillColor"
+              aria-label={t('fill_color')}
+              onClick={openChooseColor}
+            >
+              <FormatColorFillIcon style={{ fill: toolState.fillColor }} />
+              <ArrowDropDownIcon />
+            </ToggleButton>
+          </Tooltip>
         </ToggleButtonGroup>
 
         <StyledDivider flexItem orientation="vertical" />
@@ -154,6 +154,7 @@ ColorPicker.propTypes = {
   handleLineWeightSelect: Proptypes.func.isRequired,
   openChooseColor: Proptypes.func.isRequired,
   openChooseLineWeight: Proptypes.func.isRequired,
+  t: Proptypes.func.isRequired,
   toolOptions: Proptypes.oneOfType(
     Proptypes.bool,
     Proptypes.string,

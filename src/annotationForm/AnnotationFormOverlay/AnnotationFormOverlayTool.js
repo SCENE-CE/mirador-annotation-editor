@@ -18,7 +18,6 @@ import {
 import ShapesList from './ShapesList';
 import { StyledToggleButtonGroup } from '../AnnotationFormUtils';
 
-// TODO TRAD missing
 /** All the form part for the overlay view */
 function AnnotationFormOverlayTool({
   currentShape,
@@ -63,7 +62,7 @@ function AnnotationFormOverlayTool({
               currentShape && displayMode === KONVA_MODE.DRAW && (
                 <div>
                   <Typography variant="subFormSectionTitle">
-                    Selected object
+                    {t('selected_object')}
                   </Typography>
                   <AnnotationFormOverlayToolOptions
                     t={t}
@@ -87,13 +86,14 @@ function AnnotationFormOverlayTool({
               (displayMode === KONVA_MODE.DRAW && shapes.length > 0) && (
                 <>
                   <Typography variant="subFormSectionTitle">
-                    Object lists
+                    {t('object_list')}
                   </Typography>
                   <ShapesList
                     currentShapeId={currentShape?.id}
                     shapes={shapes}
                     deleteShape={deleteShape}
                     updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+                    t={t}
                   />
                 </>
               )
@@ -105,37 +105,39 @@ function AnnotationFormOverlayTool({
         isShapesTool(toolState.activeTool) && (
           <>
             <Typography variant="subFormSectionTitle">
-              Shapes
+              {t('shape')}
             </Typography>
             <StyledToggleButtonGroup
               value={toolState.activeTool} // State or props ?
               exclusive
               onChange={changeTool}
-              aria-label="tool selection"
+              aria-label={t('tool_selection')}
               size="small"
             >
-              <Tooltip title="rectangle shape">
-                <ToggleButton value={SHAPES_TOOL.RECTANGLE} aria-label="add a rectangle">
+              <Tooltip title={t('rectangle')}>
+                <ToggleButton value={SHAPES_TOOL.RECTANGLE} aria-label={t('add_a_rectangle')}>
                   <RectangleIcon />
                 </ToggleButton>
               </Tooltip>
 
-              <Tooltip title="Circle shape">
-                <ToggleButton value={SHAPES_TOOL.CIRCLE} aria-label="add a circle">
+              <Tooltip title={t('circle')}>
+                <ToggleButton value={SHAPES_TOOL.CIRCLE} aria-label={t('add_a_circle')}>
                   <CircleIcon />
                 </ToggleButton>
               </Tooltip>
               <div>
-                <Tooltip title="polygon line">
+                <Tooltip title={t('line')}>
                   <ToggleButton
                     value={SHAPES_TOOL.POLYGON}
-                    aria-label="add line"
+                    aria-label={t('add_a_line')}
                   >
                     <PolygonIcon />
                   </ToggleButton>
                 </Tooltip>
-                {/*   <Tooltip title="free hand">
-                  <ToggleButton value={SHAPES_TOOL.FREEHAND} aria-label="free hand polygon">
+                {/* <Tooltip title={t('freehand')}>
+                  <ToggleButton
+                    value={SHAPES_TOOL.FREEHAND}
+                    aria-label={t('add_a_free_hand_shape')}>
                     <GestureIcon />
                   </ToggleButton>
                 </Tooltip> */}
@@ -148,8 +150,8 @@ function AnnotationFormOverlayTool({
                         <CircleIcon />
                       </ToggleButton>
                     </Tooltip> */}
-                    <Tooltip title="arrow shape">
-                      <ToggleButton value={SHAPES_TOOL.ARROW} aria-label="add an arrow">
+                    <Tooltip title={t('arrow')}>
+                      <ToggleButton value={SHAPES_TOOL.ARROW} aria-label={t('add an arrow')}>
                         <ArrowOutwardIcon />
                       </ToggleButton>
                     </Tooltip>
@@ -164,21 +166,22 @@ function AnnotationFormOverlayTool({
         toolState.activeTool === OVERLAY_TOOL.DELETE && (
           <>
             <Typography variant="overline">
-              Delete
+              {t('delete')}
             </Typography>
             <p>
-              Click on object to remove it.
+              {t('click_to_delete_shape')}
             </p>
             <Button
               onClick={() => deleteShape()}
             >
-              <span>Delete all</span>
+              <span>{t('delete_all')}</span>
               <DeleteIcon color="red" />
             </Button>
           </>
         )
       }
       <AnnotationFormOverlayToolOptions
+        t={t}
         toolState={toolState}
         setToolState={setToolState}
         displayMode={displayMode}

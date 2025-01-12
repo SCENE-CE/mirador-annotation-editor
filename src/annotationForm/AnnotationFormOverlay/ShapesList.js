@@ -34,6 +34,7 @@ function ShapesList({
   currentShapeId,
   deleteShape,
   shapes,
+  t,
   updateCurrentShapeInShapes,
 }) {
   return (
@@ -47,10 +48,10 @@ function ShapesList({
                 onClick={() => updateCurrentShapeInShapes(shape)}
                 sx={{ color: 'black', cursor: 'pointer' }}
               >
-                {shape.type}
+                {t(shape.type)}
               </Typography>
             </div>
-            <Tooltip title="delete shape">
+            <Tooltip title={t('delete')}>
               <IconButton
                 onClick={() => deleteShape(shape.id)}
               >
@@ -70,6 +71,7 @@ ShapesList.propTypes = {
   deleteShape: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   shapes: PropTypes.array.isRequired,
+  t: PropTypes.func.isRequired,
   updateCurrentShapeInShapes: PropTypes.func.isRequired,
 };
 

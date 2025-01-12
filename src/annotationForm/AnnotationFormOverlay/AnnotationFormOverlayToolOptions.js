@@ -19,13 +19,13 @@ const StyledDivButtonImage = styled('div')(({ theme }) => ({
   marginTop: '5px',
 }));
 
-// TODO Missing trad
 /** All the tools options for the overlay options */
 function AnnotationFormOverlayToolOptions({
   currentShape,
-  setToolState,
-  toolState,
   displayMode,
+  setToolState,
+  t,
+  toolState,
 }) {
   // set toolOptionsValue
   const [toolOptions, setToolOptions] = useState({
@@ -152,6 +152,7 @@ function AnnotationFormOverlayToolOptions({
               openChooseColor={openChooseColor}
               openChooseLineWeight={openChooseLineWeight}
               updateColor={updateColor}
+              t={t}
               toolOptions={toolOptions}
               toolState={toolState}
             />
@@ -159,11 +160,11 @@ function AnnotationFormOverlayToolOptions({
         )
       }
       {
-          toolState.activeTool === 'text' && (
+          toolState.activeTool === OVERLAY_TOOL.TEXT && (
           <Grid container direction="column" spacing={1}>
             <Grid item>
               <Typography variant="overline">
-                Text
+                {t('text')}
               </Typography>
             </Grid>
             {currentShape ? (
@@ -171,7 +172,7 @@ function AnnotationFormOverlayToolOptions({
                 <Grid item>
                   <TextField
                     value={toolState.text}
-                    placeholder="Change me"
+                    placeholder={t('text')}
                     fullWidth
                     onChange={handleTextChange}
                   />
@@ -185,6 +186,7 @@ function AnnotationFormOverlayToolOptions({
                     handleLineWeightSelect={handleLineWeightSelect}
                     openChooseColor={openChooseColor}
                     openChooseLineWeight={openChooseLineWeight}
+                    t={t}
                     toolOptions={toolOptions}
                     toolState={toolState}
                     updateColor={updateColor}
@@ -193,7 +195,7 @@ function AnnotationFormOverlayToolOptions({
               </>
             ) : (
               <Grid item>
-                <Typography> Click on canvas to write text</Typography>
+                <Typography>{t('click_on_canvas_to_write')}</Typography>
               </Grid>
             )}
           </Grid>
@@ -203,10 +205,15 @@ function AnnotationFormOverlayToolOptions({
           toolState.activeTool === OVERLAY_TOOL.IMAGE && (
           <>
             <Typography variant="overline">
-              Add image from URL
+              {t('add_image_from_url')}
             </Typography>
             <Grid container>
-              <ImageFormField xs={8} value={toolState.image} onChange={handleImgChange} />
+              <ImageFormField
+                xs={8}
+                value={toolState.image}
+                onChange={handleImgChange}
+                t={t}
+              />
             </Grid>
             <StyledDivButtonImage>
               <Button variant="contained" onClick={addImage}>
@@ -225,6 +232,7 @@ AnnotationFormOverlayToolOptions.propTypes = {
   currentShape: PropTypes.object.isRequired,
   displayMode: PropTypes.string.isRequired,
   setToolState: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
   toolState: PropTypes.shape({
     activeTool: PropTypes.string.isRequired,
     closedMode: PropTypes.bool.isRequired,
