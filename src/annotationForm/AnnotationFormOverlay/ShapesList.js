@@ -50,7 +50,7 @@ function ShapesList({
                 onClick={() => updateCurrentShapeInShapes(shape)}
                 sx={{ color: 'black', cursor: 'pointer' }}
               >
-                {shape.type}
+                {t(shape.type)}
               </Typography>
             </div>
             <Tooltip title={t('delete')}>

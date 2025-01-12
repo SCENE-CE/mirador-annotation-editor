@@ -68,6 +68,16 @@ export default {
     border_color: "Border color",
     line_weight: "Line weight",
     fill_color: "Fill color",
+    arrow: "Arrow",
+    circle: "Circle",
+    ellipse: "Ellipse",
+    freehand: "Freehand",
+    image: "Image",
+    polygon: "Polygon",
+    rectangle: "Rectangle",
+    shapes: "Shapes",
+    text: "Text",
+
   },
   fr: {
     cancel: 'Annuler',
