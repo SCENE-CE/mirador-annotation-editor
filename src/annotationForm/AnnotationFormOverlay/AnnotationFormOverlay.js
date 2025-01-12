@@ -6,7 +6,6 @@ import TitleIcon from '@mui/icons-material/Title';
 import ImageIcon from '@mui/icons-material/Image';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect } from 'react';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import CategoryIcon from '@mui/icons-material/Category';
