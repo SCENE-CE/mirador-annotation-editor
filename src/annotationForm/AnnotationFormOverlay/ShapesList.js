@@ -21,6 +21,8 @@ const ListItemContent = styled(ListItem)(({ theme }) => ({
   justifyContent: 'space-between',
 }));
 
+// TODO TRAD missing
+
 /**
  *
  * @param shapes
@@ -34,6 +36,7 @@ function ShapesList({
   currentShapeId,
   deleteShape,
   shapes,
+  t,
   updateCurrentShapeInShapes,
 }) {
   return (
@@ -50,7 +53,7 @@ function ShapesList({
                 {shape.type}
               </Typography>
             </div>
-            <Tooltip title="delete shape">
+            <Tooltip title={t('delete')}>
               <IconButton
                 onClick={() => deleteShape(shape.id)}
               >

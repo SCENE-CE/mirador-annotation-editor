@@ -16,7 +16,11 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 
 // TODO Missing TRAD
 /** imageUrl input field for the annotation form */
-function ImageFormField({ imageUrl, onChange }) {
+function ImageFormField({
+  imageUrl,
+  onChange,
+  t,
+}) {
   const inputRef = useRef(null);
   const [imgIsValid, setImgIsValid] = useState(false);
 
