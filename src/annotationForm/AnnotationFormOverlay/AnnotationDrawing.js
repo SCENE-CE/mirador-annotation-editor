@@ -29,26 +29,9 @@ export default function AnnotationDrawing(
   const height = playerReferences.getMediaTrueHeight();
 
   const [isDrawing, setIsDrawing] = useState(false);
-  const [surfacedata, setSurfaceData] = useState({
-    height: height / scale,
-    scaleX: 1,
-    scaleY: 1,
-    width: width / scale,
-    x: 1,
-    y: 1,
-  });
 
   useEffect(() => {
     updateScale(playerReferences.getZoom());
-
-    const newSurfaceData = { ...surfacedata };
-    newSurfaceData.width = playerReferences.getMediaTrueWidth();
-    newSurfaceData.height = playerReferences.getMediaTrueHeight();
-    // compare newSurfaceData and surfacedata, if different, update surfacedata
-    // eslint-disable-next-line max-len
-    if (newSurfaceData.width !== surfacedata.width || newSurfaceData.height !== surfacedata.height) {
-      setSurfaceData(newSurfaceData);
-    }
   }, [{ width }]);
 
   useEffect(() => {
