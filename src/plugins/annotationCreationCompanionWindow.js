@@ -5,7 +5,7 @@ import { getPresentAnnotationsOnSelectedCanvases } from 'mirador/dist/es/src/sta
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import { withTranslation } from 'react-i18next';
 import annotationForm from '../annotationForm/AnnotationForm';
-import WindowPlayer from '../playerReferences';
+import { WindowPlayer } from '../playerReferences';
 import translations from '../locales/locales';
 
 /** */

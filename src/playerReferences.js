@@ -4,7 +4,7 @@ import { MEDIA_TYPES } from './annotationForm/AnnotationFormUtils';
 
 // TODO All the code related to the video player must be moved in MAEV plugin
 /** */
-export default class WindowPlayer {
+export class WindowPlayer {
   actions;
 
   mediaType;
