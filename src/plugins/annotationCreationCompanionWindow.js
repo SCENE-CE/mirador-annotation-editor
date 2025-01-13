@@ -5,7 +5,7 @@ import { getPresentAnnotationsOnSelectedCanvases } from 'mirador/dist/es/src/sta
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import { withTranslation } from 'react-i18next';
 import annotationForm from '../annotationForm/AnnotationForm';
-import { playerReferencesFactory } from '../playerReferences';
+import WindowPlayer from '../playerReferences';
 import translations from '../locales/locales';
 
 /** */
@@ -23,7 +23,7 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
   const currentTime = null;
   const cw = getCompanionWindow(state, { companionWindowId, windowId });
   const { annotationid } = cw;
-  const playerReferences = playerReferencesFactory.init(state, windowId, OSDReferences, actions);
+  const playerReferences = new WindowPlayer(state, windowId, OSDReferences, actions);
 
   // This could be removed but it's serve the useEffect in AnnotationForm for now.
   const canvases = getVisibleCanvases(state, { windowId });
