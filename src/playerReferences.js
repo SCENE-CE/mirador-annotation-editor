@@ -19,20 +19,20 @@ export default class WindowPlayer {
    * Constructor
    * @param state
    * @param windowId
-   * @param playerRef
+   * @param media
    * @param miradorActions
    */
-  constructor(state, windowId, playerRef, miradorActions) {
+  constructor(state, windowId, media, miradorActions) {
     /** ***********************************************************
      * Init stuff
      *********************************************************** */
     this.actions = miradorActions;
-    this.media = playerRef.get(windowId);
+    this.media = media;
     this.checkMediaType(state, windowId);
     this.canvases = getVisibleCanvases(state, { windowId });
     this.playerReferencesWindowId = windowId;
 
-    if (this.media) {
+    if (this.isInitializedCorrectly()) {
       switch (this.mediaType) {
         case MEDIA_TYPES.IMAGE:
           this.overlay = {
@@ -53,6 +53,17 @@ export default class WindowPlayer {
           break;
       }
     }
+  }
+
+  /**
+   * Get player initialisation status
+   * @returns {*|boolean}
+   */
+  isInitializedCorrectly() {
+    // TODO this part must be clarified
+    // Its not exactly initialisation but if the player is available for the media type
+    return this.media && (this.media.current || this.media.video)
+      && (this.mediaType !== MEDIA_TYPES.UNKNOWN && this.mediaType !== MEDIA_TYPES.AUDIO);
   }
 
   /** ***********************************************************
@@ -174,7 +185,7 @@ export default class WindowPlayer {
     if (this.mediaType === MEDIA_TYPES.IMAGE) {
       const viewer = this.media.current;
       if (viewer) {
-        const percentageHeight = this.canvases[0].__jsonld.height * viewer.viewport.getZoom();
+        const percentageHeight = this.getCanvasHeight() * viewer.viewport.getZoom();
         const containerWidth = viewer.container.clientWidth;
         const actualHeightInPixels = Math.round(containerWidth * percentageHeight);
         return actualHeightInPixels;
@@ -195,7 +206,7 @@ export default class WindowPlayer {
     if (this.mediaType === MEDIA_TYPES.IMAGE) {
       const viewer = this.media.current;
       if (viewer && viewer.world.getItemCount() > 0) {
-        const percentageWidth = this.canvases[0].__jsonld.width * viewer.viewport.getZoom();
+        const percentageWidth = this.getCanvasWidth() * viewer.viewport.getZoom();
         const containerWidth = viewer.container.clientWidth;
         const actualWidthInPixels = Math.round(containerWidth * percentageWidth);
         return actualWidthInPixels;
@@ -218,7 +229,8 @@ export default class WindowPlayer {
   getMediaTrueHeight() {
     // TODO This can cause problem in multiple window context
     if (this.mediaType === MEDIA_TYPES.IMAGE) {
-      return this.canvases[0].__jsonld.height;
+      //return this.canvases[0].__jsonld.height;
+      return this.getCanvasHeight();
     }
     if (this.mediaType === MEDIA_TYPES.VIDEO) {
       // TODO not perfect becasue we use the canvas size and not the video size
@@ -234,7 +246,8 @@ export default class WindowPlayer {
    */
   getMediaTrueWidth() {
     if (this.mediaType === MEDIA_TYPES.IMAGE) {
-      return this.canvases[0].__jsonld.width;
+      //return this.canvases[0].__jsonld.width;
+      return this.getCanvasWidth();
     }
     if (this.mediaType === MEDIA_TYPES.VIDEO) {
       // TODO not perfect becasue we use the canvas size and not the video size
@@ -361,14 +374,4 @@ export default class WindowPlayer {
     console.error('Cannot seek time for image');
   }
 
-  /**
-   * Get player initialisation status
-   * @returns {*|boolean}
-   */
-  isInitialized() {
-    // TODO this part must be clarified
-    // Its not exactly initialisation but if the player is available for the media type
-    return this.media && (this.media.current || this.media.video)
-    && (this.mediaType !== MEDIA_TYPES.UNKNOWN && this.mediaType !== MEDIA_TYPES.AUDIO);
-  }
 }

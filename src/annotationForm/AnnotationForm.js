@@ -28,6 +28,32 @@ function AnnotationForm(
     windowId,
   },
 ) {
+  if (!playerReferences || !playerReferences.isInitializedCorrectly()) {
+    return (
+      <CompanionWindow title={t('media_not_supported')} windowId={windowId} id={id}>
+        <Grid container padding={1} spacing={1}>
+          <Grid item>
+            <Typography>{t('media_not_supported')}</Typography>
+          </Grid>
+          <Grid item>
+            <Typography>
+              {t('detected_media_type', { mediaType: playerReferences.getMediaType() })}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography>
+              {t('video_annotation_instruction')}
+              {' '}
+              <Link href="https://github.com/SCENE-CE/mirador-annotation-editor-video" target="_blank" rel="noopener noreferrer">
+                {t('maev_github_link')}
+              </Link>
+            </Typography>
+          </Grid>
+        </Grid>
+      </CompanionWindow>
+    );
+  }
+
   console.log('WindowId: ', windowId);
   console.log('PlayersReferences WindowId / windowIf: ', playerReferences.getWindowId(), windowId);
 
@@ -119,7 +145,7 @@ function AnnotationForm(
         annotationState,
         canvas,
         windowId,
-        playerReferences
+        playerReferences,
       );
       const storageAdapter = config.annotation.adapter(canvas.id);
       return saveAnnotationInStorageAdapter(
@@ -135,31 +161,7 @@ function AnnotationForm(
     });
   };
 
-  if (!playerReferences.isInitialized()) {
-    return (
-      <CompanionWindow title={t('media_not_supported')} windowId={windowId} id={id}>
-        <Grid container padding={1} spacing={1}>
-          <Grid item>
-            <Typography>{t('media_not_supported')}</Typography>
-          </Grid>
-          <Grid item>
-            <Typography>
-              {t('detected_media_type', { mediaType: playerReferences.getMediaType() })}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography>
-              {t('video_annotation_instruction')}
-              {' '}
-              <Link href="https://github.com/SCENE-CE/mirador-annotation-editor-video" target="_blank" rel="noopener noreferrer">
-                {t('maev_github_link')}
-              </Link>
-            </Typography>
-          </Grid>
-        </Grid>
-      </CompanionWindow>
-    );
-  }
+
 
   return (
     <CompanionWindow
