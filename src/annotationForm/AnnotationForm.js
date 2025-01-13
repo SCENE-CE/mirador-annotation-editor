@@ -119,6 +119,7 @@ function AnnotationForm(
         annotationState,
         canvas,
         windowId,
+        playerReferences
       );
       const storageAdapter = config.annotation.adapter(canvas.id);
       return saveAnnotationInStorageAdapter(

@@ -6,13 +6,13 @@ import AnnotationFormFooter from './AnnotationFormFooter';
 import { TEMPLATE } from './AnnotationFormUtils';
 import TargetFormSection from './TargetFormSection';
 import { resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import { playerReferences } from '../playerReferences';
 
 /** Tagging Template* */
 export default function TaggingTemplate(
   {
     annotation,
     closeFormCompanionWindow,
+playerReferences,
     saveAnnotation,
     t,
     windowId,
@@ -90,6 +90,7 @@ export default function TaggingTemplate(
       <Grid item>
         <TargetFormSection
           onChangeTarget={updateTargetState}
+        playerReferences={playerReferences}
           spatialTarget
           t={t}
           target={annotationState.maeData.target}
@@ -127,6 +128,7 @@ TaggingTemplate.propTypes = {
   }).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,
+  playerReferences: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   saveAnnotation: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,

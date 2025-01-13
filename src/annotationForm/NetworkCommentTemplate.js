@@ -8,13 +8,13 @@ import ManifestNetworkFormSection from './ManifestNetworkFormSection';
 import { TEMPLATE } from './AnnotationFormUtils';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import { playerReferences } from '../playerReferences';
 
 /** Form part for edit annotation content and body */
 function NetworkCommentTemplate(
   {
     annotation,
     closeFormCompanionWindow,
+playerReferences,
     saveAnnotation,
     t,
     windowId,
@@ -104,6 +104,7 @@ function NetworkCommentTemplate(
       </Grid>
       <TargetFormSection
         onChangeTarget={updateTargetState}
+        playerReferences={playerReferences}
         spatialTarget
         t={t}
         target={annotationState.maeData.target}
@@ -126,6 +127,8 @@ NetworkCommentTemplate.propTypes = {
   annotation: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  playerReferences: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,

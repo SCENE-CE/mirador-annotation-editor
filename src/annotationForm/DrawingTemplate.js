@@ -205,6 +205,7 @@ playerReferences,
           displayMode={KONVA_MODE.DRAW}
           drawingState={drawingState}
           isMouseOverSave={isMouseOverSave}
+          playerReferences={playerReferences}
           scale={scale}
           setColorToolFromCurrentShape={setColorToolFromCurrentShape}
           setDrawingState={setDrawingState}
@@ -238,6 +239,7 @@ playerReferences,
       </Grid>
       <TargetFormSection
         onChangeTarget={updateTargetState}
+        playerReferences={playerReferences}
         t={t}
         target={annotationState.maeData.target}
         timeTarget

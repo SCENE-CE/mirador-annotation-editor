@@ -92,6 +92,7 @@ function TextCommentTemplate(
       <Grid item>
         <TargetFormSection
           onChangeTarget={updateTargetState}
+          playerReferences={playerReferences}
           spatialTarget
           t={t}
           target={annotationState.maeData.target}

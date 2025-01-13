@@ -2,7 +2,6 @@ import {
   getKonvaAsDataURL,
   getSvg,
 } from './annotationForm/AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import { playerReferences } from './playerReferences';
 import { TEMPLATE } from './annotationForm/AnnotationFormUtils';
 
 /**
@@ -27,12 +26,15 @@ function isAnnotationExportableToImage(maeData) {
  * @param annotationState
  * @param canvas
  * @param windowId
+ * @param playerReferences
  * @returns {Promise<void>}
  */
 export const convertAnnotationStateToBeSaved = async (
   annotationState,
   canvas,
   windowId,
+  // eslint-disable-next-line no-shadow
+  playerReferences
 ) => {
   const annotationStateForSaving = annotationState;
 

@@ -6,10 +6,10 @@ import AnnotationDrawing from './AnnotationFormOverlay/AnnotationDrawing';
 import { TARGET_VIEW, targetSVGToolState } from './AnnotationFormUtils';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import { KONVA_MODE } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import { playerReferences } from '../playerReferences';
 
 /** Handle target spacial for annot templates * */
 export function TargetSpatialInput({
+  playerReferences,
   setTargetDrawingState,
   t,
   targetDrawingState,
@@ -96,6 +96,7 @@ export function TargetSpatialInput({
               displayMode={KONVA_MODE.TARGET}
               drawingState={drawingState}
               isMouseOverSave={false} // TODO remove
+              playerReferences={playerReferences}
               scale={scale}
               setColorToolFromCurrentShape={() => {}}
               setDrawingState={setDrawingState}
@@ -125,6 +126,8 @@ export function TargetSpatialInput({
 }
 
 TargetSpatialInput.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  playerReferences: PropTypes.object.isRequired,
   setTargetDrawingState: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
