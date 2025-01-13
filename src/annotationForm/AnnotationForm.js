@@ -57,14 +57,15 @@ function AnnotationForm(
     if (annotation.id) {
       if (annotation.maeData && annotation.maeData.templateType) {
         // Annotation has been created with MAE
-        setTemplateType(getTemplateType(t,annotation.maeData.templateType));
+        setTemplateType(getTemplateType(t, annotation.maeData.templateType));
       } else {
         // Annotation has been created with other IIIF annotation editor
-        setTemplateType(getTemplateType(t,TEMPLATE.IIIF_TYPE));
+        setTemplateType(getTemplateType(t, TEMPLATE.IIIF_TYPE));
       }
     }
   }
 
+  // TODO Can be an issue in multi canvas view
   useEffect(() => {
     setTemplateType(null);
     setMediaType(playerReferences.getMediaType());
