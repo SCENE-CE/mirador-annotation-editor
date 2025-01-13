@@ -28,7 +28,7 @@ export default class WindowPlayer {
      *********************************************************** */
     this.actions = miradorActions;
     this.media = media;
-    this.checkMediaType(state, windowId);
+    this.mediaType = checkMediaType(state, windowId);
     this.canvases = getVisibleCanvases(state, { windowId });
     this.playerReferencesWindowId = windowId;
 
@@ -60,8 +60,6 @@ export default class WindowPlayer {
    * @returns {*|boolean}
    */
   isInitializedCorrectly() {
-    // TODO this part must be clarified
-    // Its not exactly initialisation but if the player is available for the media type
     return this.media && (this.media.current || this.media.video)
       && (this.mediaType !== MEDIA_TYPES.UNKNOWN && this.mediaType !== MEDIA_TYPES.AUDIO);
   }
@@ -69,27 +67,6 @@ export default class WindowPlayer {
   /** ***********************************************************
    * Global stuff
    *********************************************************** */
-
-  /** ***********************
-   * Get media type of visible canvas
-   * @param state
-   * @param windowId
-   */
-  checkMediaType(state, windowId) {
-    const audioResources = getVisibleCanvasAudioResources(state, { windowId }) || [];
-    const videoResources = getVisibleCanvasVideoResources(state, { windowId }) || [];
-
-    if (videoResources.length > 0) {
-      this.mediaType = MEDIA_TYPES.VIDEO;
-      return;
-    }
-    if (audioResources.length > 0) {
-      this.mediaType = MEDIA_TYPES.AUDIO;
-      return;
-    }
-
-    this.mediaType = MEDIA_TYPES.IMAGE;
-  }
 
   /**
    * Return MEDIA_TYPE (so fat Image, Video, Audio
@@ -229,7 +206,7 @@ export default class WindowPlayer {
   getMediaTrueHeight() {
     // TODO This can cause problem in multiple window context
     if (this.mediaType === MEDIA_TYPES.IMAGE) {
-      //return this.canvases[0].__jsonld.height;
+      // return this.canvases[0].__jsonld.height;
       return this.getCanvasHeight();
     }
     if (this.mediaType === MEDIA_TYPES.VIDEO) {
@@ -246,7 +223,7 @@ export default class WindowPlayer {
    */
   getMediaTrueWidth() {
     if (this.mediaType === MEDIA_TYPES.IMAGE) {
-      //return this.canvases[0].__jsonld.width;
+      // return this.canvases[0].__jsonld.width;
       return this.getCanvasWidth();
     }
     if (this.mediaType === MEDIA_TYPES.VIDEO) {
@@ -373,5 +350,23 @@ export default class WindowPlayer {
     }
     console.error('Cannot seek time for image');
   }
+}
 
+/** ***********************
+ * Get media type of visible canvas
+ * @param state
+ * @param windowId
+ */
+export function checkMediaType(state, windowId) {
+  const audioResources = getVisibleCanvasAudioResources(state, { windowId }) || [];
+  const videoResources = getVisibleCanvasVideoResources(state, { windowId }) || [];
+
+  if (videoResources.length > 0) {
+    return MEDIA_TYPES.VIDEO;
+  }
+  if (audioResources.length > 0) {
+    return MEDIA_TYPES.AUDIO;
+  }
+
+  return MEDIA_TYPES.IMAGE;
 }
