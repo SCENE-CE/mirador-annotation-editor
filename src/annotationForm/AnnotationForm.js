@@ -189,6 +189,7 @@ function AnnotationForm(
                 canvases={canvases}
                 closeFormCompanionWindow={closeFormCompanionWindow}
                 debugMode={debugMode}
+                playerReferences={playerReferences}
                 saveAnnotation={saveAnnotation}
                 t={t}
                 templateType={templateType}

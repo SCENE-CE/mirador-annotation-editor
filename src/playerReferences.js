@@ -63,6 +63,10 @@ export const playerReferencesFactory = (function () {
     return null;
   }
 
+  /**
+   * Get windowId
+   * @returns {*}
+   */
   function getWindowId() {
     return windowId;
   }

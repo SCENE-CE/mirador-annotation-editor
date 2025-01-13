@@ -11,7 +11,6 @@ import { KONVA_MODE, resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawi
 import AnnotationDrawing from './AnnotationFormOverlay/AnnotationDrawing';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { playerReferences } from '../playerReferences';
 
 /**
  * Image Comment template
@@ -20,6 +19,7 @@ export default function ImageCommentTemplate(
   {
     annotation,
     closeFormCompanionWindow,
+    playerReferences,
     saveAnnotation,
     windowId,
     t,
@@ -266,8 +266,10 @@ ImageCommentTemplate.propTypes = {
   ]).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  playerReferences: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
-  t:PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 
 };

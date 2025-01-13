@@ -14,7 +14,6 @@ import IIIFTemplate from './IIIFTemplate';
 import TaggingTemplate from './TaggingTemplate';
 
 import './debug.css';
-import { playerReferences } from '../playerReferences';
 import { AdvancedAnnotationEditor } from './AdvancedAnnotationEditor';
 
 /**
@@ -26,6 +25,7 @@ export default function AnnotationFormBody(
     canvases,
     closeFormCompanionWindow,
     debugMode,
+    playerReferences,
     saveAnnotation,
     t,
     templateType,
@@ -36,72 +36,78 @@ export default function AnnotationFormBody(
 
   return (
     <Grid container direction="column">
-      { !showAdvanced && (
+      {!showAdvanced && (
         <TemplateContainer item>
           {
-          templateType.id === TEMPLATE.TEXT_TYPE && (
-            <TextCommentTemplate
-              annotation={annotation}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-              saveAnnotation={saveAnnotation}
-              t={t}
-              windowId={windowId}
-            />
-          )
-        }
+            templateType.id === TEMPLATE.TEXT_TYPE && (
+              <TextCommentTemplate
+                annotation={annotation}
+                closeFormCompanionWindow={closeFormCompanionWindow}
+                playerReferences={playerReferences}
+                saveAnnotation={saveAnnotation}
+                t={t}
+                windowId={windowId}
+              />
+            )
+          }
           {
-          templateType.id === TEMPLATE.IMAGE_TYPE && (
-          <ImageCommentTemplate
-            annotation={annotation}
-            closeFormCompanionWindow={closeFormCompanionWindow}
-            saveAnnotation={saveAnnotation}
-            windowId={windowId}
-            t={t}
-          />
-          )
-        }
+            templateType.id === TEMPLATE.IMAGE_TYPE && (
+              <ImageCommentTemplate
+                annotation={annotation}
+                closeFormCompanionWindow={closeFormCompanionWindow}
+                playerReferences={playerReferences}
+                saveAnnotation={saveAnnotation}
+                windowId={windowId}
+                t={t}
+              />
+            )
+          }
           {
-          templateType.id === TEMPLATE.KONVA_TYPE && (
-            <DrawingTemplate
-              annotation={annotation}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-              saveAnnotation={saveAnnotation}
-              t={t}
-              windowId={windowId}
-            />
-          )
-        }
+            templateType.id === TEMPLATE.KONVA_TYPE && (
+              <DrawingTemplate
+                annotation={annotation}
+                closeFormCompanionWindow={closeFormCompanionWindow}
+                playerReferences={playerReferences}
+                saveAnnotation={saveAnnotation}
+                t={t}
+                windowId={windowId}
+              />
+            )
+          }
           {
-          templateType.id === TEMPLATE.MANIFEST_TYPE && (
-            <NetworkCommentTemplate
-              annotation={annotation}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-              saveAnnotation={saveAnnotation}
-              t={t}
-              windowId={windowId}
-            />
-          )
-        }
+            templateType.id === TEMPLATE.MANIFEST_TYPE && (
+              <NetworkCommentTemplate
+                annotation={annotation}
+                closeFormCompanionWindow={closeFormCompanionWindow}
+                playerReferences={playerReferences}
+                saveAnnotation={saveAnnotation}
+                t={t}
+                windowId={windowId}
+              />
+            )
+          }
           {
-          templateType.id === TEMPLATE.IIIF_TYPE && (
-            <IIIFTemplate
-              annotation={annotation}
-              closeFormCompanionWindow={closeFormCompanionWindow}
-              saveAnnotation={saveAnnotation}
-              canvases={canvases}
-              t={t}
-            />
-          )
-        }
-            {templateType.id === TEMPLATE.TAGGING_TYPE && (
+            templateType.id === TEMPLATE.IIIF_TYPE && (
+              <IIIFTemplate
+                annotation={annotation}
+                canvases={canvases}
+                closeFormCompanionWindow={closeFormCompanionWindow}
+                playerReferences={playerReferences}
+                saveAnnotation={saveAnnotation}
+                t={t}
+              />
+            )
+          }
+          {templateType.id === TEMPLATE.TAGGING_TYPE && (
             <TaggingTemplate
               annotation={annotation}
               closeFormCompanionWindow={closeFormCompanionWindow}
+              playerReferences={playerReferences}
               saveAnnotation={saveAnnotation}
               t={t}
               windowId={windowId}
             />
-            )}
+          )}
         </TemplateContainer>
       )}
       <Grid item>
@@ -118,46 +124,46 @@ export default function AnnotationFormBody(
           />
         )}
       </Grid>
-      { debugMode && (
-      <>
-        <Typography>
-          {playerReferences.getMediaType()}
-        </Typography>
-        <Typography>
-          {t('scale')}
-          :
-          {playerReferences.getScale()}
-        </Typography>
-        <Typography>
-          {t('zoom')}
-          :
-          {playerReferences.getZoom()}
-        </Typography>
-        <Typography>
-          {t('image_true_size')}
-          :
-          {playerReferences.getMediaTrueWidth()}
-          {' '}
-          x
-          {playerReferences.getMediaTrueHeight()}
-        </Typography>
-        <Typography>
-          {t('container_size')}
-          :
-          {playerReferences.getContainerWidth()}
-          {' '}
-          x
-          {playerReferences.getContainerHeight()}
-        </Typography>
-        <Typography>
-          {t('image_displayed')}
-          :
-          {playerReferences.getDisplayedMediaWidth()}
-          {' '}
-          x
-          {playerReferences.getDisplayedMediaHeight()}
-        </Typography>
-      </>
+      {debugMode && (
+        <>
+          <Typography>
+            {playerReferences.getMediaType()}
+          </Typography>
+          <Typography>
+            {t('scale')}
+            :
+            {playerReferences.getScale()}
+          </Typography>
+          <Typography>
+            {t('zoom')}
+            :
+            {playerReferences.getZoom()}
+          </Typography>
+          <Typography>
+            {t('image_true_size')}
+            :
+            {playerReferences.getMediaTrueWidth()}
+            {' '}
+            x
+            {playerReferences.getMediaTrueHeight()}
+          </Typography>
+          <Typography>
+            {t('container_size')}
+            :
+            {playerReferences.getContainerWidth()}
+            {' '}
+            x
+            {playerReferences.getContainerHeight()}
+          </Typography>
+          <Typography>
+            {t('image_displayed')}
+            :
+            {playerReferences.getDisplayedMediaWidth()}
+            {' '}
+            x
+            {playerReferences.getDisplayedMediaHeight()}
+          </Typography>
+        </>
       )}
     </Grid>
   );
@@ -188,6 +194,8 @@ AnnotationFormBody.propTypes = {
   canvases: PropTypes.object.isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
   debugMode: PropTypes.bool.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  playerReferences: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   saveAnnotation: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,

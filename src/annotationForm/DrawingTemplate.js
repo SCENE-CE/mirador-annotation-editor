@@ -17,7 +17,6 @@ import {
   KONVA_MODE,
   resizeKonvaStage,
 } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import { playerReferences } from '../playerReferences';
 
 /**
  * Template for Konva annotations (drawing)
@@ -26,6 +25,7 @@ export default function DrawingTemplate(
   {
     annotation,
     closeFormCompanionWindow,
+playerReferences,
     saveAnnotation,
     t,
     windowId,
@@ -274,6 +274,8 @@ DrawingTemplate.propTypes = {
   ]).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  playerReferences: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   saveAnnotation: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,

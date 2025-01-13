@@ -7,13 +7,13 @@ import TargetFormSection from './TargetFormSection';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { TEMPLATE } from './AnnotationFormUtils';
 import { resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import { playerReferences } from '../playerReferences';
 
 /** Form part for edit annotation content and body */
 function TextCommentTemplate(
   {
     annotation,
     closeFormCompanionWindow,
+    playerReferences,
     saveAnnotation,
     t,
     windowId,
@@ -114,6 +114,8 @@ TextCommentTemplate.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   annotation: PropTypes.object.isRequired,
   closeFormCompanionWindow: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  playerReferences: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
