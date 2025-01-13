@@ -3,13 +3,14 @@ import { getVisibleCanvasAudioResources, getVisibleCanvasVideoResources } from '
 import { MEDIA_TYPES } from './annotationForm/AnnotationFormUtils';
 
 // TODO All the code related to the video player must be moved in MAEV plugin
-export const playerReferences = (function () {
+export const playerReferencesFactory = (function () {
   let canvases;
   let media;
   let mediaType;
   let overlay;
   let actions;
   let audio;
+  let windowId;
 
   /** ***********************************************************
    * Global stuff
@@ -60,6 +61,10 @@ export const playerReferences = (function () {
     }
     console.error('Something is wrong with audio ressource');
     return null;
+  }
+
+  function getWindowId() {
+    return windowId;
   }
 
   /** ***********************************************************
@@ -313,6 +318,7 @@ export const playerReferences = (function () {
     media = playerRef.get(windowId);
     mediaType = this.checkMediaType(state, windowId);
     canvases = getVisibleCanvases(state, { windowId });
+    windowId = windowId;
 
     if (media) {
       switch (mediaType) {
@@ -366,6 +372,7 @@ export const playerReferences = (function () {
     getMediaTrueWidth,
     getMediaType,
     getScale,
+    getWindowId,
     getZoom,
     init,
     isInitialized,
@@ -373,4 +380,4 @@ export const playerReferences = (function () {
     setSeekTo,
 
   };
-}());
+});

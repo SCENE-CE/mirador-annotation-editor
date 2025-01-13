@@ -9,7 +9,6 @@ import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
 import { getTemplateType, saveAnnotationInStorageAdapter, TEMPLATE } from './AnnotationFormUtils';
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormBody from './AnnotationFormBody';
-import { playerReferences } from '../playerReferences';
 import { convertAnnotationStateToBeSaved } from '../IIIFUtils';
 import '../118n';
 
@@ -23,11 +22,15 @@ function AnnotationForm(
     closeCompanionWindow,
     config,
     id,
+    playerReferences,
     receiveAnnotation,
     t,
     windowId,
   },
 ) {
+  console.log('WindowId: ', windowId);
+  console.log('PlayersReferences WindowId / windowIf: ', playerReferences.getWindowId(), windowId);
+
   const [templateType, setTemplateType] = useState(null);
   // eslint-disable-next-line no-underscore-dangle
   const [mediaType, setMediaType] = useState(playerReferences.getMediaType());
@@ -231,6 +234,8 @@ AnnotationForm.propTypes = {
     translations: PropTypes.objectOf(PropTypes.object),
   }).isRequired,
   id: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  playerReferences: PropTypes.object.isRequired,
   receiveAnnotation: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
