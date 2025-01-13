@@ -6,7 +6,7 @@ import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import { withTranslation } from 'react-i18next';
 import annotationForm from '../annotationForm/AnnotationForm';
 import { playerReferences } from '../playerReferences';
-import translations from '../locales';
+import translations from '../locales/locales';
 
 /** */
 const mapDispatchToProps = (dispatch, { id, windowId }) => ({
