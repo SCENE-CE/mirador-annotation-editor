@@ -4,7 +4,7 @@ import externalStorageAnnotationPlugin from './plugins/externalStorageAnnotation
 import canvasAnnotationsPlugin from './plugins/canvasAnnotationsPlugin';
 import annotationCreationCompanionWindow from './plugins/annotationCreationCompanionWindow';
 import windowSideBarButtonsPlugin from './plugins/windowSideBarButtonsPlugin';
-import translations from './locales';
+import translations from './locales/locales';
 
 export {
   miradorAnnotationPlugin, externalStorageAnnotationPlugin,
