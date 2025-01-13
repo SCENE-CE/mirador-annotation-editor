@@ -28,7 +28,7 @@ export default class WindowPlayer {
      *********************************************************** */
     this.actions = miradorActions;
     this.media = playerRef.get(windowId);
-    this.mediaType = this.checkMediaType(state, windowId);
+    this.checkMediaType(state, windowId);
     this.canvases = getVisibleCanvases(state, { windowId });
     this.playerReferencesWindowId = windowId;
 
