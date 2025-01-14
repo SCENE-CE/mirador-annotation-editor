@@ -11,7 +11,7 @@ export class WindowPlayer {
 
   canvases;
 
-  playerReferencesWindowId;
+  windowId;
 
   overlay;
 
@@ -31,7 +31,7 @@ export class WindowPlayer {
     this.mediaType = checkMediaType(state, windowId);
     // Get Visible Canvases return an array but inside the array there is only one element
     this.canvases = getVisibleCanvases(state, { windowId });
-    this.playerReferencesWindowId = windowId;
+    this.windowId = windowId;
 
     if (this.isInitializedCorrectly()) {
       switch (this.mediaType) {
@@ -102,7 +102,7 @@ export class WindowPlayer {
    * @returns {*}
    */
   getWindowId() {
-    return this.playerReferencesWindowId;
+    return this.windowId;
   }
 
   /** ***********************************************************
@@ -307,10 +307,12 @@ export class WindowPlayer {
    */
   getMediaDuration() {
     if (this.mediaType === MEDIA_TYPES.VIDEO) {
+      // eslint-disable-next-line no-underscore-dangle
       return this.media.props.canvas.__jsonld.duration;
     }
     if (this.mediaType === MEDIA_TYPES.AUDIO) {
       if (this.audio) {
+        // eslint-disable-next-line no-underscore-dangle
         return this.audio[0].__jsonld.duration;
       }
       console.error('Something is wrong about audio');
@@ -324,9 +326,9 @@ export class WindowPlayer {
    * @param args
    * @returns {*}
    */
-  setCurrentTime(windowId, ...args) {
+  setCurrentTime(...args) {
     if (this.mediaType === MEDIA_TYPES.VIDEO) {
-      return this.actions.setWindowCurrentTime(windowId, ...args);
+      return this.actions.setWindowCurrentTime(this.windowId, ...args);
     }
     return null;
   }
@@ -338,7 +340,6 @@ export class WindowPlayer {
    * @returns {*}
    */
   setSeekTo(...args) {
-    // TODO use windowId from this
     if (this.mediaType === MEDIA_TYPES.VIDEO) {
       return this.actions.setWindowSeekTo(this.windowId, ...args);
     }

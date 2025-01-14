@@ -91,8 +91,8 @@ playerReferences,
     }
     onChange({
       tstart: valueTstart,
-      ...playerReferences.setSeekTo(windowId, valueTstart),
-      ...playerReferences.setCurrentTime(windowId, valueTstart),
+      ...playerReferences.setSeekTo(valueTstart),
+      ...playerReferences.setCurrentTime(valueTstart),
     });
   };
 
