@@ -103,8 +103,8 @@ playerReferences,
     }
     onChange({
       tend: valueTend,
-      ...playerReferences.setSeekTo(windowId, valueTend),
-      ...playerReferences.setCurrentTime(windowId, valueTend),
+      ...playerReferences.setSeekTo(valueTend),
+      ...playerReferences.setCurrentTime(valueTend),
     });
   };
 

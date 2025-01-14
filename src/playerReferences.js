@@ -159,7 +159,6 @@ export class WindowPlayer {
    * @returns {undefined|*|number}
    */
   getDisplayedMediaHeight() {
-    // TODO This can cause problem in multiple window context
     if (this.mediaType === MEDIA_TYPES.IMAGE) {
       const viewer = this.media.current;
       if (viewer) {
@@ -180,7 +179,6 @@ export class WindowPlayer {
    * @returns {undefined|*|number}
    */
   getDisplayedMediaWidth() {
-    // TODO This can cause problem in multiple window context
     if (this.mediaType === MEDIA_TYPES.IMAGE) {
       const viewer = this.media.current;
       if (viewer && viewer.world.getItemCount() > 0) {
@@ -191,9 +189,6 @@ export class WindowPlayer {
       }
     }
     if (this.mediaType === MEDIA_TYPES.VIDEO) {
-      // TODO: Implement displayed width for video
-      // From video file return Math.round(_media.video.getBoundingClientRect().width);
-      // return _media.video.getSize().width;
       return this.overlay.containerWidth;
     }
 
@@ -205,13 +200,12 @@ export class WindowPlayer {
    * @returns {undefined|*}
    */
   getMediaTrueHeight() {
-    // TODO This can cause problem in multiple window context
     if (this.mediaType === MEDIA_TYPES.IMAGE) {
+      // eslint-disable-next-line no-underscore-dangle
       return this.canvases[0].__jsonld.height;
-      //return this.getCanvasHeight();
     }
     if (this.mediaType === MEDIA_TYPES.VIDEO) {
-      // TODO not perfect becasue we use the canvas size and not the video size
+      // It's not perfect to use the canvas size and not the video size
       return this.media.player.props.iiifVideoInfos.getHeight();
     }
     console.error('Unknown media type');
@@ -224,12 +218,11 @@ export class WindowPlayer {
    */
   getMediaTrueWidth() {
     if (this.mediaType === MEDIA_TYPES.IMAGE) {
-      // TODO This can cause problem in multiple window context
+      // eslint-disable-next-line no-underscore-dangle
       return this.canvases[0].__jsonld.width;
-      //return this.getCanvasWidth();
     }
     if (this.mediaType === MEDIA_TYPES.VIDEO) {
-      // TODO not perfect becasue we use the canvas size and not the video size
+      // It's not perfect to use the canvas size and not the video size
       return this.media.player.props.iiifVideoInfos.getWidth();
     }
     return undefined;
@@ -336,7 +329,6 @@ export class WindowPlayer {
       return this.actions.setWindowCurrentTime(windowId, ...args);
     }
     return null;
-    console.error('Cannot set current time for image');
   }
 
   /**
@@ -345,10 +337,10 @@ export class WindowPlayer {
    * @param args
    * @returns {*}
    */
-  setSeekTo(windowId, ...args) {
+  setSeekTo(...args) {
     // TODO use windowId from this
     if (this.mediaType === MEDIA_TYPES.VIDEO) {
-      return this.actions.setWindowSeekTo(windowId, ...args);
+      return this.actions.setWindowSeekTo(this.windowId, ...args);
     }
     console.error('Cannot seek time for image');
   }
