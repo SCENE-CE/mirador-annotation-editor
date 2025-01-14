@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import HMSInput from './HMSInput';
 import { MEDIA_TYPES } from './AnnotationFormUtils';
-import { playerReferences } from '../playerReferences';
 
 const StyledSlider = styled(Slider)(({ theme }) => ({
   color: 'rgba(1, 0, 0, 0.38)',
@@ -31,6 +30,7 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 /** Form part with time mangement, dual slider + double input. Mange Tstart and Tend value */
 function TargetTimeInput({
   onChange,
+playerReferences,
   tend,
   tstart,
   windowId,
@@ -91,8 +91,8 @@ function TargetTimeInput({
     }
     onChange({
       tstart: valueTstart,
-      ...playerReferences.setSeekTo(windowId, valueTstart),
-      ...playerReferences.setCurrentTime(windowId, valueTstart),
+      ...playerReferences.setSeekTo(valueTstart),
+      ...playerReferences.setCurrentTime(valueTstart),
     });
   };
 
@@ -103,8 +103,8 @@ function TargetTimeInput({
     }
     onChange({
       tend: valueTend,
-      ...playerReferences.setSeekTo(windowId, valueTend),
-      ...playerReferences.setCurrentTime(windowId, valueTend),
+      ...playerReferences.setSeekTo(valueTend),
+      ...playerReferences.setCurrentTime(valueTend),
     });
   };
 
@@ -195,6 +195,8 @@ function TargetTimeInput({
 
 TargetTimeInput.propTypes = {
   onChange: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  playerReferences: PropTypes.object.isRequired,
   tend: PropTypes.number.isRequired,
   tstart: PropTypes.number.isRequired,
   windowId: PropTypes.string.isRequired,

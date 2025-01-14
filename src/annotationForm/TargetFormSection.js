@@ -4,7 +4,6 @@ import { Grid, Typography } from '@mui/material';
 import { MEDIA_TYPES, TEMPLATE } from './AnnotationFormUtils';
 import TargetTimeInput from './TargetTimeInput';
 import { TargetSpatialInput } from './TargetSpatialInput';
-import { playerReferences } from '../playerReferences';
 
 /**
  * Section of Time and Space Target
@@ -20,6 +19,7 @@ export default function TargetFormSection(
     onChangeTarget,
     spatialTarget,
     t,
+    playerReferences,
     target,
     timeTarget,
     windowId,
@@ -83,6 +83,7 @@ export default function TargetFormSection(
         (spatialTarget && playerReferences.getMediaType() !== MEDIA_TYPES.AUDIO) && (
           <Grid item container direction="column">
             <TargetSpatialInput
+              playerReferences={playerReferences}
               setTargetDrawingState={onChangeTargetInput}
               targetDrawingState={target.drawingState}
               windowId={windowId}
@@ -95,6 +96,7 @@ export default function TargetFormSection(
         (timeTarget && playerReferences.getMediaType() !== MEDIA_TYPES.IMAGE) && (
           <Grid item container direction="column">
             <TargetTimeInput
+              playerReferences={playerReferences}
               tstart={target.tstart}
               tend={target.tend}
               onChange={onChangeTargetInput}
@@ -109,8 +111,9 @@ export default function TargetFormSection(
 }
 
 TargetFormSection.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
   onChangeTarget: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  playerReferences: PropTypes.object.isRequired,
   spatialTarget: PropTypes.bool.isRequired,
   t: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types

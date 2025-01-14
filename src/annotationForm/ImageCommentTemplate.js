@@ -11,7 +11,6 @@ import { KONVA_MODE, resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawi
 import AnnotationDrawing from './AnnotationFormOverlay/AnnotationDrawing';
 import AnnotationFormOverlay from './AnnotationFormOverlay/AnnotationFormOverlay';
 import AnnotationFormFooter from './AnnotationFormFooter';
-import { playerReferences } from '../playerReferences';
 
 /**
  * Image Comment template
@@ -20,6 +19,7 @@ export default function ImageCommentTemplate(
   {
     annotation,
     closeFormCompanionWindow,
+    playerReferences,
     saveAnnotation,
     windowId,
     t,
@@ -189,20 +189,21 @@ export default function ImageCommentTemplate(
       </Grid>
       <Grid item>
         <AnnotationDrawing
-          scale={scale}
           annotation={annotation}
           closed={toolState.closedMode === 'closed'}
-          windowId={windowId}
-          updateScale={updateScale}
-          setColorToolFromCurrentShape={setColorToolFromCurrentShape}
+          displayMode={KONVA_MODE.IMAGE}
           drawingState={drawingState}
           isMouseOverSave={isMouseOverSave}
+          playerReferences={playerReferences}
+          scale={scale}
+          setColorToolFromCurrentShape={setColorToolFromCurrentShape}
           setDrawingState={setDrawingState}
           showFragmentSelector={false}
           tabView={viewTool}
-          updateCurrentShapeInShapes={updateCurrentShapeInShapes}
-          displayMode={KONVA_MODE.IMAGE}
           toolState={toolState}
+          updateCurrentShapeInShapes={updateCurrentShapeInShapes}
+          updateScale={updateScale}
+          windowId={windowId}
         />
       </Grid>
       <Grid item>
@@ -228,6 +229,7 @@ export default function ImageCommentTemplate(
       </Grid>
       <TargetFormSection
         onChangeTarget={updateTargetState}
+        playerReferences={playerReferences}
         spatialTarget={false}
         t={t}
         target={annotationState.maeData.target}
@@ -266,8 +268,10 @@ ImageCommentTemplate.propTypes = {
   ]).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  playerReferences: PropTypes.object.isRequired,
   saveAnnotation: PropTypes.func.isRequired,
-  t:PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
 
 };

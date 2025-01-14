@@ -17,7 +17,6 @@ import {
   KONVA_MODE,
   resizeKonvaStage,
 } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import { playerReferences } from '../playerReferences';
 
 /**
  * Template for Konva annotations (drawing)
@@ -26,6 +25,7 @@ export default function DrawingTemplate(
   {
     annotation,
     closeFormCompanionWindow,
+playerReferences,
     saveAnnotation,
     t,
     windowId,
@@ -205,6 +205,7 @@ export default function DrawingTemplate(
           displayMode={KONVA_MODE.DRAW}
           drawingState={drawingState}
           isMouseOverSave={isMouseOverSave}
+          playerReferences={playerReferences}
           scale={scale}
           setColorToolFromCurrentShape={setColorToolFromCurrentShape}
           setDrawingState={setDrawingState}
@@ -238,6 +239,7 @@ export default function DrawingTemplate(
       </Grid>
       <TargetFormSection
         onChangeTarget={updateTargetState}
+        playerReferences={playerReferences}
         t={t}
         target={annotationState.maeData.target}
         timeTarget
@@ -274,6 +276,8 @@ DrawingTemplate.propTypes = {
   ]).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  playerReferences: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   saveAnnotation: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,

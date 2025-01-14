@@ -7,7 +7,6 @@ import { Stage } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
 import ParentComponent from './KonvaDrawing/shapes/ParentComponent';
 import { OVERLAY_TOOL, SHAPES_TOOL } from './KonvaDrawing/KonvaUtils';
-import { playerReferences } from '../../playerReferences';
 
 /** All the stuff to draw on the canvas */
 export default function AnnotationDrawing(
@@ -15,6 +14,7 @@ export default function AnnotationDrawing(
     displayMode,
     drawingState,
     isMouseOverSave,
+    playerReferences,
     scale,
     setColorToolFromCurrentShape,
     setDrawingState,
@@ -638,6 +638,8 @@ AnnotationDrawing.propTypes = {
     height: PropTypes.number,
     width: PropTypes.number,
   }).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  playerReferences: PropTypes.object.isRequired,
   scale: PropTypes.number.isRequired,
   setColorToolFromCurrentShape: PropTypes.func.isRequired,
   setDrawingState: PropTypes.func.isRequired,

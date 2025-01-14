@@ -9,7 +9,6 @@ import AnnotationFormTemplateSelector from './AnnotationFormTemplateSelector';
 import { getTemplateType, saveAnnotationInStorageAdapter, TEMPLATE } from './AnnotationFormUtils';
 import AnnotationFormHeader from './AnnotationFormHeader';
 import AnnotationFormBody from './AnnotationFormBody';
-import { playerReferences } from '../playerReferences';
 import { convertAnnotationStateToBeSaved } from '../IIIFUtils';
 import '../118n';
 
@@ -23,16 +22,37 @@ function AnnotationForm(
     closeCompanionWindow,
     config,
     id,
+    playerReferences,
     receiveAnnotation,
     t,
     windowId,
   },
 ) {
+
+
   const [templateType, setTemplateType] = useState(null);
   // eslint-disable-next-line no-underscore-dangle
   const [mediaType, setMediaType] = useState(playerReferences.getMediaType());
 
+  // Add a state to trigger redraw
+  const [windowSize, setWindowSize] = useState({
+    height: window.innerHeight,
+    width: window.innerWidth,
+  });
+
   const debugMode = config.debug === true;
+
+  if (!templateType) {
+    if (annotation.id) {
+      if (annotation.maeData && annotation.maeData.templateType) {
+        // Annotation has been created with MAE
+        setTemplateType(getTemplateType(t, annotation.maeData.templateType));
+      } else {
+        // Annotation has been created with other IIIF annotation editor
+        setTemplateType(getTemplateType(t, TEMPLATE.IIIF_TYPE));
+      }
+    }
+  }
 
   // Add translations from config to i18n
   useEffect(() => {
@@ -53,29 +73,10 @@ function AnnotationForm(
     }
   }, [config.translations, config.language]);
 
-  if (!templateType) {
-    if (annotation.id) {
-      if (annotation.maeData && annotation.maeData.templateType) {
-        // Annotation has been created with MAE
-        setTemplateType(getTemplateType(t, annotation.maeData.templateType));
-      } else {
-        // Annotation has been created with other IIIF annotation editor
-        setTemplateType(getTemplateType(t, TEMPLATE.IIIF_TYPE));
-      }
-    }
-  }
-
-  // TODO Can be an issue in multi canvas view
   useEffect(() => {
     setTemplateType(null);
     setMediaType(playerReferences.getMediaType());
   }, [canvases[0].index]);
-
-  // Add a state to trigger redraw
-  const [windowSize, setWindowSize] = useState({
-    height: window.innerHeight,
-    width: window.innerWidth,
-  });
 
   // Listen to window resize event
   useEffect(() => {
@@ -97,6 +98,32 @@ function AnnotationForm(
     };
   }, []);
 
+  if (!playerReferences?.isInitializedCorrectly()) {
+    return (
+      <CompanionWindow title={t('media_not_supported')} windowId={windowId} id={id}>
+        <Grid container padding={1} spacing={1}>
+          <Grid item>
+            <Typography>{t('media_not_supported')}</Typography>
+          </Grid>
+          <Grid item>
+            <Typography>
+              {t('detected_media_type', { mediaType })}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography>
+              {t('video_annotation_instruction')}
+              {' '}
+              <Link href="https://github.com/SCENE-CE/mirador-annotation-editor-video" target="_blank" rel="noopener noreferrer">
+                {t('maev_github_link')}
+              </Link>
+            </Typography>
+          </Grid>
+        </Grid>
+      </CompanionWindow>
+    );
+  }
+
   /**
    * Closes the companion window with the specified ID and position.
    *
@@ -116,6 +143,7 @@ function AnnotationForm(
         annotationState,
         canvas,
         windowId,
+        playerReferences,
       );
       const storageAdapter = config.annotation.adapter(canvas.id);
       return saveAnnotationInStorageAdapter(
@@ -130,32 +158,6 @@ function AnnotationForm(
       closeFormCompanionWindow();
     });
   };
-
-  if (!playerReferences.isInitialized()) {
-    return (
-      <CompanionWindow title={t('media_not_supported')} windowId={windowId} id={id}>
-        <Grid container padding={1} spacing={1}>
-          <Grid item>
-            <Typography>{t('media_not_supported')}</Typography>
-          </Grid>
-          <Grid item>
-            <Typography>
-              {t('detected_media_type', { mediaType: playerReferences.getMediaType() })}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography>
-              {t('video_annotation_instruction')}
-              {' '}
-              <Link href="https://github.com/SCENE-CE/mirador-annotation-editor-video" target="_blank" rel="noopener noreferrer">
-                {t('maev_github_link')}
-              </Link>
-            </Typography>
-          </Grid>
-        </Grid>
-      </CompanionWindow>
-    );
-  }
 
   return (
     <CompanionWindow
@@ -186,6 +188,7 @@ function AnnotationForm(
                 canvases={canvases}
                 closeFormCompanionWindow={closeFormCompanionWindow}
                 debugMode={debugMode}
+                playerReferences={playerReferences}
                 saveAnnotation={saveAnnotation}
                 t={t}
                 templateType={templateType}
@@ -231,6 +234,8 @@ AnnotationForm.propTypes = {
     translations: PropTypes.objectOf(PropTypes.object),
   }).isRequired,
   id: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  playerReferences: PropTypes.object.isRequired,
   receiveAnnotation: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
   windowId: PropTypes.string.isRequired,
