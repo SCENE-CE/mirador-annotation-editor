@@ -9,4 +9,5 @@ export const manifestsCatalog = [
   { manifestId: 'https://iiif.harvardartmuseums.org/manifests/object/299843' },
   { manifestId: 'https://iiif.io/api/cookbook/recipe/0002-mvm-audio/manifest.json' },
   { manifestId: 'https://files.tetras-libre.fr/dev/vertical_video_with_annot.json' },
+  { manifestId: 'https://purl.stanford.edu/sn904cj3429/iiif/manifest' },
 ];

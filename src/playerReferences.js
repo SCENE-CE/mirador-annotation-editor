@@ -206,8 +206,8 @@ export class WindowPlayer {
   getMediaTrueHeight() {
     // TODO This can cause problem in multiple window context
     if (this.mediaType === MEDIA_TYPES.IMAGE) {
-      // return this.canvases[0].__jsonld.height;
-      return this.getCanvasHeight();
+      return this.canvases[0].__jsonld.height;
+      //return this.getCanvasHeight();
     }
     if (this.mediaType === MEDIA_TYPES.VIDEO) {
       // TODO not perfect becasue we use the canvas size and not the video size
@@ -223,8 +223,9 @@ export class WindowPlayer {
    */
   getMediaTrueWidth() {
     if (this.mediaType === MEDIA_TYPES.IMAGE) {
-      // return this.canvases[0].__jsonld.width;
-      return this.getCanvasWidth();
+      // TODO This can cause problem in multiple window context
+      return this.canvases[0].__jsonld.width;
+      //return this.getCanvasWidth();
     }
     if (this.mediaType === MEDIA_TYPES.VIDEO) {
       // TODO not perfect becasue we use the canvas size and not the video size
