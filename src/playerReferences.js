@@ -29,7 +29,9 @@ export class WindowPlayer {
     this.actions = miradorActions;
     this.media = media;
     this.mediaType = checkMediaType(state, windowId);
+    // Get Visible Canvases return an array but inside the array there is only one element
     this.canvases = getVisibleCanvases(state, { windowId });
+    console.log('this.canvases', this.canvases);
     this.playerReferencesWindowId = windowId;
 
     if (this.isInitializedCorrectly()) {

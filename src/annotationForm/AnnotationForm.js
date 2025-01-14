@@ -54,9 +54,6 @@ function AnnotationForm(
     );
   }
 
-  console.log('WindowId: ', windowId);
-  console.log('PlayersReferences WindowId / windowIf: ', playerReferences.getWindowId(), windowId);
-
   const [templateType, setTemplateType] = useState(null);
   // eslint-disable-next-line no-underscore-dangle
   const [mediaType, setMediaType] = useState(playerReferences.getMediaType());
