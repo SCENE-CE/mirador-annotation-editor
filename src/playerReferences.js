@@ -162,7 +162,7 @@ export class WindowPlayer {
     if (this.mediaType === MEDIA_TYPES.IMAGE) {
       const viewer = this.media.current;
       if (viewer) {
-        const percentageHeight = this.getCanvasHeight() * viewer.viewport.getZoom();
+        const percentageHeight = this.getMediaTrueHeight() * viewer.viewport.getZoom();
         const containerWidth = viewer.container.clientWidth;
         const actualHeightInPixels = Math.round(containerWidth * percentageHeight);
         return actualHeightInPixels;
@@ -183,7 +183,7 @@ export class WindowPlayer {
     if (this.mediaType === MEDIA_TYPES.IMAGE) {
       const viewer = this.media.current;
       if (viewer && viewer.world.getItemCount() > 0) {
-        const percentageWidth = this.getCanvasWidth() * viewer.viewport.getZoom();
+        const percentageWidth = this.getMediaTrueWidth() * viewer.viewport.getZoom();
         const containerWidth = viewer.container.clientWidth;
         const actualWidthInPixels = Math.round(containerWidth * percentageWidth);
         return actualWidthInPixels;
