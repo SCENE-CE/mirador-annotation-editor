@@ -24,6 +24,7 @@ function mapStateToProps(state, { id: companionWindowId, windowId }) {
   const cw = getCompanionWindow(state, { companionWindowId, windowId });
   const { annotationid } = cw;
 
+  // This architecture lead to recreate the playerReferences each time the component is rendered
   const media = OSDReferences.get(windowId);
   const playerReferences = new WindowPlayer(state, windowId, media, actions);
 
