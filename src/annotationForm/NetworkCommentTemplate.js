@@ -8,7 +8,6 @@ import ManifestNetworkFormSection from './ManifestNetworkFormSection';
 import { TEMPLATE } from './AnnotationFormUtils';
 import AnnotationFormFooter from './AnnotationFormFooter';
 import { resizeKonvaStage } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
-import circleNode from './AnnotationFormOverlay/KonvaDrawing/shapes/CircleNode';
 
 /** Form part for edit annotation content and body */
 function NetworkCommentTemplate(
@@ -49,12 +48,12 @@ function NetworkCommentTemplate(
 
   /** Update annotationState with manifestData * */
   const updateManifestNetwork = (manifestNetwork) => {
+    // TODO probably can be simplified
+    const newMaeData = annotationState.maeData;
+    newMaeData.manifestNetwork = manifestNetwork;
     setAnnotationState({
       ...annotationState,
-      maeData: {
-        manifestNetwork,
-        ...annotationState.maeData,
-      },
+      maeData: newMaeData,
     });
   };
 
@@ -80,6 +79,17 @@ function NetworkCommentTemplate(
     });
   };
 
+  function getBaseAnnotation(id) {
+    if(!id) {
+      return null;
+    }
+    const match = id.match(
+      /((http|https|localStorage)\:\/\/[a-z0-9\/:%_+.,#?!@&=-]+)#((http|https)\:\/\/[a-z0-9\/:%_+.,#?!@&=-]+)/gi,
+    );
+
+    return match ? match[0].split('#').slice(1) : id;
+  }
+
   /** SaveFunction for Manifest* */
   const saveFunction = () => {
     resizeKonvaStage(
@@ -89,12 +99,13 @@ function NetworkCommentTemplate(
       1 / playerReferences.getScale(),
     );
 
-    // Update the annotation ID with the manifest network
-    // const regex = /(https?:\/\/[^\s#]+)#(https?:\/\/[^\s#]+)/g;
-    // const match = regex.exec(annotationState.id);
-    // if(match) {
-    //   annotationState.id = match[1] + '#' + annotation.maeData.manifestNetwork;
-    // }
+    console.log(annotationState.id);
+    const baseAnnotation = getBaseAnnotation(annotationState.id);
+    console.log("base" , baseAnnotation);
+    if (baseAnnotation) {
+      annotationState.id = `${getBaseAnnotation(annotationState.id)}#${annotation.maeData.manifestNetwork}`;
+    }
+    console.log(annotationState.id);
 
     saveAnnotation(annotationState);
   };
