@@ -6,8 +6,14 @@ import { Circle, Transformer } from 'react-konva';
  * @returns {JSX.Element} The TextNode component.
  */
 function CircleNode({
-  onShapeClick, shape, activeTool, isSelected,
-  onTransform, handleDragEnd, handleDragStart,
+  activeTool,
+  displayMode,
+  handleDragEnd,
+  handleDragStart,
+  isSelected,
+  onShapeClick,
+  onTransform,
+  shape,
 }) {
   const shapeRef = useRef();
   const trRef = useRef();
@@ -47,7 +53,8 @@ function CircleNode({
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
         stroke={shape.stroke}
-        strokeScaleEnabled={false}
+        // This line cause SVG export error
+        // strokeScaleEnabled={false}
         strokeWidth={shape.strokeWidth}
         width={shape.width}
         x={shape.x}

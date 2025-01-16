@@ -55,7 +55,7 @@ function Rectangle({
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
         stroke={shape.stroke}
-        strokeScaleEnabled={false}
+      /*   strokeScaleEnabled={false} */
         strokeWidth={shape.strokeWidth}
         width={shape.width}
         x={shape.x || 0}

@@ -529,7 +529,6 @@ export default function AnnotationDrawing(
       width={playerReferences.getDisplayedMediaWidth()}
       height={playerReferences.getDisplayedMediaHeight()}
       style={{
-        backgroundColor: 'rgba(0, 0, 255, 0.2)',
         height: 'auto',
         left: playerReferences.getImagePosition().x,
         objectFit: 'contain',

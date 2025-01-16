@@ -57,7 +57,8 @@ function Polygon({
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
         stroke={shape.stroke}
-        strokeScaleEnabled={false}
+        // This line cause SVG export error
+        //strokeScaleEnabled={false}
         strokeWidth={shape.strokeWidth}
         x={shape.x}
         y={shape.y}
