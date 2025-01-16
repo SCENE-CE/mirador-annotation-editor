@@ -181,6 +181,11 @@ export async function saveAnnotationInStorageAdapter(
   } else {
     // eslint-disable-next-line no-param-reassign
     annotation.id = canvasId + "/annotation/" + uuidv4();
+    if(annotation?.maeData?.manifestNetwork){
+      // Ugly tricks to solve manifest template annotation issue on creation
+      // For more see NetworkCommentTemplate:saveFunction
+      annotation.id = annotation.id + "#" + annotation.maeData.manifestNetwork;
+    }
     storageAdapter.create(annotation)
       .then((annoPage) => {
         receiveAnnotation(canvasId, storageAdapter.annotationPageId, annoPage);
