@@ -33,8 +33,6 @@ function Polygon({
     onShapeClick(shape);
   };
 
-  console.log('Polygon shape', shape);
-
   return (
 
     <>

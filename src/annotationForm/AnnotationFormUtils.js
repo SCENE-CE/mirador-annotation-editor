@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { styled } from '@mui/material/styles';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { OVERLAY_TOOL } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { AddLink } from '@mui/icons-material';
 
 export const TEMPLATE = {
   IIIF_TYPE: 'iiif',
@@ -79,6 +80,18 @@ export const TEMPLATE_TYPES = (t) => [
       if (mediaType === MEDIA_TYPES.AUDIO) return false;
     },
     label: t('overlay'),
+  },
+  {
+    description: t('manifest_link_with_note'),
+    icon: <AddLink fontSize="small"/>,
+    id: TEMPLATE.MANIFEST_TYPE,
+    isCompatibleWithTemplate: (mediaType) => {
+      if (mediaType === MEDIA_TYPES.VIDEO) return true;
+      // Mirador doesn't support annotation from an image
+      if (mediaType === MEDIA_TYPES.IMAGE) return true;
+      if (mediaType === MEDIA_TYPES.AUDIO) return false;
+    },
+    label: t('manifest_link'),
   },
   {
     description: t('edit_iiif_json_code'),

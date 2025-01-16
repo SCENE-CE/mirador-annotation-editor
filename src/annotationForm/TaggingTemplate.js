@@ -12,7 +12,7 @@ export default function TaggingTemplate(
   {
     annotation,
     closeFormCompanionWindow,
-playerReferences,
+    playerReferences,
     saveAnnotation,
     t,
     windowId,
@@ -76,7 +76,10 @@ playerReferences,
   return (
     <Grid container direction="column" spacing={2}>
       <Grid item>
-        <Typography variant="formSectionTitle">{t('tag')} </Typography>
+        <Typography variant="formSectionTitle">
+          {t('tag')}
+          {' '}
+        </Typography>
       </Grid>
       <Grid item>
         <TextField
@@ -90,7 +93,7 @@ playerReferences,
       <Grid item>
         <TargetFormSection
           onChangeTarget={updateTargetState}
-        playerReferences={playerReferences}
+          playerReferences={playerReferences}
           spatialTarget
           t={t}
           target={annotationState.maeData.target}
@@ -128,6 +131,7 @@ TaggingTemplate.propTypes = {
   }).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   closeFormCompanionWindow: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   playerReferences: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   saveAnnotation: PropTypes.func.isRequired,

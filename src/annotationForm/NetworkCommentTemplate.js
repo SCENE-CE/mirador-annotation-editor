@@ -14,7 +14,7 @@ function NetworkCommentTemplate(
   {
     annotation,
     closeFormCompanionWindow,
-playerReferences,
+    playerReferences,
     saveAnnotation,
     t,
     windowId,
@@ -38,6 +38,10 @@ playerReferences,
       motivation: 'commenting',
       target: null,
     };
+  } else if (maeAnnotation.maeData.target.drawingState && typeof maeAnnotation.maeData.target.drawingState === 'string') {
+    maeAnnotation.maeData.target.drawingState = JSON.parse(
+      maeAnnotation.maeData.target.drawingState,
+    );
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
