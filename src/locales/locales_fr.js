@@ -5,6 +5,7 @@ export const fr = {
   add_a_rectangle: 'Ajouter un rectangle',
   add_an_arrow_shape: 'Ajouter une flèche',
   add_image_from_url: 'Ajouter une image à partir d\'une URL',
+  add_an_ellipse: 'Ajouter une ellipse',
   arrow: 'Flèche',
   border_color: 'Couleur de bordure',
   cancel: 'Annuler',

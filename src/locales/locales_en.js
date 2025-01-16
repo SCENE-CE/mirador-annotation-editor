@@ -5,6 +5,7 @@ export const en = {
   add_a_rectangle: 'Add a rectangle',
   add_an_arrow_shape: 'Add an arrow shape',
   add_image_from_url: 'Add image from URL',
+  add_an_ellipse: 'Add an ellipse',
   arrow: 'Arrow',
   border_color: 'Border color',
   cancel: 'Cancel',
