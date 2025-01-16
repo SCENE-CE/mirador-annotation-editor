@@ -1,5 +1,4 @@
 import { exportStageSVG } from 'react-konva-to-svg';
-import { getTargetSVGToolState } from '../../AnnotationFormUtils';
 
 /**
  * Get the Konva stage associated with the windowId
@@ -35,31 +34,30 @@ export async function getSvg(windowId) {
 
   stage.find('Transformer').forEach((node) => node.destroy());
 
-  stage.find('Rect').map((node) => {
+  /**
+   * Clean the node by removing the strokeScaleEnabled and setting the stroke width
+   * If not done, the SVG export will fail
+   * @param node
+   */
+  function cleanNode(node) {
     const {
       r, g, b, a,
     } = rgbaToObj(node.stroke());
     node.strokeScaleEnabled(true);
     node.stroke(`rgb(${r},${g},${b}`);
     node.strokeWidth(exportStrokeWidth);
+  }
+
+  stage.find('Rect').map((node) => {
+    cleanNode(node);
   });
 
   stage.find('Line').map((node) => {
-    const {
-      r, g, b, a,
-    } = rgbaToObj(node.stroke());
-    node.strokeScaleEnabled(true);
-    node.stroke(`rgb(${r},${g},${b}`);
-    node.strokeWidth(exportStrokeWidth);
+    cleanNode(node);
   });
 
   stage.find('Circle').map((node) => {
-    const {
-      r, g, b, a,
-    } = rgbaToObj(node.stroke());
-    node.strokeScaleEnabled(true);
-    node.stroke(`rgb(${r},${g},${b}`);
-    node.strokeWidth(exportStrokeWidth);
+    cleanNode(node);
   });
 
   let svg = await exportStageSVG(stage, false); // TODO clean

@@ -7,7 +7,6 @@ import { Circle, Transformer } from 'react-konva';
  */
 function CircleNode({
   activeTool,
-  displayMode,
   handleDragEnd,
   handleDragStart,
   isSelected,
