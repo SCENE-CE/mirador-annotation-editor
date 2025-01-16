@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { styled } from '@mui/material/styles';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { OVERLAY_TOOL } from './AnnotationFormOverlay/KonvaDrawing/KonvaUtils';
+import { AddLink } from '@mui/icons-material';
 
 export const TEMPLATE = {
   IIIF_TYPE: 'iiif',
@@ -25,9 +26,10 @@ export const MEDIA_TYPES = {
   VIDEO: 'Video',
 };
 /** Return template type * */
-export const getTemplateType = (t, templateType) => TEMPLATE_TYPES(t).find(
-  (type) => type.id === templateType,
-);
+export const getTemplateType = (t, templateType) => TEMPLATE_TYPES(t)
+  .find(
+    (type) => type.id === templateType,
+  );
 
 /**
  * List of the template types supported
@@ -35,7 +37,7 @@ export const getTemplateType = (t, templateType) => TEMPLATE_TYPES(t).find(
 export const TEMPLATE_TYPES = (t) => [
   {
     description: t('textual_note_with_target'),
-    icon: <TextFieldsIcon />,
+    icon: <TextFieldsIcon/>,
     id: TEMPLATE.TEXT_TYPE,
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === MEDIA_TYPES.VIDEO) return true;
@@ -46,7 +48,7 @@ export const TEMPLATE_TYPES = (t) => [
   },
   {
     description: t('tag_with_target'),
-    icon: <LocalOfferIcon fontSize="small" />,
+    icon: <LocalOfferIcon fontSize="small"/>,
     id: TEMPLATE.TAGGING_TYPE,
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === MEDIA_TYPES.VIDEO) return true;
@@ -57,7 +59,7 @@ export const TEMPLATE_TYPES = (t) => [
   },
   {
     description: t('image_in_overlay_with_note'),
-    icon: <ImageIcon fontSize="small" />,
+    icon: <ImageIcon fontSize="small"/>,
     id: TEMPLATE.IMAGE_TYPE,
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === MEDIA_TYPES.VIDEO) return true;
@@ -69,7 +71,7 @@ export const TEMPLATE_TYPES = (t) => [
   },
   {
     description: t('drawings_and_text_in_overlay'),
-    icon: <CategoryIcon fontSize="small" />,
+    icon: <CategoryIcon fontSize="small"/>,
     id: TEMPLATE.KONVA_TYPE,
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === MEDIA_TYPES.VIDEO) return true;
@@ -80,8 +82,20 @@ export const TEMPLATE_TYPES = (t) => [
     label: t('overlay'),
   },
   {
+    description: t('manifest_link_with_note'),
+    icon: <AddLink fontSize="small"/>,
+    id: TEMPLATE.MANIFEST_TYPE,
+    isCompatibleWithTemplate: (mediaType) => {
+      if (mediaType === MEDIA_TYPES.VIDEO) return true;
+      // Mirador doesn't support annotation from an image
+      if (mediaType === MEDIA_TYPES.IMAGE) return false;
+      if (mediaType === MEDIA_TYPES.AUDIO) return false;
+    },
+    label: t('manifest_link'),
+  },
+  {
     description: t('edit_iiif_json_code'),
-    icon: <DataObjectIcon fontSize="small" />,
+    icon: <DataObjectIcon fontSize="small"/>,
     id: TEMPLATE.IIIF_TYPE,
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === MEDIA_TYPES.VIDEO) return true;
@@ -101,14 +115,16 @@ export const defaultToolState = {
   strokeWidth: 2,
 };
 
-export const targetSVGToolState = {
-  activeTool: OVERLAY_TOOL.EDIT,
-  closedMode: 'closed',
-  image: { id: null },
-  imageEvent: null,
-  strokeColor: 'rgba(255,0, 0, 0.5)',
-  strokeWidth: 2,
-};
+export function getTargetSVGToolState(imageZoom) {
+  return {
+    activeTool: OVERLAY_TOOL.EDIT,
+    closedMode: 'closed',
+    image: { id: null },
+    imageEvent: null,
+    strokeColor: 'rgba(255,0, 0, 0.5)',
+    strokeWidth: 8 * imageZoom,
+  };
+}
 
 export const TARGET_VIEW = 'target';
 export const OVERLAY_VIEW = 'layer';
@@ -164,7 +180,12 @@ export async function saveAnnotationInStorageAdapter(
       });
   } else {
     // eslint-disable-next-line no-param-reassign
-    annotation.id = uuidv4();
+    annotation.id = canvasId + "/annotation/" + uuidv4();
+    if(annotation?.maeData?.manifestNetwork){
+      // Ugly tricks to solve manifest template annotation issue on creation
+      // For more see NetworkCommentTemplate:saveFunction
+      annotation.id = annotation.id + "#" + annotation.maeData.manifestNetwork;
+    }
     storageAdapter.create(annotation)
       .then((annoPage) => {
         receiveAnnotation(canvasId, storageAdapter.annotationPageId, annoPage);

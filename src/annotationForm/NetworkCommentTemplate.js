@@ -14,7 +14,7 @@ function NetworkCommentTemplate(
   {
     annotation,
     closeFormCompanionWindow,
-playerReferences,
+    playerReferences,
     saveAnnotation,
     t,
     windowId,
@@ -38,6 +38,10 @@ playerReferences,
       motivation: 'commenting',
       target: null,
     };
+  } else if (maeAnnotation.maeData.target.drawingState && typeof maeAnnotation.maeData.target.drawingState === 'string') {
+    maeAnnotation.maeData.target.drawingState = JSON.parse(
+      maeAnnotation.maeData.target.drawingState,
+    );
   }
 
   const [annotationState, setAnnotationState] = useState(maeAnnotation);
@@ -75,6 +79,17 @@ playerReferences,
     });
   };
 
+  function getBaseAnnotation(id) {
+    if(!id) {
+      return null;
+    }
+    const match = id.match(
+      /((http|https|localStorage)\:\/\/[a-z0-9\/:%_+.,#?!@&=-]+)#((http|https)\:\/\/[a-z0-9\/:%_+.,#?!@&=-]+)/gi,
+    );
+
+    return match ? match[0].split('#').slice(1) : id;
+  }
+
   /** SaveFunction for Manifest* */
   const saveFunction = () => {
     resizeKonvaStage(
@@ -83,6 +98,15 @@ playerReferences,
       playerReferences.getMediaTrueHeight(),
       1 / playerReferences.getScale(),
     );
+
+    console.log(annotationState.id);
+    const baseAnnotation = getBaseAnnotation(annotationState.id);
+    console.log("base" , baseAnnotation);
+    if (baseAnnotation) {
+      annotationState.id = `${getBaseAnnotation(annotationState.id)}#${annotation.maeData.manifestNetwork}`;
+    }
+    console.log(annotationState.id);
+
     saveAnnotation(annotationState);
   };
 

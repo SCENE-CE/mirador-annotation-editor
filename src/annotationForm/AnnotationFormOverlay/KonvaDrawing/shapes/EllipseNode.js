@@ -32,24 +32,25 @@ function EllipseNode({
   return (
     <>
       <Ellipse
-        ref={shapeRef}
-        scaleX={shape.scaleX}
-        scaleY={shape.scaleY}
-        rotation={shape.rotation}
-        x={shape.x}
-        y={shape.y}
-        radiusX={shape.width}
-        radiusY={shape.height}
-        fill={shape.fill}
-        stroke={shape.stroke}
-        strokeWidth={shape.strokeWidth || 1}
-        id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
+        fill={shape.fill}
+        id={shape.id}
         onClick={handleClick}
-        onMousedown={handleClick}
-        onTransform={onTransform}
         onDragEnd={handleDragEnd}
         onDragStart={handleDragStart}
+        onMousedown={handleClick}
+        onTransform={onTransform}
+        radiusX={shape.width}
+        radiusY={shape.height}
+        ref={shapeRef}
+        rotation={shape.rotation}
+        scaleX={shape.scaleX}
+        scaleY={shape.scaleY}
+        stroke={shape.stroke}
+        strokeScaleEnabled={false}
+        strokeWidth={shape.strokeWidth || 1}
+        x={shape.x}
+        y={shape.y}
       />
 
       <Transformer

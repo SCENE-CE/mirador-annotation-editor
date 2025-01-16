@@ -31,10 +31,12 @@ function AnnotationFormOverlayTool({
 }) {
   /** Change the active overlay tool */
   const changeTool = (e, tool) => {
-    setToolState({
-      ...toolState,
-      activeTool: tool,
-    });
+    if (tool) {
+      setToolState({
+        ...toolState,
+        activeTool: tool,
+      });
+    }
   };
 
   /** Stay in edit mode when a shape is selected */
@@ -119,7 +121,6 @@ function AnnotationFormOverlayTool({
                   <RectangleIcon />
                 </ToggleButton>
               </Tooltip>
-
               <Tooltip title={t('circle')}>
                 <ToggleButton value={SHAPES_TOOL.CIRCLE} aria-label={t('add_a_circle')}>
                   <CircleIcon />
@@ -145,13 +146,13 @@ function AnnotationFormOverlayTool({
               {
                 (displayMode === KONVA_MODE.DRAW) && (
                   <>
-                    {/*  <Tooltip title="Ellipse shape">
-                      <ToggleButton value={SHAPES_TOOL.ELLIPSE} aria-label="add an ellipse">
+                    <Tooltip title="Ellipse shape">
+                      <ToggleButton value={SHAPES_TOOL.ELLIPSE} aria-label={t('add_an_ellipse')}>
                         <CircleIcon />
                       </ToggleButton>
-                    </Tooltip> */}
+                    </Tooltip>
                     <Tooltip title={t('arrow')}>
-                      <ToggleButton value={SHAPES_TOOL.ARROW} aria-label={t('add an arrow')}>
+                      <ToggleButton value={SHAPES_TOOL.ARROW} aria-label={t('add_an_arrow_shape')}>
                         <ArrowOutwardIcon />
                       </ToggleButton>
                     </Tooltip>
