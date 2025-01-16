@@ -54,7 +54,7 @@ function CircleNode({
         scaleY={shape.scaleY}
         stroke={shape.stroke}
         // This line cause SVG export error
-        // strokeScaleEnabled={false}
+        strokeScaleEnabled={false}
         strokeWidth={shape.strokeWidth}
         width={shape.width}
         x={shape.x}

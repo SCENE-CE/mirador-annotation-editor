@@ -40,6 +40,22 @@ export async function getSvg(windowId) {
     node.stroke(`rgb(${r},${g},${b}`);
   });
 
+  stage.find('Line').map((node) => {
+    const {
+      r, g, b, a,
+    } = rgbaToObj(node.stroke());
+    node.strokeScaleEnabled(true);
+    node.stroke(`rgb(${r},${g},${b}`);
+  });
+
+  stage.find('Circle').map((node) => {
+    const {
+      r, g, b, a,
+    } = rgbaToObj(node.stroke());
+    node.strokeScaleEnabled(true);
+    node.stroke(`rgb(${r},${g},${b}`);
+  });
+
   let svg = await exportStageSVG(stage, false); // TODO clean
   svg = svg.replaceAll('"', "'");
   return svg;

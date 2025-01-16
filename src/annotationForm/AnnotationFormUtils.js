@@ -107,7 +107,7 @@ export const targetSVGToolState = {
   image: { id: null },
   imageEvent: null,
   strokeColor: 'rgba(255,0, 0, 0.5)',
-  strokeWidth: 3,
+  strokeWidth: 12,
 };
 
 export const TARGET_VIEW = 'target';
