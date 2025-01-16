@@ -412,6 +412,7 @@ export default function AnnotationDrawing(
     } catch (error) {
       console.error('error', error);
     }
+    console.log("debug toolState.strokeWidth", toolState.strokeWidth);
   };
 
   /** */

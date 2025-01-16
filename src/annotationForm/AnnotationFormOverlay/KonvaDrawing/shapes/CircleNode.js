@@ -32,25 +32,26 @@ function CircleNode({
   return (
     <>
       <Circle
-        ref={shapeRef}
-        scaleX={shape.scaleX}
-        scaleY={shape.scaleY}
-        rotation={shape.rotation}
-        x={shape.x}
-        y={shape.y}
-        width={shape.width}
-        height={shape.height}
-        fill={shape.fill}
-        stroke={shape.stroke}
-        strokeWidth={shape.strokeWidth || 1}
-        id={shape.id}
         draggable={activeTool === 'cursor' || activeTool === 'edit'}
-        radius={shape.radius}
+        fill={shape.fill}
+        height={shape.height}
+        id={shape.id}
         onClick={handleClick}
-        onMousedown={handleClick}
-        onTransform={onTransform}
         onDragEnd={handleDragEnd}
         onDragStart={handleDragStart}
+        onMousedown={handleClick}
+        onTransform={onTransform}
+        radius={shape.radius}
+        ref={shapeRef}
+        rotation={shape.rotation}
+        scaleX={shape.scaleX}
+        scaleY={shape.scaleY}
+        stroke={shape.stroke}
+        strokeScaleEnabled={false}
+        strokeWidth={shape.strokeWidth}
+        width={shape.width}
+        x={shape.x}
+        y={shape.y}
       />
 
       <Transformer

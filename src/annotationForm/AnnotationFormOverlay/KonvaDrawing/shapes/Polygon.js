@@ -33,6 +33,8 @@ function Polygon({
     onShapeClick(shape);
   };
 
+  console.log('Polygon shape', shape);
+
   return (
 
     <>
@@ -55,7 +57,8 @@ function Polygon({
         scaleX={shape.scaleX}
         scaleY={shape.scaleY}
         stroke={shape.stroke}
-        strokeWidth={shape.strokeWidth || 5}
+        strokeScaleEnabled={false}
+        strokeWidth={shape.strokeWidth}
         x={shape.x}
         y={shape.y}
       />

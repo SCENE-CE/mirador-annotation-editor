@@ -36,6 +36,8 @@ function Rectangle({
     onShapeClick(shape);
   };
 
+  console.log('Rectangle shape', shape);
+
   return (
     <>
       <Rect
