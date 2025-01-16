@@ -25,9 +25,10 @@ export const MEDIA_TYPES = {
   VIDEO: 'Video',
 };
 /** Return template type * */
-export const getTemplateType = (t, templateType) => TEMPLATE_TYPES(t).find(
-  (type) => type.id === templateType,
-);
+export const getTemplateType = (t, templateType) => TEMPLATE_TYPES(t)
+  .find(
+    (type) => type.id === templateType,
+  );
 
 /**
  * List of the template types supported
@@ -35,7 +36,7 @@ export const getTemplateType = (t, templateType) => TEMPLATE_TYPES(t).find(
 export const TEMPLATE_TYPES = (t) => [
   {
     description: t('textual_note_with_target'),
-    icon: <TextFieldsIcon />,
+    icon: <TextFieldsIcon/>,
     id: TEMPLATE.TEXT_TYPE,
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === MEDIA_TYPES.VIDEO) return true;
@@ -46,7 +47,7 @@ export const TEMPLATE_TYPES = (t) => [
   },
   {
     description: t('tag_with_target'),
-    icon: <LocalOfferIcon fontSize="small" />,
+    icon: <LocalOfferIcon fontSize="small"/>,
     id: TEMPLATE.TAGGING_TYPE,
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === MEDIA_TYPES.VIDEO) return true;
@@ -57,7 +58,7 @@ export const TEMPLATE_TYPES = (t) => [
   },
   {
     description: t('image_in_overlay_with_note'),
-    icon: <ImageIcon fontSize="small" />,
+    icon: <ImageIcon fontSize="small"/>,
     id: TEMPLATE.IMAGE_TYPE,
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === MEDIA_TYPES.VIDEO) return true;
@@ -69,7 +70,7 @@ export const TEMPLATE_TYPES = (t) => [
   },
   {
     description: t('drawings_and_text_in_overlay'),
-    icon: <CategoryIcon fontSize="small" />,
+    icon: <CategoryIcon fontSize="small"/>,
     id: TEMPLATE.KONVA_TYPE,
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === MEDIA_TYPES.VIDEO) return true;
@@ -81,7 +82,7 @@ export const TEMPLATE_TYPES = (t) => [
   },
   {
     description: t('edit_iiif_json_code'),
-    icon: <DataObjectIcon fontSize="small" />,
+    icon: <DataObjectIcon fontSize="small"/>,
     id: TEMPLATE.IIIF_TYPE,
     isCompatibleWithTemplate: (mediaType) => {
       if (mediaType === MEDIA_TYPES.VIDEO) return true;
@@ -101,14 +102,16 @@ export const defaultToolState = {
   strokeWidth: 2,
 };
 
-export const targetSVGToolState = {
-  activeTool: OVERLAY_TOOL.EDIT,
-  closedMode: 'closed',
-  image: { id: null },
-  imageEvent: null,
-  strokeColor: 'rgba(255,0, 0, 0.5)',
-  strokeWidth: 12,
-};
+export function getTargetSVGToolState(imageZoom) {
+  return {
+    activeTool: OVERLAY_TOOL.EDIT,
+    closedMode: 'closed',
+    image: { id: null },
+    imageEvent: null,
+    strokeColor: 'rgba(255,0, 0, 0.5)',
+    strokeWidth: 8 * imageZoom,
+  };
+}
 
 export const TARGET_VIEW = 'target';
 export const OVERLAY_VIEW = 'layer';
