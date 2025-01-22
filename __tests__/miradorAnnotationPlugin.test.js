@@ -99,10 +99,6 @@ describe('MiradorAnnotation', () => {
     expect(button2).toBeNull();
   });
 
-  /*
-    disabled due to the fact that it is not recommended,
-    to write a non serializable data into the store.
-  */
   it('renders export button if export and LocalStorageAdapter are configured', () => {
     const annotation = {
       adapter: () => new LocalStorageAdapter(), exportLocalStorageAnnotations: true,
