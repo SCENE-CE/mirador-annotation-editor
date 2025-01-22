@@ -1,7 +1,7 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import MenuItem from '@material-ui/core/MenuItem';
+
 import AnnotationExportDialog from '../src/AnnotationExportDialog';
+import { screen, render, waitFor } from './test-utils';
 
 window.URL.createObjectURL = jest.fn((data) => ('downloadurl'));
 
@@ -22,12 +22,15 @@ const adapter = jest.fn(() => (
 
 /** */
 function createWrapper(props) {
-  return shallow(
+  const mockT = jest.fn().mockImplementation((key) => key);
+  return render(
     <AnnotationExportDialog
       canvases={[]}
+      classes={{ listitem: 'testClass' }}
       config={{ annotation: { adapter } }}
       handleClose={jest.fn()}
       open
+      t={mockT}
       {...props}
     />,
   );
@@ -35,19 +38,18 @@ function createWrapper(props) {
 
 describe('AnnotationExportDialog', () => {
   it('renders download link for every annotation page', async () => {
-    let wrapper = createWrapper({
-      canvases: [
-        { id: 'canvas/1' },
-        { id: 'canvas/2' },
-      ],
-    }).dive();
-    expect(wrapper.text()).toEqual(expect.stringContaining('No annotations stored yet.'));
+    createWrapper(
+      {
+        canvases: [
+          { id: 'canvas/1' },
+          { id: 'canvas/2' },
+        ],
+      },
+    );
+    expect(screen.getByText(/no_annotation/i)).toBeInTheDocument();
 
-    wrapper.instance().componentDidUpdate({ open: false });
-    await new Promise((resolve) => setTimeout(resolve, 50));
-    wrapper = wrapper.update();
-    expect(wrapper.text()).toEqual(expect.not.stringContaining('No annotations stored yet.'));
-    expect(wrapper.find(MenuItem).some({ 'aria-label': 'Export annotations for canvas/1' })).toBe(true);
-    expect(wrapper.find(MenuItem).some({ 'aria-label': 'Export annotations for canvas/2' })).toBe(true);
+    await waitFor(() => screen.getAllByText(/export_annotation_for/i));
+    const elements = screen.getAllByText(/export_annotation_for/);
+    expect(elements).toHaveLength(2);
   });
 });

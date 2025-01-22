@@ -9,7 +9,7 @@ import AnnotationActionsContext from '../AnnotationActionsContext';
 import SingleCanvasDialog from '../SingleCanvasDialog';
 
 /** Functional Component */
-const CanvasAnnotationsWrapper = ({
+function CanvasAnnotationsWrapper({
   addCompanionWindow,
   annotationsOnCanvases,
   canvases,
@@ -17,11 +17,12 @@ const CanvasAnnotationsWrapper = ({
   receiveAnnotation,
   switchToSingleCanvasView,
   TargetComponent,
+  t,
   targetProps,
   windowViewType,
   containerRef,
   annotationEditCompanionWindowIsOpened,
-}) => {
+}) {
   const [singleCanvasDialogOpen, setSingleCanvasDialogOpen] = useState(false);
 
   const toggleSingleCanvasDialogOpen = () => {
@@ -54,11 +55,12 @@ const CanvasAnnotationsWrapper = ({
           handleClose={toggleSingleCanvasDialogOpen}
           open={singleCanvasDialogOpen}
           switchToSingleCanvasView={switchToSingleCanvasView}
+          t={t}
         />
       )}
     </AnnotationActionsContext.Provider>
   );
-};
+}
 
 CanvasAnnotationsWrapper.propTypes = {
   addCompanionWindow: PropTypes.func.isRequired,
@@ -100,6 +102,7 @@ CanvasAnnotationsWrapper.propTypes = {
   ]),
   receiveAnnotation: PropTypes.func.isRequired,
   switchToSingleCanvasView: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
   TargetComponent: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.node,
