@@ -26,7 +26,7 @@ function TextEditor({ annoHtml, updateAnnotationBody }) {
   };
 
   return (
-    <div>
+    <div data-testid="textEditor">
       <StyledReactQuill
         value={editorHtml}
         onChange={handleChange}
