@@ -8,7 +8,7 @@ module.exports = {
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
   moduleNameMapper: {
-    '\\.css$': '<rootDir>/__tests__/styleMock.js',
+    '\\.css$': '<rootDir>/__tests__/style-mock.js',
   },
   setupFiles: [
     'jest-localstorage-mock', 'jest-canvas-mock',
@@ -19,6 +19,7 @@ module.exports = {
   testEnvironment: 'jsdom',
   testPathIgnorePatterns: [
     '<rootDir>/__tests__/test-utils.js',
+    '<rootDir>/__tests__/style-mock.js',
   ],
   // Ignore Mirador code from jest transforms
   transformIgnorePatterns: [
