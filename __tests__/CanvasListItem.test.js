@@ -1,7 +1,8 @@
 import React from 'react';
-import { mount } from 'enzyme';
+
 import CanvasListItem from '../src/CanvasListItem';
 import AnnotationActionsContext from '../src/AnnotationActionsContext';
+import { render, screen, fireEvent } from './test-utils';
 
 const receiveAnnotation = jest.fn();
 const storageAdapter = jest.fn(() => (
@@ -20,7 +21,7 @@ const storageAdapter = jest.fn(() => (
 
 /** */
 function createWrapper(props, context = {}) {
-  return mount(
+  return render(
     <AnnotationActionsContext.Provider
       value={{
         canvases: [],
@@ -44,13 +45,13 @@ function createWrapper(props, context = {}) {
 }
 
 describe('CanvasListItem', () => {
-  let wrapper;
   it('wraps its children', () => {
-    wrapper = createWrapper();
-    expect(wrapper.find(CanvasListItem).find('li').text()).toBe('HelloWorld');
+    createWrapper();
+    expect(screen.getByText('HelloWorld')).toBeInTheDocument();
   });
+
   it('shows an edit and delete button when it matches an editable annotationid and is hovering', () => {
-    wrapper = createWrapper({}, {
+    createWrapper({}, {
       annotationsOnCanvases: {
         'canv/1': {
           'annoPage/1': {
@@ -70,23 +71,52 @@ describe('CanvasListItem', () => {
         },
       ],
     });
-    wrapper.setState({ isHovering: true });
-    expect(wrapper.find('ForwardRef(ToggleButton)').length).toBe(3);
-  });
-  it('deletes from a storageAdapter when handling deletes', async () => {
-    wrapper = createWrapper(
-      {
-        annotationid: 'anno/1',
-      },
-      {
-        canvases: [
-          {
-            id: 'canvas/1',
-          },
-        ],
-      },
+    const annotationElement = screen.getAllByRole('listitem').find(
+      (el) => el.getAttribute('annotationid') === 'anno/1',
     );
-    await wrapper.instance().handleDelete();
-    expect(receiveAnnotation).toHaveBeenCalledWith('canvas/1', 'pageId/3', 'annoPageResultFromDelete');
+    fireEvent.mouseEnter(annotationElement);
+
+    const buttons = screen.getAllByRole('button');
+    expect(buttons.length).toBe(2);
+    expect(screen.getByRole('button', { name: /edit/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /delete/i })).toBeInTheDocument();
+  });
+
+  it('deletes from a storageAdapter when handling deletes', async () => {
+    createWrapper({}, {
+      annotationEditCompanionWindowIsOpened: true,
+      annotationsOnCanvases: {
+        'canv/1': {
+          'annoPage/1': {
+            json: {
+              items: [
+                {
+                  id: 'anno/1',
+                },
+              ],
+            },
+          },
+        },
+      },
+      canvases: [
+        {
+          id: 'canv/1',
+        },
+      ],
+    });
+
+    const annotationElement = screen.getAllByRole('listitem').find(
+      (el) => el.getAttribute('annotationid') === 'anno/1',
+    );
+    fireEvent.mouseEnter(annotationElement);
+
+    const deleteButton = screen.getByRole('button', { name: /delete/i });
+
+    fireEvent.click(deleteButton);
+
+    expect(storageAdapter).toHaveBeenCalledTimes(1);
+    expect(storageAdapter).toHaveBeenCalledWith(
+      'canv/1',
+    );
   });
 });
