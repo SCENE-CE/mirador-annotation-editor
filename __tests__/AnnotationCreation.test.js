@@ -38,7 +38,7 @@ function createWrapper(props) {
 describe('TextCreation', () => {
   it('renders a note', () => {
     createWrapper();
-    expect(screen.getByRole('span', { name: 'note' }));
+    expect(screen.getAllByText('note'));
   });
   it('has button tool selection', () => {
     createWrapper();
@@ -47,8 +47,13 @@ describe('TextCreation', () => {
     expect(btns).toHaveLength(3);
   });
   it('adds the AnnotationDrawing component', () => {
+    document.body.appendChild(container);
+    expect(screen.getByTestId('drawContainer')).toBeInTheDocument();
+
+    expect(container.querySelector('canvas')).not.toBeInTheDocument();
     createWrapper();
-    expect(screen.getByRole('div', { name: 'drawContainer' }));
+    expect(container.querySelector('canvas')).toBeInTheDocument();
+    document.body.removeChild(container);
   });
   it('adds the TextEditor component', () => {
     createWrapper();
