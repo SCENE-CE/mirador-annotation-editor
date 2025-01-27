@@ -7,6 +7,9 @@ import { getCompanionWindowsForContent } from 'mirador/dist/es/src/state/selecto
 import CanvasListItem from '../CanvasListItem';
 import AnnotationActionsContext from '../AnnotationActionsContext';
 import SingleCanvasDialog from '../SingleCanvasDialog';
+import { withTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 /** Functional Component */
 const CanvasAnnotationsWrapper = ({
@@ -21,6 +24,7 @@ const CanvasAnnotationsWrapper = ({
   windowViewType,
   containerRef,
   annotationEditCompanionWindowIsOpened,
+  t,
 }) => {
   const [singleCanvasDialogOpen, setSingleCanvasDialogOpen] = useState(false);
 
@@ -54,6 +58,7 @@ const CanvasAnnotationsWrapper = ({
           handleClose={toggleSingleCanvasDialogOpen}
           open={singleCanvasDialogOpen}
           switchToSingleCanvasView={switchToSingleCanvasView}
+          t={t}
         />
       )}
     </AnnotationActionsContext.Provider>
@@ -61,6 +66,10 @@ const CanvasAnnotationsWrapper = ({
 };
 
 CanvasAnnotationsWrapper.propTypes = {
+  TargetComponent: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.node,
+  ]).isRequired,
   addCompanionWindow: PropTypes.func.isRequired,
   annotationEditCompanionWindowIsOpened: PropTypes.bool.isRequired,
   annotationsOnCanvases: PropTypes.shape({
@@ -87,7 +96,10 @@ CanvasAnnotationsWrapper.propTypes = {
     }),
   }),
   canvases: PropTypes.arrayOf(
-    PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
+    PropTypes.shape({
+      id: PropTypes.string,
+      index: PropTypes.number
+    }),
   ),
   config: PropTypes.shape({
     annotation: PropTypes.shape({
@@ -100,10 +112,7 @@ CanvasAnnotationsWrapper.propTypes = {
   ]),
   receiveAnnotation: PropTypes.func.isRequired,
   switchToSingleCanvasView: PropTypes.func.isRequired,
-  TargetComponent: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.node,
-  ]).isRequired,
+  t: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   targetProps: PropTypes.object.isRequired,
   windowViewType: PropTypes.string.isRequired,
@@ -154,10 +163,13 @@ const mapDispatchToProps = (dispatch, props, annotationEditCompanionWindowIsOpen
   ),
 });
 
+const enhance = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withTranslation(),
+);
+
 export default {
-  component: CanvasAnnotationsWrapper,
-  mapDispatchToProps,
-  mapStateToProps,
+  ...enhance(CanvasAnnotationsWrapper),
   mode: 'wrap',
   target: 'CanvasAnnotations',
 };
