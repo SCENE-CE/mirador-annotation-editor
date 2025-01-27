@@ -11,4 +11,5 @@ export const manifestsCatalog = [
   { manifestId: 'https://files.tetras-libre.fr/dev/vertical_video_with_annot.json' },
   { manifestId: 'https://purl.stanford.edu/sn904cj3429/iiif/manifest' },
   { manifestId: 'https://coeso.tetras-libre.fr/data/coeso-deliverable/Manual_Network_Configuration.json' },
+  { manifestId: 'https://iiif.bodleian.ox.ac.uk/iiif/manifest/e32a277e-91e2-4a6d-8ba6-cc4bad230410.json' },
 ];
