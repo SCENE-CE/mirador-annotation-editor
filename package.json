@@ -1,6 +1,6 @@
 {
   "name": "mirador-annotation-editor",
-  "version": "1.0.75",
+  "version": "1.0.76",
   "description": "mirador-annotation-editor plugin in a React component. Mirador 4 (Alpha 2) compatible ",
   "main": "es/index.js",
   "module": "es/index.js",
