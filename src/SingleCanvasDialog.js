@@ -8,6 +8,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import { Tooltip } from '@mui/material';
+import { withTranslation } from 'react-i18next';
+import i18n from 'i18next';
 
 /**
  * Dialog to enforce single view for annotation creation / editing
@@ -36,6 +38,7 @@ class SingleCanvasDialog extends Component {
       open,
       t,
     } = this.props;
+
     return (
       <Dialog
         aria-labelledby="single-canvas-dialog-title"
@@ -47,23 +50,24 @@ class SingleCanvasDialog extends Component {
       >
         <DialogTitle id="single-canvas-dialog-title" disableTypography>
           <Typography variant="h2">
-            {t('switch_view_h2')}
+            Switch view type to single view?
           </Typography>
         </DialogTitle>
         <DialogContent>
           <DialogContentText variant="body1" color="inherit">
-            {t('question_switch_view')}
+            Annotations can only be edited in single canvas view type.
+            Switch view type to single view now?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Tooltip title={t('cancel')}>
+          <Tooltip title="Cancel">
             <Button onClick={handleClose}>
-              {t('cancel')}
+              Cancel
             </Button>
           </Tooltip>
-          <Tooltip title={t('switch_view')}>
+          <Tooltip title="Switch to single view">
             <Button color="primary" onClick={this.confirm} variant="contained">
-              {t('switch_view')}
+              Switch to single view
             </Button>
           </Tooltip>
         </DialogActions>
@@ -76,7 +80,6 @@ SingleCanvasDialog.propTypes = {
   handleClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   switchToSingleCanvasView: PropTypes.func.isRequired,
-  t: PropTypes.func.isRequired,
 };
 
-export default SingleCanvasDialog;
+export default (SingleCanvasDialog);
