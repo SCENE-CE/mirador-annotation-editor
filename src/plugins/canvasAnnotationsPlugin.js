@@ -24,7 +24,6 @@ const CanvasAnnotationsWrapper = ({
   windowViewType,
   containerRef,
   annotationEditCompanionWindowIsOpened,
-  t,
 }) => {
   const [singleCanvasDialogOpen, setSingleCanvasDialogOpen] = useState(false);
 
@@ -58,7 +57,6 @@ const CanvasAnnotationsWrapper = ({
           handleClose={toggleSingleCanvasDialogOpen}
           open={singleCanvasDialogOpen}
           switchToSingleCanvasView={switchToSingleCanvasView}
-          t={t}
         />
       )}
     </AnnotationActionsContext.Provider>
@@ -112,7 +110,6 @@ CanvasAnnotationsWrapper.propTypes = {
   ]),
   receiveAnnotation: PropTypes.func.isRequired,
   switchToSingleCanvasView: PropTypes.func.isRequired,
-  t: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   targetProps: PropTypes.object.isRequired,
   windowViewType: PropTypes.string.isRequired,
@@ -163,13 +160,10 @@ const mapDispatchToProps = (dispatch, props, annotationEditCompanionWindowIsOpen
   ),
 });
 
-const enhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withTranslation(),
-);
-
 export default {
-  ...enhance(CanvasAnnotationsWrapper),
+  component: CanvasAnnotationsWrapper,
+  mapDispatchToProps,
+  mapStateToProps,
   mode: 'wrap',
   target: 'CanvasAnnotations',
 };
