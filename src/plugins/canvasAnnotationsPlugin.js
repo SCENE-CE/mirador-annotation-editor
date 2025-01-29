@@ -168,4 +168,8 @@ const enhance = compose(
   withTranslation(),
 );
 
-export default enhance(CanvasAnnotationsWrapper);
+export default {
+  ...enhance(CanvasAnnotationsWrapper),
+  mode: 'wrap',
+  target: 'CanvasAnnotations',
+};
